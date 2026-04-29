@@ -1,0 +1,77 @@
+---
+# Main stylesheet — pulls in Biscuit's sass partials from the remote theme
+---
+
+@charset "utf-8";
+
+@import "normalize", "biscuit", "syntax";
+
+.logo-wrap {
+  text-align: left;
+  margin: 0;
+}
+
+.container img.logo {
+  max-width: none;
+  width: min(27rem, 60vw);
+  height: auto;
+  display: block;
+  margin: 1rem 0;
+}
+
+.site-nav {
+  margin: 2.5em 0 1em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+}
+
+.roast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.roast-card {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+}
+
+.roast-card:hover {
+  border-color: #888;
+  transform: translateY(-2px);
+}
+
+.roast-card-logo {
+  display: block;
+  max-width: 6rem;
+  height: auto;
+  margin: 0 auto 1rem;
+}
+
+.roast-card-title {
+  margin: 0 0 0.5em;
+}
+
+.roast-card-blurb {
+  margin: 0;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.brandmark {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: 3em;
+  line-height: 1.05;
+  margin: 0.4em 0 0.3em;
+}
