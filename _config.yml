@@ -6,9 +6,6 @@ description: >-
 baseurl: ""
 url: "https://yellowwingroasters.com"
 
-twitter:
-  card: summary_large_image
-
 # Theme
 remote_theme: sblisesivdin/biscuit
 
