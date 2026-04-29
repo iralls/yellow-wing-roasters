@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<p class="logo-wrap"><img src="/images/cup-logo-transparent.png" alt="Yellow Wing Roasters" class="logo"></p>
+<p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/cup-logo-transparent.png" alt="Yellow Wing Roasters" class="logo"></a></p>
 
 <h1>{{ page.title }}</h1>
 
@@ -11,3 +11,11 @@ layout: default
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
 {{ content }}
+
+<p class="add-to-order-wrap">
+  <span class="add-to-order-label">Add to order:</span>
+  {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
+  {% for s in sizes %}
+    <a class="add-to-order-btn" href="{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}">{{ s }}</a>
+  {% endfor %}
+</p>

@@ -11,6 +11,12 @@
   margin: 0;
 }
 
+.logo-link,
+.logo-link:hover {
+  text-decoration: none;
+  border: 0;
+}
+
 .container img.logo {
   max-width: none;
   width: min(27rem, 60vw);
@@ -161,6 +167,14 @@
   box-sizing: border-box;
 }
 
+.order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
 .order-submit {
   font: inherit;
   font-weight: 600;
@@ -174,6 +188,105 @@
 
 .order-submit:hover {
   background: #444;
+}
+
+.order-clear {
+  font: inherit;
+  padding: 0.65rem 1.1rem;
+  background: transparent;
+  color: #555;
+  border: 1px solid #bbb;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.order-clear:hover {
+  border-color: #555;
+  color: #222;
+}
+
+.order-roast-highlight {
+  animation: order-row-flash 1.8s ease-out;
+}
+
+@keyframes order-row-flash {
+  0% {
+    background: #fff5cc;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+.add-to-order-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.add-to-order-label {
+  font-weight: 600;
+}
+
+.add-to-order-btn {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  background: #222;
+  color: #fff;
+  border-radius: 0.35rem;
+  text-decoration: none;
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+.add-to-order-btn:hover {
+  background: #444;
+  text-decoration: none;
+}
+
+.cart-indicator {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  color: #222;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+}
+
+.cart-indicator:hover {
+  border-color: #888;
+  text-decoration: none;
+}
+
+.cart-indicator svg {
+  display: block;
+}
+
+.cart-count {
+  display: inline-block;
+  min-width: 1.1rem;
+  padding: 0.05rem 0.45rem;
+  background: #d97706;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.cart-indicator-empty .cart-count {
+  display: none;
 }
 
 .brandmark {

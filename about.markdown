@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-<p class="logo-wrap"><img src="/images/cup-logo-transparent.png" alt="Yellow Wing Roasters" class="logo"></p>
+<p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/cup-logo-transparent.png" alt="Yellow Wing Roasters" class="logo"></a></p>
 
 # About
 
