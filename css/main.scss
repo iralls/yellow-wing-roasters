@@ -205,6 +205,25 @@
   color: #222;
 }
 
+.order-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.order-status {
+  margin: 1rem 0 0;
+  min-height: 1.25em;
+  font-size: 0.95em;
+}
+
+.order-status-pending {
+  color: #555;
+}
+
+.order-status-error {
+  color: #b91c1c;
+}
+
 .order-roast-highlight {
   animation: order-row-flash 1.8s ease-out;
 }

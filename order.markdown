@@ -12,7 +12,6 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
 
 <form action="https://formspree.io/f/mojraaql" method="POST" class="order-form">
   <input type="hidden" name="_subject" value="New Yellow Wing order">
-  <input type="hidden" name="_next" value="{{ '/thanks/' | absolute_url }}">
   <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="order-gotcha">
 
   <div class="order-field">
@@ -53,6 +52,8 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
     <button type="submit" class="order-submit">Place order</button>
     <button type="button" class="order-clear">Start over</button>
   </div>
+
+  <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
 <script>
@@ -109,9 +110,47 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
       saveCart(cart);
     });
 
-    form.addEventListener('submit', function () {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+    var status = form.querySelector('.order-status');
+    var submitBtn = form.querySelector('.order-submit');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (status) {
+        status.textContent = 'Sending…';
+        status.className = 'order-status order-status-pending';
+      }
+      if (submitBtn) submitBtn.disabled = true;
+
+      var data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function (res) {
+        return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+      }).then(function (result) {
+        if (result.ok) {
+          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
+          window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+          window.location.href = '{{ "/thanks/" | relative_url }}';
+        } else {
+          var msg = 'Something went wrong. Please try again or email hello@yellowwingroasters.com.';
+          if (result.body && result.body.errors && result.body.errors.length) {
+            msg = result.body.errors.map(function (er) { return er.message; }).join(' ');
+          }
+          if (status) {
+            status.textContent = msg;
+            status.className = 'order-status order-status-error';
+          }
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      }).catch(function () {
+        if (status) {
+          status.textContent = 'Network error. Check your connection and try again.';
+          status.className = 'order-status order-status-error';
+        }
+        if (submitBtn) submitBtn.disabled = false;
+      });
     });
 
     var clearBtn = form.querySelector('.order-clear');
