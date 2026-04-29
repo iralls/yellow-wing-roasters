@@ -3,9 +3,11 @@ title: Yellow Wing Roasters
 email: hello@yellowwingroasters.com
 description: >-
   Small-batch coffee roasting.
-image: /images/social-preview.jpg
 baseurl: ""
 url: "https://yellowwingroasters.com"
+
+twitter:
+  card: summary_large_image
 
 # Theme
 remote_theme: sblisesivdin/biscuit
@@ -29,6 +31,10 @@ collections:
 
 # Default layouts per collection
 defaults:
+  - scope:
+      path: ""
+    values:
+      image: /images/social-preview.jpg
   - scope:
       path: ""
       type: roasts
