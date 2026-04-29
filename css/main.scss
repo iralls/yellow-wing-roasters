@@ -6,6 +6,32 @@
 
 @import "normalize", "biscuit", "syntax";
 
+// Type system — Montserrat (matches the logo wordmark) for headings and UI,
+// Lora (warm serif) for body copy.
+$font-display: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-body: "Lora", Georgia, "Times New Roman", serif;
+
+html,
+body {
+  font-family: $font-body;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-display;
+  font-weight: 700;
+}
+
+.site-nav,
+.cart-indicator {
+  font-family: $font-display;
+  font-weight: 500;
+}
+
 .logo-wrap {
   text-align: left;
   margin: 0;

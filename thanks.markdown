@@ -5,7 +5,7 @@ permalink: /thanks/
 sitemap: false
 ---
 
-<p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/cup-logo-transparent.png" alt="Yellow Wing Roasters" class="logo"></a></p>
+<p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/logo.png" alt="Yellow Wing Roasters" class="logo"></a></p>
 
 # Order received
 
