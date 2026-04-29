@@ -66,6 +66,116 @@
   font-size: 0.95em;
 }
 
+.order-form {
+  margin: 2rem 0;
+  max-width: 40rem;
+}
+
+.order-form .order-field {
+  margin: 0 0 1.25rem;
+}
+
+.order-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.order-form input[type="text"],
+.order-form input[type="email"],
+.order-form textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  border: 1px solid #bbb;
+  border-radius: 0.35rem;
+  box-sizing: border-box;
+}
+
+.order-form .order-gotcha {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.order-roasts {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem 1.25rem;
+  margin: 0 0 1.5rem;
+}
+
+.order-roasts legend {
+  font-weight: 600;
+  padding: 0 0.4rem;
+}
+
+.order-roast-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.order-roast-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.order-roast-name {
+  flex: 1 1 9rem;
+  font-weight: 600;
+}
+
+.order-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+}
+
+.order-size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #555;
+  margin: 0;
+}
+
+.order-size-label {
+  margin-bottom: 0.2rem;
+}
+
+.order-size input[type="number"] {
+  width: 3.5rem;
+  padding: 0.35rem 0.4rem;
+  font: inherit;
+  text-align: center;
+  border: 1px solid #bbb;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+}
+
+.order-submit {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  background: #222;
+  color: #fff;
+  border: 0;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.order-submit:hover {
+  background: #444;
+}
+
 .brandmark {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 900;
