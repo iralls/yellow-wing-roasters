@@ -1,0 +1,46 @@
+<script>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var img = e.target.closest('.roast-image');
+      if (!img) return;
+      e.preventDefault();
+      openLightbox(img.src, img.alt);
+    });
+
+    function openLightbox(src, alt) {
+      var overlay = document.createElement('div');
+      overlay.className = 'image-lightbox';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-label', alt || 'Expanded image');
+
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = alt || '';
+      overlay.appendChild(img);
+
+      document.body.appendChild(overlay);
+      var prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      requestAnimationFrame(function () {
+        overlay.classList.add('image-lightbox-open');
+      });
+
+      function close() {
+        overlay.classList.remove('image-lightbox-open');
+        document.body.style.overflow = prevOverflow;
+        window.removeEventListener('keydown', onKey);
+        setTimeout(function () {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 200);
+      }
+
+      function onKey(e) {
+        if (e.key === 'Escape') close();
+      }
+
+      overlay.addEventListener('click', close);
+      window.addEventListener('keydown', onKey);
+    }
+  })();
+</script>

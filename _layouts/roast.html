@@ -12,11 +12,14 @@ layout: default
   {% if page.roast_level %}<dt>Roast</dt><dd>{{ page.roast_level }}</dd>{% endif %}
   {% if page.tasting_notes %}<dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>{% endif %}
   <dt>Form</dt><dd>Whole bean</dd>
+  {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
 </dl>
 
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
 {{ content }}
+
+{% if page.roast_image %}<figure class="roast-image-wrap"><img src="{{ page.roast_image | relative_url }}" alt="{{ page.title }}" class="roast-image"></figure>{% endif %}
 
 <p class="add-to-order-wrap">
   <span class="add-to-order-label">Add to order:</span>

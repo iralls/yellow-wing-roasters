@@ -81,11 +81,48 @@ h6 {
   transform: translateY(-2px);
 }
 
-.roast-card-logo {
+.roast-image-wrap {
+  margin: 2rem 0;
+}
+
+.roast-image {
   display: block;
-  max-width: 6rem;
+  width: 100%;
+  max-width: 32rem;
   height: auto;
-  margin: 0 auto 1rem;
+  border-radius: 0.5rem;
+  cursor: zoom-in;
+  transition: opacity 0.15s ease;
+}
+
+.roast-image:hover {
+  opacity: 0.92;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: zoom-out;
+}
+
+.image-lightbox-open {
+  opacity: 1;
+}
+
+.image-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 .roast-card-title {
@@ -115,6 +152,18 @@ h6 {
 .roast-meta dd {
   margin: 0;
   color: #555;
+}
+
+.roast-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: underline;
+}
+
+.roast-profile-link::before {
+  content: "↓";
+  font-weight: 700;
 }
 
 .order-form {
