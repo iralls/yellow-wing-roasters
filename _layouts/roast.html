@@ -8,6 +8,12 @@ layout: default
 
 {% if page.category %}<p class="roast-category-label">{{ page.category | capitalize }}</p>{% endif %}
 
+<dl class="roast-meta">
+  {% if page.roast_level %}<dt>Roast</dt><dd>{{ page.roast_level }}</dd>{% endif %}
+  {% if page.tasting_notes %}<dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>{% endif %}
+  <dt>Form</dt><dd>Whole bean</dd>
+</dl>
+
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
 {{ content }}
