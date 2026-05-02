@@ -27,19 +27,35 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
   <fieldset class="order-roasts">
     <legend>Roasts</legend>
     {% assign roasts = site.roasts | sort: "order" %}
+    {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
     {% for r in roasts %}
-      <div class="order-roast-row" data-roast="{{ r.slug }}">
-        <div class="order-roast-name">{{ r.title }}</div>
-        <div class="order-sizes">
-          {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
-          {% for s in sizes %}
-            <label class="order-size">
-              <span class="order-size-label">{{ s }}</span>
-              <input type="number" name="{{ r.title }} {{ s }}" min="0" value="0" inputmode="numeric" data-roast="{{ r.slug }}" data-size="{{ s }}">
-            </label>
-          {% endfor %}
+      {% if r.variants %}
+        {% for v in r.variants %}
+          <div class="order-roast-row" data-roast="{{ r.slug }}" data-variant="{{ v.slug }}">
+            <div class="order-roast-name">{{ r.title }} — {{ v.name }}</div>
+            <div class="order-sizes">
+              {% for s in sizes %}
+                <label class="order-size">
+                  <span class="order-size-label">{{ s }}</span>
+                  <input type="number" name="{{ r.title }} ({{ v.name }}) {{ s }}" min="0" value="0" inputmode="numeric" data-roast="{{ r.slug }}" data-variant="{{ v.slug }}" data-size="{{ s }}">
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="order-roast-row" data-roast="{{ r.slug }}">
+          <div class="order-roast-name">{{ r.title }}</div>
+          <div class="order-sizes">
+            {% for s in sizes %}
+              <label class="order-size">
+                <span class="order-size-label">{{ s }}</span>
+                <input type="number" name="{{ r.title }} {{ s }}" min="0" value="0" inputmode="numeric" data-roast="{{ r.slug }}" data-size="{{ s }}">
+              </label>
+            {% endfor %}
+          </div>
         </div>
-      </div>
+      {% endif %}
     {% endfor %}
   </fieldset>
 
@@ -72,20 +88,27 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
       try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
-    function key(roast, size) { return roast + '|' + size; }
+    function key(roast, variant, size) {
+      return roast + '|' + (variant || '') + '|' + size;
+    }
 
     var cart = loadCart();
 
     var params = new URLSearchParams(window.location.search);
     var qpRoast = params.get('roast');
+    var qpVariant = params.get('variant') || '';
     var qpSize = params.get('size') || '12oz';
     var addedInput = null;
     if (qpRoast) {
+      var variantSel = qpVariant
+        ? '[data-variant="' + qpVariant + '"]'
+        : ':not([data-variant])';
       addedInput = form.querySelector(
-        'input[data-roast="' + qpRoast + '"][data-size="' + qpSize + '"]'
+        'input[data-roast="' + qpRoast + '"]' + variantSel + '[data-size="' + qpSize + '"]'
       );
       if (addedInput) {
-        cart[key(qpRoast, qpSize)] = (cart[key(qpRoast, qpSize)] || 0) + 1;
+        var k = key(qpRoast, qpVariant, qpSize);
+        cart[k] = (cart[k] || 0) + 1;
         saveCart(cart);
       }
       if (window.history && window.history.replaceState) {
@@ -96,7 +119,7 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
     Array.prototype.forEach.call(
       form.querySelectorAll('input[data-roast][data-size]'),
       function (input) {
-        var v = cart[key(input.dataset.roast, input.dataset.size)] || 0;
+        var v = cart[key(input.dataset.roast, input.dataset.variant, input.dataset.size)] || 0;
         input.value = v;
       }
     );
@@ -106,7 +129,7 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
       if (!t.dataset || !t.dataset.roast || !t.dataset.size) return;
       var n = parseInt(t.value, 10);
       if (isNaN(n) || n < 0) n = 0;
-      cart[key(t.dataset.roast, t.dataset.size)] = n;
+      cart[key(t.dataset.roast, t.dataset.variant, t.dataset.size)] = n;
       saveCart(cart);
     });
 

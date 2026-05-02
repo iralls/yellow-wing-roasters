@@ -8,7 +8,7 @@ permalink: /roasts/
 
 # Roasts
 
-Our current lineup.
+Our current lineup. All roasts ship as whole bean.
 
 {% assign roasts = site.roasts | sort: "order" %}
 {% assign categories = roasts | group_by: "category" %}
