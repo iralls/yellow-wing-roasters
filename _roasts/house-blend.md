@@ -7,8 +7,13 @@ roast_level: City+ (light-medium)
 tasting_notes: Bright and sweet, nutty, caramely, some chocolate
 brewing_method: French press, pour-over, or espresso
 roast_image: /images/house-blend-beans.jpg
+mark_color_a: "#E99E00"
+mark_color_b: "#0D0F1F"
+mascot: canary
 components:
   - name: Colombian Supremo
+    image: /images/colombian-supremo-city.png
+    profile: /profiles/colombian-supremo-city.alog
   - name: Peru Norandino
     image: /images/peru-norandino.jpg
     profile: /profiles/peru-norandino.alog
