@@ -238,6 +238,56 @@ h6 {
   font-weight: 700;
 }
 
+.roast-components {
+  margin: 2rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid #ddd;
+}
+
+.roast-components-heading {
+  margin: 0 0 1rem;
+}
+
+.roast-components-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 1rem;
+}
+
+.roast-component {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.roast-component-image-wrap {
+  margin: 0;
+}
+
+.roast-component-image {
+  width: 100%;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  max-width: none;
+}
+
+.roast-component-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.9em;
+}
+
+.roast-component-name {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: #222;
+}
+
 .roast-variants-intro {
   margin: 1.5rem 0 0.5rem;
   color: #555;

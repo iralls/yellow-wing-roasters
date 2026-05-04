@@ -86,6 +86,23 @@ layout: default
 
 {{ content }}
 
+{% if page.components %}
+<section class="roast-components">
+  <h2 class="roast-components-heading">Component origins</h2>
+  <ul class="roast-components-list">
+    {% for c in page.components %}
+    <li class="roast-component">
+      {% if c.image %}<figure class="roast-component-image-wrap"><img src="{{ c.image | relative_url }}" alt="{{ c.name }}" class="roast-image roast-component-image"></figure>{% endif %}
+      <div class="roast-component-details">
+        <span class="roast-component-name">{{ c.name }}</span>
+        {% if c.profile %}<a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a>{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 <p class="add-to-order-wrap">
   <span class="add-to-order-label">Add to order:</span>
   {% for s in sizes %}
