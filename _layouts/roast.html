@@ -6,15 +6,11 @@ layout: default
 
 <h1>{{ page.title }}</h1>
 
-{% if page.category %}<p class="roast-category-label">{{ page.category | capitalize }}</p>{% endif %}
-
 {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
 
 {% if page.variants %}
 
-<dl class="roast-meta">
-  <dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>
-</dl>
+{% if page.category %}<p class="roast-badge">{{ page.category | capitalize }}</p>{% endif %}
 
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
@@ -25,12 +21,36 @@ layout: default
 {% for v in page.variants %}
 <section class="roast-variant" id="{{ v.slug }}">
   <h2 class="roast-variant-title">{{ v.name }}</h2>
+  {% if v.roast_level %}<p class="roast-badge">{{ v.roast_level }}</p>{% endif %}
+  {% assign v_images = v.images %}
+  {% unless v_images %}{% if v.image %}{% assign v_images = v.image | split: "||" %}{% endif %}{% endunless %}
+  {% if v_images.size > 0 %}
+  <div class="roast-meta-with-photo">
+    <div>
+      <figure class="roast-image-wrap"><img src="{{ v_images[0] | relative_url }}" alt="{{ page.title }} — {{ v.name }}" class="roast-image roast-gallery-main"></figure>
+      {% if v_images.size > 1 %}
+      <div class="roast-gallery-thumbs">
+        {% for img_src in v_images %}
+        <button class="roast-gallery-thumb" aria-current="{% if forloop.first %}true{% else %}false{% endif %}" data-src="{{ img_src | relative_url }}" data-alt="{{ page.title }} — {{ v.name }}">
+          <img src="{{ img_src | relative_url }}" alt="">
+        </button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <dl class="roast-meta">
+      {% if v.tasting_notes %}<dt>Tasting notes</dt><dd>{{ v.tasting_notes }}</dd>{% endif %}
+      <dt>Brewing</dt><dd>{{ v.brewing_method }}</dd>
+      {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+    </dl>
+  </div>
+  {% else %}
   <dl class="roast-meta">
-    <dt>Roast</dt><dd>{{ v.roast_level }}</dd>
-    <dt>Recommended brewing method</dt><dd>{{ v.brewing_method }}</dd>
+    {% if v.tasting_notes %}<dt>Tasting notes</dt><dd>{{ v.tasting_notes }}</dd>{% endif %}
+    <dt>Brewing</dt><dd>{{ v.brewing_method }}</dd>
     {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
   </dl>
-  {% if v.image %}<figure class="roast-image-wrap"><img src="{{ v.image | relative_url }}" alt="{{ page.title }} — {{ v.name }}" class="roast-image"></figure>{% endif %}
+  {% endif %}
   <p class="add-to-order-wrap">
     <span class="add-to-order-label">Add to order:</span>
     {% for s in sizes %}
@@ -42,18 +62,29 @@ layout: default
 
 {% else %}
 
+{% capture badge_parts %}{% if page.category %}{{ page.category | capitalize }}{% endif %}{% if page.category and page.roast_level %} · {% endif %}{% if page.roast_level %}{{ page.roast_level }}{% endif %}{% endcapture %}
+{% if badge_parts != "" %}<p class="roast-badge">{{ badge_parts }}</p>{% endif %}
+
+{% if page.roast_image %}
+<div class="roast-meta-with-photo">
+  <figure class="roast-image-wrap"><img src="{{ page.roast_image | relative_url }}" alt="{{ page.title }}" class="roast-image"></figure>
+  <dl class="roast-meta">
+    <dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>
+    <dt>Brewing</dt><dd>{{ page.brewing_method }}</dd>
+    {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+  </dl>
+</div>
+{% else %}
 <dl class="roast-meta">
-  <dt>Roast</dt><dd>{{ page.roast_level }}</dd>
   <dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>
-  <dt>Recommended brewing method</dt><dd>{{ page.brewing_method }}</dd>
+  <dt>Brewing</dt><dd>{{ page.brewing_method }}</dd>
   {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
 </dl>
+{% endif %}
 
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
 {{ content }}
-
-{% if page.roast_image %}<figure class="roast-image-wrap"><img src="{{ page.roast_image | relative_url }}" alt="{{ page.title }}" class="roast-image"></figure>{% endif %}
 
 <p class="add-to-order-wrap">
   <span class="add-to-order-label">Add to order:</span>

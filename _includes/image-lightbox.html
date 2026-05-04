@@ -1,6 +1,20 @@
 <script>
   (function () {
     document.addEventListener('click', function (e) {
+      var thumb = e.target.closest('.roast-gallery-thumb');
+      if (thumb) {
+        var wrap = thumb.closest('.roast-meta-with-photo, .roast-image-wrap-outer');
+        var main = wrap && wrap.querySelector('.roast-gallery-main');
+        if (main) {
+          main.src = thumb.dataset.src;
+          main.alt = thumb.dataset.alt || main.alt;
+        }
+        wrap && wrap.querySelectorAll('.roast-gallery-thumb').forEach(function (t) {
+          t.setAttribute('aria-current', t === thumb ? 'true' : 'false');
+        });
+        return;
+      }
+
       var img = e.target.closest('.roast-image');
       if (!img) return;
       e.preventDefault();

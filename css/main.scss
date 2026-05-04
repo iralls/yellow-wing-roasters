@@ -81,6 +81,78 @@ h6 {
   transform: translateY(-2px);
 }
 
+.roast-badge {
+  display: inline-block;
+  background: #f5ede0;
+  border-radius: 999px;
+  padding: 0.2rem 0.8rem;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #8a5020;
+  margin: 0 0 1.25rem;
+}
+
+.roast-meta-with-photo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+
+.roast-meta-with-photo .roast-meta {
+  margin: 0;
+}
+
+.roast-meta-with-photo .roast-image-wrap {
+  margin: 0;
+}
+
+@media (max-width: 28rem) {
+  .roast-meta-with-photo {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roast-gallery-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.roast-gallery-thumb {
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 0.35rem;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+
+.roast-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.roast-gallery-thumb:hover {
+  border-color: #888;
+}
+
+.roast-gallery-thumb[aria-current="true"] {
+  border-color: #8a5020;
+}
+
 .roast-image-wrap {
   margin: 2rem 0;
 }
