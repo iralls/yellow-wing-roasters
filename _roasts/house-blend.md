@@ -11,7 +11,7 @@ mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary
 mascot_file: canary-transparent.png
-subtitle: '"Sooty Feather"'
+subtitle: '"Feather Soot"'
 mascot_hide_label: true
 
 card_image: /images/canary-transparent.png
