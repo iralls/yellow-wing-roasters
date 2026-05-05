@@ -17,7 +17,7 @@ Our current lineup. All roasts ship as whole bean.
   <div class="roast-grid">
   {% for r in cat.items %}
     <a class="roast-card{% if r.coming_soon %} roast-card--coming-soon{% endif %}" href="{{ r.url | relative_url }}"{% if r.mark_color_a %} style="--card-theme: {{ r.mark_color_a }};"{% endif %}>
-      {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="card-mark card-mark-image" aria-hidden="true">{% elsif r.mark_color_a %}<svg class="card-mark" viewBox="-1 -1 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="9" fill="{{ r.mark_color_a }}"/><circle cx="19" cy="9" r="9" fill="{{ r.mark_color_b }}"/></svg>{% endif %}
+      {% assign card_img = r.card_mascot_file | default: r.mascot_file %}{% if card_img %}<img src="{{ '/images/' | append: card_img | relative_url }}" alt="" class="card-mark card-mark-image" aria-hidden="true">{% elsif r.mark_color_a %}<svg class="card-mark" viewBox="-1 -1 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="9" fill="{{ r.mark_color_a }}"/><circle cx="19" cy="9" r="9" fill="{{ r.mark_color_b }}"/></svg>{% endif %}
       <h3 class="roast-card-title">{{ r.title }}</h3>
       {% if r.blurb %}<p class="roast-card-blurb">{{ r.blurb }}</p>
       {% elsif r.tasting_notes %}<p class="roast-card-blurb">{{ r.tasting_notes }}</p>{% endif %}

@@ -13,7 +13,7 @@ layout: default
 </div>
 {% endif %}
 
-{% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
+{% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}{% endif %}
 
 {% if page.variants %}
 
@@ -59,7 +59,7 @@ layout: default
   </dl>
   {% endif %}
   <p class="add-to-order-wrap">
-    <span class="add-to-order-label">Add to order:</span>
+    {% unless page.sizes %}<span class="add-to-order-label">Add to order:</span>{% endunless %}
     {% for s in sizes %}
       <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;variant={{ v.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
     {% endfor %}
@@ -112,7 +112,7 @@ layout: default
 {% endif %}
 
 <p class="add-to-order-wrap">
-  <span class="add-to-order-label">Add to order:</span>
+  {% unless page.sizes %}<span class="add-to-order-label">Add to order:</span>{% endunless %}
   {% for s in sizes %}
     <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
   {% endfor %}
