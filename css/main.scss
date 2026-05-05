@@ -170,10 +170,30 @@ h6 {
   right: 0.6rem;
   width: 32px;
   height: 34px;
+  object-fit: contain;
 }
 
 .roast-card-title {
   padding-right: 2.5rem;
+}
+
+.roast-card--coming-soon::after {
+  content: "COMING SOON";
+  position: absolute;
+  top: 1.1rem;
+  right: -3.3rem;
+  width: 12rem;
+  background: #ffd600;
+  color: #111;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 0.3rem 0.25rem 0.3rem 1.75rem;
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
 .roast-card:hover {
@@ -669,6 +689,50 @@ h6 {
 .add-to-order-btn:hover {
   background: #444;
   text-decoration: none;
+}
+
+.add-to-order-btn--disabled {
+  background: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.coming-soon-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffd600;
+  color: #111;
+  border-radius: 0.4rem;
+  padding: 0.65rem 1rem;
+  margin: 0 0 1.25rem;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.coming-soon-bar-badge {
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: #111;
+  color: #ffd600;
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.coming-soon-bar-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.coming-soon-footnote {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0.4rem 0 0;
+  font-style: italic;
 }
 
 .cart-indicator {

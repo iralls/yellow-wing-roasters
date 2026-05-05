@@ -11,6 +11,7 @@ mark_color_b: "#CC2200"
 mascot: blackbird
 mascot_file: red-winged-blackbird-transparent.png
 subtitle: '"Red Peck Brew"'
+coming_soon: true
 ---
 
 Comprising our Colombian Supremo, Peru Norandino, and Kenya Premium Meru AA, all roasted to Vienna.

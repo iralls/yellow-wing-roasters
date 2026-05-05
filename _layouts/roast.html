@@ -6,6 +6,13 @@ layout: default
 
 <h1 class="roast-title{% if page.mascot_file %} roast-title-with-mascot{% endif %}"><span class="roast-title-name"><span class="roast-title-text">{{ page.title }}</span>{% if page.mark_color_a and page.mark_color_b %}<span class="roast-title-underline" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};" aria-hidden="true"></span>{% endif %}{% if page.subtitle %}<span class="roast-title-subtitle">{{ page.subtitle }}</span>{% endif %}</span>{% if page.mascot_file %}<span class="roast-title-mascot-wrap"><img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-title-mascot" aria-hidden="true"></span>{% endif %}</h1>
 
+{% if page.coming_soon %}
+<div class="coming-soon-bar">
+  <span class="coming-soon-bar-badge">Coming Soon</span>
+  <span class="coming-soon-bar-text">This roast isn't available to order yet — check back soon.</span>
+</div>
+{% endif %}
+
 {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
 
 {% if page.variants %}
@@ -54,9 +61,10 @@ layout: default
   <p class="add-to-order-wrap">
     <span class="add-to-order-label">Add to order:</span>
     {% for s in sizes %}
-      <a class="add-to-order-btn" href="{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;variant={{ v.slug }}&amp;size={{ s }}">{{ s }}</a>
+      <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;variant={{ v.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
     {% endfor %}
   </p>
+  {% if page.coming_soon %}<p class="coming-soon-footnote">Ordering unavailable until this roast launches.</p>{% endif %}
 </section>
 {% endfor %}
 
@@ -106,8 +114,9 @@ layout: default
 <p class="add-to-order-wrap">
   <span class="add-to-order-label">Add to order:</span>
   {% for s in sizes %}
-    <a class="add-to-order-btn" href="{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}">{{ s }}</a>
+    <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
   {% endfor %}
 </p>
+{% if page.coming_soon %}<p class="coming-soon-footnote">Ordering unavailable until this roast launches.</p>{% endif %}
 
 {% endif %}
