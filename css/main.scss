@@ -4,6 +4,77 @@
 
 @charset "utf-8";
 
+// Self-hosted fonts (privacy-friendly — no requests to fonts.gstatic.com).
+// Lora and Montserrat are variable fonts, so a single file covers the full
+// weight range we use. latin-ext covers diacritics (e.g. "Norandino").
+
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/lora-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/lora-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Lora";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/lora-italic-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Lora";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/lora-italic-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500 900;
+  font-display: swap;
+  src: url("/fonts/montserrat-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500 900;
+  font-display: swap;
+  src: url("/fonts/montserrat-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @import "normalize", "biscuit", "syntax";
 
 // Type system — Montserrat (matches the logo wordmark) for headings and UI,
@@ -94,6 +165,13 @@ h6 {
   height: 34px;
 }
 
+.card-mark-image {
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 32px;
+  height: 34px;
+}
+
 .roast-card-title {
   padding-right: 2.5rem;
 }
@@ -109,17 +187,40 @@ h6 {
   gap: 0.4em;
 }
 
+.roast-title-name {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.roast-title-underline {
+  display: block;
+  height: 5px;
+  width: 9rem;
+  max-width: 100%;
+  border-radius: 2.5px;
+  margin-top: 0.4rem;
+  background: linear-gradient(
+    to right,
+    var(--c-a) 0%,
+    var(--c-a) 50%,
+    var(--c-b) 50%,
+    var(--c-b) 100%
+  );
+}
+
 .roast-title-with-mascot {
   gap: 3rem;
 }
 
 .roast-title-mascot-wrap {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
   flex-shrink: 0;
   transform: translateY(-0.6rem);
+  margin-left: auto;
 }
 
 .roast-title-mascot {
@@ -129,6 +230,11 @@ h6 {
 }
 
 .roast-title-mascot-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.15rem;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 0.6rem;
@@ -137,6 +243,17 @@ h6 {
   color: #888;
   text-align: center;
   white-space: nowrap;
+}
+
+.roast-title-subtitle {
+  display: block;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888;
+  margin-top: 0.4rem;
 }
 
 .roast-badge {

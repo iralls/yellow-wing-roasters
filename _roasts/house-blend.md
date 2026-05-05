@@ -10,6 +10,11 @@ roast_image: /images/house-blend-beans.jpg
 mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary
+mascot_file: canary-transparent.png
+subtitle: '"Sooty Feather"'
+mascot_hide_label: true
+
+card_image: /images/canary-transparent.png
 components:
   - name: Colombian Supremo
     image: /images/colombian-supremo-city.png
