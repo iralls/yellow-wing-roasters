@@ -8,9 +8,9 @@ tasting_notes: Smoky, bittersweet chocolate
 brewing_method: French press, cold brew, espresso, drip
 mark_color_a: "#111111"
 mark_color_b: "#CC2200"
-mascot: blackbird
-mascot_file: red-winged-blackbird-transparent.png
-subtitle: '"Red Peck Brew"'
+mascot: canary
+mascot_file: canary-transparent.png
+subtitle: '"Feather Soot"'
 coming_soon: true
 ---
 

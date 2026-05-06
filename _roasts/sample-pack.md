@@ -1,6 +1,6 @@
 ---
-title: Blend Sampler
-slug: blend-sampler
+title: The Aviary
+slug: the-aviary
 category: pack
 order: 6
 tasting_notes: A range across all four blends, from bright and floral to dark and smoky
@@ -20,7 +20,7 @@ Four blends, each individually packaged in its own 6oz bag — a great way to ex
 Includes:
 
 - **[House Blend](/roasts/house-blend/) — "Feather Soot"** · City+ light-medium · Bright and sweet, nutty, caramely
-- **[Espresso Blend](/roasts/espresso-blend/) — "Morning Hoot"** · French Roast · Nutty and sweet
+- **[Espresso Blend](/roasts/espresso-blend/) — "Midnight Hoot"** · French Roast · Nutty and sweet
 - **[Dark Roast](/roasts/dark-roast-blend/) — "Red Peck Brew"** · Vienna dark · Smoky, bittersweet chocolate
 - **[Light Roast](/roasts/light-roast/) — "Dawn Drum"** · City light · Bright, floral, citrus, stone fruit
 

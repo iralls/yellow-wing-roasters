@@ -9,12 +9,11 @@ brewing_method: French press, pour-over, or espresso
 roast_image: /images/house-blend-beans.jpg
 mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
-mascot: canary
-mascot_file: canary-transparent.png
-subtitle: '"Feather Soot"'
-mascot_hide_label: true
+mascot: mourning-dove
+mascot_file: mourning-dove-transparent.png
+subtitle: '"Mourning Ritual"'
 
-card_image: /images/canary-transparent.png
+card_image: /images/mourning-dove-transparent.png
 components:
   - name: Colombian Supremo
     image: /images/colombian-supremo-city.png
