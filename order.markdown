@@ -27,14 +27,15 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
   <fieldset class="order-roasts">
     <legend>Roasts</legend>
     {% assign roasts = site.roasts | sort: "order" %}
-    {% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}
+    {% assign default_sizes = "6oz,8oz,12oz,16oz" | split: "," %}
     {% for r in roasts %}
+      {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
       {% if r.variants %}
         {% for v in r.variants %}
           <div class="order-roast-row" data-roast="{{ r.slug }}" data-variant="{{ v.slug }}">
             <div class="order-roast-name">{{ r.title }} — {{ v.name }}</div>
             <div class="order-sizes">
-              {% for s in sizes %}
+              {% for s in row_sizes %}
                 <label class="order-size">
                   <span class="order-size-label">{{ s }}</span>
                   <input type="number" name="{{ r.title }} ({{ v.name }}) {{ s }}" min="0" value="0" inputmode="numeric" data-roast="{{ r.slug }}" data-variant="{{ v.slug }}" data-size="{{ s }}">
@@ -47,7 +48,7 @@ Pick your roasts and sizes. We'll email you back to confirm pricing, payment, an
         <div class="order-roast-row" data-roast="{{ r.slug }}">
           <div class="order-roast-name">{{ r.title }}</div>
           <div class="order-sizes">
-            {% for s in sizes %}
+            {% for s in row_sizes %}
               <label class="order-size">
                 <span class="order-size-label">{{ s }}</span>
                 <input type="number" name="{{ r.title }} {{ s }}" min="0" value="0" inputmode="numeric" data-roast="{{ r.slug }}" data-size="{{ s }}">

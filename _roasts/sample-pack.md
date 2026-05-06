@@ -7,6 +7,7 @@ tasting_notes: A range across all four blends, from bright and floral to dark an
 brewing_method: Varies by blend
 mark_color_a: "#8B5E3C"
 mark_color_b: "#E8C87A"
+mark_gradient: "linear-gradient(to right, #E99E00 0%, #E99E00 12.5%, #0D0F1F 12.5%, #0D0F1F 25%, #2C1A0E 25%, #2C1A0E 37.5%, #F0E0C0 37.5%, #F0E0C0 50%, #111111 50%, #111111 62.5%, #CC2200 62.5%, #CC2200 75%, #C41E1E 75%, #C41E1E 87.5%, #E8E0D0 87.5%, #E8E0D0 100%)"
 mascot_file: flock-transparent.png
 card_mascot_file: black-bird-transparent.png
 sizes:
