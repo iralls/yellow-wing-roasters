@@ -2,7 +2,7 @@
 title: The Aviary
 slug: the-aviary
 category: pack
-order: 6
+order: 7
 tasting_notes: A range across all four blends, from bright and floral to dark and smoky
 brewing_method: Varies by blend
 mark_color_a: "#8B5E3C"
