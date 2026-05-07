@@ -21,7 +21,7 @@ Includes:
 
 - **[House Blend](/roasts/house-blend/) — "Early Bird"** · City+ light-medium · Bright and sweet, nutty, caramely
 - **[Espresso Blend](/roasts/espresso-blend/) — "Instant Hover"** · French Roast · Nutty and sweet
-- **[Dark Roast](/roasts/dark-roast-blend/) — "Red Peck Brew"** · Vienna dark · Smoky, bittersweet chocolate
+- **[Dark Roast](/roasts/dark-roast-blend/) — "Feather Soot"** · Vienna dark · Smoky, bittersweet chocolate
 - **[Light Roast](/roasts/light-roast/) — "Dawn Drum"** · City light · Bright, floral, citrus, stone fruit
 
 All four ship as whole bean. Brewing method varies by blend — details on each roast's page.
