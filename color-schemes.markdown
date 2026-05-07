@@ -2,6 +2,7 @@
 layout: default
 title: Color schemes
 permalink: /color-schemes/
+published: false
 ---
 
 <p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/logo.png" alt="Yellow Wing Roasters" class="logo"></a></p>
@@ -769,6 +770,50 @@ Roast-specific palettes for consideration — each mini card shows how the schem
             Patient, smooth, stone fruit
             <div class="color-scheme-mock-note">City+ · Pour-over, drip</div>
             <span class="color-scheme-mock-btn" style="background:#4A6B8C; color:#EDF0F4;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eastern Bluebird -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#4A80C4;"></div>
+        <div class="color-swatch" style="background:#B85C38;"></div>
+        <div class="color-swatch" style="background:#F4F1EC;"></div>
+        <div class="color-swatch" style="background:#1C2E44;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Eastern Bluebird</p>
+        <p class="color-scheme-desc">Vivid royal blue cap and back, warm russet-chestnut breast, clean white belly, and deep navy wing tips — the first real color of spring, perched on a fence post in the early sun.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#4A80C4;"></span>
+            <span class="color-swatch-name">Royal Back</span>
+            <span class="color-swatch-hex">#4A80C4</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#B85C38;"></span>
+            <span class="color-swatch-name">Russet Breast</span>
+            <span class="color-swatch-hex">#B85C38</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F4F1EC;"></span>
+            <span class="color-swatch-name">Cloud Belly</span>
+            <span class="color-swatch-hex">#F4F1EC</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#1C2E44;"></span>
+            <span class="color-swatch-name">Wing Dark</span>
+            <span class="color-swatch-hex">#1C2E44</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F4F1EC; border:1px solid #d4d0c8;">
+          <div class="color-scheme-mock-header" style="background:#4A80C4; color:#F4F1EC;">Bluebird Roast</div>
+          <div class="color-scheme-mock-body" style="color:#1C2E44;">
+            Bright, clean, stone fruit
+            <div class="color-scheme-mock-note">City · Pour-over, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#B85C38; color:#F4F1EC;">Order →</span>
           </div>
         </div>
       </div>

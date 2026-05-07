@@ -11,6 +11,8 @@ mark_color_b: "#D4B5A0"
 mark_gradient: "linear-gradient(to right, #9C8E7E 0%, #9C8E7E 50%, #D4B5A0 50%, #D4B5A0 100%)"
 mascot: mourning-dove
 mascot_file: mourning-dove-transparent.png
-subtitle: '"Soft Call"'
+subtitle: '"Morning Ease"'
 coming_soon: true
 ---
+
+Nothing to mourn here! All the smooth, nutty, mild-chocolate character of a great morning cup, without the caffeine.
