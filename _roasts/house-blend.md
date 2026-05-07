@@ -7,13 +7,13 @@ roast_level: City+ (light-medium)
 tasting_notes: Bright and sweet, nutty, caramely, some chocolate
 brewing_method: French press, pour-over, or espresso
 roast_image: /images/house-blend-beans.jpg
-mark_color_a: "#E99E00"
-mark_color_b: "#0D0F1F"
-mascot: mourning-dove
-mascot_file: mourning-dove-transparent.png
-subtitle: '"Mourning Ritual"'
+mark_color_a: "#D4572A"
+mark_color_b: "#3D3028"
+mascot: robin
+mascot_file: robin-transparent.png
+subtitle: '"Early Bird"'
 
-card_image: /images/mourning-dove-transparent.png
+card_image: /images/robin-transparent.png
 components:
   - name: Colombian Supremo
     image: /images/colombian-supremo-city.png
