@@ -775,6 +775,94 @@ Roast-specific palettes for consideration — each mini card shows how the schem
       </div>
     </div>
 
+    <!-- Snowy Egret -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#F2F5F0;"></div>
+        <div class="color-swatch" style="background:#141618;"></div>
+        <div class="color-swatch" style="background:#E8B420;"></div>
+        <div class="color-swatch" style="background:#8AA4B0;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Snowy Egret</p>
+        <p class="color-scheme-desc">Brilliant white plumage with delicate lacy breeding plumes, jet-black legs and bill, and those unmistakable golden-yellow feet — pure elegance, perfectly still at the water's edge.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F2F5F0;"></span>
+            <span class="color-swatch-name">Snow Plume</span>
+            <span class="color-swatch-hex">#F2F5F0</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#141618;"></span>
+            <span class="color-swatch-name">Lacquer Bill</span>
+            <span class="color-swatch-hex">#141618</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#E8B420;"></span>
+            <span class="color-swatch-name">Golden Slipper</span>
+            <span class="color-swatch-hex">#E8B420</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#8AA4B0;"></span>
+            <span class="color-swatch-name">Still Water</span>
+            <span class="color-swatch-hex">#8AA4B0</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F2F5F0; border:1px solid #cdd4d8;">
+          <div class="color-scheme-mock-header" style="background:#141618; color:#E8B420;">Egret Roast</div>
+          <div class="color-scheme-mock-body" style="color:#141618;">
+            Clean, bright, delicate floral
+            <div class="color-scheme-mock-note">City · Pour-over, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#E8B420; color:#141618;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Osprey -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#3D2B1F;"></div>
+        <div class="color-swatch" style="background:#F4F2EA;"></div>
+        <div class="color-swatch" style="background:#D4B820;"></div>
+        <div class="color-swatch" style="background:#8A9EAC;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Osprey</p>
+        <p class="color-scheme-desc">Dark chocolate-brown back and bold eye-stripe, brilliant white crown and belly, a piercing golden-yellow eye, and pale gray talons built for gripping slippery fish — the most specialized raptor in North America.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#3D2B1F;"></span>
+            <span class="color-swatch-name">Dark Umber</span>
+            <span class="color-swatch-hex">#3D2B1F</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F4F2EA;"></span>
+            <span class="color-swatch-name">Osprey White</span>
+            <span class="color-swatch-hex">#F4F2EA</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#D4B820;"></span>
+            <span class="color-swatch-name">Golden Eye</span>
+            <span class="color-swatch-hex">#D4B820</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#8A9EAC;"></span>
+            <span class="color-swatch-name">Talon Gray</span>
+            <span class="color-swatch-hex">#8A9EAC</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F4F2EA; border:1px solid #d4d0c4;">
+          <div class="color-scheme-mock-header" style="background:#3D2B1F; color:#D4B820;">Osprey Roast</div>
+          <div class="color-scheme-mock-body" style="color:#3D2B1F;">
+            Bold, focused, dark chocolate
+            <div class="color-scheme-mock-note">Vienna · French press, cold brew</div>
+            <span class="color-scheme-mock-btn" style="background:#8A9EAC; color:#F4F2EA;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Eastern Bluebird -->
     <div class="color-scheme-card">
       <div class="color-scheme-strip">
