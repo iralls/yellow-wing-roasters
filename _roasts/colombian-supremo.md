@@ -2,6 +2,7 @@
 title: Colombian Supremo
 slug: colombian-supremo
 category: single origin
+pip_color: "#b08840"
 mark_color_a: "#3A6BC4"
 mark_color_b: "#C86830"
 mascot: bluebird

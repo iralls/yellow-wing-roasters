@@ -6,6 +6,7 @@ order: 2
 roast_level: French Roast (espresso)
 tasting_notes: Nutty and sweet
 brewing_method: Espresso
+pip_color: "#3a1e0c"
 mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
 mascot: hummingbird

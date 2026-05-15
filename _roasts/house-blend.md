@@ -7,6 +7,7 @@ roast_level: City+ (light-medium)
 tasting_notes: Bright and sweet, nutty, caramely, some chocolate
 brewing_method: French press, pour-over, or espresso
 roast_image: /images/house-blend-beans.jpg
+pip_color: "#c9a96e"
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
