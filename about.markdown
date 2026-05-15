@@ -8,6 +8,6 @@ permalink: /about/
 
 # About
 
-Yellow Wing Roasters is a small-batch coffee roaster located in Guilford, CT.
+Established in 2026, Yellow Wing Roasters is a small-batch coffee roaster located in Guilford, CT.
 
 Reach out to us at [hello@yellowwingroasters.com](mailto:hello@yellowwingroasters.com).
