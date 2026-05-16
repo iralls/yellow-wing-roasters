@@ -4,7 +4,9 @@ layout: default
 
 <p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/logo.png" alt="Yellow Wing Roasters" class="logo"></a></p>
 
-<h1 class="roast-title{% if page.mascot_file %} roast-title-with-mascot{% endif %}"><span class="roast-title-name"><span class="roast-title-text">{{ page.title }}</span>{% if page.mark_gradient %}<span class="roast-title-underline" style="background: {{ page.mark_gradient }};" aria-hidden="true"></span>{% elsif page.mark_color_a and page.mark_color_b %}<span class="roast-title-underline" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};" aria-hidden="true"></span>{% endif %}{% if page.subtitle %}<span class="roast-title-subtitle">{{ page.subtitle }}</span>{% endif %}</span>{% if page.mascot_file %}<span class="roast-title-mascot-wrap"><img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-title-mascot" aria-hidden="true"></span>{% endif %}</h1>
+{% if page.subtitle %}<div class="roast-title-subtitle">{{ page.subtitle }}</div>{% endif %}
+<h1 class="roast-title{% if page.mascot_file %} roast-title-with-mascot{% endif %}"><span class="roast-title-name"><span class="roast-title-text">{{ page.title }}</span></span>{% if page.mascot_file %}<span class="roast-title-mascot-wrap"><img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-title-mascot" aria-hidden="true"></span>{% endif %}</h1>
+{% if page.mark_gradient %}<span class="roast-title-underline" style="background: {{ page.mark_gradient }};" aria-hidden="true"></span>{% elsif page.mark_color_a and page.mark_color_b %}<span class="roast-title-underline" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};" aria-hidden="true"></span>{% endif %}
 
 {% if page.coming_soon %}
 <div class="coming-soon-bar">
@@ -16,8 +18,6 @@ layout: default
 {% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "6oz,8oz,12oz,16oz" | split: "," %}{% endif %}
 
 {% if page.variants %}
-
-{% if page.category %}<p class="roast-badge">{{ page.category | capitalize }}</p>{% endif %}
 
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
@@ -48,14 +48,14 @@ layout: default
     <dl class="roast-meta">
       {% if v.tasting_notes %}<dt>Tasting notes</dt><dd>{{ v.tasting_notes }}</dd>{% endif %}
       <dt>Brewing</dt><dd>{{ v.brewing_method }}</dd>
-      {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+      {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></dd>{% endif %}
     </dl>
   </div>
   {% else %}
   <dl class="roast-meta">
     {% if v.tasting_notes %}<dt>Tasting notes</dt><dd>{{ v.tasting_notes }}</dd>{% endif %}
     <dt>Brewing</dt><dd>{{ v.brewing_method }}</dd>
-    {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+    {% if v.profile %}<dt>Profile</dt><dd><a href="{{ v.profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></dd>{% endif %}
   </dl>
   {% endif %}
   <p class="add-to-order-wrap">
@@ -70,8 +70,7 @@ layout: default
 
 {% else %}
 
-{% capture badge_parts %}{% if page.category %}{{ page.category | capitalize }}{% endif %}{% if page.category and page.roast_level %} · {% endif %}{% if page.roast_level %}{{ page.roast_level }}{% endif %}{% endcapture %}
-{% if badge_parts != "" %}<p class="roast-badge">{{ badge_parts }}</p>{% endif %}
+{% if page.roast_level %}<p class="roast-badge">{{ page.roast_level }}</p>{% endif %}
 
 {% if page.roast_image %}
 <div class="roast-meta-with-photo">
@@ -79,20 +78,28 @@ layout: default
   <dl class="roast-meta">
     <dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>
     <dt>Brewing</dt><dd>{{ page.brewing_method }}</dd>
-    {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+    {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></dd>{% endif %}
   </dl>
 </div>
 {% else %}
 <dl class="roast-meta">
   <dt>Tasting notes</dt><dd>{{ page.tasting_notes }}</dd>
   <dt>Brewing</dt><dd>{{ page.brewing_method }}</dd>
-  {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>Download .alog</a></dd>{% endif %}
+  {% if page.roast_profile %}<dt>Profile</dt><dd><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></dd>{% endif %}
 </dl>
 {% endif %}
 
 {% if page.blurb %}<p class="roast-blurb">{{ page.blurb }}</p>{% endif %}
 
 {{ content }}
+
+<p class="add-to-order-wrap">
+  {% unless page.sizes %}<span class="add-to-order-label">Add to order:</span>{% endunless %}
+  {% for s in sizes %}
+    <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
+  {% endfor %}
+</p>
+{% if page.coming_soon %}<p class="coming-soon-footnote">Ordering unavailable until this roast launches.</p>{% endif %}
 
 {% if page.components %}
 <section class="roast-components">
@@ -103,20 +110,12 @@ layout: default
       {% if c.image %}<figure class="roast-component-image-wrap"><img src="{{ c.image | relative_url }}" alt="{{ c.name }}" class="roast-image roast-component-image"></figure>{% endif %}
       <div class="roast-component-details">
         <span class="roast-component-name">{{ c.name }}</span>
-        {% if c.profile %}<a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>Download .alog</a>{% endif %}
+        {% if c.profile %}<a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>profile.alog</a>{% endif %}
       </div>
     </li>
     {% endfor %}
   </ul>
 </section>
 {% endif %}
-
-<p class="add-to-order-wrap">
-  {% unless page.sizes %}<span class="add-to-order-label">Add to order:</span>{% endunless %}
-  {% for s in sizes %}
-    <a class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" href="{% unless page.coming_soon %}{{ '/order/' | relative_url }}?roast={{ page.slug }}&amp;size={{ s }}{% endunless %}"{% if page.coming_soon %} aria-disabled="true" tabindex="-1"{% endif %}>{{ s }}</a>
-  {% endfor %}
-</p>
-{% if page.coming_soon %}<p class="coming-soon-footnote">Ordering unavailable until this roast launches.</p>{% endif %}
 
 {% endif %}
