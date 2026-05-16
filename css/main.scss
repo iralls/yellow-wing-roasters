@@ -568,17 +568,119 @@ h6 {
   color: #b91c1c;
 }
 
-.order-roast-highlight {
-  animation: order-row-flash 1.8s ease-out;
+.order-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #888;
+  font-size: 1.1rem;
 }
 
-@keyframes order-row-flash {
-  0% {
-    background: #fff5cc;
-  }
-  100% {
-    background: transparent;
-  }
+.order-browse-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2c1e14;
+  text-decoration: none;
+  border-bottom: 2px solid #b08840;
+  padding-bottom: 0.15rem;
+}
+
+.order-cart-items {
+  margin-bottom: 2rem;
+}
+
+.order-cart-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.order-cart-row:last-child {
+  border-bottom: 0;
+}
+
+.order-cart-item-name {
+  flex: 1 1 10rem;
+  font-weight: 600;
+}
+
+.order-cart-item-size {
+  font-size: 0.85rem;
+  color: #888;
+  min-width: 3rem;
+}
+
+.order-cart-qty-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.order-cart-qty-btn {
+  font: inherit;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid #bbb;
+  background: #faf8f5;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  color: #555;
+}
+
+.order-cart-qty-btn:first-child {
+  border-radius: 0.3rem 0 0 0.3rem;
+  border-right: 0;
+}
+
+.order-cart-qty-btn:last-child {
+  border-radius: 0 0.3rem 0.3rem 0;
+  border-left: 0;
+}
+
+.order-cart-qty-btn:hover {
+  background: #eee;
+  color: #222;
+}
+
+.order-cart-qty {
+  width: 3rem;
+  height: 2rem;
+  padding: 0;
+  font: inherit;
+  text-align: center;
+  border: 1px solid #bbb;
+  border-radius: 0;
+  box-sizing: border-box;
+  -moz-appearance: textfield;
+}
+
+.order-cart-qty::-webkit-inner-spin-button,
+.order-cart-qty::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.order-cart-remove {
+  font: inherit;
+  background: transparent;
+  border: 0;
+  color: #bbb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+
+.order-cart-remove:hover {
+  color: #b91c1c;
 }
 
 .add-to-order-wrap {
@@ -1095,7 +1197,7 @@ h6 {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
-  background: #b08840;
+  background: #8a5a30;
   display: flex;
   align-items: center;
   justify-content: center;
