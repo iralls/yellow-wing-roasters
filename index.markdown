@@ -3,7 +3,7 @@ layout: index
 ---
 
 <section class="index-hero">
-  <img src="/images/logo.png" alt="Yellow Wing Roasters" class="index-hero-logo">
+  <img src="/images/logo-darkroast.png" alt="Yellow Wing Roasters" class="index-hero-logo">
   <h1 class="index-hero-tagline">Small-Batch<br>Coffee Roasting</h1>
   <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
   <div class="index-hero-actions">
