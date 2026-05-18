@@ -3,7 +3,7 @@ title: Espresso Blend
 slug: espresso-blend
 category: blend
 order: 2
-roast_level: French Roast (espresso)
+roast_level: Full City+
 tasting_notes: Nutty and sweet
 brewing_method: Espresso
 mark_color_a: "#1F6B4A"
