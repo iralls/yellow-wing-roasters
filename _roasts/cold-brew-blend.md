@@ -6,7 +6,6 @@ order: 6
 roast_level: Vienna (dark)
 tasting_notes: Smooth, chocolatey, low acidity
 brewing_method: Cold brew (coarse grind, 12–24hr steep)
-pip_color: "#5a3818"
 mark_color_a: "#4A6B8C"
 mark_color_b: "#1A2535"
 mascot: heron

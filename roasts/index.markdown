@@ -20,7 +20,6 @@ Our current lineup. All roasts ship as whole bean.
       {% if r.coming_soon %}<span class="roasts-entry-soon-badge">Coming Soon</span>{% endif %}
       <div class="roasts-entry-visual">
         {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
-        {% if r.pip_color %}<div class="roasts-entry-pip" style="background: {{ r.pip_color }};"></div>{% endif %}
       </div>
       <div class="roasts-entry-info">
         {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}

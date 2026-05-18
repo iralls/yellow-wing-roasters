@@ -1127,22 +1127,6 @@ h1.roast-title {
   transform: scale(1.08);
 }
 
-.roasts-entry-pip {
-  position: absolute;
-  bottom: -0.3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  border: 3px solid #faf8f5;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-}
-
-.roasts-entry:hover .roasts-entry-pip {
-  border-color: #fff;
-}
-
 .roasts-entry-subtitle {
   font-family: $font-display;
   font-weight: 600;

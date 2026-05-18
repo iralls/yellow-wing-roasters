@@ -6,7 +6,6 @@ order: 3
 roast_level: Vienna (dark)
 tasting_notes: Smoky, bittersweet chocolate
 brewing_method: French press, cold brew, espresso, drip
-pip_color: "#6a4020"
 mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary
