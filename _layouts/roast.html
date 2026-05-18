@@ -2,11 +2,11 @@
 layout: default
 ---
 
-<p class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><img src="/images/logo.png" alt="Yellow Wing Roasters" class="logo"></a></p>
+<div class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><span class="roast-split-icon" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};"><img src="{{ '/images/bean-feather.png' | relative_url }}" alt="Yellow Wing Roasters"></span></a></div>
 
 {% if page.subtitle %}<div class="roast-title-subtitle">{{ page.subtitle }}</div>{% endif %}
 <h1 class="roast-title{% if page.mascot_file %} roast-title-with-mascot{% endif %}"><span class="roast-title-name"><span class="roast-title-text">{{ page.title }}</span></span>{% if page.mascot_file %}<span class="roast-title-mascot-wrap"><img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-title-mascot" aria-hidden="true"></span>{% endif %}</h1>
-{% if page.mark_gradient %}<span class="roast-title-underline" style="background: {{ page.mark_gradient }};" aria-hidden="true"></span>{% elsif page.mark_color_a and page.mark_color_b %}<span class="roast-title-underline" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};" aria-hidden="true"></span>{% endif %}
+
 
 {% if page.coming_soon %}
 <div class="coming-soon-bar">
