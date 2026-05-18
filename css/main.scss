@@ -123,6 +123,11 @@ h6 {
   margin: 1rem auto;
 }
 
+.container img.logo.logo--icon {
+  width: min(5.5rem, 22vw);
+  margin: 1rem auto 0.5rem;
+}
+
 .roast-split-icon {
   display: inline-flex;
   align-items: center;
@@ -979,7 +984,12 @@ h1.roast-title {
 
 .index-hero-logo {
   width: min(16rem, 50vw);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+.index-hero-logo.index-hero-logo--icon {
+  width: min(5.5rem, 22vw);
+  margin-bottom: 0.75rem;
 }
 
 .index-hero-tagline {
