@@ -1206,36 +1206,35 @@ h1.roast-title {
 
 .site-footer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
   margin: 3rem 0 1.5rem;
 }
 
 .site-footer-logo {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2.8rem;
+  height: 2.8rem;
   border-radius: 50%;
-  background: #f5ede0;
-  border: 1.5px solid #c4a060;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: #8a5a30;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(138, 90, 48, 0.15);
+  margin-bottom: 0.5rem;
 }
 
 .site-footer-logo img {
-  width: 1rem;
-  height: 1rem;
+  width: 1.6rem;
+  height: 1.6rem;
   object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .site-footer-est {
   font-family: $font-display;
-  font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #999;
 }
