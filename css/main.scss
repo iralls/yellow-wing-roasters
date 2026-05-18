@@ -1216,7 +1216,9 @@ h1.roast-title {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
-  background: #8a5a30;
+  background: #f5ede0;
+  border: 1.5px solid #c4a060;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1227,7 +1229,6 @@ h1.roast-title {
   width: 1rem;
   height: 1rem;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 
 .site-footer-est {
