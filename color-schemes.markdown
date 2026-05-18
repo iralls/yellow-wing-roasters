@@ -995,6 +995,50 @@ Roast-specific palettes for consideration — each mini card shows how the schem
       </div>
     </div>
 
+    <!-- Gray Catbird -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#6B7B8A;"></div>
+        <div class="color-swatch" style="background:#1C1E22;"></div>
+        <div class="color-swatch" style="background:#8B4513;"></div>
+        <div class="color-swatch" style="background:#E8E6E0;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Gray Catbird</p>
+        <p class="color-scheme-desc">Soft slate-gray body, jet-black cap, and a hidden rusty-chestnut patch under the tail — understated, moody, and full of quiet surprises in the thicket.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#6B7B8A;"></span>
+            <span class="color-swatch-name">Catbird Slate</span>
+            <span class="color-swatch-hex">#6B7B8A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#1C1E22;"></span>
+            <span class="color-swatch-name">Midnight Cap</span>
+            <span class="color-swatch-hex">#1C1E22</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#8B4513;"></span>
+            <span class="color-swatch-name">Undertail Rust</span>
+            <span class="color-swatch-hex">#8B4513</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#E8E6E0;"></span>
+            <span class="color-swatch-name">Thicket Mist</span>
+            <span class="color-swatch-hex">#E8E6E0</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#E8E6E0; border:1px solid #cccac4;">
+          <div class="color-scheme-mock-header" style="background:#1C1E22; color:#6B7B8A;">Catbird Roast</div>
+          <div class="color-scheme-mock-body" style="color:#1C1E22;">
+            Mellow, smoky, quiet depth
+            <div class="color-scheme-mock-note">Full City · French press, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#8B4513; color:#E8E6E0;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 <p class="color-preview-note"><strong>60-30-10 rule:</strong> 60% neutral (biscuit/off-white background) · 30% roast color (chocolate/caramel headers &amp; text) · 10% yellow accent (CTAs, logo stripe, geometric details).</p>
