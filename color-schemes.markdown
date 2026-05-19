@@ -1039,6 +1039,50 @@ Roast-specific palettes for consideration — each mini card shows how the schem
       </div>
     </div>
 
+    <!-- Great Horned Owl -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#3C2A1A;"></div>
+        <div class="color-swatch" style="background:#D4C4A0;"></div>
+        <div class="color-swatch" style="background:#E8A820;"></div>
+        <div class="color-swatch" style="background:#1A1408;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Great Horned Owl</p>
+        <p class="color-scheme-desc">Mottled brown bark plumage, pale buff breast with dark barring, fierce amber eyes, and tufted ear horns — the apex nocturnal predator, silent and absolute.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#3C2A1A;"></span>
+            <span class="color-swatch-name">Bark Plumage</span>
+            <span class="color-swatch-hex">#3C2A1A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#D4C4A0;"></span>
+            <span class="color-swatch-name">Buff Breast</span>
+            <span class="color-swatch-hex">#D4C4A0</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#E8A820;"></span>
+            <span class="color-swatch-name">Amber Eye</span>
+            <span class="color-swatch-hex">#E8A820</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#1A1408;"></span>
+            <span class="color-swatch-name">Midnight Talon</span>
+            <span class="color-swatch-hex">#1A1408</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#D4C4A0; border:1px solid #bfb08a;">
+          <div class="color-scheme-mock-header" style="background:#1A1408; color:#E8A820;">Owl Roast</div>
+          <div class="color-scheme-mock-body" style="color:#3C2A1A;">
+            Deep, bold, dark chocolate, molasses
+            <div class="color-scheme-mock-note">Vienna · French press, cold brew</div>
+            <span class="color-scheme-mock-btn" style="background:#3C2A1A; color:#D4C4A0;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 <p class="color-preview-note"><strong>60-30-10 rule:</strong> 60% neutral (biscuit/off-white background) · 30% roast color (chocolate/caramel headers &amp; text) · 10% yellow accent (CTAs, logo stripe, geometric details).</p>
