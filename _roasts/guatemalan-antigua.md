@@ -3,7 +3,7 @@ title: Guatemalan Antigua
 slug: guatemalan-antigua
 category: single origin
 order: 5
-roast_level: Full City+
+roast_level: Full City+ (medium-dark)
 tasting_notes: S'mores, smooth, creamy
 brewing_method: Espresso, cold brew, French press
 mark_color_a: "#3D2B1F"

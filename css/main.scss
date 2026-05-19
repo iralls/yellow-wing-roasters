@@ -85,7 +85,7 @@ $font-body: "Lora", Georgia, "Times New Roman", serif;
 html,
 body {
   font-family: $font-body;
-  background: #f0f2f5;
+  background: #faf8f5;
 }
 
 h1,
@@ -357,6 +357,145 @@ h1.roast-title {
 .roast-profile-link::before {
   content: "↓";
   font-weight: 700;
+}
+
+/* ── Minimal Vertical layout ── */
+
+.roast-minimal-vertical {
+  text-align: center;
+}
+
+.roast-mv-center {
+  text-align: center;
+}
+
+.roast-mv-bird {
+  height: 6rem;
+  width: auto;
+  margin-bottom: 1.5rem;
+}
+
+.roast-mv-subtitle {
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.roast-mv-title {
+  font-family: $font-display;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #2c1e14;
+  margin: 0 0 0.5rem;
+}
+
+.roast-mv-underline {
+  display: block;
+  height: 5px;
+  width: 9rem;
+  max-width: 100%;
+  border-radius: 2.5px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(to right, var(--c-a) 50%, var(--c-b) 50%);
+}
+
+.roast-mv-tasting {
+  font-style: italic;
+  color: #8a7060;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.roast-mv-meta-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.roast-mv-meta-item {
+  text-align: center;
+}
+
+.roast-mv-meta-label {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 0.2rem;
+}
+
+.roast-mv-meta-value {
+  color: #2c1e14;
+  font-weight: 600;
+}
+
+.roast-mv-divider {
+  width: 3rem;
+  height: 2px;
+  background: #ddd;
+  margin: 2rem auto;
+}
+
+.roast-mv-body {
+  text-align: center;
+  max-width: 28rem;
+  margin: 0 auto 1.5rem;
+  color: #444;
+  line-height: 1.7;
+}
+
+.roast-mv-comp-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.roast-mv-comp-list li {
+  display: inline;
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #2c1e14;
+}
+
+.roast-mv-comp-list li + li::before {
+  content: " · ";
+  color: #ccc;
+}
+
+.roast-mv-comp-list a {
+  color: #8a5020;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.78rem;
+}
+
+.roast-mv-comp-list a:hover {
+  text-decoration: underline;
+}
+
+.roast-mv-variant-title {
+  font-family: $font-display;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #2c1e14;
+  text-align: center;
+  margin: 0 0 1rem;
+}
+
+.roast-mv-variant {
+  padding: 2rem 0;
+  border-top: 1px solid #eee;
 }
 
 .roast-components {
@@ -725,18 +864,26 @@ h1.roast-title {
 
 .add-to-order-btn {
   display: inline-block;
-  padding: 0.4rem 0.9rem;
-  background: #222;
-  color: #fff;
-  border-radius: 0.35rem;
-  text-decoration: none;
-  font-size: 0.95em;
-  font-weight: 600;
+  padding: 0.45rem 1rem;
+  background: #2c1e14;
+  color: #faf8f5;
+  border: 0;
+  border-radius: 999px;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
 .add-to-order-btn:hover {
-  background: #444;
+  background: #4a3528;
+  transform: translateY(-1px);
   text-decoration: none;
+  color: #faf8f5;
 }
 
 .add-to-order-btn--disabled {
@@ -972,7 +1119,7 @@ h1.roast-title {
 /* ── Index hero ("The Perch") ── */
 
 .index-hero {
-  background: #f0f2f5;
+  background: #faf8f5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -1213,11 +1360,15 @@ h1.roast-title {
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
-  background: #0d0f1f;
+  background: linear-gradient(
+    135deg,
+    var(--c-a, #0d0f1f) 50%,
+    var(--c-b, #0d0f1f) 50%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(13, 15, 31, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   margin-bottom: 0.5rem;
 }
 

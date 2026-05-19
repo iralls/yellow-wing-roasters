@@ -12,16 +12,14 @@ order: 4
 variants:
   - name: Light-medium
     slug: light-medium
-    roast_level: City+
+    roast_level: City+ (light-medium)
     tasting_notes: Nutty, chocolatey, smooth
     brewing_method: Espresso, pour over
-    image: /images/colombian-supremo-city.png
     profile: /profiles/colombian-supremo-city.alog
   - name: Dark
     slug: dark
-    roast_level: Vienna
+    roast_level: Vienna (dark)
     tasting_notes: Smoky, dark bittersweet chocolate
     brewing_method: Cold brew, French press
-    image: /images/colombian-supremo-vienna.png
     profile: /profiles/colombian-supremo-vienna.alog
 ---
