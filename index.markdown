@@ -3,7 +3,7 @@ layout: index
 ---
 
 <section class="index-hero">
-  <img src="/images/dark-roast-icon.png" alt="Yellow Wing Roasters" class="index-hero-logo index-hero-logo--icon">
+  <span class="brand-circle"><img src="/images/bean-feather.png" alt="Yellow Wing Roasters"></span>
   <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.1rem; color:#E99E00; letter-spacing:0.1em; text-transform:uppercase;">Yellow Wing</div>
   <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.55rem; color:#0D0F1F; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:1.25rem;">Roasters</div>
   <h1 class="index-hero-tagline">Small-Batch<br>Coffee Roasting</h1>
