@@ -1,6 +1,8 @@
 <footer class="site-footer">
-  <div class="site-footer-logo"{% if page.mark_color_a and page.mark_color_b %} style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};"{% endif %}>
-    <img src="{{ '/images/bean-feather.png' | relative_url }}" alt="Yellow Wing Roasters" />
-  </div>
-  <div class="site-footer-est">est 2026</div>
+  <a href="{{ '/' | relative_url }}" class="site-footer-link">
+    <div class="site-footer-logo"{% if page.mark_color_a and page.mark_color_b %} style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};"{% endif %}>
+      <img src="{{ '/images/bean-feather.png' | relative_url }}" alt="Yellow Wing Roasters" />
+    </div>
+    <div class="site-footer-est">est 2026</div>
+  </a>
 </footer>
