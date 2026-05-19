@@ -10,6 +10,6 @@ mark_color_a: "#3D2B1F"
 mark_color_b: "#F4F2EA"
 mascot: osprey
 mascot_file: osprey-transparent.png
-subtitle: '"Silk & Claw"'
+subtitle: '"Smooth Talon"'
 roast_profile: /profiles/guatemalan-antigua-full-city-plus.alog
 ---
