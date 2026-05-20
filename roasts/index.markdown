@@ -16,10 +16,10 @@ Our current lineup. All roasts ship as whole bean.
   <div class="roasts-grid">
   {% for r in cat.items %}
     <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" href="{{ r.url | relative_url }}" style="--ca: {{ r.mark_color_a }}; --cb: {{ r.mark_color_b }};">
-      {% if r.coming_soon %}<span class="roasts-entry-soon-badge">Coming Soon</span>{% endif %}
       <div class="roasts-entry-visual">
         {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
       </div>
+      {% if r.coming_soon %}<div class="roasts-entry-soon-badge">Coming Soon</div>{% endif %}
       <div class="roasts-entry-info">
         {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         <div class="roasts-entry-title">{{ r.title }}</div>
