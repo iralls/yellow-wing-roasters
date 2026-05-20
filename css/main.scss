@@ -147,6 +147,29 @@ h6 {
   filter: brightness(0) invert(1);
 }
 
+.brand-header {
+  text-align: center;
+  margin: 1rem 0 1.5rem;
+}
+
+.brand-header-name {
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 1rem;
+  color: #e99e00;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.brand-header-sub {
+  font-family: $font-display;
+  font-weight: 500;
+  font-size: 0.5rem;
+  color: #0d0f1f;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
 .roast-split-icon {
   display: inline-flex;
   align-items: center;

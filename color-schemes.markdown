@@ -5,7 +5,6 @@ permalink: /color-schemes/
 published: true
 ---
 
-<div class="logo-wrap"><a href="{{ '/' | relative_url }}" class="logo-link"><span class="brand-circle"><img src="/images/bean-feather.png" alt="Yellow Wing Roasters"></span></a><div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1rem; color:#E99E00; letter-spacing:0.1em; text-transform:uppercase;">Yellow Wing</div><div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.5rem; color:#0D0F1F; letter-spacing:0.25em; text-transform:uppercase;">Roasters</div></div>
 
 # Color schemes
 
@@ -1078,6 +1077,182 @@ Roast-specific palettes for consideration — each mini card shows how the schem
             Deep, bold, dark chocolate, molasses
             <div class="color-scheme-mock-note">Vienna · French press, cold brew</div>
             <span class="color-scheme-mock-btn" style="background:#3C2A1A; color:#D4C4A0;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Northern Cardinal -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#C41E1E;"></div>
+        <div class="color-swatch" style="background:#1A1A1A;"></div>
+        <div class="color-swatch" style="background:#E8502A;"></div>
+        <div class="color-swatch" style="background:#F5E6D0;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Northern Cardinal</p>
+        <p class="color-scheme-desc">Brilliant crimson plumage, jet-black face mask, warm orange-red crest, and a pale buff belly — the unmistakable flash of red against a winter branch.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#C41E1E;"></span>
+            <span class="color-swatch-name">Cardinal Red</span>
+            <span class="color-swatch-hex">#C41E1E</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#1A1A1A;"></span>
+            <span class="color-swatch-name">Face Mask</span>
+            <span class="color-swatch-hex">#1A1A1A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#E8502A;"></span>
+            <span class="color-swatch-name">Crest Orange</span>
+            <span class="color-swatch-hex">#E8502A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F5E6D0;"></span>
+            <span class="color-swatch-name">Buff Belly</span>
+            <span class="color-swatch-hex">#F5E6D0</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F5E6D0; border:1px solid #ddd0b8;">
+          <div class="color-scheme-mock-header" style="background:#1A1A1A; color:#C41E1E;">Cardinal Roast</div>
+          <div class="color-scheme-mock-body" style="color:#1A1A1A;">
+            Bold, bright, cherry-forward
+            <div class="color-scheme-mock-note">City+ · Pour-over, espresso</div>
+            <span class="color-scheme-mock-btn" style="background:#C41E1E; color:#F5E6D0;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carolina Wren -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#A0602A;"></div>
+        <div class="color-swatch" style="background:#F5E8D0;"></div>
+        <div class="color-swatch" style="background:#5C3A1E;"></div>
+        <div class="color-swatch" style="background:#E8D0A8;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Carolina Wren</p>
+        <p class="color-scheme-desc">Rich russet-brown back, warm buff underparts, bold white eyebrow stripe, and a dark barred tail held jauntily upright — loud, warm, and full of personality.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#A0602A;"></span>
+            <span class="color-swatch-name">Russet Back</span>
+            <span class="color-swatch-hex">#A0602A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F5E8D0;"></span>
+            <span class="color-swatch-name">Buff Breast</span>
+            <span class="color-swatch-hex">#F5E8D0</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#5C3A1E;"></span>
+            <span class="color-swatch-name">Barred Tail</span>
+            <span class="color-swatch-hex">#5C3A1E</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#E8D0A8;"></span>
+            <span class="color-swatch-name">Eyebrow Cream</span>
+            <span class="color-swatch-hex">#E8D0A8</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F5E8D0; border:1px solid #ddd0b0;">
+          <div class="color-scheme-mock-header" style="background:#5C3A1E; color:#E8D0A8;">Wren Roast</div>
+          <div class="color-scheme-mock-body" style="color:#5C3A1E;">
+            Warm, toasty, brown sugar
+            <div class="color-scheme-mock-note">Full City · French press, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#A0602A; color:#F5E8D0;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cedar Waxwing -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#C4A870;"></div>
+        <div class="color-swatch" style="background:#1A1A1A;"></div>
+        <div class="color-swatch" style="background:#C41E1E;"></div>
+        <div class="color-swatch" style="background:#F0E850;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Cedar Waxwing</p>
+        <p class="color-scheme-desc">Silky fawn-brown body, sleek black mask, tiny red waxy wingtips, and a bright lemon-yellow tail band — elegant, smooth, and always traveling in flocks.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#C4A870;"></span>
+            <span class="color-swatch-name">Silky Fawn</span>
+            <span class="color-swatch-hex">#C4A870</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#1A1A1A;"></span>
+            <span class="color-swatch-name">Bandit Mask</span>
+            <span class="color-swatch-hex">#1A1A1A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#C41E1E;"></span>
+            <span class="color-swatch-name">Wax Tip</span>
+            <span class="color-swatch-hex">#C41E1E</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F0E850;"></span>
+            <span class="color-swatch-name">Tail Band</span>
+            <span class="color-swatch-hex">#F0E850</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F8F4E8; border:1px solid #e0d8c0;">
+          <div class="color-scheme-mock-header" style="background:#1A1A1A; color:#C4A870;">Waxwing Roast</div>
+          <div class="color-scheme-mock-body" style="color:#1A1A1A;">
+            Silky, sweet, stone fruit, berry
+            <div class="color-scheme-mock-note">City · Pour-over, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#C41E1E; color:#F8F4E8;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Red-Eyed Vireo -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#6A8A48;"></div>
+        <div class="color-swatch" style="background:#F5F2EA;"></div>
+        <div class="color-swatch" style="background:#8B1A1A;"></div>
+        <div class="color-swatch" style="background:#4A4A44;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Red-Eyed Vireo</p>
+        <p class="color-scheme-desc">Olive-green back, clean white underparts, a bold gray crown stripe, and those startling ruby-red eyes — the tireless singer you hear all summer but rarely see.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#6A8A48;"></span>
+            <span class="color-swatch-name">Olive Back</span>
+            <span class="color-swatch-hex">#6A8A48</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F5F2EA;"></span>
+            <span class="color-swatch-name">Clean White</span>
+            <span class="color-swatch-hex">#F5F2EA</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#8B1A1A;"></span>
+            <span class="color-swatch-name">Ruby Eye</span>
+            <span class="color-swatch-hex">#8B1A1A</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#4A4A44;"></span>
+            <span class="color-swatch-name">Crown Gray</span>
+            <span class="color-swatch-hex">#4A4A44</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F5F2EA; border:1px solid #ddd8cc;">
+          <div class="color-scheme-mock-header" style="background:#4A4A44; color:#6A8A48;">Vireo Roast</div>
+          <div class="color-scheme-mock-body" style="color:#4A4A44;">
+            Clean, bright, green apple, herbs
+            <div class="color-scheme-mock-note">City · Pour-over, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#8B1A1A; color:#F5F2EA;">Order →</span>
           </div>
         </div>
       </div>
