@@ -4,6 +4,7 @@ slug: dark-roast-blend
 category: blend
 order: 3
 roast_level: Vienna (dark)
+roast_dots: 5
 tasting_notes: Smoky, bittersweet chocolate
 brewing_method: French press, cold brew, espresso, drip
 mark_color_a: "#E99E00"

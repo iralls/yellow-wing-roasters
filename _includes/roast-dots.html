@@ -1,0 +1,14 @@
+{% assign level = include.level | downcase %}
+{% if level contains "vienna" %}{% assign dots = 5 %}
+{% elsif level contains "full city+" or level contains "medium-dark" %}{% assign dots = 4 %}
+{% elsif level contains "full city" or level contains "(medium)" %}{% assign dots = 3 %}
+{% elsif level contains "city+" or level contains "light-medium" %}{% assign dots = 2 %}
+{% else %}{% assign dots = 1 %}
+{% endif %}
+<span class="roast-dots{% if include.size == 'sm' %} roast-dots-sm{% endif %}">
+  <span class="roast-dot{% if dots >= 1 %} roast-dot-1{% endif %}"></span>
+  <span class="roast-dot{% if dots >= 2 %} roast-dot-2{% endif %}"></span>
+  <span class="roast-dot{% if dots >= 3 %} roast-dot-3{% endif %}"></span>
+  <span class="roast-dot{% if dots >= 4 %} roast-dot-4{% endif %}"></span>
+  <span class="roast-dot{% if dots >= 5 %} roast-dot-5{% endif %}"></span>
+</span>

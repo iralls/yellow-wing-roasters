@@ -4,6 +4,7 @@ slug: light-roast
 category: blend
 order: 5
 roast_level: City (light)
+roast_dots: 1
 tasting_notes: Bright, floral, citrus, stone fruit
 brewing_method: Pour-over, drip
 mark_color_a: "#C41E1E"

@@ -484,6 +484,14 @@ h1.roast-title {
   font-weight: 600;
 }
 
+.roast-mv-meta-sublabel {
+  font-family: $font-display;
+  font-weight: 500;
+  font-size: 0.6rem;
+  color: #bbb;
+  margin-top: 0.2rem;
+}
+
 .roast-mv-divider {
   width: 3rem;
   height: 2px;
@@ -541,6 +549,50 @@ h1.roast-title {
 .roast-mv-variant {
   padding: 2rem 0;
   border-top: 1px solid #eee;
+}
+
+/* ── Roast level dots (gradient) ── */
+
+.roast-dots {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.roast-dots-sm {
+  gap: 0.2rem;
+}
+
+.roast-dots-sm .roast-dot {
+  width: 0.35rem;
+  height: 0.35rem;
+}
+
+.roast-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #e8e0d5;
+}
+
+.roast-dot-1 {
+  background: #d4b896;
+}
+
+.roast-dot-2 {
+  background: #b8944a;
+}
+
+.roast-dot-3 {
+  background: #8a6830;
+}
+
+.roast-dot-4 {
+  background: #5c3d1a;
+}
+
+.roast-dot-5 {
+  background: #2c1e14;
 }
 
 .roast-components {
@@ -1352,13 +1404,6 @@ h1.roast-title {
 
 .roasts-entry-level {
   display: inline-block;
-  background: #f5ede0;
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  font-family: $font-display;
-  font-weight: 700;
-  font-size: 0.65rem;
-  color: #8a5020;
   margin-bottom: 0.4rem;
 }
 

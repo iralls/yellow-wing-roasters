@@ -4,6 +4,7 @@ slug: decaf
 category: blend
 order: 7
 roast_level: City+ (medium)
+roast_dots: 2
 tasting_notes: Smooth, nutty, mild chocolate
 brewing_method: Drip, French press, or pour-over
 mark_color_a: "#9C8E7E"

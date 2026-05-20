@@ -4,6 +4,7 @@ slug: espresso-blend
 category: blend
 order: 2
 roast_level: Full City+ (medium-dark)
+roast_dots: 4
 tasting_notes: Nutty and sweet
 brewing_method: Espresso
 mark_color_a: "#1F6B4A"

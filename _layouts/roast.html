@@ -82,10 +82,19 @@ layout: default
 {% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes }}</p>{% endif %}
 
 <div class="roast-mv-meta-row">
-  {% if page.roast_level %}
+  {% if page.roast_dots %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Roast Level</div>
-    <div class="roast-mv-meta-value">{{ page.roast_level }}</div>
+    <div class="roast-mv-meta-value">
+      <span class="roast-dots">
+        <span class="roast-dot{% if page.roast_dots >= 1 %} roast-dot-1{% endif %}"></span>
+        <span class="roast-dot{% if page.roast_dots >= 2 %} roast-dot-2{% endif %}"></span>
+        <span class="roast-dot{% if page.roast_dots >= 3 %} roast-dot-3{% endif %}"></span>
+        <span class="roast-dot{% if page.roast_dots >= 4 %} roast-dot-4{% endif %}"></span>
+        <span class="roast-dot{% if page.roast_dots >= 5 %} roast-dot-5{% endif %}"></span>
+      </span>
+    </div>
+    <div class="roast-mv-meta-sublabel">{{ page.roast_level }}</div>
   </div>
   {% endif %}
   <div class="roast-mv-meta-item">

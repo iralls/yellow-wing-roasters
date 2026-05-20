@@ -4,6 +4,7 @@ slug: cold-brew-blend
 category: blend
 order: 6
 roast_level: Vienna (dark)
+roast_dots: 5
 tasting_notes: Smooth, chocolatey, low acidity
 brewing_method: Cold brew (coarse grind, 12–24hr steep)
 mark_color_a: "#4A6B8C"
