@@ -53,7 +53,7 @@ permalink: /order/
     var roastData = [
       {% for r in roasts %}
         {% if r.variants %}
-          {% assign default_sizes = "6oz,8oz,12oz,16oz" | split: "," %}
+          {% assign default_sizes = "8oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
@@ -61,7 +61,7 @@ permalink: /order/
             {% endfor %}
           {% endfor %}
         {% else %}
-          {% assign default_sizes = "6oz,8oz,12oz,16oz" | split: "," %}
+          {% assign default_sizes = "8oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
             { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }} }{% unless forloop.last %},{% endunless %}
@@ -199,7 +199,7 @@ permalink: /order/
     var params = new URLSearchParams(window.location.search);
     var qpRoast = params.get('roast');
     var qpVariant = params.get('variant') || '';
-    var qpSize = params.get('size') || '12oz';
+    var qpSize = params.get('size') || '8oz';
     if (qpRoast) {
       var cart = loadCart();
       var k = cartKey(qpRoast, qpVariant, qpSize);
