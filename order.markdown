@@ -236,7 +236,7 @@ permalink: /order/
           window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
           window.location.href = '{{ "/thanks/" | relative_url }}';
         } else {
-          var msg = 'Something went wrong. Please try again or email hello@yellowwingroasters.com.';
+          var msg = 'Something went wrong. Please try again or email support@yellowwingroasters.com.';
           if (result.body && result.body.errors && result.body.errors.length) {
             msg = result.body.errors.map(function (er) { return er.message; }).join(' ');
           }
