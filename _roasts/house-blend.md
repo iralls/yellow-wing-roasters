@@ -3,8 +3,8 @@ title: House Blend
 slug: house-blend
 category: blend
 order: 1
-roast_level: City+ (light-medium)
-roast_dots: 2
+roast_level: Full City (medium)
+roast_dots: 3
 tasting_notes: Bright and sweet, nutty, caramely, some chocolate
 brewing_method: French press, pour-over, or espresso
 mark_color_a: "#D4572A"

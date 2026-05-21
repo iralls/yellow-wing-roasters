@@ -19,8 +19,8 @@ Four blends, each individually packaged in its own 8oz bag — a great way to ex
 
 Includes:
 
-- **[House Blend](/roasts/house-blend/) — "Early Bird"** · City+ light-medium · Bright and sweet, nutty, caramely
-- **[Espresso Blend](/roasts/espresso-blend/) — "Lil' Sipper"** · French Roast · Nutty and sweet
+- **[House Blend](/roasts/house-blend/) — "Early Bird"** · Full City (medium) · Bright and sweet, nutty, caramely
+- **[Espresso Blend](/roasts/espresso-blend/) — "Little Sipper"** · Full City+ (medium-dark) · Nutty and sweet
 - **[Dark Roast](/roasts/dark-roast-blend/) — "Feather Soot"** · Vienna dark · Smoky, bittersweet chocolate
 - **[Light Roast](/roasts/light-roast/) — "Dawn Drum"** · City light · Bright, floral, citrus, stone fruit
 
