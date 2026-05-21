@@ -57,14 +57,14 @@ permalink: /order/
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
-              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
+              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
             {% endfor %}
           {% endfor %}
         {% else %}
           {% assign default_sizes = "8oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
-            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }} }{% unless forloop.last %},{% endunless %}
+            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }} }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         {% endif %}
         {% unless forloop.last %},{% endunless %}
@@ -115,9 +115,30 @@ permalink: /order/
         var row = document.createElement('div');
         row.className = 'order-cart-row';
 
+        if (item.data.mascot) {
+          var birdImg = document.createElement('img');
+          birdImg.src = '/images/' + item.data.mascot;
+          birdImg.alt = '';
+          birdImg.className = 'order-cart-bird';
+          row.appendChild(birdImg);
+        }
+
         var nameEl = document.createElement('div');
         nameEl.className = 'order-cart-item-name';
         nameEl.textContent = item.data.label;
+
+        var dotsEl = null;
+        if (item.data.dots > 0) {
+          var dotsColors = ['#d4b896','#b8944a','#8a6830','#5c3d1a','#2c1e14'];
+          dotsEl = document.createElement('span');
+          dotsEl.className = 'order-cart-dots';
+          for (var di = 0; di < 5; di++) {
+            var dot = document.createElement('span');
+            dot.className = 'order-cart-dot';
+            dot.style.background = di < item.data.dots ? dotsColors[di] : '#e8e0d5';
+            dotsEl.appendChild(dot);
+          }
+        }
 
         var sizeEl = document.createElement('span');
         sizeEl.className = 'order-cart-item-size';
@@ -189,6 +210,7 @@ permalink: /order/
         qtyWrap.appendChild(plus);
 
         row.appendChild(nameEl);
+        if (dotsEl) row.appendChild(dotsEl);
         row.appendChild(sizeEl);
         row.appendChild(qtyWrap);
         row.appendChild(removeBtn);
