@@ -11,6 +11,6 @@ mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
 mascot: hummingbird
 mascot_file: hummingbird-transparent.png
-subtitle: '"Little Sipper"'
+subtitle: '"Lil'' Sipper"'
 coming_soon: true
 ---
