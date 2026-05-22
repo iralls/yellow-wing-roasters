@@ -1258,6 +1258,50 @@ Roast-specific palettes for consideration — each mini card shows how the schem
       </div>
     </div>
 
+    <!-- Barred Owl -->
+    <div class="color-scheme-card">
+      <div class="color-scheme-strip">
+        <div class="color-swatch" style="background:#7A6148;"></div>
+        <div class="color-swatch" style="background:#F0E8DA;"></div>
+        <div class="color-swatch" style="background:#3A2A1E;"></div>
+        <div class="color-swatch" style="background:#C4A43C;"></div>
+      </div>
+      <div class="color-scheme-body">
+        <p class="color-scheme-name">Barred Owl</p>
+        <p class="color-scheme-desc">Warm brown and cream horizontal barring, dark umber back, round pale facial disk, and a soft golden beak — muted, earthy, and a little mysterious. The voice of the deep woods at dusk.</p>
+        <ul class="color-swatch-list">
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#7A6148;"></span>
+            <span class="color-swatch-name">Barred Breast</span>
+            <span class="color-swatch-hex">#7A6148</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#F0E8DA;"></span>
+            <span class="color-swatch-name">Pale Plume</span>
+            <span class="color-swatch-hex">#F0E8DA</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#3A2A1E;"></span>
+            <span class="color-swatch-name">Forest Perch</span>
+            <span class="color-swatch-hex">#3A2A1E</span>
+          </li>
+          <li class="color-swatch-item">
+            <span class="color-swatch-dot" style="background:#C4A43C;"></span>
+            <span class="color-swatch-name">Moon Eye</span>
+            <span class="color-swatch-hex">#C4A43C</span>
+          </li>
+        </ul>
+        <div class="color-scheme-mock" style="background:#F0E8DA; border:1px solid #d8d0c2;">
+          <div class="color-scheme-mock-header" style="background:#3A2A1E; color:#C4A43C;">Owl Roast</div>
+          <div class="color-scheme-mock-body" style="color:#3A2A1E;">
+            Deep, woodsy, dark chocolate
+            <div class="color-scheme-mock-note">Full City · French press, drip</div>
+            <span class="color-scheme-mock-btn" style="background:#7A6148; color:#F0E8DA;">Order →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 <p class="color-preview-note"><strong>60-30-10 rule:</strong> 60% neutral (biscuit/off-white background) · 30% roast color (chocolate/caramel headers &amp; text) · 10% yellow accent (CTAs, logo stripe, geometric details).</p>
