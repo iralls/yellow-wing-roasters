@@ -564,13 +564,18 @@ h1.roast-title {
 }
 
 .roast-dots-sm .roast-dot {
-  width: 0.35rem;
-  height: 0.35rem;
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  min-height: 6px;
 }
 
 .roast-dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: #e8e0d5;
 }
