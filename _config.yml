@@ -42,3 +42,4 @@ exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
+  - preview-bags.html
