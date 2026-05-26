@@ -53,7 +53,7 @@ permalink: /order/
     var roastData = [
       {% for r in roasts %}
         {% if r.variants %}
-          {% assign default_sizes = "8oz,12oz" | split: "," %}
+          {% assign default_sizes = "8oz,12oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
@@ -61,7 +61,7 @@ permalink: /order/
             {% endfor %}
           {% endfor %}
         {% else %}
-          {% assign default_sizes = "8oz,12oz" | split: "," %}
+          {% assign default_sizes = "8oz,12oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
             { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }} }{% unless forloop.last %},{% endunless %}
