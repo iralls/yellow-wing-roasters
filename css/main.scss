@@ -668,6 +668,47 @@ h1.roast-title {
   margin: 0 0 1.25rem;
 }
 
+.order-delivery {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.order-delivery legend {
+  font-weight: 600;
+  padding: 0 0.4rem;
+}
+
+.order-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.order-radio input {
+  margin: 0;
+}
+
+.order-shipping {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.25rem;
+  background: #f8f6f2;
+  border-radius: 0.5rem;
+}
+
+.order-field-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.order-field-row .order-field {
+  flex: 1;
+}
+
 .order-form label {
   display: block;
   font-weight: 600;
@@ -964,6 +1005,44 @@ h1.roast-title {
 
 .order-cart-remove:hover {
   color: #b91c1c;
+}
+
+.order-cart-item-price {
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: #222;
+  text-align: right;
+  min-width: 3rem;
+}
+
+.order-cart-item-unit {
+  font-weight: 500;
+  font-size: 0.6rem;
+  color: #999;
+}
+
+.order-cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid #222;
+}
+
+.order-cart-total-label {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #222;
+}
+
+.order-cart-total-value {
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: #222;
 }
 
 .add-to-order-wrap {

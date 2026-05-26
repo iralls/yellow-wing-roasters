@@ -1,0 +1,8 @@
+default:
+  8oz: 10
+  12oz: 14
+  16oz: 16
+
+overrides:
+  the-aviary:
+    add to order: 25

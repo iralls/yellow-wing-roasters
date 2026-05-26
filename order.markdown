@@ -28,6 +28,33 @@ permalink: /order/
     <input id="order-email" type="email" name="email" required autocomplete="email">
   </div>
 
+  <fieldset class="order-delivery">
+    <legend>Delivery method</legend>
+    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked onchange="document.getElementById('order-shipping').style.display='none';"> Local pickup / hand delivery</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="ship" onchange="document.getElementById('order-shipping').style.display='';"> Ship to me</label>
+  </fieldset>
+
+  <div id="order-shipping" class="order-shipping" style="display:none;">
+    <div class="order-field">
+      <label for="order-address">Street address</label>
+      <input id="order-address" type="text" name="address" autocomplete="street-address">
+    </div>
+    <div class="order-field">
+      <label for="order-city">City</label>
+      <input id="order-city" type="text" name="city" autocomplete="address-level2">
+    </div>
+    <div class="order-field-row">
+      <div class="order-field">
+        <label for="order-state">State</label>
+        <input id="order-state" type="text" name="state" autocomplete="address-level1">
+      </div>
+      <div class="order-field">
+        <label for="order-zip">ZIP</label>
+        <input id="order-zip" type="text" name="zip" autocomplete="postal-code">
+      </div>
+    </div>
+  </div>
+
   <div class="order-field">
     <label for="order-notes">Notes (optional)</label>
     <textarea id="order-notes" name="notes" rows="3"></textarea>
@@ -57,14 +84,16 @@ permalink: /order/
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
-              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
+              {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
+              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
             {% endfor %}
           {% endfor %}
         {% else %}
           {% assign default_sizes = "8oz,12oz,16oz" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
-            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }} }{% unless forloop.last %},{% endunless %}
+            {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
+            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         {% endif %}
         {% unless forloop.last %},{% endunless %}
@@ -209,13 +238,34 @@ permalink: /order/
         qtyWrap.appendChild(qtyInput);
         qtyWrap.appendChild(plus);
 
+        var priceEl = document.createElement('div');
+        priceEl.className = 'order-cart-item-price';
+        var lineTotal = (item.data.price || 0) * item.qty;
+        priceEl.textContent = '$' + lineTotal;
+
         row.appendChild(nameEl);
         if (dotsEl) row.appendChild(dotsEl);
         row.appendChild(sizeEl);
         row.appendChild(qtyWrap);
+        row.appendChild(priceEl);
         row.appendChild(removeBtn);
         itemsEl.appendChild(row);
       }
+
+      var grandTotal = 0;
+      for (var t = 0; t < items.length; t++) {
+        grandTotal += (items[t].data.price || 0) * items[t].qty;
+      }
+      var totalRow = document.createElement('div');
+      totalRow.className = 'order-cart-total';
+      totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
+      itemsEl.appendChild(totalRow);
+
+      var totalInput = document.createElement('input');
+      totalInput.type = 'hidden';
+      totalInput.name = 'Total';
+      totalInput.value = '$' + grandTotal;
+      itemsEl.appendChild(totalInput);
     }
 
     var params = new URLSearchParams(window.location.search);
