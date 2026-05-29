@@ -19,9 +19,6 @@ layout: default
 {% if page.subtitle %}<div class="roast-mv-subtitle">{{ page.subtitle }}</div>{% endif %}
 <div class="roast-mv-center">
   <h1 class="roast-mv-title">{{ page.title }}</h1>
-  {% if page.mark_color_a and page.mark_color_b %}
-  <span class="roast-mv-underline" style="--c-a: {{ page.mark_color_a }}; --c-b: {{ page.mark_color_b }};" aria-hidden="true"></span>
-  {% endif %}
 </div>
 
 {% if page.coming_soon %}
