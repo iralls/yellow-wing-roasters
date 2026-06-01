@@ -16,57 +16,31 @@
   .bag-grid { display: flex; gap: 2.5rem; overflow-x: auto; padding: 2rem; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
   .bag-grid::-webkit-scrollbar { height: 6px; }
   .bag-grid::-webkit-scrollbar-thumb { background: #8a7260; border-radius: 3px; }
-  .bag-grid .kraft-bag { flex: 0 0 10rem; scroll-snap-align: start; }
+  .bag-grid .kraft-bag { flex: 0 0 2in; scroll-snap-align: start; }
 
   .kraft-bag { background: none; border-radius: 0.4rem; position: relative; box-shadow: none; display: flex; align-items: center; justify-content: center; padding: 0; }
-  .kraft-bag--tall { min-height: 15rem; }
+  .kraft-bag--tall { min-height: 3in; }
 
-  .style-a .sticker { height: 15rem; overflow: hidden; border-radius: 0.4rem; }
-  .style-g3 .sticker { height: 15rem; overflow: hidden; border-radius: 0.4rem; }
-  .style-h .sticker { height: 15rem; overflow: hidden; border-radius: 0.4rem; }
-  .style-l .kraft-bag { flex: 0 0 15rem; }
-  .style-l .sticker { height: 10rem; }
-  .style-l2 .kraft-bag { flex: 0 0 15rem; }
-  .style-l2 .sticker { height: 10rem; }
-  .style-l3 .kraft-bag { flex: 0 0 15rem; }
-  .style-l3 .sticker { height: 10rem; }
-  .style-l4 .kraft-bag { flex: 0 0 15rem; }
-  .style-l4 .sticker { height: 10rem; }
-  .style-l5 .kraft-bag { flex: 0 0 15rem; }
-  .style-l5 .sticker { height: 10rem; }
-  .style-n .kraft-bag { flex: 0 0 15rem; }
-  .style-n .sticker { border: 1px solid #e0d8cc; height: 10rem; }
-  .style-w2 .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x3 .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x2d .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4r .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4s .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4l .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4n .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4o .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4p .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4q .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4e .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4f .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4t .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4g .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x4u .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x7b .sticker { height: 15rem; border-radius: 0.4rem; }
-  .style-x2c .sticker { height: 15rem; border-radius: 0.4rem; }
+  .sticker { width: 2in; height: 3in; overflow: hidden; border-radius: 0.4rem; }
+  .style-l .kraft-bag, .style-l2 .kraft-bag, .style-l3 .kraft-bag, .style-l3b .kraft-bag, .style-l4 .kraft-bag, .style-l5 .kraft-bag, .style-n .kraft-bag { flex: 0 0 3in; }
+  .style-l .sticker, .style-l2 .sticker, .style-l3 .sticker, .style-l3b .sticker, .style-l4 .sticker, .style-l5 .sticker, .style-n .sticker { width: 3in; height: 2in; }
+  .style-n .sticker { border: 1px solid #e0d8cc; }
 
-  .style-x4e2c .sticker { height: 15rem; border-radius: 0.4rem; }
+  .style-x4e2c .sticker { border-radius: 0.4rem; }
   .style-x4e2c .kraft-bag { --ca: #0d0f1f; --cb: #0d0f1f; }
-  .style-x4e2c .sticker { background: #faf8f5; }
-  .style-x4e2c .sticker > div { background: #faf8f5; }
-  .style-x4e2c .brand-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.6rem; color: var(--ca); letter-spacing: 0.1em; text-transform: uppercase; }
-  .style-x4e2c .brand-sub { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 0.35rem; color: var(--ca); letter-spacing: 0.25em; text-transform: uppercase; }
-  .style-x4e2c .bird-img { height: 5rem; width: auto; margin: 1rem 0 1rem; }
-  .style-x4e2c .bird-solid { width: 5rem; height: 5rem; background: var(--ca); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; margin: 1rem 0 1rem; }
-  .style-x4e2c .nickname { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--ca); line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .style-x4e2c .sticker { background: color-mix(in srgb, var(--cb) 3%, #faf8f5); }
+  .style-x4e2c .sticker > div { background: color-mix(in srgb, var(--cb) 3%, #faf8f5); }
+  .style-x4e2c .brand-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.6rem; color: var(--ca); opacity: 0.75; letter-spacing: 0.1em; text-transform: uppercase; }
+  .style-x4e2c .brand-sub { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 0.35rem; color: var(--ca); opacity: 0.75; letter-spacing: 0.25em; text-transform: uppercase; }
+  .style-x4e2c .bird-img { height: 5rem; width: auto; margin: 1rem 0 1rem; opacity: 0.75; }
+  .style-x4e2c .bird-solid { width: 6rem; height: 6rem; background: var(--ca); opacity: 0.75; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; margin: 1rem 0 1rem; }
+  .style-x4e2c .nickname { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--ca); opacity: 0.75; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
   .style-x4e2c .roast-pill { padding: 0; border-radius: 0; display: inline-block; margin-bottom: 0.25rem; background: none !important; }
-  .style-x4e2c .roast-pill span { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ca) !important; }
-  .style-x4e2c .tasting { font-family: 'Lora', serif; font-size: 0.45rem; color: #0d0f1f; font-style: italic; margin-bottom: 0.4rem; }
+  .style-x4e2c .roast-pill span { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ca) !important; opacity: 0.75; }
+  .style-x4e2c .tasting { font-family: 'Lora', serif; font-size: 0.55rem; color: #0d0f1f; font-style: italic; margin-bottom: 0.4rem; }
   .style-x4e2c .dots { margin-bottom: 0.4rem; }
+  .style-x4e2c .dots span span { width: 7px !important; height: 7px !important; min-width: 7px !important; min-height: 7px !important; }
+  .style-x4e2c .dots > span { gap: 0.2rem !important; }
   .style-x4e2c .size-line { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.38rem; color: #0d0f1f; letter-spacing: 0.1em; text-transform: uppercase; margin-top: auto; }
 
   .sticker { background: #fff; position: relative; width: 100%; display: flex; flex-direction: column; }
@@ -2039,7 +2013,7 @@
       <div class="bird-solid" style="-webkit-mask-image:url(images/robin-transparent.png); mask-image:url(images/robin-transparent.png);"></div>
       <div class="nickname">Early Bird</div>
       <div class="roast-pill" style="background:var(--cb);"><span style="color:#faf8f5;">Nest Blend</span></div>
-      <div class="tasting">Bright, sweet, nutty, caramely</div>
+      <div class="tasting">Bright · Sweet · Nutty · Caramely</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2050,7 +2024,7 @@
       <div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div>
       <div class="bird-solid" style="-webkit-mask-image:url(images/bluebird-transparent.png); mask-image:url(images/bluebird-transparent.png);"></div>
       <div class="nickname">Colombian Supremo</div>
-      <div class="tasting">Nutty, chocolatey, smooth</div>
+      <div class="tasting">Nutty · Chocolatey · Smooth</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2062,7 +2036,7 @@
       <div class="bird-solid" style="-webkit-mask-image:url(images/canary-transparent.png); mask-image:url(images/canary-transparent.png);"></div>
       <div class="nickname">Feather Soot</div>
       <div class="roast-pill" style="background:var(--cb);"><span style="color:#faf8f5;">Dark Roast</span></div>
-      <div class="tasting">Smoky, bittersweet chocolate</div>
+      <div class="tasting">Smoky · Bittersweet Chocolate</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2074,7 +2048,7 @@
       <div class="bird-solid" style="-webkit-mask-image:url(images/hummingbird-transparent.png); mask-image:url(images/hummingbird-transparent.png);"></div>
       <div class="nickname">Lil’ Sipper</div>
       <div class="roast-pill" style="background:var(--cb);"><span style="color:#faf8f5;">Espresso Blend</span></div>
-      <div class="tasting">Nutty and sweet</div>
+      <div class="tasting">Nutty · Sweet</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2085,7 +2059,7 @@
       <div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div>
       <div class="bird-solid" style="-webkit-mask-image:url(images/osprey-transparent.png); mask-image:url(images/osprey-transparent.png);"></div>
       <div class="nickname">Guatemalan Antigua</div>
-      <div class="tasting">S’mores, smooth, creamy</div>
+      <div class="tasting">S’mores · Smooth · Creamy</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2097,7 +2071,7 @@
       <div class="bird-solid" style="-webkit-mask-image:url(images/woodpecker-transparent.png); mask-image:url(images/woodpecker-transparent.png);"></div>
       <div class="nickname">Dawn Drum</div>
       <div class="roast-pill" style="background:var(--cb);"><span style="color:var(--ca);">Light Roast</span></div>
-      <div class="tasting">Bright, floral, citrus, stone fruit</div>
+      <div class="tasting">Bright · Floral · Citrus · Stone Fruit</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#ddd;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
@@ -2109,7 +2083,7 @@
       <div class="bird-solid" style="-webkit-mask-image:url(images/heron-transparent.png); mask-image:url(images/heron-transparent.png);"></div>
       <div class="nickname">Stillwater Steep</div>
       <div class="roast-pill" style="background:var(--cb);"><span style="color:#faf8f5;">Cold Brew Blend</span></div>
-      <div class="tasting">Smooth, chocolatey, low acidity</div>
+      <div class="tasting">Smooth · Chocolatey · Low Acidity</div>
       <div class="dots"><span style="display:inline-flex;gap:0.15rem;align-items:center;"><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span><span style="width:5px;height:5px;min-width:5px;min-height:5px;flex-shrink:0;border-radius:50%;background:#0d0f1f;"></span></span></div>
       <div class="size-line">Whole Bean | 12oz</div>
     </div></div>
