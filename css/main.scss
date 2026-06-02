@@ -522,6 +522,11 @@ h1.roast-title {
   margin: 0 auto 1.5rem;
   color: #444;
   line-height: 1.7;
+
+  ul,
+  ol {
+    text-align: left;
+  }
 }
 
 .roast-mv-comp-list {

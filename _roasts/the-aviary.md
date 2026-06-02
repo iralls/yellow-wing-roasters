@@ -19,9 +19,9 @@ Four blends, each individually packaged in its own 8oz bag — a great way to ex
 
 Includes:
 
-- **[Nest Blend](/roasts/nest-blend/) — "Early Bird"** · Full City (medium) · Bright and sweet, nutty, caramely
-- **[Espresso Blend](/roasts/espresso-blend/) — "Little Sipper"** · Full City+ (medium-dark) · Nutty and sweet
-- **[Dark Roast](/roasts/dark-roast-blend/) — "Feather Soot"** · Vienna dark · Smoky, bittersweet chocolate
-- **[Light Roast](/roasts/light-roast/) — "Dawn Drum"** · City light · Bright, floral, citrus, stone fruit
+- **[Early Bird](/roasts/early-bird/)** · Nest Blend · Full City (medium) · Bright and sweet, nutty, caramely
+- **[Lil' Sipper](/roasts/lil-sipper/)** · Espresso Blend · Full City+ (medium-dark) · Nutty and sweet
+- **[Feather Soot](/roasts/feather-soot/)** · Dark Roast · Vienna dark · Smoky, bittersweet chocolate
+- **[Dawn Drum](/roasts/dawn-drum/)** · Light Roast · City light · Bright, floral, citrus, stone fruit
 
 All four ship as whole bean. Brewing method varies by blend — details on each roast's page.
