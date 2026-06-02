@@ -1,12 +1,12 @@
 ---
-title: Colombian Supremo
-slug: colombian-supremo
+title: Blue Beacon
+subtitle: Colombian Supremo
+slug: blue-beacon
 category: single origin
 mark_color_a: "#3A6BC4"
 mark_color_b: "#C86830"
 mascot: bluebird
 mascot_file: bluebird-transparent.png
-subtitle: '"Blue Beacon"'
 blurb: Nutty, chocolatey, smooth
 order: 4
 roast_level: Full City (medium)

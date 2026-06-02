@@ -1,6 +1,7 @@
 ---
-title: Light Roast
-slug: light-roast
+title: Dawn Drum
+subtitle: Light Roast
+slug: dawn-drum
 category: blend
 order: 5
 roast_level: City (light)
@@ -11,6 +12,5 @@ mark_color_a: "#C41E1E"
 mark_color_b: "#E8E0D0"
 mascot: woodpecker
 mascot_file: woodpecker-transparent.png
-subtitle: '"Dawn Drum"'
 coming_soon: true
 ---

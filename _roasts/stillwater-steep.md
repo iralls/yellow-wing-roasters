@@ -1,6 +1,7 @@
 ---
-title: Cold Brew Blend
-slug: cold-brew-blend
+title: Stillwater Steep
+subtitle: Cold Brew Blend
+slug: stillwater-steep
 category: blend
 order: 6
 roast_level: Vienna (dark)
@@ -11,7 +12,6 @@ mark_color_a: "#4A6B8C"
 mark_color_b: "#1A2535"
 mascot: heron
 mascot_file: heron-transparent.png
-subtitle: '"Stillwater Steep"'
 coming_soon: true
 published: false
 ---

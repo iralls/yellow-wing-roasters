@@ -1,6 +1,7 @@
 ---
-title: Espresso Blend
-slug: espresso-blend
+title: "Lil' Sipper"
+subtitle: Espresso Blend
+slug: lil-sipper
 category: blend
 order: 2
 roast_level: Full City+ (medium-dark)
@@ -11,6 +12,5 @@ mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
 mascot: hummingbird
 mascot_file: hummingbird-transparent.png
-subtitle: '"Lil'' Sipper"'
 coming_soon: true
 ---

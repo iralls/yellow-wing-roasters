@@ -1,6 +1,7 @@
 ---
-title: Decaf Blend
-slug: decaf
+title: Morning Ease
+subtitle: Decaf Blend
+slug: morning-ease
 category: blend
 order: 7
 roast_level: City+ (medium)
@@ -12,7 +13,6 @@ mark_color_b: "#D4B5A0"
 mark_gradient: "linear-gradient(to right, #9C8E7E 0%, #9C8E7E 50%, #D4B5A0 50%, #D4B5A0 100%)"
 mascot: mourning-dove
 mascot_file: mourning-dove-transparent.png
-subtitle: '"Morning Ease"'
 coming_soon: true
 published: false
 ---

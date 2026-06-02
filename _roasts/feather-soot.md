@@ -1,6 +1,7 @@
 ---
-title: Dark Roast
-slug: dark-roast-blend
+title: Feather Soot
+subtitle: Dark Roast
+slug: feather-soot
 category: blend
 order: 3
 roast_level: Vienna (dark)
@@ -11,7 +12,6 @@ mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary
 mascot_file: canary-transparent.png
-subtitle: '"Feather Soot"'
 coming_soon: true
 ---
 

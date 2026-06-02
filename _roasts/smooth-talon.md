@@ -1,6 +1,7 @@
 ---
-title: Guatemalan Antigua
-slug: guatemalan-antigua
+title: Smooth Talon
+subtitle: Guatemalan Antigua
+slug: smooth-talon
 category: single origin
 order: 5
 roast_level: Full City+ (medium-dark)
@@ -11,6 +12,5 @@ mark_color_a: "#3D2B1F"
 mark_color_b: "#F4F2EA"
 mascot: osprey
 mascot_file: osprey-transparent.png
-subtitle: '"Smooth Talon"'
 roast_profile: /profiles/guatemalan-antigua-full-city-plus.alog
 ---

@@ -1,6 +1,7 @@
 ---
-title: Nest Blend
-slug: nest-blend
+title: Early Bird
+subtitle: Nest Blend
+slug: early-bird
 category: blend
 order: 1
 roast_level: Full City (medium)
@@ -11,7 +12,6 @@ mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
 mascot_file: robin-transparent.png
-subtitle: '"Early Bird"'
 
 card_image: /images/robin-transparent.png
 components:
