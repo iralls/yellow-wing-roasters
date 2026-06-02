@@ -11,7 +11,7 @@ brewing_method: French press, cold brew, espresso, drip
 mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary
-mascot_file: canary-transparent.png
+mascot_file: audubon-canary-transparent.png
 coming_soon: true
 ---
 

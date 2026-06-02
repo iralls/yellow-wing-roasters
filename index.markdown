@@ -11,10 +11,10 @@ layout: index
     <a href="{{ '/about' | relative_url }}" class="index-hero-cta-secondary">About Us</a>
   </div>
   <div class="index-hero-birds">
-    <img src="/images/robin-transparent.png" alt="">
-    <img src="/images/canary-transparent.png" alt="">
-    <img src="/images/hummingbird-transparent.png" alt="">
-    <img src="/images/bluebird-transparent.png" alt="">
-    <img src="/images/osprey-transparent.png" alt="">
+    <img src="/images/audubon-robin-transparent.png" alt="">
+    <img src="/images/audubon-canary-transparent.png" alt="">
+    <img src="/images/audubon-hummingbird-transparent.png" alt="">
+    <img src="/images/audubon-bluebird-transparent.png" alt="">
+    <img src="/images/audubon-osprey-transparent.png" alt="">
   </div>
 </section>

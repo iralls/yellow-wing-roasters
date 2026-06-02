@@ -11,6 +11,6 @@ brewing_method: Espresso
 mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
 mascot: hummingbird
-mascot_file: hummingbird-transparent.png
+mascot_file: audubon-hummingbird-transparent.png
 coming_soon: true
 ---

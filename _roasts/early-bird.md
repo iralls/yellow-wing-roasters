@@ -11,9 +11,9 @@ brewing_method: French press, pour-over, or espresso
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
-mascot_file: robin-transparent.png
+mascot_file: audubon-robin-transparent.png
 
-card_image: /images/robin-transparent.png
+card_image: /images/audubon-robin-transparent.png
 components:
   - name: Colombian Supremo
     image: /images/colombian-supremo-city.png
