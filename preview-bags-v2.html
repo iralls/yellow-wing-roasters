@@ -56,6 +56,48 @@
     overflow: hidden;
     position: relative;
   }
+  .size-275x4 .sticker {
+    width: 2.75in;
+    height: 4in;
+  }
+  .size-275x4.style-b .brand-logo {
+    height: 1.3in;
+  }
+  .size-275x4.style-b .brand-wrap {
+    margin-bottom: 0.18in;
+  }
+  .size-275x4.style-c .brand {
+    font-size: 16pt;
+    margin-bottom: 0.35in;
+  }
+  .size-275x4.style-c .bird-img {
+    height: 0.9in;
+  }
+  .size-275x4.style-c .nickname {
+    font-size: 15pt;
+  }
+  .size-275x4.style-c .blend-name {
+    font-size: 8.5pt;
+  }
+  .size-275x4.style-c .tasting {
+    font-size: 8.5pt;
+  }
+  .size-275x4.style-c .dot {
+    width: 8px;
+    height: 8px;
+  }
+  .size-275x4.style-b .brand-name {
+    font-size: 12.5pt;
+  }
+  .size-275x4.style-b .brand-sub {
+    font-size: 7.5pt;
+  }
+  .size-275x4.style-b .bird-img {
+    margin-bottom: 0.18in;
+  }
+  .size-275x4.style-b .nickname {
+    color: #2c1e14;
+  }
 
   /* ── Style A — shared structure ── */
   .style-a .sticker {
@@ -67,7 +109,7 @@
   .style-a .brand {
     font-family: "Montserrat", sans-serif;
     font-weight: 900;
-    font-size: 8pt;
+    font-size: 9.5pt;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--ca);
@@ -86,7 +128,7 @@
   .style-a .nickname {
     font-family: "Montserrat", sans-serif;
     font-weight: 800;
-    font-size: 14pt;
+    font-size: 12.5pt;
     line-height: 1.1;
     color: var(--ca);
     margin-bottom: 0.04in;
@@ -169,11 +211,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 0.1in;
+    margin-bottom: 0.08in;
   }
 
   .style-b .brand-logo {
-    height: 0.575in;
+    height: 0.7in;
     width: auto;
     object-fit: contain;
     margin-bottom: 0.02in;
@@ -201,14 +243,14 @@
     height: 0.65in;
     width: auto;
     object-fit: contain;
-    margin-bottom: 0.1in;
+    margin-bottom: 0.08in;
     filter: drop-shadow(0 1px 4px rgba(0,0,0,0.1));
   }
 
   .style-b .nickname {
     font-family: "Montserrat", sans-serif;
     font-weight: 800;
-    font-size: 14pt;
+    font-size: 12pt;
     line-height: 1.1;
     color: var(--ca);
     margin-bottom: 0.04in;
@@ -269,6 +311,416 @@
     text-transform: uppercase;
     color: #aaa;
     margin-top: auto;
+  }
+
+  /* ── Style C — like A, feather icon in size line ── */
+  .style-c .sticker {
+    background: #faf8f5;
+    padding: 0.3in 0.2in 0.12in;
+    justify-content: flex-start;
+  }
+
+  .style-c .brand {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 9.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ca);
+    opacity: 0.7;
+    margin-bottom: 0.15in;
+  }
+
+  .style-c .bird-img {
+    height: 0.7in;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 0.12in;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.1));
+  }
+
+  .style-c .nickname {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 12.5pt;
+    line-height: 1.1;
+    color: var(--ca);
+    margin-bottom: 0.04in;
+  }
+
+  .style-c .blend-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 0.05in;
+  }
+
+  .style-c .divider {
+    width: 0.6in;
+    height: 1px;
+    min-height: 1px;
+    background: #ddd;
+    margin-bottom: 0.04in;
+    flex-shrink: 0;
+  }
+
+  .style-c .tasting {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 7pt;
+    color: #8a7060;
+    line-height: 1.4;
+    margin-bottom: 0.04in;
+    padding: 0 0.05in;
+  }
+
+  .style-c .dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    margin-bottom: 0.08in;
+  }
+  .style-c .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e8e0d5;
+  }
+  .style-c .dot-1 { background: #d4b896; }
+  .style-c .dot-2 { background: #b8944a; }
+  .style-c .dot-3 { background: #8a6830; }
+  .style-c .dot-4 { background: #5c3d1a; }
+  .style-c .dot-5 { background: #2c1e14; }
+
+  .style-c .size-line {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 6pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.06in;
+    width: 100%;
+  }
+
+  .style-c .size-feather {
+    height: 0.42in;
+    width: auto;
+    object-fit: contain;
+    opacity: 1;
+  }
+
+  /* ── Style E — two-column layout ── */
+  .style-e .sticker {
+    background: #faf8f5;
+    padding: 0.18in 0.18in 0.15in;
+    justify-content: flex-start;
+  }
+
+  .style-e .brand-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.12in;
+    width: 100%;
+  }
+
+  .style-e .brand-logo {
+    height: 1.3in;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 0.02in;
+  }
+
+  .style-e .brand-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 12.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f0c838;
+  }
+
+  .style-e .brand-sub {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 7.5pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #302010;
+  }
+
+  .style-e .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.12in;
+    flex: 1;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .style-e .col-left {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-right: 0.1in;
+    border-right: none;
+    background-image: linear-gradient(#e8e0d5, #e8e0d5);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 1px 60%;
+  }
+
+  .style-e .col-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .style-e .nickname {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 14pt;
+    line-height: 1.05;
+    color: #2c1e14;
+    margin-bottom: 0.08in;
+    width: 100%;
+  }
+
+  .style-e .blend-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 0.08in;
+  }
+
+  .style-e .tasting {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 9.5pt;
+    color: #8a7060;
+    line-height: 1.5;
+    margin-bottom: 0.08in;
+  }
+
+  .style-e .dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .style-e .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e8e0d5;
+  }
+  .style-e .dot-1 { background: #d4b896; }
+  .style-e .dot-2 { background: #b8944a; }
+  .style-e .dot-3 { background: #8a6830; }
+  .style-e .dot-4 { background: #5c3d1a; }
+  .style-e .dot-5 { background: #2c1e14; }
+
+  .style-e .bird-img {
+    height: 1.4in;
+    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  }
+
+  .style-e .size-line {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 6.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ── Style F — three-band background ── */
+  .style-f .sticker {
+    background: #faf8f5;
+    padding: 0;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+  .style-f .sticker-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .style-f .sticker-bg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .style-f .sticker-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.18in 0.18in 0.15in;
+  }
+
+  .style-f .brand-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.12in;
+    width: 100%;
+  }
+
+  .style-f .brand-logo {
+    height: 1.3in;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 0.02in;
+  }
+
+  .style-f .brand-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 12.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f0c838;
+  }
+
+  .style-f .brand-sub {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 7.5pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #5c4433;
+  }
+
+  .style-f .nickname {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 17pt;
+    line-height: 1.05;
+    color: #2c1e14;
+    margin-bottom: 0.06in;
+    text-align: right;
+  }
+
+  .style-f .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.12in;
+    flex: 1;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .style-f .col-left {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0.15in;
+    align-items: flex-end;
+    padding-left: 0.1in;
+    order: 2;
+  }
+
+  .style-f .col-right {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .style-f .blend-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7a6050;
+    margin-bottom: 0.06in;
+  }
+
+  .style-f .dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .style-f .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.15);
+  }
+  .style-f .dot-1 { background: #111; }
+  .style-f .dot-2 { background: #111; }
+  .style-f .dot-3 { background: #111; }
+  .style-f .dot-4 { background: #111; }
+  .style-f .dot-5 { background: #111; }
+
+  .style-f .bird-img {
+    height: 1.28in;
+    max-width: none;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  }
+
+  .style-f .flip .col-left {
+    order: 1;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 0;
+    padding-right: 0.1in;
+  }
+  .style-f .flip .col-right {
+    order: 2;
+  }
+  .style-f .flip .nickname {
+    text-align: left;
+  }
+
+  .style-f .size-line {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 6.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #F0ECE8;
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
   }
 
   /* ── Per-roast colors ── */
@@ -366,6 +818,87 @@
 </div>
 
 <div class="page-header">
+  <h1>Style C</h1>
+  <p>Like A, with feather icon in the size line</p>
+</div>
+
+<div class="bag-grid style-c">
+
+  <!-- Early Bird -->
+  <div class="sticker early-bird">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">Nest Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="dots">
+      <span class="dot dot-1"></span>
+      <span class="dot dot-2"></span>
+      <span class="dot dot-3"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+
+  <!-- Lil' Sipper -->
+  <div class="sticker lil-sipper">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Nutty · sweet</div>
+    <div class="dots">
+      <span class="dot dot-1"></span>
+      <span class="dot dot-2"></span>
+      <span class="dot dot-3"></span>
+      <span class="dot dot-4"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+
+  <!-- Feather Soot -->
+  <div class="sticker feather-soot">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Smoky · bittersweet chocolate</div>
+    <div class="dots">
+      <span class="dot dot-1"></span>
+      <span class="dot dot-2"></span>
+      <span class="dot dot-3"></span>
+      <span class="dot dot-4"></span>
+      <span class="dot dot-5"></span>
+    </div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+
+  <!-- Dawn Drum -->
+  <div class="sticker dawn-drum">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="blend-name">Light Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · floral · citrus · stone fruit</div>
+    <div class="dots">
+      <span class="dot dot-1"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+
+</div>
+
+<div class="page-header">
   <h1>Style B</h1>
   <p>Logo image instead of text, smaller bird</p>
 </div>
@@ -458,6 +991,304 @@
       <span class="dot"></span>
     </div>
     <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style A</h1>
+  <p>Same styles, larger label</p>
+</div>
+
+<div class="bag-grid style-a size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">Nest Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Nutty · sweet</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Smoky · bittersweet chocolate</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="blend-name">Light Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · floral · citrus · stone fruit</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style C</h1>
+  <p>Feather in size line, larger label</p>
+</div>
+
+<div class="bag-grid style-c size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">Nest Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Nutty · sweet</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Smoky · bittersweet chocolate</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand">Yellow Wing Roasters</div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="blend-name">Light Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · floral · citrus · stone fruit</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style B</h1>
+  <p>Logo image, smaller bird, larger label</p>
+</div>
+
+<div class="bag-grid style-b size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">Nest Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Nutty · sweet</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Smoky · bittersweet chocolate</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="blend-name">Light Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · floral · citrus · stone fruit</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style E</h1>
+  <p>Two-column: info left, bird right</p>
+</div>
+
+<div class="bag-grid style-e size-275x4">
+
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <div class="nickname">Early Bird</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="blend-name">Nest Blend</div>
+        <div class="tasting">Bright · sweet · nutty</div>
+        <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="col-right">
+        <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+      </div>
+    </div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <div class="nickname">Lil' Sipper</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="blend-name">Espresso Blend</div>
+        <div class="tasting">Nutty · sweet</div>
+        <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+      </div>
+      <div class="col-right">
+        <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+      </div>
+    </div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <div class="nickname">Feather Soot</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="blend-name">Dark Roast</div>
+        <div class="tasting">Smoky · bittersweet chocolate</div>
+        <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+      </div>
+      <div class="col-right">
+        <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+      </div>
+    </div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <div class="nickname">Dawn Drum</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="blend-name">Light Roast</div>
+        <div class="tasting">Bright · floral · citrus · stone fruit</div>
+        <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="col-right">
+        <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+      </div>
+    </div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style F</h1>
+  <p>Three-band background with organic dividers</p>
+</div>
+
+<div class="bag-grid style-f size-275x4">
+
+  <div class="sticker early-bird">
+    <div class="sticker-bg"><svg viewBox="0 0 264 384" preserveAspectRatio="none"><rect width="264" height="384" fill="#faf5ee"/><path d="M0,192 C50,185 90,200 132,195 C174,190 214,178 264,188 L264,384 L0,384 Z" fill="#E8C9A0"/><path d="M0,348 C60,355 100,342 140,346 C190,352 230,340 264,350 L264,384 L0,384 Z" fill="#C4956A"/></svg></div>
+    <div class="sticker-content">
+      <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+      <div class="two-col flip">
+        <div class="col-left">
+          <div class="nickname">Early Bird</div>
+          <div class="blend-name">Nest Blend</div>
+          <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+        <div class="col-right">
+          <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+        </div>
+      </div>
+      <div class="size-line">Whole Bean · 12 oz</div>
+    </div>
+  </div>
+
+  <div class="sticker lil-sipper">
+    <div class="sticker-bg"><svg viewBox="0 0 264 384" preserveAspectRatio="none"><rect width="264" height="384" fill="#E8F0E0"/><path d="M0,192 C50,185 90,200 132,195 C174,190 214,178 264,188 L264,384 L0,384 Z" fill="#A8C8A0"/><path d="M0,348 C60,355 100,342 140,346 C190,352 230,340 264,350 L264,384 L0,384 Z" fill="#5A7A58"/></svg></div>
+    <div class="sticker-content">
+      <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+      <div class="two-col flip">
+        <div class="col-left">
+          <div class="nickname">Lil' Sipper</div>
+          <div class="blend-name">Espresso Blend</div>
+          <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+        </div>
+        <div class="col-right">
+          <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+        </div>
+      </div>
+      <div class="size-line">Whole Bean · 12 oz</div>
+    </div>
+  </div>
+
+  <div class="sticker feather-soot">
+    <div class="sticker-bg"><svg viewBox="0 0 264 384" preserveAspectRatio="none"><rect width="264" height="384" fill="#F0ECE8"/><path d="M0,192 C50,185 90,200 132,195 C174,190 214,178 264,188 L264,384 L0,384 Z" fill="#C8C0B0"/><path d="M0,348 C60,355 100,342 140,346 C190,352 230,340 264,350 L264,384 L0,384 Z" fill="#5A5048"/></svg></div>
+    <div class="sticker-content">
+      <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+      <div class="two-col">
+        <div class="col-left">
+          <div class="nickname">Feather Soot</div>
+          <div class="blend-name">Dark Roast</div>
+          <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+        </div>
+        <div class="col-right">
+          <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+        </div>
+      </div>
+      <div class="size-line">Whole Bean · 12 oz</div>
+    </div>
+  </div>
+
+  <div class="sticker dawn-drum">
+    <div class="sticker-bg"><svg viewBox="0 0 264 384" preserveAspectRatio="none"><rect width="264" height="384" fill="#F5EDE8"/><path d="M0,192 C50,185 90,200 132,195 C174,190 214,178 264,188 L264,384 L0,384 Z" fill="#D8B0A0"/><path d="M0,348 C60,355 100,342 140,346 C190,352 230,340 264,350 L264,384 L0,384 Z" fill="#A05850"/></svg></div>
+    <div class="sticker-content">
+      <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+      <div class="two-col">
+        <div class="col-left">
+          <div class="nickname">Dawn Drum</div>
+          <div class="blend-name">Light Roast</div>
+          <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+        <div class="col-right">
+          <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+        </div>
+      </div>
+      <div class="size-line">Whole Bean · 12 oz</div>
+    </div>
   </div>
 
 </div>
