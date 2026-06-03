@@ -6,7 +6,7 @@ category: blend
 order: 1
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Bright and sweet, nutty, caramely, some chocolate
+tasting_notes: Bright, sweet, nutty
 brewing_method: French press, pour-over, or espresso
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
