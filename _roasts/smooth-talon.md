@@ -1,6 +1,5 @@
 ---
 title: Smooth Talon
-subtitle: Guatemalan Antigua
 slug: smooth-talon
 category: single origin
 order: 5

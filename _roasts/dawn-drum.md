@@ -1,6 +1,5 @@
 ---
 title: Dawn Drum
-subtitle: Light Roast
 slug: dawn-drum
 category: blend
 order: 5

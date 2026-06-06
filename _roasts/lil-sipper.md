@@ -1,6 +1,5 @@
 ---
 title: "Lil' Sipper"
-subtitle: Espresso Blend
 slug: lil-sipper
 category: blend
 order: 2

@@ -1,6 +1,5 @@
 ---
 title: Blue Beacon
-subtitle: Colombian Supremo
 slug: blue-beacon
 category: single origin
 mark_color_a: "#3A6BC4"

@@ -258,17 +258,6 @@ h1.roast-title {
   white-space: nowrap;
 }
 
-.roast-title-subtitle {
-  display: block;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #b08060;
-  margin-bottom: 0.25rem;
-}
-
 .roast-badge {
   display: inline-block;
   background: #f0dcc8;
@@ -433,17 +422,6 @@ h1.roast-title {
 .roast-mv-bird {
   height: 10rem;
   width: auto;
-}
-
-.roast-mv-subtitle {
-  font-family: $font-display;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #999;
-  margin-bottom: 0.25rem;
-  text-align: center;
 }
 
 .roast-mv-title {
@@ -1515,26 +1493,18 @@ h1.roast-title {
   transform: scale(1.08);
 }
 
-.roasts-entry-subtitle {
-  font-family: $font-display;
-  font-weight: 700;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #999;
-  margin-bottom: 0.15rem;
-}
-
 .roasts-entry-title {
   font-family: $font-display;
   font-weight: 800;
   font-size: 1.1rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0;
+  line-height: 1.2;
 }
 
 .roasts-entry-level {
-  display: inline-block;
-  margin-bottom: 0.4rem;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.15rem;
 }
 
 .roasts-entry-notes {

@@ -1,6 +1,5 @@
 ---
 title: Morning Ease
-subtitle: Decaf Blend
 slug: morning-ease
 category: blend
 order: 7
