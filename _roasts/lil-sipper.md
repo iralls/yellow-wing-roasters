@@ -13,3 +13,5 @@ mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 coming_soon: true
 ---
+
+A blend of Guatemalan and Ethiopian.
