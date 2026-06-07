@@ -1,6 +1,7 @@
 ---
-title: Smooth Talon
-slug: smooth-talon
+title: Guatemalan Antigua
+subtitle: Smooth Talon
+slug: guatemalan-antigua
 category: single origin
 order: 5
 roast_level: Full City+ (medium-dark)
