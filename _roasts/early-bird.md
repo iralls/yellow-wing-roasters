@@ -20,14 +20,12 @@ components:
   - name: Peru Norandino
     image: /images/peru-norandino.jpg
     profile: /profiles/peru-norandino.alog
-  - name: Zambia RFA AA
-    image: /images/zambia-rfa.jpg
-    profile: /profiles/zambia-rfa.alog
+  - name: Burundi Masha
   - name: Kenya Premium Meru AA
     image: /images/kenya-meru-aa.jpg
     profile: /profiles/kenya-meru-aa.alog
 ---
 
-A balanced flagship modeled after Willoughby's house blend, comprising our Colombian Supremo, Peru Norandino, Zambia RFA AA, and Kenya Premium Meru AA.
+A balanced flagship modeled after Willoughby's house blend, comprising our Colombian Supremo, Peru Norandino, Burundi Masha, and Kenya Premium Meru AA.
 
 Brews well as French press or pour-over, or pulled as espresso if you prefer a lighter roast.

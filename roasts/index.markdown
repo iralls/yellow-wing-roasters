@@ -30,3 +30,13 @@ Our current lineup. All roasts ship as whole bean.
   {% endfor %}
   </div>
 {% endfor %}
+
+<h2 class="roasts-category">BYOB (Bring Your Own Beans)</h2>
+
+<div class="byob-section">
+  <a href="{{ '/roasts/byob/' | relative_url }}" class="byob-entry">
+    <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="byob-mascot">
+    <p class="byob-intro">Have a specific green coffee you've been eyeing? Send me a link and I'll roast it for you.</p>
+    <span class="byob-link">Learn more &rarr;</span>
+  </a>
+</div>
