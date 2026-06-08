@@ -3,8 +3,8 @@ title: Early Bird
 slug: early-bird
 category: blend
 order: 1
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: City+ (light-medium)
+roast_dots: 2
 tasting_notes: Bright, sweet, nutty
 brewing_method: French press, pour-over, or espresso
 mark_color_a: "#D4572A"
