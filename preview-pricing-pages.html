@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing on Pages — Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; }
+
+  .section {
+    text-align: center; padding: 2rem; background: #1a1816;
+    font-family: "Montserrat", sans-serif;
+  }
+  .section h2 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666; margin-bottom: 0.3rem; }
+  .section p { font-size: 1.2rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.2rem; }
+  .section .desc { font-size: 0.8rem; color: #888; font-family: "Lora", serif; font-style: italic; }
+
+  .page-mock { background: #faf8f5; max-width: 32rem; margin: 0 auto; padding: 2rem; }
+
+  .btn {
+    display: inline-block;
+    padding: 0.45rem 1rem;
+    background: #2c1e14;
+    color: #faf8f5;
+    border: 0;
+    border-radius: 999px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .btn-wrap {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 1rem 0;
+  }
+
+  .btn-label {
+    font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.85rem;
+    color: #222; text-align: center; margin-bottom: 0.5rem;
+  }
+
+  .mock-title {
+    font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 1.4rem;
+    color: #222; text-align: center; margin-bottom: 0.25rem;
+  }
+  .mock-sub {
+    font-family: "Montserrat", sans-serif; font-weight: 600; font-size: 0.5rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #D4572A;
+    text-align: center; margin-bottom: 1rem;
+  }
+  .mock-notes {
+    font-family: "Lora", serif; font-size: 0.85rem; color: #888;
+    font-style: italic; text-align: center; margin-bottom: 1.5rem;
+  }
+
+  .divider { width: 3rem; height: 1px; background: #ddd; margin: 1.5rem auto; }
+
+  /* Order page mock */
+  .cart-row {
+    display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .cart-row:last-child { border-bottom: none; }
+  .cart-bird { height: 2rem; width: auto; }
+  .cart-info { flex: 1; }
+  .cart-name { font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.85rem; color: #222; }
+  .cart-detail { font-size: 0.75rem; color: #999; }
+  .cart-price { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 0.9rem; color: #222; }
+  .cart-qty {
+    width: 2.5rem; padding: 0.3rem; text-align: center;
+    border: 1px solid #ddd; border-radius: 0.25rem;
+    font-family: "Montserrat", sans-serif; font-size: 0.8rem;
+  }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 0; border-top: 2px solid #222; margin-top: 0.5rem;
+  }
+  .cart-total-label { font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.9rem; color: #222; }
+  .cart-total-value { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 1.1rem; color: #222; }
+</style>
+</head>
+<body>
+
+<!-- ═══ ROAST DETAIL — Price in buttons ═══ -->
+<div class="section">
+  <h2>Roast Detail Page</h2>
+  <p>Option A: Price in Button</p>
+  <span class="desc">Each size button shows the price. Clean and immediate.</span>
+</div>
+<div class="page-mock">
+  <div class="mock-title">House Blend</div>
+  <div class="mock-sub">"Early Bird"</div>
+  <div class="mock-notes">Bright and sweet, nutty, caramely</div>
+  <div class="btn-label">Add to order:</div>
+  <div class="btn-wrap">
+    <button class="btn">8oz — $10</button>
+    <button class="btn">12oz — $13</button>
+    <button class="btn">16oz — $16</button>
+  </div>
+  <div class="divider"></div>
+  <div class="mock-title" style="font-size:1.2rem;">Colombian Supremo</div>
+  <div class="mock-sub" style="color:#3A6BC4;">"Blue Anchor"</div>
+  <div class="mock-notes">Nutty, chocolatey, smooth</div>
+  <div class="btn-label">Add to order:</div>
+  <div class="btn-wrap">
+    <button class="btn">8oz — $14</button>
+    <button class="btn">12oz — $16</button>
+    <button class="btn">16oz — $18</button>
+  </div>
+</div>
+
+<!-- ═══ ROAST DETAIL — Price below buttons ═══ -->
+<div class="section">
+  <h2>Roast Detail Page</h2>
+  <p>Option B: Price Below Size</p>
+  <span class="desc">Size on top, price underneath in smaller text. Less cluttered buttons.</span>
+</div>
+<div class="page-mock">
+  <div class="mock-title">House Blend</div>
+  <div class="mock-sub">"Early Bird"</div>
+  <div class="mock-notes">Bright and sweet, nutty, caramely</div>
+  <div class="btn-label">Add to order:</div>
+  <div class="btn-wrap">
+    <div style="text-align:center;">
+      <button class="btn">8oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$10</div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn">12oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$13</div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn">16oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$16</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="mock-title" style="font-size:1.2rem;">Colombian Supremo</div>
+  <div class="mock-sub" style="color:#3A6BC4;">"Blue Anchor"</div>
+  <div class="mock-notes">Nutty, chocolatey, smooth</div>
+  <div class="btn-label">Add to order:</div>
+  <div class="btn-wrap">
+    <div style="text-align:center;">
+      <button class="btn">8oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$14</div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn">12oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$16</div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn">16oz</button>
+      <div style="font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.6rem; color:#999; margin-top:0.3rem;">$18</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ORDER PAGE — Cart with prices ═══ -->
+<div class="section">
+  <h2>Order Page</h2>
+  <p>Cart with Line Prices</p>
+  <span class="desc">Each cart item shows the size, unit price, quantity, and line total.</span>
+</div>
+<div class="page-mock">
+  <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.2rem; color:#222; margin-bottom:1rem;">Your Order</div>
+
+  <div class="cart-row">
+    <img src="images/robin-transparent.png" alt="" class="cart-bird">
+    <div class="cart-info">
+      <div class="cart-name">House Blend</div>
+      <div class="cart-detail">12oz · $13 each</div>
+    </div>
+    <input type="text" class="cart-qty" value="2" readonly>
+    <div class="cart-price">$26</div>
+  </div>
+
+  <div class="cart-row">
+    <img src="images/bluebird-transparent.png" alt="" class="cart-bird">
+    <div class="cart-info">
+      <div class="cart-name">Colombian Supremo</div>
+      <div class="cart-detail">8oz · $14 each</div>
+    </div>
+    <input type="text" class="cart-qty" value="1" readonly>
+    <div class="cart-price">$14</div>
+  </div>
+
+  <div class="cart-row">
+    <img src="images/osprey-transparent.png" alt="" class="cart-bird">
+    <div class="cart-info">
+      <div class="cart-name">Guatemalan Antigua</div>
+      <div class="cart-detail">16oz · $18 each</div>
+    </div>
+    <input type="text" class="cart-qty" value="1" readonly>
+    <div class="cart-price">$18</div>
+  </div>
+
+  <div class="cart-total">
+    <div class="cart-total-label">Total</div>
+    <div class="cart-total-value">$58</div>
+  </div>
+
+  <div style="margin-top:1.5rem; text-align:center;">
+    <button class="btn" style="padding:0.7rem 2rem; font-size:0.85rem;">Place Order</button>
+  </div>
+</div>
+
+<!-- ═══ ORDER PAGE — Minimal ═══ -->
+<div class="section">
+  <h2>Order Page</h2>
+  <p>Minimal Cart</p>
+  <span class="desc">No bird images. Compact list with price per item.</span>
+</div>
+<div class="page-mock">
+  <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.2rem; color:#222; margin-bottom:1rem;">Your Order</div>
+
+  <div style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #eee;">
+    <div>
+      <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">House Blend</span>
+      <span style="font-size:0.75rem; color:#999;"> · 12oz × 2</span>
+    </div>
+    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">$26</span>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #eee;">
+    <div>
+      <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">Colombian Supremo</span>
+      <span style="font-size:0.75rem; color:#999;"> · 8oz × 1</span>
+    </div>
+    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">$14</span>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #eee;">
+    <div>
+      <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">Guatemalan Antigua</span>
+      <span style="font-size:0.75rem; color:#999;"> · 16oz × 1</span>
+    </div>
+    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.85rem; color:#222;">$18</span>
+  </div>
+
+  <div class="cart-total">
+    <div class="cart-total-label">Total</div>
+    <div class="cart-total-value">$58</div>
+  </div>
+
+  <div style="margin-top:1.5rem; text-align:center;">
+    <button class="btn" style="padding:0.7rem 2rem; font-size:0.85rem;">Place Order</button>
+  </div>
+</div>
+
+</body>
+</html>

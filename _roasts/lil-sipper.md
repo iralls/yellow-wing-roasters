@@ -3,8 +3,8 @@ title: "Lil' Sipper"
 slug: lil-sipper
 category: blend
 order: 2
-roast_level: Full City+ (medium-dark)
-roast_dots: 4
+roast_level: Full City (medium)
+roast_dots: 3
 tasting_notes: Chocolate, sweet, bright
 brewing_method: Espresso
 mark_color_a: "#1F6B4A"

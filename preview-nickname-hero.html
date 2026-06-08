@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview — Nickname Hero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;600;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: "Lora", Georgia, serif;
+    font-size: 15px;
+    background: #faf8f5;
+    color: #333;
+  }
+  @media (min-width: 30rem) {
+    html { font-size: 18px; }
+  }
+
+  .container {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* — Bird — */
+  .roast-mv-bird-wrap {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .roast-mv-bird {
+    height: 7rem;
+    width: auto;
+    filter: drop-shadow(0 3px 10px rgba(0,0,0,0.12));
+  }
+
+  /* — Nickname (the big one) — */
+  .roast-mv-nickname {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin: 0 0 0.3rem;
+    color: #2c1e14;
+  }
+
+  /* — Actual name (smaller, secondary) — */
+  .roast-mv-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #999;
+    margin: 0 0 1.5rem;
+  }
+
+  /* — Tasting notes — */
+  .roast-mv-tasting {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #8a7060;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* — Divider — */
+  .roast-mv-divider {
+    width: 3rem;
+    height: 2px;
+    background: #ddd;
+    margin: 2rem auto;
+  }
+
+  /* — Meta row — */
+  .roast-mv-meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  .roast-mv-meta-item { text-align: center; }
+  .roast-mv-meta-label {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 0.2rem;
+  }
+  .roast-mv-meta-value {
+    color: #2c1e14;
+    font-weight: 600;
+  }
+  .roast-mv-meta-sublabel {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 0.6rem;
+    color: #bbb;
+    margin-top: 0.2rem;
+  }
+
+  /* — Roast dots — */
+  .roast-dots { display: inline-flex; gap: 0.3rem; align-items: center; }
+  .roast-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #e8e0d5;
+  }
+  .roast-dot-1 { background: #d4b896; }
+  .roast-dot-2 { background: #b8944a; }
+  .roast-dot-3 { background: #8a6830; }
+  .roast-dot-4 { background: #5c3d1a; }
+  .roast-dot-5 { background: #2c1e14; }
+
+  /* — Body — */
+  .roast-mv-body {
+    text-align: center;
+    max-width: 28rem;
+    margin: 0 auto 1.5rem;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* — Buttons — */
+  .add-to-order-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .add-to-order-btn {
+    display: inline-block;
+    padding: 0.45rem 1rem;
+    background: #2c1e14;
+    color: #faf8f5;
+    border: 0;
+    border-radius: 999px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .add-to-order-btn:hover {
+    background: #4a3528;
+    transform: translateY(-1px);
+  }
+
+  /* — Components — */
+  .roast-mv-comp-list {
+    list-style: none;
+    text-align: center;
+  }
+  .roast-mv-comp-list li {
+    display: inline;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #2c1e14;
+  }
+  .roast-mv-comp-list li + li::before {
+    content: " · ";
+    color: #ccc;
+  }
+
+  /* — Comparison header — */
+  .preview-header {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 2rem;
+  }
+  .preview-header h1 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.25rem;
+  }
+  .preview-header p {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .preview-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+  }
+  @media (max-width: 60rem) {
+    .preview-columns { grid-template-columns: 1fr; max-width: 30rem; }
+  }
+  .preview-col-label {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #bbb;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Current style subtitle (small above title) */
+  .roast-mv-subtitle-current {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+  .roast-mv-title-current {
+    font-family: "Montserrat", sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2c1e14;
+    margin: 0 0 0.5rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-header">
+  <h1>Nickname Hero — Roast Previews</h1>
+  <p>Nickname as hero text, colored by each bird's theme</p>
+</div>
+
+<div class="preview-columns">
+
+  <!-- ===== EARLY BIRD (Nest Blend) ===== -->
+  <div>
+    <div class="preview-col-label">Robin — #D4572A</div>
+    <div style="text-align:center; --theme-color: #D4572A;">
+      <div class="roast-mv-bird-wrap">
+        <img src="/images/robin-transparent.png" alt="" class="roast-mv-bird">
+      </div>
+      <h1 class="roast-mv-nickname">Early Bird</h1>
+      <div class="roast-mv-title">Nest Blend</div>
+
+      <p class="roast-mv-tasting">Bright and sweet, nutty, caramely, some chocolate</p>
+
+      <div class="roast-mv-meta-row">
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Roast Level</div>
+          <div class="roast-mv-meta-value">
+            <span class="roast-dots">
+              <span class="roast-dot roast-dot-1"></span>
+              <span class="roast-dot roast-dot-2"></span>
+              <span class="roast-dot roast-dot-3"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+            </span>
+          </div>
+          <div class="roast-mv-meta-sublabel">Full City (medium)</div>
+        </div>
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Brewing</div>
+          <div class="roast-mv-meta-value">French press, pour-over, or espresso</div>
+        </div>
+      </div>
+
+      <div class="roast-mv-divider"></div>
+
+      <div class="roast-mv-body">
+        A balanced flagship modeled after Willoughby's house blend, comprising our Colombian Supremo, Peru Norandino, Zambia RFA AA, and Kenya Premium Meru AA.
+      </div>
+
+      <div class="add-to-order-wrap">
+        <button class="add-to-order-btn">8oz — $14</button>
+        <button class="add-to-order-btn">12oz — $18</button>
+        <button class="add-to-order-btn">16oz — $22</button>
+      </div>
+
+      <div class="roast-mv-divider"></div>
+      <div style="text-align:center; margin-bottom:0.75rem;">
+        <div class="roast-mv-meta-label">Component Origins</div>
+      </div>
+      <ul class="roast-mv-comp-list">
+        <li>Colombian Supremo</li>
+        <li>Peru Norandino</li>
+        <li>Zambia RFA AA</li>
+        <li>Kenya Premium Meru AA</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== LIL' SIPPER (Espresso Blend) ===== -->
+  <div>
+    <div class="preview-col-label">Hummingbird — #1F6B4A</div>
+    <div style="text-align:center; --theme-color: #1F6B4A;">
+      <div class="roast-mv-bird-wrap">
+        <img src="/images/hummingbird-transparent.png" alt="" class="roast-mv-bird">
+      </div>
+      <h1 class="roast-mv-nickname">Lil' Sipper</h1>
+      <div class="roast-mv-title">Espresso Blend</div>
+
+      <p class="roast-mv-tasting">Nutty and sweet</p>
+
+      <div class="roast-mv-meta-row">
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Roast Level</div>
+          <div class="roast-mv-meta-value">
+            <span class="roast-dots">
+              <span class="roast-dot roast-dot-1"></span>
+              <span class="roast-dot roast-dot-2"></span>
+              <span class="roast-dot roast-dot-3"></span>
+              <span class="roast-dot roast-dot-4"></span>
+              <span class="roast-dot"></span>
+            </span>
+          </div>
+          <div class="roast-mv-meta-sublabel">Full City+ (medium-dark)</div>
+        </div>
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Brewing</div>
+          <div class="roast-mv-meta-value">Espresso</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATHER SOOT (Dark Roast) ===== -->
+  <div>
+    <div class="preview-col-label">Canary — #E99E00</div>
+    <div style="text-align:center; --theme-color: #E99E00;">
+      <div class="roast-mv-bird-wrap">
+        <img src="/images/canary-transparent.png" alt="" class="roast-mv-bird">
+      </div>
+      <h1 class="roast-mv-nickname">Feather Soot</h1>
+      <div class="roast-mv-title">Dark Roast</div>
+
+      <p class="roast-mv-tasting">Smoky, bittersweet chocolate</p>
+
+      <div class="roast-mv-meta-row">
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Roast Level</div>
+          <div class="roast-mv-meta-value">
+            <span class="roast-dots">
+              <span class="roast-dot roast-dot-1"></span>
+              <span class="roast-dot roast-dot-2"></span>
+              <span class="roast-dot roast-dot-3"></span>
+              <span class="roast-dot roast-dot-4"></span>
+              <span class="roast-dot roast-dot-5"></span>
+            </span>
+          </div>
+          <div class="roast-mv-meta-sublabel">Vienna (dark)</div>
+        </div>
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Brewing</div>
+          <div class="roast-mv-meta-value">French press, cold brew, espresso, drip</div>
+        </div>
+      </div>
+
+      <div class="roast-mv-divider"></div>
+
+      <div class="roast-mv-body">
+        Comprising our Colombian Supremo, Peru Norandino, and Kenya Premium Meru AA, all roasted to Vienna.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DAWN DRUM (Light Roast) ===== -->
+  <div>
+    <div class="preview-col-label">Woodpecker — #C41E1E</div>
+    <div style="text-align:center; --theme-color: #C41E1E;">
+      <div class="roast-mv-bird-wrap">
+        <img src="/images/woodpecker-transparent.png" alt="" class="roast-mv-bird">
+      </div>
+      <h1 class="roast-mv-nickname">Dawn Drum</h1>
+      <div class="roast-mv-title">Light Roast</div>
+
+      <p class="roast-mv-tasting">Bright, floral, citrus, stone fruit</p>
+
+      <div class="roast-mv-meta-row">
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Roast Level</div>
+          <div class="roast-mv-meta-value">
+            <span class="roast-dots">
+              <span class="roast-dot roast-dot-1"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+            </span>
+          </div>
+          <div class="roast-mv-meta-sublabel">City (light)</div>
+        </div>
+        <div class="roast-mv-meta-item">
+          <div class="roast-mv-meta-label">Brewing</div>
+          <div class="roast-mv-meta-value">Pour-over, drip</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

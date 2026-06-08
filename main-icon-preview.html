@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Icon — Split Circle Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; color: #222; }
+
+  .concept-divider {
+    text-align: center; padding: 4rem 2rem 2rem; background: #1a1816; color: #aaa;
+    font-family: "Montserrat", sans-serif;
+  }
+  .concept-divider h2 {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666;
+    margin-bottom: 0.5rem;
+  }
+  .concept-divider p {
+    font-size: 1.6rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.3rem;
+  }
+  .concept-divider .desc {
+    font-size: 0.85rem; color: #888; max-width: 36rem; margin: 0 auto;
+    font-family: "Lora", serif; font-style: italic;
+  }
+
+  .page { background: #faf8f5; max-width: 42rem; margin: 0 auto; padding: 2.5rem 2rem 3rem; }
+
+  /* Split circle */
+  .split-circle {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0D0F1F 50%, #E99E00 50%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .split-circle img {
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Brand text */
+  .brand-name {
+    font-family: "Montserrat", sans-serif; font-weight: 900;
+    font-size: 1rem; color: #E99E00; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .brand-sub {
+    font-family: "Montserrat", sans-serif; font-weight: 500;
+    font-size: 0.5rem; color: #0D0F1F; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .logo-wrap { text-align: center; margin-bottom: 1.5rem; }
+
+  /* Hero styles */
+  .index-hero {
+    background: #faf8f5; min-height: 80vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center;
+  }
+  .index-hero h1 {
+    font-family: "Montserrat", sans-serif; font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.5rem); color: #2c1e14;
+    line-height: 1.1; margin-bottom: 0.75rem; letter-spacing: -0.02em;
+  }
+  .index-hero-subtitle {
+    color: #8a7060; font-size: 1.1rem; font-style: italic;
+    max-width: 28rem; margin: 0 auto 2.5rem; line-height: 1.5;
+  }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .hero-cta {
+    display: inline-block; font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #faf8f5; background: #2c1e14; padding: 0.85rem 2.2rem;
+    border-radius: 999px; text-decoration: none;
+  }
+  .hero-cta-alt {
+    display: inline-block; font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #2c1e14; background: transparent; border: 2px solid #2c1e14;
+    padding: calc(0.85rem - 2px) 2.2rem; border-radius: 999px; text-decoration: none;
+  }
+  .hero-birds { display: flex; gap: 1.5rem; margin-top: 3.5rem; opacity: 0.18; }
+  .hero-birds img { height: 2.5rem; width: auto; }
+
+  /* Footer */
+  .site-footer {
+    display: flex; flex-direction: column; align-items: center;
+    margin: 3rem 0 1.5rem;
+  }
+  .site-footer a { text-decoration: none; display: flex; flex-direction: column; align-items: center; }
+  .site-footer-logo {
+    width: 2.8rem; height: 2.8rem; border-radius: 50%;
+    background: linear-gradient(135deg, #0D0F1F 50%, #E99E00 50%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 0.5rem;
+  }
+  .site-footer-logo img {
+    width: 1.6rem; height: 1.6rem; object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  .site-footer-est {
+    font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #999;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════ Current — Reference ════════════ -->
+<div class="concept-divider">
+  <h2>Current</h2>
+  <p>Bare Icon + Text</p>
+  <span class="desc">How it looks today — the brand-circle-hq.png with "Yellow Wing / Roasters" text below.</span>
+</div>
+
+<div class="page">
+  <div class="logo-wrap">
+    <img src="images/brand-circle-hq.png" alt="Yellow Wing Roasters" style="width:min(5.5rem, 22vw); margin:0 auto 0.5rem; display:block; border-radius:50%;">
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <div style="text-align:center; color:#888; font-style:italic; padding:2rem 0;">— page content would go here —</div>
+  <footer class="site-footer">
+    <a href="#"><div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div><div class="site-footer-est">est 2026</div></a>
+  </footer>
+</div>
+
+<!-- ════════════ Option A — Split circle + text ════════════ -->
+<div class="concept-divider">
+  <h2>Option A</h2>
+  <p>Split Circle + Text</p>
+  <span class="desc">Replace the bare icon with the navy/amber split circle (bean-feather inside), keep "Yellow Wing / Roasters" text below. Top and footer now match.</span>
+</div>
+
+<div class="page">
+  <div class="logo-wrap">
+    <div class="split-circle" style="width:5.5rem; height:5.5rem; margin:0 auto 0.5rem;">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters" style="width:3.2rem; height:3.2rem;">
+    </div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <div style="text-align:center; color:#888; font-style:italic; padding:2rem 0;">— page content would go here —</div>
+  <footer class="site-footer">
+    <a href="#"><div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div><div class="site-footer-est">est 2026</div></a>
+  </footer>
+</div>
+
+<!-- ════════════ Option B — Smaller split circle + text ════════════ -->
+<div class="concept-divider">
+  <h2>Option B</h2>
+  <p>Smaller Circle + Text</p>
+  <span class="desc">Same split circle but smaller (4rem) — tighter to the text. More compact header, less visual weight.</span>
+</div>
+
+<div class="page">
+  <div class="logo-wrap">
+    <div class="split-circle" style="width:4rem; height:4rem; margin:0 auto 0.5rem;">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters" style="width:2.4rem; height:2.4rem;">
+    </div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <div style="text-align:center; color:#888; font-style:italic; padding:2rem 0;">— page content would go here —</div>
+  <footer class="site-footer">
+    <a href="#"><div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div><div class="site-footer-est">est 2026</div></a>
+  </footer>
+</div>
+
+<!-- ════════════ Option C — Home page hero ════════════ -->
+<div class="concept-divider">
+  <h2>Option C</h2>
+  <p>Home Page Hero</p>
+  <span class="desc">How Option A looks in context on the home page — split circle replacing the bare icon in the hero section.</span>
+</div>
+
+<section class="index-hero">
+  <div class="split-circle" style="width:5.5rem; height:5.5rem; margin:0 auto 0.5rem;">
+    <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters" style="width:3.2rem; height:3.2rem;">
+  </div>
+  <div class="brand-name">Yellow Wing</div>
+  <div class="brand-sub" style="margin-bottom:1.25rem;">Roasters</div>
+  <h1>Small-Batch<br>Coffee Roasting</h1>
+  <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-cta">Explore Our Roasts</a>
+    <a href="#" class="hero-cta-alt">About Us</a>
+  </div>
+  <div class="hero-birds">
+    <img src="images/robin-transparent.png" alt="">
+    <img src="images/canary-transparent.png" alt="">
+    <img src="images/hummingbird-transparent.png" alt="">
+    <img src="images/bluebird-transparent.png" alt="">
+    <img src="images/osprey-transparent.png" alt="">
+  </div>
+</section>
+
+<!-- ════════════ Option D — Home page hero (smaller) ════════════ -->
+<div class="concept-divider">
+  <h2>Option D</h2>
+  <p>Home Page Hero (Smaller)</p>
+  <span class="desc">Option B's smaller circle in the home hero. Tighter, more text-driven.</span>
+</div>
+
+<section class="index-hero">
+  <div class="split-circle" style="width:4rem; height:4rem; margin:0 auto 0.5rem;">
+    <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters" style="width:2.4rem; height:2.4rem;">
+  </div>
+  <div class="brand-name">Yellow Wing</div>
+  <div class="brand-sub" style="margin-bottom:1.25rem;">Roasters</div>
+  <h1>Small-Batch<br>Coffee Roasting</h1>
+  <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-cta">Explore Our Roasts</a>
+    <a href="#" class="hero-cta-alt">About Us</a>
+  </div>
+  <div class="hero-birds">
+    <img src="images/robin-transparent.png" alt="">
+    <img src="images/canary-transparent.png" alt="">
+    <img src="images/hummingbird-transparent.png" alt="">
+    <img src="images/bluebird-transparent.png" alt="">
+    <img src="images/osprey-transparent.png" alt="">
+  </div>
+</section>
+
+<!-- ════════════ Option E — Bean/Feather icon (no circle) ════════════ -->
+<div class="concept-divider">
+  <h2>Option E</h2>
+  <p>Bean/Feather Icon (No Circle)</p>
+  <span class="desc">Navy bean + gold feather icon directly, no circle background. Cleaner, lets the icon shape speak for itself.</span>
+</div>
+
+<section class="index-hero">
+  <img src="images/bean-feather-cleaned-transparent.png" alt="Yellow Wing Roasters" style="height:7rem; width:auto; margin:0 auto 0.5rem; display:block;">
+  <div class="brand-name">Yellow Wing</div>
+  <div class="brand-sub" style="margin-bottom:1.25rem;">Roasters</div>
+  <h1>Small-Batch<br>Coffee Roasting</h1>
+  <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-cta">Explore Our Roasts</a>
+    <a href="#" class="hero-cta-alt">About Us</a>
+  </div>
+  <div class="hero-birds">
+    <img src="images/robin-transparent.png" alt="">
+    <img src="images/canary-transparent.png" alt="">
+    <img src="images/hummingbird-transparent.png" alt="">
+    <img src="images/bluebird-transparent.png" alt="">
+    <img src="images/osprey-transparent.png" alt="">
+  </div>
+</section>
+
+<!-- ════════════ Option F — Bean/Feather icon (smaller) ════════════ -->
+<div class="concept-divider">
+  <h2>Option F</h2>
+  <p>Bean/Feather Icon (Smaller)</p>
+  <span class="desc">Same icon at 5rem — more compact, text-driven feel.</span>
+</div>
+
+<section class="index-hero">
+  <img src="images/bean-feather-cleaned-transparent.png" alt="Yellow Wing Roasters" style="height:5rem; width:auto; margin:0 auto 0.5rem; display:block;">
+  <div class="brand-name">Yellow Wing</div>
+  <div class="brand-sub" style="margin-bottom:1.25rem;">Roasters</div>
+  <h1>Small-Batch<br>Coffee Roasting</h1>
+  <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-cta">Explore Our Roasts</a>
+    <a href="#" class="hero-cta-alt">About Us</a>
+  </div>
+  <div class="hero-birds">
+    <img src="images/robin-transparent.png" alt="">
+    <img src="images/canary-transparent.png" alt="">
+    <img src="images/hummingbird-transparent.png" alt="">
+    <img src="images/bluebird-transparent.png" alt="">
+    <img src="images/osprey-transparent.png" alt="">
+  </div>
+</section>
+
+<!-- ════════════ Option G — White bean/feather + CSS circle ════════════ -->
+<div class="concept-divider">
+  <h2>Option G</h2>
+  <p>White Icon + CSS Circle</p>
+  <span class="desc">White bean-feather on a navy/gold CSS split circle — pure CSS background, no raster circle image needed.</span>
+</div>
+
+<section class="index-hero">
+  <div class="split-circle" style="width:7rem; height:7rem; margin:0 auto 0.5rem;">
+    <img src="images/bean-feather-white-transparent.png" alt="Yellow Wing Roasters" style="height:4.5rem; width:auto;">
+  </div>
+  <div class="brand-name">Yellow Wing</div>
+  <div class="brand-sub" style="margin-bottom:1.25rem;">Roasters</div>
+  <h1>Small-Batch<br>Coffee Roasting</h1>
+  <p class="index-hero-subtitle">We craft flavors we love and hope you will too.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-cta">Explore Our Roasts</a>
+    <a href="#" class="hero-cta-alt">About Us</a>
+  </div>
+  <div class="hero-birds">
+    <img src="images/robin-transparent.png" alt="">
+    <img src="images/canary-transparent.png" alt="">
+    <img src="images/hummingbird-transparent.png" alt="">
+    <img src="images/bluebird-transparent.png" alt="">
+    <img src="images/osprey-transparent.png" alt="">
+  </div>
+</section>
+
+</body>
+</html>

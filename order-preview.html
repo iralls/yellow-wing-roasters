@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Page — Cart Row Variations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; color: #222; }
+
+  .concept-divider {
+    text-align: center; padding: 3rem 2rem 1.5rem; background: #1a1816; color: #aaa;
+    font-family: "Montserrat", sans-serif;
+  }
+  .concept-divider h2 {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666;
+    margin-bottom: 0.5rem;
+  }
+  .concept-divider p {
+    font-size: 1.4rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.3rem;
+  }
+  .concept-divider .desc {
+    font-size: 0.85rem; color: #888; max-width: 36rem; margin: 0 auto;
+    font-family: "Lora", serif; font-style: italic;
+  }
+
+  .page { background: #faf8f5; max-width: 42rem; margin: 0 auto; padding: 2rem 1.5rem 2.5rem; }
+
+  .brand-header { text-align: center; margin: 1rem 0 1.5rem; }
+  .brand-circle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 5.5rem; height: 5.5rem; border-radius: 50%;
+    background: linear-gradient(135deg, #0D0F1F 50%, #E99E00 50%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: 0 auto 0.5rem;
+  }
+  .brand-circle img { width: 3.2rem; height: 3.2rem; object-fit: contain; filter: brightness(0) invert(1); }
+  .brand-name { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 1rem; color: #E99E00; letter-spacing: 0.1em; text-transform: uppercase; }
+  .brand-sub { font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 0.5rem; color: #0D0F1F; letter-spacing: 0.25em; text-transform: uppercase; }
+
+  h1 { font-family: "Montserrat", sans-serif; font-size: 1.5rem; margin-bottom: 1.5rem; }
+
+  /* Cart row shared */
+  .cart-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 0; border-bottom: 1px solid #eee;
+  }
+  .cart-row:last-child { border-bottom: 0; }
+  .cart-item-name { flex: 1 1 10rem; font-weight: 600; }
+  .cart-item-size { font-size: 0.85rem; color: #888; min-width: 3rem; }
+  .cart-qty-wrap { display: flex; align-items: center; }
+  .cart-qty-btn {
+    font: inherit; width: 2rem; height: 2rem; padding: 0;
+    border: 1px solid #bbb; background: #faf8f5; cursor: pointer;
+    font-size: 1rem; line-height: 1; color: #555;
+  }
+  .cart-qty-btn:first-child { border-radius: 0.3rem 0 0 0.3rem; border-right: 0; }
+  .cart-qty-btn:last-child { border-radius: 0 0.3rem 0.3rem 0; border-left: 0; }
+  .cart-qty {
+    width: 3rem; height: 2rem; padding: 0; font: inherit;
+    text-align: center; border: 1px solid #bbb; border-radius: 0;
+    -moz-appearance: textfield;
+  }
+  .cart-qty::-webkit-inner-spin-button,
+  .cart-qty::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .cart-remove {
+    font: inherit; background: transparent; border: 0; color: #bbb;
+    font-size: 1.2rem; cursor: pointer; padding: 0.25rem 0.5rem; line-height: 1;
+  }
+
+  /* Bird icon in cart row */
+  .cart-bird { width: 2rem; height: 2rem; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1)); }
+
+  /* Themed split circle in cart row */
+  .cart-theme-circle {
+    width: 1.8rem; height: 1.8rem; border-radius: 50%; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .cart-theme-circle img { width: 1rem; height: 1rem; object-fit: contain; filter: brightness(0) invert(1); }
+
+  /* Buttons */
+  .order-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+  .order-submit {
+    font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #faf8f5; background: #2c1e14; padding: 0.85rem 2.2rem;
+    border: 0; border-radius: 999px; cursor: pointer;
+  }
+  .order-clear {
+    font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #2c1e14; background: transparent; border: 2px solid #2c1e14;
+    padding: calc(0.85rem - 2px) 2.2rem; border-radius: 999px; cursor: pointer;
+  }
+
+  .order-field { margin: 0 0 1.25rem; }
+  .order-field label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+  .order-field input, .order-field textarea {
+    width: 100%; padding: 0.55rem 0.7rem; font: inherit;
+    border: 1px solid #bbb; border-radius: 0.35rem;
+  }
+
+  .site-footer {
+    display: flex; flex-direction: column; align-items: center; margin: 3rem 0 1.5rem;
+  }
+  .site-footer-logo {
+    width: 2.8rem; height: 2.8rem; border-radius: 50%;
+    background: linear-gradient(135deg, #0D0F1F 50%, #E99E00 50%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 0.5rem;
+  }
+  .site-footer-logo img { width: 1.6rem; height: 1.6rem; object-fit: contain; filter: brightness(0) invert(1); }
+  .site-footer-est {
+    font-family: "Montserrat", sans-serif; font-weight: 700;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #999;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Current ═══════════ -->
+<div class="concept-divider">
+  <h2>Current</h2>
+  <p>Text Only</p>
+  <span class="desc">How the order page looks today — roast name, size, quantity, remove. No icons.</span>
+</div>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row">
+      <div class="cart-item-name">House Blend</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <div class="cart-item-name">Colombian Supremo</div>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <div class="cart-item-name">Guatemalan Antigua</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<!-- ═══════════ Option A: Small bird icon ═══════════ -->
+<div class="concept-divider">
+  <h2>Option A</h2>
+  <p>Small Bird Icon</p>
+  <span class="desc">A tiny transparent bird mascot at the start of each cart row. Instantly identifies the roast without reading.</span>
+</div>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row">
+      <img src="images/robin-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">House Blend</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/bluebird-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">Colombian Supremo</div>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/osprey-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">Guatemalan Antigua</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<!-- ═══════════ Option A2: Small bird icon + roast dots ═══════════ -->
+<div class="concept-divider">
+  <h2>Option A2</h2>
+  <p>Small Bird + Roast Dots</p>
+  <span class="desc">Same as A but with gradient roast level dots inline next to the name.</span>
+</div>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row">
+      <img src="images/robin-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">House Blend
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd"></span><span class="rd"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/bluebird-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">Colombian Supremo
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/osprey-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name">Guatemalan Antigua
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd rd-4"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<!-- ═══════════ Option D: Ghost bird ═══════════ -->
+<div class="concept-divider">
+  <h2>Option D</h2>
+  <p>Ghost Bird</p>
+  <span class="desc">The bird as a near-invisible silhouette behind each row — like a watermark stamp. You sense the bird more than you see it.</span>
+</div>
+
+<style>
+  .cart-row-ghost { }
+  .cart-row-ghost-bird {
+    height: 2rem; width: auto; opacity: 0.12; flex-shrink: 0;
+    filter: grayscale(1);
+  }
+</style>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/robin-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">House Blend</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/bluebird-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">Colombian Supremo</div>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/osprey-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">Guatemalan Antigua</div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<!-- ═══════════ Option F: Ghost bird + roast dots ═══════════ -->
+<div class="concept-divider">
+  <h2>Option F</h2>
+  <p>Ghost Bird + Roast Dots</p>
+  <span class="desc">Ghost bird watermark behind each row, plus gradient roast level dots next to the name. No visible icons — just the shadow and the dots.</span>
+</div>
+
+<style>
+  .roast-dots-cart { display: inline-flex; gap: 0.15rem; align-items: center; margin-left: 0.5rem; }
+  .roast-dots-cart .rd { width: 0.3rem; height: 0.3rem; border-radius: 50%; background: #e8e0d5; }
+  .roast-dots-cart .rd-1 { background: #d4b896; }
+  .roast-dots-cart .rd-2 { background: #b8944a; }
+  .roast-dots-cart .rd-3 { background: #8a6830; }
+  .roast-dots-cart .rd-4 { background: #5c3d1a; }
+  .roast-dots-cart .rd-5 { background: #2c1e14; }
+</style>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/robin-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">House Blend
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd"></span><span class="rd"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/bluebird-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">Colombian Supremo
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row cart-row-ghost">
+      <img src="images/osprey-transparent.png" alt="" class="cart-row-ghost-bird">
+      <div class="cart-item-name">Guatemalan Antigua
+        <span class="roast-dots-cart">
+          <span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd rd-4"></span><span class="rd"></span>
+        </span>
+      </div>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<!-- ═══════════ Option G: Long names ═══════════ -->
+<div class="concept-divider">
+  <h2>Option G</h2>
+  <p>Long Name Truncation</p>
+  <span class="desc">How it handles roasts with long names — truncated with ellipsis to keep the row aligned.</span>
+</div>
+
+<style>
+  .cart-item-name-trunc {
+    flex: 1 1 10rem; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+</style>
+
+<div class="page">
+  <div class="brand-header">
+    <div class="brand-circle"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="brand-name">Yellow Wing</div>
+    <div class="brand-sub">Roasters</div>
+  </div>
+  <h1>Order</h1>
+  <div>
+    <div class="cart-row">
+      <img src="images/robin-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name-trunc">House Blend</div>
+      <span class="roast-dots-cart"><span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd"></span><span class="rd"></span><span class="rd"></span></span>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="2" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/osprey-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name-trunc">Guatemalan Antigua Single Origin Reserve Edition</div>
+      <span class="roast-dots-cart"><span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd rd-4"></span><span class="rd"></span></span>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/bluebird-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name-trunc">Colombian Supremo Extra Special Small-Batch Micro-Lot</div>
+      <span class="roast-dots-cart"><span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd"></span><span class="rd"></span></span>
+      <span class="cart-item-size">8oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="3" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+    <div class="cart-row">
+      <img src="images/canary-transparent.png" alt="" class="cart-bird">
+      <div class="cart-item-name-trunc">Dark Roast</div>
+      <span class="roast-dots-cart"><span class="rd rd-1"></span><span class="rd rd-2"></span><span class="rd rd-3"></span><span class="rd rd-4"></span><span class="rd rd-5"></span></span>
+      <span class="cart-item-size">16oz</span>
+      <div class="cart-qty-wrap">
+        <button class="cart-qty-btn">−</button>
+        <input type="number" class="cart-qty" value="1" min="0">
+        <button class="cart-qty-btn">+</button>
+      </div>
+      <button class="cart-remove">×</button>
+    </div>
+  </div>
+  <div class="order-field" style="margin-top:1.5rem;">
+    <label>Name</label><input type="text" placeholder="Your name">
+  </div>
+  <div class="order-field">
+    <label>Email</label><input type="email" placeholder="you@example.com">
+  </div>
+  <div class="order-actions">
+    <button class="order-submit">Place Order</button>
+    <button class="order-clear">Clear Cart</button>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-logo"><img src="images/bean-feather-cleaned-white-transparent.png" alt=""></div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bird Visibility — Previews</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; }
+
+  .concept-divider {
+    text-align: center; padding: 3rem 2rem 1.5rem; background: #1a1816;
+    font-family: "Montserrat", sans-serif;
+  }
+  .concept-divider h2 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666; margin-bottom: 0.5rem; }
+  .concept-divider p { font-size: 1.4rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.3rem; }
+  .concept-divider .desc { font-size: 0.85rem; color: #888; max-width: 36rem; margin: 0 auto; font-family: "Lora", serif; font-style: italic; }
+
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1px;
+    max-width: 64rem;
+    margin: 0 auto;
+    background: #ddd;
+  }
+  .preview-cell {
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    min-height: 14rem;
+    position: relative;
+    text-align: center;
+  }
+  .preview-cell-label {
+    position: absolute;
+    top: 0.5rem; left: 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700; font-size: 0.45rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: #bbb;
+  }
+  .preview-cell .bird { height: 5rem; width: auto; margin-bottom: 0.5rem; }
+  .preview-cell .name {
+    font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #555;
+  }
+</style>
+</head>
+<body>
+
+<div class="concept-divider">
+  <h2>The Problem</h2>
+  <p>White Bird, Light Background</p>
+  <span class="desc">The snowy egret disappears on #f0f2f5. Here are several ways to fix it — shown with both the egret and the robin (which doesn't have the problem) for comparison.</span>
+</div>
+
+<div class="preview-grid">
+  <!-- Current (problem) -->
+  <div class="preview-cell">
+    <span class="preview-cell-label">Current (Egret)</span>
+    <img src="images/snowy-egret-transparent.png" alt="" class="bird">
+    <div class="name">Invisible</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Current (Robin)</span>
+    <img src="images/robin-transparent.png" alt="" class="bird">
+    <div class="name">Fine</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option A</h2>
+  <p>Drop Shadow</p>
+  <span class="desc">A subtle drop shadow on all bird images. Light birds get a visible edge, dark birds look slightly lifted. No markup changes needed — CSS only.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret</span>
+    <img src="images/snowy-egret-transparent.png" alt="" class="bird" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));">
+    <div class="name">Drop Shadow</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin</span>
+    <img src="images/robin-transparent.png" alt="" class="bird" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));">
+    <div class="name">Drop Shadow</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option B</h2>
+  <p>Stronger Drop Shadow</p>
+  <span class="desc">More visible shadow. Clearly lifts the bird off the page. May feel heavy on darker birds.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret</span>
+    <img src="images/snowy-egret-transparent.png" alt="" class="bird" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,0.25));">
+    <div class="name">Strong Shadow</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin</span>
+    <img src="images/robin-transparent.png" alt="" class="bird" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,0.25));">
+    <div class="name">Strong Shadow</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option C</h2>
+  <p>Circle Background</p>
+  <span class="desc">Each bird sits inside a soft circle. Gives every mascot a consistent "badge" container. The circle color can be anything — here's a few.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret — Light Gray</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#e4e6ea; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Gray Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin — Light Gray</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#e4e6ea; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Gray Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret — Navy</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#0D0F1F; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Navy Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin — Navy</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#0D0F1F; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Navy Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret — Warm Cream</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#e8e0d0; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Cream Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin — Warm Cream</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#e8e0d0; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Cream Circle</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option D</h2>
+  <p>Thin Outline Ring</p>
+  <span class="desc">No fill, just a thin border ring around the bird. Defines the space without adding a background color.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; border:1.5px solid #ccc; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Outline Ring</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; border:1.5px solid #ccc; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Outline Ring</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option E</h2>
+  <p>Roast-Color Circle</p>
+  <span class="desc">Each bird sits in a circle using its roast's theme color. The egret gets navy/gold, the robin gets its red/brown. Every roast becomes a distinct badge.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret — Guatemalan</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#141618; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Roast Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin — House Blend</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#3D3028; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Roast Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Bluebird — Colombian</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#C86830; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/bluebird-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Roast Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Canary — Dark Roast</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:#0D0F1F; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/canary-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Roast Circle</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h2>Option F</h2>
+  <p>Split-Color Circle (matches header icon)</p>
+  <span class="desc">The bird sits inside the same split-circle used at the top of each roast page. Full consistency — header icon, mascot, and footer all share the visual language.</span>
+</div>
+<div class="preview-grid">
+  <div class="preview-cell">
+    <span class="preview-cell-label">Egret — Guatemalan</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:linear-gradient(135deg, #141618 50%, #E8B420 50%); display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/snowy-egret-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Split Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Robin — House Blend</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:linear-gradient(135deg, #D4572A 50%, #3D3028 50%); display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/robin-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Split Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Bluebird — Colombian</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:linear-gradient(135deg, #3A6BC4 50%, #C86830 50%); display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/bluebird-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Split Circle</div>
+  </div>
+  <div class="preview-cell">
+    <span class="preview-cell-label">Canary — Dark Roast</span>
+    <div style="width:6rem; height:6rem; border-radius:50%; background:linear-gradient(135deg, #E99E00 50%, #0D0F1F 50%); display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="images/canary-transparent.png" alt="" style="height:4.5rem; width:auto;">
+    </div>
+    <div class="name">Split Circle</div>
+  </div>
+</div>
+
+</body>
+</html>

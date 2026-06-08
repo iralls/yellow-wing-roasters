@@ -3,8 +3,8 @@ title: Feather Soot
 slug: feather-soot
 category: blend
 order: 3
-roast_level: Vienna (dark)
-roast_dots: 5
+roast_level: Full City+ (medium-dark)
+roast_dots: 4
 tasting_notes: Smoky, bittersweet chocolate
 brewing_method: French press, cold brew, espresso, drip
 mark_color_a: "#E99E00"

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footer Icon — Color Match Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Montserrat", sans-serif; background: #faf8f5; color: #222; }
+
+  .preview-label {
+    text-align: center; padding: 2rem 2rem 0.5rem; color: #aaa;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .preview-desc {
+    text-align: center; color: #999; font-size: 0.85rem; font-style: italic;
+    max-width: 30rem; margin: 0 auto; padding: 0 1rem 1.5rem;
+    font-family: "Lora", Georgia, serif;
+  }
+
+  .section { max-width: 36rem; margin: 0 auto; padding: 2rem; text-align: center; }
+
+  .site-footer {
+    display: flex; flex-direction: column; align-items: center;
+    margin: 2rem 0 1.5rem;
+  }
+  .site-footer-logo {
+    width: 2.8rem; height: 2.8rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  .site-footer-logo img {
+    width: 1.6rem; height: 1.6rem; object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  .site-footer-est {
+    font-weight: 700; font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: #999;
+  }
+
+  .icon-reference { width: 4rem; height: auto; margin-bottom: 1rem; }
+
+  hr { border: 0; border-top: 1px solid #ddd; margin: 2rem 0; }
+</style>
+</head>
+<body>
+
+<div class="preview-label">Reference — Home Page Icon</div>
+<div class="section">
+  <img src="images/dark-roast-icon.png" alt="" class="icon-reference">
+  <div style="font-size:0.8rem; color:#888;">Dark navy #0D0F1F + Amber #E99E00</div>
+</div>
+
+<hr>
+
+<div class="preview-label">Current Footer (flat dark)</div>
+<div class="section">
+  <footer class="site-footer">
+    <div class="site-footer-logo" style="background: #0d0f1f; box-shadow: 0 2px 8px rgba(13,15,31,0.15);">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters">
+    </div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<hr>
+
+<div class="preview-label">Option A — Split Gradient (matching icon)</div>
+<div class="preview-desc">Same 135° diagonal split as the roast pages, but using the brand navy and amber.</div>
+<div class="section">
+  <footer class="site-footer">
+    <div class="site-footer-logo" style="background: linear-gradient(135deg, #0D0F1F 50%, #E99E00 50%); box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters">
+    </div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<hr>
+
+<div class="preview-label">Option B — Split Gradient (amber on left)</div>
+<div class="preview-desc">Flipped — amber leads, navy follows. Matches the icon's visual weight where the feather (gold) is on the right.</div>
+<div class="section">
+  <footer class="site-footer">
+    <div class="site-footer-logo" style="background: linear-gradient(135deg, #E99E00 50%, #0D0F1F 50%); box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters">
+    </div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+<hr>
+
+<div class="preview-label">Option C — Soft Blend</div>
+<div class="preview-desc">A softer gradient that blends navy into amber instead of a hard split. More subtle.</div>
+<div class="section">
+  <footer class="site-footer">
+    <div class="site-footer-logo" style="background: linear-gradient(135deg, #0D0F1F 30%, #E99E00 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="Yellow Wing Roasters">
+    </div>
+    <div class="site-footer-est">est 2026</div>
+  </footer>
+</div>
+
+</body>
+</html>

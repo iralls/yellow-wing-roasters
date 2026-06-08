@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Concepts — Grid Comparison</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@100;300;500;700;900&family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@400;600;700&family=DM+Serif+Display&family=Libre+Baskerville:wght@400;700&family=Josefin+Sans:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; }
+
+  .page-header {
+    text-align: center; padding: 3rem 2rem 2rem;
+    font-family: "Montserrat", sans-serif;
+  }
+  .page-header h1 { font-size: 1.6rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.5rem; }
+  .page-header p { font-size: 0.85rem; color: #888; max-width: 30rem; margin: 0 auto; font-family: "Lora", serif; font-style: italic; }
+
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1px;
+    max-width: 80rem;
+    margin: 0 auto;
+    background: #ddd;
+  }
+
+  .logo-cell {
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    min-height: 16rem;
+    position: relative;
+  }
+
+  .logo-cell-label {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Logo Concepts</h1>
+  <p>All on the Paper Cool #f0f2f5 background. Compare at a glance.</p>
+</div>
+
+<div class="logo-grid">
+
+  <!-- 0. Current -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Current</span>
+    <img src="images/logo-darkroast.png" alt="" style="width:min(14rem, 80%); height:auto;">
+  </div>
+
+  <!-- 1. Stacked Formal -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Stacked Formal</span>
+    <img src="images/dark-roast-icon.png" alt="" style="width:4.5rem; margin-bottom:1.25rem;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.6rem; color:#0D0F1F; letter-spacing:0.12em; text-transform:uppercase; text-align:center; line-height:1.1;">Yellow Wing</div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.7rem; color:#0D0F1F; letter-spacing:0.3em; text-transform:uppercase; margin-top:0.3rem;">Roasters</div>
+  </div>
+
+  <!-- 2. Inline Badge -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Inline Badge</span>
+    <div style="display:flex; align-items:center; gap:1.25rem;">
+      <img src="images/dark-roast-icon.png" alt="" style="width:3.5rem;">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.4rem; color:#0D0F1F; letter-spacing:0.06em; text-transform:uppercase; line-height:1;">Yellow Wing</div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.6rem; color:#E99E00; letter-spacing:0.25em; text-transform:uppercase; margin-top:0.2rem;">Roasters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Serif Elegance -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Serif Elegance</span>
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:2rem; color:#0D0F1F; letter-spacing:-0.02em;">Yellow</span>
+      <img src="images/dark-roast-icon.png" alt="" style="width:2.5rem;">
+      <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:2rem; color:#0D0F1F; letter-spacing:-0.02em;">Wing</span>
+    </div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.55rem; color:#8a90a0; letter-spacing:0.3em; text-transform:uppercase; margin-top:0.5rem;">Roasters</div>
+  </div>
+
+  <!-- 4. Split Stack -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Split Stack</span>
+    <div style="width:5rem; height:5rem; border-radius:50%; background:linear-gradient(135deg, #E99E00 50%, #0D0F1F 50%); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 12px rgba(0,0,0,0.1); margin-bottom:1.25rem;">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="" style="width:3rem; height:3rem; filter:brightness(0) invert(1);">
+    </div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.4rem; color:#0D0F1F; letter-spacing:0.08em; text-transform:uppercase; text-align:center;">Yellow Wing</div>
+    <div style="font-family:'Lora',Georgia,serif; font-weight:400; font-size:0.85rem; color:#8a90a0; font-style:italic; margin-top:0.15rem;">Roasters</div>
+  </div>
+
+  <!-- 5. Two-Line Contrast -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Two-Line Contrast</span>
+    <div style="display:flex; align-items:center; gap:1.5rem;">
+      <img src="images/dark-roast-icon.png" alt="" style="width:4rem;">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2rem; color:#0D0F1F; letter-spacing:-0.02em; line-height:1;">Yellow Wing</div>
+        <div style="font-family:'Lora',Georgia,serif; font-weight:400; font-style:italic; font-size:1.1rem; color:#E99E00; margin-top:0.1rem;">Roasters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Two-Tone Icon + Amber Name -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Two-Tone + Amber</span>
+    <img src="images/dark-roast-icon.png" alt="" style="width:5rem; margin-bottom:1.25rem;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.4rem; color:#E99E00; letter-spacing:0.1em; text-transform:uppercase; text-align:center;">Yellow Wing</div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.6rem; color:#0D0F1F; letter-spacing:0.25em; text-transform:uppercase; margin-top:0.3rem;">Roasters</div>
+  </div>
+
+  <!-- 9. DM Serif + Natural -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">DM Serif + Natural</span>
+    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.25rem;">
+      <div style="height:1px; width:3rem; background:#ccc;"></div>
+      <img src="images/dark-roast-icon.png" alt="" style="width:3rem;">
+      <div style="height:1px; width:3rem; background:#ccc;"></div>
+    </div>
+    <div style="font-family:'DM Serif Display',serif; font-size:2.2rem; color:#0D0F1F; text-align:center; line-height:1; margin-top:0.5rem;">Yellow Wing</div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.6rem; color:#E99E00; letter-spacing:0.2em; text-transform:uppercase; margin-top:0.4rem;">Roasters</div>
+  </div>
+
+  <!-- 10. Split Wordmark -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Split Wordmark</span>
+    <div style="display:flex; align-items:center; gap:0.6rem;">
+      <span style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2rem; color:#E99E00; text-transform:uppercase; letter-spacing:-0.02em;">Yellow</span>
+      <img src="images/dark-roast-icon.png" alt="" style="width:2.2rem;">
+      <span style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:2rem; color:#0D0F1F; text-transform:uppercase; letter-spacing:-0.02em;">Wing</span>
+    </div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.55rem; color:#8a90a0; letter-spacing:0.3em; text-transform:uppercase; margin-top:0.4rem;">Roasters</div>
+  </div>
+
+  <!-- 12. Crimson Italic -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Crimson Italic</span>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <img src="images/dark-roast-icon.png" alt="" style="width:3.5rem;">
+      <div>
+        <div style="font-family:'Crimson Pro',serif; font-weight:700; font-size:2rem; color:#0D0F1F; line-height:1; letter-spacing:-0.01em;">Yellow Wing</div>
+        <div style="font-family:'Crimson Pro',serif; font-weight:400; font-style:italic; font-size:1rem; color:#E99E00;">Roasters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. Amber Inline Rule -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Amber Inline Rule</span>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <div style="height:2px; width:2.5rem; background:#E99E00;"></div>
+      <img src="images/dark-roast-icon.png" alt="" style="width:2.5rem;">
+      <div style="height:2px; width:2.5rem; background:#E99E00;"></div>
+    </div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.5rem; color:#0D0F1F; letter-spacing:0.1em; text-transform:uppercase; text-align:center; margin-top:0.75rem;">Yellow Wing</div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:300; font-size:0.75rem; color:#E99E00; letter-spacing:0.15em; text-transform:uppercase; margin-top:0.2rem;">Roasters</div>
+  </div>
+
+  <!-- 15. Playfair Split Color -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Playfair Split</span>
+    <img src="images/dark-roast-icon.png" alt="" style="width:3.5rem; margin-bottom:1rem;">
+    <div style="font-family:'Playfair Display',serif; font-weight:900; font-size:2rem; text-align:center; line-height:1;">
+      <span style="color:#E99E00;">Yellow</span> <span style="color:#0D0F1F;">Wing</span>
+    </div>
+    <div style="font-family:'Playfair Display',serif; font-weight:400; font-size:0.9rem; color:#8a90a0; margin-top:0.2rem;">Roasters</div>
+  </div>
+
+
+
+
+  <!-- Inline Badge (Tagline Font) -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Inline Badge (Tagline)</span>
+    <div style="display:flex; align-items:center; gap:1.25rem;">
+      <img src="images/dark-roast-icon.png" alt="" style="width:3.5rem;">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.4rem; color:#0D0F1F; letter-spacing:-0.02em; line-height:1;">Yellow Wing</div>
+        <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.6rem; color:#E99E00; letter-spacing:0.25em; text-transform:uppercase; margin-top:0.2rem;">Roasters</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-Tone + Amber (Tagline Font) -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Two-Tone Amber (Tagline)</span>
+    <img src="images/dark-roast-icon.png" alt="" style="width:5rem; margin-bottom:1.25rem;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.4rem; color:#E99E00; letter-spacing:-0.02em; text-align:center;">Yellow Wing</div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:500; font-size:0.6rem; color:#0D0F1F; letter-spacing:0.25em; text-transform:uppercase; margin-top:0.3rem;">Roasters</div>
+  </div>
+
+  <!-- Split Stack Rainbow -->
+  <div class="logo-cell">
+    <span class="logo-cell-label">Split Stack Rainbow</span>
+    <div style="width:5rem; height:5rem; border-radius:50%; background:conic-gradient(#E84040, #E87820, #D4B800, #40A840, #2868C8, #5838A0, #9040B0, #E84040); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 12px rgba(0,0,0,0.1); margin-bottom:1.25rem;">
+      <img src="images/bean-feather-cleaned-white-transparent.png" alt="" style="width:3rem; height:3rem; filter:brightness(0) invert(1);">
+    </div>
+    <div style="font-family:'Montserrat',sans-serif; font-weight:900; font-size:1.4rem; color:#0D0F1F; letter-spacing:0.08em; text-transform:uppercase; text-align:center;">Yellow Wing</div>
+    <div style="font-family:'Lora',Georgia,serif; font-weight:400; font-size:0.85rem; color:#8a90a0; font-style:italic; margin-top:0.15rem;">Roasters</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roast Level Indicators — Style Options</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Lora", Georgia, serif; background: #1a1816; color: #222; }
+
+  .concept-divider {
+    text-align: center; padding: 3rem 2rem 1.5rem; background: #1a1816; color: #aaa;
+    font-family: "Montserrat", sans-serif;
+  }
+  .concept-divider h2 {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #666;
+    margin-bottom: 0.5rem;
+  }
+  .concept-divider p {
+    font-size: 1.4rem; font-weight: 900; color: #f5ede0; margin-bottom: 0.3rem;
+  }
+  .concept-divider .desc {
+    font-size: 0.85rem; color: #888; max-width: 36rem; margin: 0 auto;
+    font-family: "Lora", serif; font-style: italic;
+  }
+
+  .page { background: #faf8f5; max-width: 42rem; margin: 0 auto; padding: 2rem 1.5rem 2.5rem; }
+
+  .sample-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;
+    text-align: center;
+  }
+  .sample-item { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+  .sample-label {
+    font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.65rem;
+    letter-spacing: 0.05em; color: #999;
+  }
+  .sample-sublabel {
+    font-family: "Montserrat", sans-serif; font-weight: 500; font-size: 0.55rem;
+    color: #bbb;
+  }
+
+  /* Shared dot base */
+  .dots { display: inline-flex; gap: 0.3rem; align-items: center; }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+
+  /* ═══════════════════════════════════════
+     Option A: Gradient fill (light tan → dark brown)
+     ═══════════════════════════════════════ */
+  .a-empty { background: #e8e0d5; }
+  .a-1 { background: #d4b896; }
+  .a-2 { background: #b8944a; }
+  .a-3 { background: #8a6830; }
+  .a-4 { background: #5c3d1a; }
+  .a-5 { background: #2c1e14; }
+
+  /* ═══════════════════════════════════════
+     Option B: Single color, no text
+     ═══════════════════════════════════════ */
+  .b-filled { background: #8a5020; }
+  .b-empty { background: #e0d8ce; }
+
+  /* ═══════════════════════════════════════
+     Option C: Bean-colored scale
+     ═══════════════════════════════════════ */
+  .c-empty { background: #e8e0d5; }
+  .c-1 { background: #c8a86a; } /* light/golden */
+  .c-2 { background: #a07838; } /* tan */
+  .c-3 { background: #7a5828; } /* medium brown */
+  .c-4 { background: #4a3018; } /* dark brown */
+  .c-5 { background: #1a1008; } /* near-black */
+
+  /* ═══════════════════════════════════════
+     Option D: Fill bar
+     ═══════════════════════════════════════ */
+  .bar-track {
+    width: 4rem; height: 0.4rem; border-radius: 0.2rem;
+    background: #e8e0d5; overflow: hidden; position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 0.2rem;
+    background: linear-gradient(to right, #c8a86a, #2c1e14);
+  }
+
+  /* Larger versions for individual roast page */
+  .dots-lg .dot { width: 0.6rem; height: 0.6rem; }
+  .dots-lg { gap: 0.35rem; }
+  .bar-track-lg { width: 6rem; height: 0.5rem; border-radius: 0.25rem; }
+
+  /* Meta row from roast pages */
+  .f-meta-row {
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem; font-size: 0.9rem;
+  }
+  .f-meta-item { text-align: center; }
+  .f-meta-label {
+    font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-bottom: 0.3rem;
+  }
+  .f-meta-value { color: #2c1e14; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Option A: Gradient Fill ═══════════ -->
+<div class="concept-divider">
+  <h2>Option A</h2>
+  <p>Gradient Fill</p>
+  <span class="desc">Each filled dot gets progressively darker — light tan to dark brown. The color itself tells you the intensity. No words needed.</span>
+</div>
+
+<div class="page">
+  <div class="sample-grid">
+    <div class="sample-item">
+      <div class="sample-label">Light</div>
+      <span class="dots">
+        <span class="dot a-1"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+      </span>
+      <div class="sample-sublabel">City</div>
+    </div>
+    <div class="sample-item">
+      <div class="sample-label">Light-med</div>
+      <span class="dots">
+        <span class="dot a-1"></span>
+        <span class="dot a-2"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+      </span>
+      <div class="sample-sublabel">City+</div>
+    </div>
+    <div class="sample-item">
+      <div class="sample-label">Medium</div>
+      <span class="dots">
+        <span class="dot a-1"></span>
+        <span class="dot a-2"></span>
+        <span class="dot a-3"></span>
+        <span class="dot a-empty"></span>
+        <span class="dot a-empty"></span>
+      </span>
+      <div class="sample-sublabel">Full City</div>
+    </div>
+    <div class="sample-item">
+      <div class="sample-label">Med-dark</div>
+      <span class="dots">
+        <span class="dot a-1"></span>
+        <span class="dot a-2"></span>
+        <span class="dot a-3"></span>
+        <span class="dot a-4"></span>
+        <span class="dot a-empty"></span>
+      </span>
+      <div class="sample-sublabel">Full City+</div>
+    </div>
+    <div class="sample-item">
+      <div class="sample-label">Dark</div>
+      <span class="dots">
+        <span class="dot a-1"></span>
+        <span class="dot a-2"></span>
+        <span class="dot a-3"></span>
+        <span class="dot a-4"></span>
+        <span class="dot a-5"></span>
+      </span>
+      <div class="sample-sublabel">Vienna</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid #eee;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.8rem; text-align:center; color:#999; margin-bottom:1rem;">On an individual roast page:</div>
+    <div class="f-meta-row">
+      <div class="f-meta-item">
+        <div class="f-meta-label">Roast Level</div>
+        <span class="dots dots-lg">
+          <span class="dot a-1"></span>
+          <span class="dot a-2"></span>
+          <span class="dot a-empty"></span>
+          <span class="dot a-empty"></span>
+          <span class="dot a-empty"></span>
+        </span>
+      </div>
+      <div class="f-meta-item">
+        <div class="f-meta-label">Brewing</div>
+        <div class="f-meta-value">French press, pour-over, espresso</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Option B: Single Color, No Text ═══════════ -->
+<div class="concept-divider">
+  <h2>Option B</h2>
+  <p>Single Color, No Text</p>
+  <span class="desc">All filled dots are the same warm brown. Pure visual — count the dots, know the roast. The simplest version.</span>
+</div>
+
+<div class="page">
+  <div class="sample-grid">
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot b-filled"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-empty"></span>
+        <span class="dot b-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+        <span class="dot b-filled"></span>
+      </span>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid #eee;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.8rem; text-align:center; color:#999; margin-bottom:1rem;">On an individual roast page:</div>
+    <div class="f-meta-row">
+      <div class="f-meta-item">
+        <div class="f-meta-label">Roast Level</div>
+        <span class="dots dots-lg">
+          <span class="dot b-filled"></span>
+          <span class="dot b-filled"></span>
+          <span class="dot b-empty"></span>
+          <span class="dot b-empty"></span>
+          <span class="dot b-empty"></span>
+        </span>
+      </div>
+      <div class="f-meta-item">
+        <div class="f-meta-label">Brewing</div>
+        <div class="f-meta-value">French press, pour-over, espresso</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Option C: Bean-Colored Scale ═══════════ -->
+<div class="concept-divider">
+  <h2>Option C</h2>
+  <p>Bean-Colored Scale</p>
+  <span class="desc">All five dots are always visible. Each dot matches the actual bean color at that roast level — golden, tan, brown, dark brown, near-black. Filled dots are opaque, unfilled are muted.</span>
+</div>
+
+<div class="page">
+  <div class="sample-grid">
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot c-1"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot c-1"></span>
+        <span class="dot c-2"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot c-1"></span>
+        <span class="dot c-2"></span>
+        <span class="dot c-3"></span>
+        <span class="dot c-empty"></span>
+        <span class="dot c-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot c-1"></span>
+        <span class="dot c-2"></span>
+        <span class="dot c-3"></span>
+        <span class="dot c-4"></span>
+        <span class="dot c-empty"></span>
+      </span>
+    </div>
+    <div class="sample-item">
+      <span class="dots">
+        <span class="dot c-1"></span>
+        <span class="dot c-2"></span>
+        <span class="dot c-3"></span>
+        <span class="dot c-4"></span>
+        <span class="dot c-5"></span>
+      </span>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid #eee;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.8rem; text-align:center; color:#999; margin-bottom:1rem;">On an individual roast page:</div>
+    <div class="f-meta-row">
+      <div class="f-meta-item">
+        <div class="f-meta-label">Roast Level</div>
+        <span class="dots dots-lg">
+          <span class="dot c-1"></span>
+          <span class="dot c-2"></span>
+          <span class="dot c-empty"></span>
+          <span class="dot c-empty"></span>
+          <span class="dot c-empty"></span>
+        </span>
+      </div>
+      <div class="f-meta-item">
+        <div class="f-meta-label">Brewing</div>
+        <div class="f-meta-value">French press, pour-over, espresso</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Option D: Fill Bar ═══════════ -->
+<div class="concept-divider">
+  <h2>Option D</h2>
+  <p>Fill Bar</p>
+  <span class="desc">A horizontal bar with a light-to-dark gradient, filled to the roast level. Smooth and continuous — no counting needed.</span>
+</div>
+
+<div class="page">
+  <div class="sample-grid">
+    <div class="sample-item">
+      <div class="bar-track"><div class="bar-fill" style="width:20%;"></div></div>
+    </div>
+    <div class="sample-item">
+      <div class="bar-track"><div class="bar-fill" style="width:40%;"></div></div>
+    </div>
+    <div class="sample-item">
+      <div class="bar-track"><div class="bar-fill" style="width:60%;"></div></div>
+    </div>
+    <div class="sample-item">
+      <div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div>
+    </div>
+    <div class="sample-item">
+      <div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid #eee;">
+    <div style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.8rem; text-align:center; color:#999; margin-bottom:1rem;">On an individual roast page:</div>
+    <div class="f-meta-row">
+      <div class="f-meta-item">
+        <div class="f-meta-label">Roast Level</div>
+        <div class="bar-track bar-track-lg"><div class="bar-fill" style="width:40%;"></div></div>
+      </div>
+      <div class="f-meta-item">
+        <div class="f-meta-label">Brewing</div>
+        <div class="f-meta-value">French press, pour-over, espresso</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
