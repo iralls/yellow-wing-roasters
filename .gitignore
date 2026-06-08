@@ -6,3 +6,7 @@ vendor
 Gemfile.lock
 .DS_Store
 run.sh
+
+# Preview HTML files
+*-preview.html
+preview-*.html
