@@ -14,4 +14,4 @@ mascot_file: audubon-hummingbird-transparent.png
 coming_soon: true
 ---
 
-An elevated, modern espresso experience. It balances bright, lively fruit notes with a clean, sugary sweetness.
+A vibrant, modern espresso experience. This blend features lively, fruit-forward acidity balanced by a clean, sparkling sweetness. Complex, refreshing, and crafted for the curious palate.

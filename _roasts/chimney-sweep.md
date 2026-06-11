@@ -14,4 +14,4 @@ mascot_file: audubon-chimney-swift-2-transparent.png
 coming_soon: true
 ---
 
-Our take on a modern classic espresso. It perfectly bridges the gap between old-school body and new-school aromatics.
+A sophisticated, full-bodied espresso with a timeless profile. This blend is rich and smooth, featuring deep notes of toasted cocoa and caramel with a gentle, balanced finish. Consistent, comforting, and perfect for milk-based drinks.
