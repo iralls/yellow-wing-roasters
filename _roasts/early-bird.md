@@ -5,7 +5,7 @@ category: blend
 order: 1
 roast_level: City+ (light-medium)
 roast_dots: 2
-tasting_notes: Bright, sweet, nutty
+tasting_notes: Caramel, toasted nut, cream
 brewing_method: French press, pour-over, or espresso
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
@@ -26,6 +26,4 @@ components:
     profile: /profiles/kenya-meru-aa.alog
 ---
 
-A balanced flagship modeled after Willoughby's house blend, comprising our Colombian Supremo, Peru Norandino, Burundi Masha, and Kenya Premium Meru AA.
-
-Brews well as French press or pour-over, or pulled as espresso if you prefer a lighter roast.
+The definition of a "daily driver." A mellow, well-rounded cup that balances a smooth, creamy body with warm, nutty sweetness.

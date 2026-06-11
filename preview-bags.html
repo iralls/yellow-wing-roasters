@@ -1231,6 +1231,108 @@
   .style-h-v4 .dawn-drum   { --bird-color: #E8D0C8; --text-primary: #F0E8E0; --text-secondary: rgba(240,232,224,0.55); --text-brand: #E8D0C8; --text-sub: rgba(240,232,224,0.55); --dot-inactive: rgba(240,232,224,0.2); }
   .style-h-v4 .chimney-sweep { --bird-color: #D8D0C0; --text-primary: #F0ECE4; --text-secondary: rgba(240,236,228,0.55); --text-brand: #D8D0C0; --text-sub: rgba(240,236,228,0.55); --dot-inactive: rgba(240,236,228,0.2); }
 
+  /* ── Style K — like B, smaller logo, bigger bird ── */
+  .style-k .sticker {
+    background: #faf8f5;
+    padding: 0.2in 0.2in 0.2in;
+    justify-content: flex-start;
+  }
+  .style-k .brand-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.18in;
+  }
+  .style-k .brand-logo {
+    height: 1in;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 0.02in;
+  }
+  .style-k .brand-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 11.25pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f0c838;
+  }
+  .style-k .brand-sub {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 6.75pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #302010;
+  }
+  .style-k .bird-img {
+    height: 1in;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 0.18in;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.1));
+  }
+  .style-k .nickname {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 15pt;
+    line-height: 1.1;
+    color: #2c1e14;
+    margin-bottom: 0.04in;
+  }
+  .style-k .blend-name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 0.05in;
+  }
+  .style-k .divider {
+    width: 0.6in;
+    height: 1px;
+    min-height: 1px;
+    background: #ddd;
+    margin-bottom: 0.04in;
+    flex-shrink: 0;
+  }
+  .style-k .tasting {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 10pt;
+    color: #8a7060;
+    line-height: 1.4;
+    margin-bottom: 0.04in;
+    padding: 0 0.05in;
+  }
+  .style-k .dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    margin-bottom: 0.08in;
+  }
+  .style-k .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #e8e0d5;
+  }
+  .style-k .dot-1 { background: #d4b896; }
+  .style-k .dot-2 { background: #b8944a; }
+  .style-k .dot-3 { background: #8a6830; }
+  .style-k .dot-4 { background: #5c3d1a; }
+  .style-k .dot-5 { background: #2c1e14; }
+  .style-k .size-line {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 6pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-top: auto;
+  }
+
   /* ── Per-roast colors ── */
   .early-bird  { --ca: #D4572A; --cb: #3D3028; }
   .lil-sipper  { --ca: #1F6B4A; --cb: #B8002E; }
@@ -1254,7 +1356,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1272,7 +1374,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1335,7 +1437,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1352,7 +1454,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1416,7 +1518,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1437,7 +1539,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots">
       <span class="dot dot-1"></span>
       <span class="dot dot-2"></span>
@@ -1504,7 +1606,7 @@
     <div class="nickname">Early Bird</div>
     <div class="two-col">
       <div class="col-left">
-        <div class="tasting">Bright · sweet · nutty</div>
+        <div class="tasting">Caramel · toasted nut · cream</div>
         <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
       </div>
       <div class="col-right">
@@ -1519,7 +1621,7 @@
     <div class="nickname">Lil' Sipper</div>
     <div class="two-col">
       <div class="col-left">
-        <div class="tasting">Nutty · sweet</div>
+        <div class="tasting">Vibrant fruit · sweetness</div>
         <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
       </div>
       <div class="col-right">
@@ -1572,7 +1674,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1581,7 +1683,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1609,7 +1711,7 @@
     <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
     <div class="nickname">Chimney Sweep</div>
     <div class="divider"></div>
-    <div class="tasting">Chocolate · walnut</div>
+    <div class="tasting">Milk chocolate · nutty</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1626,7 +1728,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
   </div>
@@ -1635,7 +1737,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
   </div>
@@ -1662,7 +1764,7 @@
     <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
     <div class="nickname">Chimney Sweep</div>
     <div class="divider"></div>
-    <div class="tasting">Chocolate · walnut</div>
+    <div class="tasting">Milk chocolate · nutty</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
   </div>
@@ -1679,7 +1781,7 @@
     <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1688,7 +1790,7 @@
     <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1715,7 +1817,65 @@
     <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
     <div class="nickname">Chimney Sweep</div>
     <div class="divider"></div>
-    <div class="tasting">Chocolate · walnut</div>
+    <div class="tasting">Milk chocolate · nutty</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style K</h1>
+  <p>Like B, smaller logo, bigger bird</p>
+</div>
+
+<div class="bag-grid style-k size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">Nest Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Smoky · bittersweet chocolate</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="blend-name">Light Roast</div>
+    <div class="divider"></div>
+    <div class="tasting">Bright · floral · citrus · stone fruit</div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+  <div class="sticker chimney-sweep">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Chimney Sweep</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="divider"></div>
+    <div class="tasting">Milk chocolate · nutty</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1732,7 +1892,7 @@
     <div class="bird-wrap" style="--bird-src:url(/images/audubon-robin-transparent.png)"><div class="bird-mask"></div></div>
     <div class="nickname">Early Bird</div>
     <div class="divider"></div>
-    <div class="tasting">Bright · sweet · nutty</div>
+    <div class="tasting">Caramel · toasted nut · cream</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1741,7 +1901,7 @@
     <div class="bird-wrap" style="--bird-src:url(/images/audubon-hummingbird-transparent.png)"><div class="bird-mask"></div></div>
     <div class="nickname">Lil' Sipper</div>
     <div class="divider"></div>
-    <div class="tasting">Nutty · sweet</div>
+    <div class="tasting">Vibrant fruit · sweetness</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1768,7 +1928,7 @@
     <div class="bird-wrap" style="--bird-src:url(/images/audubon-chimney-swift-2-transparent.png)"><div class="bird-mask"></div></div>
     <div class="nickname">Chimney Sweep</div>
     <div class="divider"></div>
-    <div class="tasting">Chocolate · walnut</div>
+    <div class="tasting">Milk chocolate · nutty</div>
     <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1786,7 +1946,7 @@
     <div class="nickname">Early Bird</div>
     <div class="two-col">
       <div class="col-left">
-        <div class="tasting">Bright · sweet · nutty</div>
+        <div class="tasting">Caramel · toasted nut · cream</div>
         <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
       </div>
       <div class="col-right">
@@ -1801,7 +1961,7 @@
     <div class="nickname">Lil' Sipper</div>
     <div class="two-col">
       <div class="col-left">
-        <div class="tasting">Nutty · sweet</div>
+        <div class="tasting">Vibrant fruit · sweetness</div>
         <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
       </div>
       <div class="col-right">
@@ -1846,7 +2006,7 @@
     <div class="nickname">Chimney Sweep</div>
     <div class="two-col">
       <div class="col-left">
-        <div class="tasting">Chocolate · walnut</div>
+        <div class="tasting">Milk chocolate · nutty</div>
         <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
       </div>
       <div class="col-right">
