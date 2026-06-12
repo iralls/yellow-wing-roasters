@@ -5,25 +5,19 @@ category: blend
 order: 1
 roast_level: City+ (light-medium)
 roast_dots: 2
-tasting_notes: Caramel, toasted nut, cream
-brewing_method: French press, pour-over, or espresso
+tasting_notes: Milk chocolate, toasted almond, caramel, sweet jammy finish
+brewing_method: Drip, pour over, espresso
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
 mascot_file: audubon-robin-transparent.png
 
 card_image: /images/audubon-robin-transparent.png
-components:
-  - name: Colombian Supremo
-    image: /images/colombian-supremo-city.png
-    profile: /profiles/colombian-supremo-city.alog
-  - name: Peru Norandino
-    image: /images/peru-norandino.jpg
-    profile: /profiles/peru-norandino.alog
-  - name: Burundi Masha
-  - name: Kenya Premium Meru AA
-    image: /images/kenya-meru-aa.jpg
-    profile: /profiles/kenya-meru-aa.alog
+origins:
+  - Brazil
+  - Guatemala
+  - Costa Rica
+  - Burundi
 ---
 
-The definition of a "daily driver." A mellow, well-rounded cup that balances a smooth, creamy body with warm, nutty sweetness.
+Our signature house blend, crafted to be your go-to everyday coffee. It's balanced and smooth, pairing a rich cocoa and caramel sweetness with just a hint of bright fruit to keep things interesting. Easy-drinking, consistent, and great however you like to brew it.
