@@ -6,7 +6,7 @@ order: 3
 roast_level: Full City+ (medium-dark)
 roast_dots: 4
 tasting_notes: Bittersweet chocolate, smoke, molasses
-brewing_method: French press, cold brew, espresso, drip
+brewing_method: French press, drip
 mark_color_a: "#E99E00"
 mark_color_b: "#0D0F1F"
 mascot: canary

@@ -12,6 +12,6 @@ order: 4
 roast_level: Full City (medium)
 roast_dots: 3
 tasting_notes: Nutty, chocolatey, smooth
-brewing_method: Espresso, pour over, French press
+brewing_method: Drip, pour-over
 roast_profile: /profiles/colombian-supremo-city.alog
 ---

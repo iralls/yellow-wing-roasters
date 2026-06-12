@@ -6,7 +6,7 @@ order: 1
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Milk chocolate, toasted almond, caramel, sweet jammy finish
-brewing_method: Drip, pour over, espresso
+brewing_method: Drip, pour-over, French press, espresso
 mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
