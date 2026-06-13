@@ -3,8 +3,8 @@ title: "Lil' Sipper"
 slug: lil-sipper
 category: blend
 order: 2
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: City+ (light-medium)
+roast_dots: 2
 tasting_notes: Tropical fruit, ripe melon, winey acidity, maple syrup
 brewing_method: Espresso
 mark_color_a: "#1F6B4A"

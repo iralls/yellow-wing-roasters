@@ -3,8 +3,8 @@ title: Chimney Sweep
 slug: chimney-sweep
 category: blend
 order: 4
-roast_level: Full City+ (medium-dark)
-roast_dots: 4
+roast_level: Full City (medium)
+roast_dots: 3
 tasting_notes: Dark chocolate, toasted walnut, brown spice
 brewing_method: Espresso
 mark_color_a: "#4a3828"

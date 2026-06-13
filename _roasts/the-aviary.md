@@ -20,8 +20,8 @@ Four blends, each individually packaged in its own 8oz bag — a great way to ex
 Includes:
 
 - **[Early Bird](/roasts/early-bird/)** · City+ (light-medium) · Milk chocolate, toasted almond, caramel, sweet jammy finish
-- **[Lil' Sipper](/roasts/lil-sipper/)** · Full City (medium) · Tropical fruit, ripe melon, winey acidity, maple syrup
+- **[Lil' Sipper](/roasts/lil-sipper/)** · City+ (light-medium) · Tropical fruit, ripe melon, winey acidity, maple syrup
 - **[Feather Soot](/roasts/feather-soot/)** · Full City+ (medium-dark) · Bittersweet chocolate, smoke, molasses
-- **[Dawn Drum](/roasts/dawn-drum/)** · City light · Bright, floral, citrus, stone fruit
+- **[Chimney Sweep](/roasts/chimney-sweep/)** · Full City (medium) · Dark chocolate, toasted walnut, brown spice
 
 All four ship as whole bean. Brewing method varies by blend — details on each roast's page.
