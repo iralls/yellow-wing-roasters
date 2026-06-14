@@ -5,7 +5,7 @@ category: blend
 order: 4
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Dark chocolate, toasted walnut, brown spice
+tasting_notes: Milk chocolate, cherry, caramel
 brewing_method: Espresso
 mark_color_a: "#4a3828"
 mark_color_b: "#8a7060"
@@ -18,4 +18,4 @@ origins:
 coming_soon: true
 ---
 
-A refined take on a traditional espresso. It's full-bodied and incredibly smooth, with a creamy, nutty flavor and a hint of warm spice. It's built to be bold as a straight shot or to hold its own in a latte.
+This is our everyday espresso—smooth, rich, and balanced. It's got a solid, chocolatey base with a hint of natural sweetness that keeps it from being boring. It tastes great as a straight shot, and it's strong enough to stand out in a latte or cappuccino.
