@@ -1,7 +1,7 @@
 default:
-  8oz: 10
   12oz: 14
   16oz: 16
+  2lb: 30
 
 overrides:
   the-aviary:

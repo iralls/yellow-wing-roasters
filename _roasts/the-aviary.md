@@ -15,7 +15,7 @@ sizes:
 coming_soon: true
 ---
 
-Four blends, each individually packaged in its own 8oz bag — a great way to explore the full range before committing to a full bag.
+Four blends, each individually packaged in its own 12oz bag — a great way to explore the full range before committing to a full bag.
 
 Includes:
 
