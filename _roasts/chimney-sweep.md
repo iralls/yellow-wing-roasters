@@ -14,7 +14,7 @@ mascot_file: audubon-chimney-swift-2-transparent.png
 origins:
   - Brazil
   - Guatemala
-  - Sumatra
+  - Ethiopia
 coming_soon: true
 ---
 
