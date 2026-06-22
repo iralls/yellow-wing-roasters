@@ -13,5 +13,4 @@ roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Crisp apple, caramel, toasted walnut
 brewing_method: Drip, pour-over
-roast_profile: /profiles/colombian-supremo-city.alog
 ---

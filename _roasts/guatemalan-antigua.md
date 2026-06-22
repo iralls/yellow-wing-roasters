@@ -12,5 +12,4 @@ mark_color_a: "#3D2B1F"
 mark_color_b: "#F4F2EA"
 mascot: osprey
 mascot_file: audubon-osprey-transparent.png
-roast_profile: /profiles/guatemalan-antigua-full-city-plus.alog
 ---
