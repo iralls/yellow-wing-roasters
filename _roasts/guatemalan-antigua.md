@@ -4,8 +4,8 @@ subtitle: Smooth Talon
 slug: guatemalan-antigua
 category: single origin
 order: 5
-roast_level: Full City+ (medium-dark)
-roast_dots: 4
+roast_level: Full City (medium)
+roast_dots: 3
 tasting_notes: Chocolatey, smooth, creamy
 brewing_method: Pour-over, French press
 mark_color_a: "#3D2B1F"
