@@ -5,7 +5,7 @@ category: blend
 order: 6
 roast_level: Vienna (dark)
 roast_dots: 5
-tasting_notes: Dark chocolate, caramel, sweet cream, smooth finish
+tasting_notes: Dark chocolate, molasses, cedar
 brewing_method: Cold brew
 mark_color_a: "#4A6B8C"
 mark_color_b: "#1A2535"

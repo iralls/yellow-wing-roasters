@@ -5,7 +5,7 @@ category: blend
 order: 2
 roast_level: City+ (light-medium)
 roast_dots: 2
-tasting_notes: Tropical fruit, ripe melon, winey acidity, maple syrup
+tasting_notes: Tropical fruit, melon, maple syrup
 brewing_method: Espresso
 mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
