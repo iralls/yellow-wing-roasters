@@ -49,7 +49,7 @@ layout: default
     {% if v.tasting_notes %}
     <div class="roast-mv-meta-item">
       <div class="roast-mv-meta-label">Tasting Notes</div>
-      <div class="roast-mv-meta-value">{{ v.tasting_notes }}</div>
+      <div class="roast-mv-meta-value">{{ v.tasting_notes | replace: ", ", " · " }}</div>
     </div>
     {% endif %}
     <div class="roast-mv-meta-item">
@@ -78,7 +78,7 @@ layout: default
 
 {% else %}
 
-{% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes }}</p>{% endif %}
+{% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " }}</p>{% endif %}
 
 <div class="roast-mv-meta-row">
   {% if page.roast_dots %}
