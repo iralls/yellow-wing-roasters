@@ -17,9 +17,9 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 <h2 class="roasts-category">Approved Suppliers</h2>
 
 <ul class="byob-suppliers">
+  <li><a href="https://www.roastmasters.com/" target="_blank" rel="noopener">Roastmasters</a></li>
   <li><a href="https://burmancoffee.com/" target="_blank" rel="noopener">Burman Coffee</a></li>
   <li><a href="https://www.sweetmarias.com/" target="_blank" rel="noopener">Sweet Maria's</a></li>
-  <li><a href="https://www.roastmasters.com/" target="_blank" rel="noopener">Roastmasters</a></li>
 </ul>
 
 <h2 class="roasts-category">How it works</h2>
