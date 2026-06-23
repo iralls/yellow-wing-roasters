@@ -31,7 +31,7 @@ defaults:
   - scope:
       path: ""
     values:
-      image: /images/social-preview.png
+      image: /images/social-preview-v2.png
   - scope:
       path: ""
       type: roasts
