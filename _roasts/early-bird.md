@@ -11,6 +11,7 @@ mark_color_a: "#D4572A"
 mark_color_b: "#3D3028"
 mascot: robin
 mascot_file: audubon-robin-transparent.png
+coming_soon: true
 
 card_image: /images/audubon-robin-transparent.png
 origins:
