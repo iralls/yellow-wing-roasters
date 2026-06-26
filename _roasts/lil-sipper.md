@@ -6,7 +6,7 @@ order: 2
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Tropical fruit, melon, maple syrup
-brewing_method: Espresso
+brewing_method: Espresso, pour-over
 mark_color_a: "#1F6B4A"
 mark_color_b: "#B8002E"
 mascot: hummingbird
