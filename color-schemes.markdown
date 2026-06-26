@@ -100,7 +100,7 @@ Roast-specific palettes for consideration — each mini card shows how the schem
       </div>
     </div>
 
-    <!-- Colombian Supremo -->
+    <!-- Colombia Supremo -->
     <div class="color-scheme-card">
       <div class="color-scheme-strip">
         <div class="color-swatch" style="background:#211510;"></div>
@@ -109,7 +109,7 @@ Roast-specific palettes for consideration — each mini card shows how the schem
         <div class="color-swatch" style="background:#4A4E69;"></div>
       </div>
       <div class="color-scheme-body">
-        <p class="color-scheme-name">Colombian Supremo</p>
+        <p class="color-scheme-name">Colombia Supremo</p>
         <p class="color-scheme-desc">Grounded, earthy, premium. Slate blue-gray cuts in as a cool accent representing the smooth mouthfeel.</p>
         <ul class="color-swatch-list">
           <li class="color-swatch-item">
@@ -134,7 +134,7 @@ Roast-specific palettes for consideration — each mini card shows how the schem
           </li>
         </ul>
         <div class="color-scheme-mock" style="background:#f5f0ec; border:1px solid #ddd;">
-          <div class="color-scheme-mock-header" style="background:#211510; color:#A67B5B;">Colombian Supremo</div>
+          <div class="color-scheme-mock-header" style="background:#211510; color:#A67B5B;">Colombia Supremo</div>
           <div class="color-scheme-mock-body" style="color:#211510;">
             Nutty, chocolatey, smooth
             <div class="color-scheme-mock-note">Vienna · Espresso, French press</div>
