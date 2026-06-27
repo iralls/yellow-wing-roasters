@@ -82,7 +82,7 @@ permalink: /order/
     var roastData = [
       {% for r in roasts %}
         {% if r.variants %}
-          {% assign default_sizes = "8oz,12oz" | split: "," %}
+          {% assign default_sizes = "12oz,5lb" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
@@ -91,7 +91,7 @@ permalink: /order/
             {% endfor %}
           {% endfor %}
         {% else %}
-          {% assign default_sizes = "8oz,12oz" | split: "," %}
+          {% assign default_sizes = "12oz,5lb" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
             {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
@@ -285,7 +285,7 @@ permalink: /order/
     var params = new URLSearchParams(window.location.search);
     var qpRoast = params.get('roast');
     var qpVariant = params.get('variant') || '';
-    var qpSize = params.get('size') || '8oz';
+    var qpSize = params.get('size') || '12oz';
     if (qpRoast) {
       var cart = loadCart();
       var k = cartKey(qpRoast, qpVariant, qpSize);
