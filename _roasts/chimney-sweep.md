@@ -5,7 +5,7 @@ category: blend
 order: 4
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Milk chocolate, cherry, caramel
+tasting_notes: Dark chocolate, toasted almond, bright sweetness
 brewing_method: Espresso, moka pot, drip
 mark_color_a: "#4a3828"
 mark_color_b: "#8a7060"
