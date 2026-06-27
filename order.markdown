@@ -30,11 +30,13 @@ permalink: /order/
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
-    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked onchange="document.getElementById('order-shipping').style.display='none';"> Local pickup / hand delivery</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="ship" onchange="document.getElementById('order-shipping').style.display='';"> Ship to me</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked onchange="document.getElementById('order-address-fields').style.display='none'; document.getElementById('order-delivery-note').style.display='none';"> Pickup (we'll coordinate)</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="delivery" onchange="document.getElementById('order-address-fields').style.display=''; document.getElementById('order-delivery-note').style.display='';"> Hand delivery</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="ship" onchange="document.getElementById('order-address-fields').style.display=''; document.getElementById('order-delivery-note').style.display='none';"> Ship to me</label>
+    <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
   </fieldset>
 
-  <div id="order-shipping" class="order-shipping" style="display:none;">
+  <div id="order-address-fields" class="order-shipping" style="display:none;">
     <div class="order-field">
       <label for="order-address">Street address</label>
       <input id="order-address" type="text" name="address" autocomplete="street-address">
