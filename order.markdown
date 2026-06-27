@@ -30,9 +30,9 @@ permalink: /order/
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
-    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked onchange="document.getElementById('order-address-fields').style.display='none'; document.getElementById('order-delivery-note').style.display='none';"> Pickup (we'll coordinate)</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="delivery" onchange="document.getElementById('order-address-fields').style.display=''; document.getElementById('order-delivery-note').style.display='';"> Hand delivery</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="ship" onchange="document.getElementById('order-address-fields').style.display=''; document.getElementById('order-delivery-note').style.display='none';"> Ship to me</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked> Pickup (we'll coordinate)</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="delivery"> Hand delivery</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="ship"> Ship to me</label>
     <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
   </fieldset>
 
@@ -254,10 +254,22 @@ permalink: /order/
         itemsEl.appendChild(row);
       }
 
-      var grandTotal = 0;
+      var subtotal = 0;
       for (var t = 0; t < items.length; t++) {
-        grandTotal += (items[t].data.price || 0) * items[t].qty;
+        subtotal += (items[t].data.price || 0) * items[t].qty;
       }
+
+      var delivery = document.querySelector('input[name="delivery"]:checked');
+      var shippingCost = (delivery && delivery.value === 'ship') ? 5 : 0;
+      var grandTotal = subtotal + shippingCost;
+
+      if (shippingCost > 0) {
+        var shippingRow = document.createElement('div');
+        shippingRow.className = 'order-cart-shipping';
+        shippingRow.innerHTML = '<span class="order-cart-total-label">Shipping</span><span class="order-cart-total-value">$' + shippingCost + '</span>';
+        itemsEl.appendChild(shippingRow);
+      }
+
       var totalRow = document.createElement('div');
       totalRow.className = 'order-cart-total';
       totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
@@ -285,6 +297,18 @@ permalink: /order/
     }
 
     render();
+
+    var deliveryRadios = form.querySelectorAll('input[name="delivery"]');
+    var addressFields = document.getElementById('order-address-fields');
+    var deliveryNote = document.getElementById('order-delivery-note');
+    for (var di = 0; di < deliveryRadios.length; di++) {
+      deliveryRadios[di].addEventListener('change', function () {
+        var v = this.value;
+        addressFields.style.display = (v === 'pickup') ? 'none' : '';
+        deliveryNote.style.display = (v === 'delivery') ? '' : 'none';
+        render();
+      });
+    }
 
     var status = form.querySelector('.order-status');
     var submitBtn = form.querySelector('.order-submit');
