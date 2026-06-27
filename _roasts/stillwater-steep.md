@@ -2,7 +2,7 @@
 title: Stillwater Steep
 slug: stillwater-steep
 category: blend
-order: 6
+order: 8
 roast_level: Vienna (dark)
 roast_dots: 5
 tasting_notes: Dark chocolate, molasses, cedar

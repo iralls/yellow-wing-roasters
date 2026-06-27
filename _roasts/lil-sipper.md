@@ -2,7 +2,7 @@
 title: "Lil' Sipper"
 slug: lil-sipper
 category: blend
-order: 2
+order: 6
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Sweet berry, vanilla, cream

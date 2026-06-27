@@ -2,7 +2,7 @@
 title: Feather Soot
 slug: feather-soot
 category: blend
-order: 3
+order: 1
 roast_level: Full City+ (medium-dark)
 roast_dots: 4
 tasting_notes: Dark chocolate, molasses, toasted walnut
@@ -14,7 +14,6 @@ mascot_file: audubon-canary-transparent.png
 origins:
   - Brazil
   - Sumatra
-coming_soon: true
 ---
 
 A classic, full-bodied coffee for those who like their brew strong and steady. It's got a deep, heavy flavor with notes of rich chocolate and a smooth, smoky finish. Simple, bold, and hits the spot whether you drink it black or with a splash of milk.

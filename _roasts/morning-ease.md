@@ -2,7 +2,7 @@
 title: Morning Ease
 slug: morning-ease
 category: blend
-order: 7
+order: 9
 roast_level: City+ (medium)
 roast_dots: 2
 tasting_notes: Smooth, nutty, mild chocolate

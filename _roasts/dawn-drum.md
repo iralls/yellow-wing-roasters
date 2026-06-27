@@ -2,7 +2,7 @@
 title: Dawn Drum
 slug: dawn-drum
 category: blend
-order: 5
+order: 7
 roast_level: City (light)
 roast_dots: 1
 tasting_notes: Bright, floral, citrus, stone fruit

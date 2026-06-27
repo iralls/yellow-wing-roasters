@@ -2,7 +2,7 @@
 title: Early Bird
 slug: early-bird
 category: blend
-order: 1
+order: 5
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Milk chocolate, caramel, sweet citrus

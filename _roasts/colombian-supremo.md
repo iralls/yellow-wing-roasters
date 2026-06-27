@@ -7,7 +7,7 @@ mark_color_a: "#3A6BC4"
 mark_color_b: "#C86830"
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
-order: 4
+order: 3
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Caramel, brown sugar, sweet finish
