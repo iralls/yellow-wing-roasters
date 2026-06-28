@@ -32,7 +32,7 @@ permalink: /order/
     <legend>Delivery method</legend>
     <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked> Pickup (we'll coordinate)</label>
     <label class="order-radio"><input type="radio" name="delivery" value="delivery"> Hand delivery</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="ship"> Ship to me</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="ship"> Ship to me <span class="order-delivery-note" style="display:inline; font-style:italic;">— free on orders over $40</span></label>
     <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
   </fieldset>
 
@@ -260,7 +260,7 @@ permalink: /order/
       }
 
       var delivery = document.querySelector('input[name="delivery"]:checked');
-      var shippingCost = (delivery && delivery.value === 'ship') ? 5 : 0;
+      var shippingCost = (delivery && delivery.value === 'ship' && subtotal < 40) ? 5 : 0;
       var grandTotal = subtotal + shippingCost;
 
       if (shippingCost > 0) {
