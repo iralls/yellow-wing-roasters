@@ -7,8 +7,6 @@ roast_level: Full City+ (medium-dark)
 roast_dots: 4
 tasting_notes: Dark chocolate, molasses, toasted walnut
 brewing_method: French press, moka pot, drip
-mark_color_a: "#E99E00"
-mark_color_b: "#0D0F1F"
 mascot: canary
 mascot_file: audubon-canary-transparent.png
 origins:

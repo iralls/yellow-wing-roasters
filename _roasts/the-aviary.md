@@ -5,9 +5,6 @@ category: pack
 order: 10
 tasting_notes: A range of four blends, from bright and floral to dark and smoky
 brewing_method: Varies by blend
-mark_color_a: "#8B5E3C"
-mark_color_b: "#E8C87A"
-mark_gradient: "linear-gradient(to right, #E84040, #E87820, #D4B800, #40A840, #2868C8, #5838A0, #9040B0)"
 mascot_file: flock-transparent.png
 card_mascot_file: black-bird-transparent.png
 sizes:

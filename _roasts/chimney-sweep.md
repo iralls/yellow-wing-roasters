@@ -7,8 +7,6 @@ roast_level: Full City (medium)
 roast_dots: 3
 tasting_notes: Dark chocolate, toasted almond, bright sweetness
 brewing_method: Espresso, moka pot, drip
-mark_color_a: "#4a3828"
-mark_color_b: "#8a7060"
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
 origins:

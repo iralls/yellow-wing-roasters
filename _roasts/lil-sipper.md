@@ -7,8 +7,6 @@ roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Sweet berry, vanilla, cream
 brewing_method: Espresso, pour-over
-mark_color_a: "#1F6B4A"
-mark_color_b: "#B8002E"
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
