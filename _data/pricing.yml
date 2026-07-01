@@ -1,10 +1,12 @@
 default:
   12oz: 12
-  5lb: 75
+  2lb: 30
+  5lb: 70
 
 overrides:
   the-aviary:
     add to order: 25
   lil-sipper:
     12oz: 14
+    2lb: 32
     5lb: 80

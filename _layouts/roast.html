@@ -2,7 +2,7 @@
 layout: default
 ---
 
-{% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "12oz" | split: "," %}{% endif %}
+{% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "12oz,2lb,5lb" | split: "," %}{% endif %}
 {% assign pricing = site.data.pricing %}
 {% assign roast_prices = pricing.overrides[page.slug] %}
 
