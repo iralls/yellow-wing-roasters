@@ -6,6 +6,8 @@ default:
 overrides:
   the-aviary:
     add to order: 25
+  ugly-ducklings:
+    12oz: 5
   lil-sipper:
     12oz: 14
     2lb: 32

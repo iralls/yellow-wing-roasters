@@ -38,6 +38,12 @@ defaults:
     values:
       layout: roast
 
+category_order:
+  - blend
+  - single origin
+  - byob
+  - ugly duckling
+
 exclude:
   - README.md
   - Gemfile
