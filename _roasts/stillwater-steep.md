@@ -5,7 +5,7 @@ category: blend
 order: 8
 roast_level: Vienna (dark)
 roast_dots: 5
-tasting_notes: Dark chocolate, molasses, cedar
+tasting_notes: Dark chocolate, molasses, smoky
 brewing_method: Cold brew
 mascot: heron
 mascot_file: audubon-heron-transparent.png
