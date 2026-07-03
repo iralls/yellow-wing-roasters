@@ -2,13 +2,14 @@
 title: Chimney Sweep
 slug: chimney-sweep
 category: blend
-order: 2
+order: 3
 roast_level: Full City (medium)
 roast_dots: 3
 tasting_notes: Dark chocolate, toasted almond, bright sweetness
 brewing_method: Espresso, moka pot, drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
+coming_soon: true
 origins:
   - Brazil
   - Guatemala

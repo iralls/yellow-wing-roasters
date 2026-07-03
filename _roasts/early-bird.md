@@ -2,7 +2,7 @@
 title: Early Bird
 slug: early-bird
 category: blend
-order: 5
+order: 1
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Milk chocolate, caramel, sweet citrus
@@ -18,4 +18,4 @@ origins:
   - Kenya
 ---
 
-Our signature house blend, crafted to be your go-to everyday coffee. It's balanced and smooth, pairing a rich cocoa and caramel sweetness with just a hint of bright fruit to keep things interesting. Easy-drinking, consistent, and great however you like to brew it.
+Our signature house blend, modeled after Willoughby's. It's balanced and smooth, pairing a rich cocoa and caramel sweetness with just a hint of bright fruit to keep things interesting. Easy-drinking, consistent, and great however you like to brew it.

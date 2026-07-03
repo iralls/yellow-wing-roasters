@@ -2,13 +2,14 @@
 title: Feather Soot
 slug: feather-soot
 category: blend
-order: 1
+order: 2
 roast_level: Full City+ (medium-dark)
 roast_dots: 4
 tasting_notes: Dark chocolate, molasses, toasted walnut
 brewing_method: French press, moka pot, drip
 mascot: canary
 mascot_file: audubon-canary-transparent.png
+coming_soon: true
 origins:
   - Brazil
   - Sumatra
