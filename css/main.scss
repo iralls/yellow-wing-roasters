@@ -712,7 +712,7 @@ h1.roast-title {
 }
 
 .order-free-shipping {
-  color: #1F6B4A;
+  color: #1f6b4a;
 }
 
 .order-shipping {
@@ -739,12 +739,22 @@ h1.roast-title {
 
 .order-form input[type="text"],
 .order-form input[type="email"],
+.order-form select,
 .order-form textarea {
   width: 100%;
   padding: 0.55rem 0.7rem;
   font: inherit;
   border: 1px solid #bbb;
   border-radius: 0.35rem;
+  box-sizing: border-box;
+}
+
+.subscribe-select {
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  border: 1px solid #bbb;
+  border-radius: 0.35rem;
+  background: #fff;
   box-sizing: border-box;
 }
 

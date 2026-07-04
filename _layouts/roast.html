@@ -74,7 +74,33 @@ layout: default
   </div>
 </div>
 {% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center;">Ordering unavailable until this roast launches.</p>{% endif %}
-{% unless page.coming_soon or page.category == "ugly duckling" or page.category == "pack" %}<p class="roast-mv-center" style="margin-top:0.5rem;"><a href="{{ '/subscribe/?roast=' | append: page.slug | relative_url }}" class="subscribe-link">Subscribe to this roast &rarr;</a></p>{% endunless %}
+{% unless page.coming_soon or page.category == "ugly duckling" or page.category == "pack" %}
+<div class="roast-mv-center subscribe-wrap" style="margin-top:1rem; text-align:center;">
+  <div style="display:inline-flex; align-items:center; gap:0.5rem; flex-wrap:wrap; justify-content:center;">
+    <select id="sub-size" class="subscribe-select">
+      {% for s in sizes %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+    </select>
+    <select id="sub-frequency" class="subscribe-select">
+      <option value="Every 2 weeks">Every 2 weeks</option>
+      <option value="Monthly">Monthly</option>
+    </select>
+    <a href="#" id="sub-link" class="subscribe-link">Subscribe &rarr;</a>
+  </div>
+</div>
+<script>
+(function () {
+  var sizeEl = document.getElementById('sub-size');
+  var freqEl = document.getElementById('sub-frequency');
+  var linkEl = document.getElementById('sub-link');
+  function updateLink() {
+    linkEl.href = '{{ "/subscribe/" | relative_url }}?roast={{ page.slug }}&size=' + encodeURIComponent(sizeEl.value) + '&frequency=' + encodeURIComponent(freqEl.value);
+  }
+  sizeEl.addEventListener('change', updateLink);
+  freqEl.addEventListener('change', updateLink);
+  updateLink();
+})();
+</script>
+{% endunless %}
 
 {% if page.origins %}
 <div class="roast-mv-divider"></div>

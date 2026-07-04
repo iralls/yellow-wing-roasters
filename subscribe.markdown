@@ -115,6 +115,22 @@ Set up a recurring delivery of your favorite roast.
     }
   }
 
+  var qpSize = params.get('size');
+  if (qpSize) {
+    var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
+    for (var s = 0; s < sizeRadios.length; s++) {
+      if (sizeRadios[s].value === qpSize) { sizeRadios[s].checked = true; break; }
+    }
+  }
+
+  var qpFreq = params.get('frequency');
+  if (qpFreq) {
+    var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
+    for (var f = 0; f < freqRadios.length; f++) {
+      if (freqRadios[f].value === qpFreq) { freqRadios[f].checked = true; break; }
+    }
+  }
+
   var iframe = document.createElement('iframe');
   iframe.name = 'sub-submit-frame';
   iframe.style.display = 'none';
