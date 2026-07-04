@@ -12,54 +12,54 @@ permalink: /order/
   <a href="{{ '/roasts/' | relative_url }}" class="order-browse-link">Browse our roasts &rarr;</a>
 </div>
 
-<form action="https://formspree.io/f/mojraaql" method="POST" class="order-form" id="order-form" style="display:none;">
-  <input type="hidden" name="_subject" value="New Yellow Wing order">
-  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="order-gotcha">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSeHWMIlor3ojD8ytE5Qv_GFXsNpLDvC6f9F7V30qpu4RCoLCA/formResponse" method="POST" class="order-form" id="order-form" style="display:none;">
+  <input type="hidden" name="entry.1935997805" id="order-items-hidden" value="">
+  <input type="hidden" name="entry.552044967" id="order-total-hidden" value="">
 
   <div class="order-cart-items" id="order-cart-items"></div>
 
   <div class="order-field">
     <label for="order-name">Name</label>
-    <input id="order-name" type="text" name="name" required autocomplete="name">
+    <input id="order-name" type="text" name="entry.1153405702" required autocomplete="name">
   </div>
 
   <div class="order-field">
     <label for="order-email">Email</label>
-    <input id="order-email" type="email" name="email" required autocomplete="email">
+    <input id="order-email" type="email" name="entry.40149380" autocomplete="email">
   </div>
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
-    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked> Pickup (we'll coordinate)</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="delivery"> Hand delivery</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="ship"> Ship to me <span class="order-delivery-note" style="display:inline; font-style:italic;">— free on orders over $40</span></label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup (we'll coordinate)</label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me <span class="order-delivery-note" style="display:inline; font-style:italic;">— free on orders over $40</span></label>
     <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
   </fieldset>
 
   <div id="order-address-fields" class="order-shipping" style="display:none;">
     <div class="order-field">
       <label for="order-address">Street address</label>
-      <input id="order-address" type="text" name="address" autocomplete="street-address">
+      <input id="order-address" type="text" name="entry.148046999" autocomplete="street-address">
     </div>
     <div class="order-field">
       <label for="order-city">City</label>
-      <input id="order-city" type="text" name="city" autocomplete="address-level2">
+      <input id="order-city" type="text" name="entry.1534670804" autocomplete="address-level2">
     </div>
     <div class="order-field-row">
       <div class="order-field">
         <label for="order-state">State</label>
-        <input id="order-state" type="text" name="state" autocomplete="address-level1">
+        <input id="order-state" type="text" name="entry.414179858" autocomplete="address-level1">
       </div>
       <div class="order-field">
         <label for="order-zip">ZIP</label>
-        <input id="order-zip" type="text" name="zip" autocomplete="postal-code">
+        <input id="order-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
       </div>
     </div>
   </div>
 
   <div class="order-field">
     <label for="order-notes">Notes (optional)</label>
-    <textarea id="order-notes" name="notes" rows="3"></textarea>
+    <textarea id="order-notes" name="entry.1381358427" rows="3"></textarea>
   </div>
 
   <div class="order-actions">
@@ -82,7 +82,7 @@ permalink: /order/
     var roastData = [
       {% for r in roasts %}
         {% if r.variants %}
-          {% assign default_sizes = "12oz" | split: "," %}
+          {% assign default_sizes = "12oz,2lb,5lb" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
             {% for s in row_sizes %}
@@ -91,7 +91,7 @@ permalink: /order/
             {% endfor %}
           {% endfor %}
         {% else %}
-          {% assign default_sizes = "12oz" | split: "," %}
+          {% assign default_sizes = "12oz,2lb,5lb" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
             {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
@@ -189,7 +189,6 @@ permalink: /order/
         qtyInput.min = '0';
         qtyInput.value = item.qty;
         qtyInput.className = 'order-cart-qty';
-        qtyInput.name = item.data.formName;
         qtyInput.setAttribute('data-key', item.key);
         qtyInput.inputMode = 'numeric';
 
@@ -259,8 +258,8 @@ permalink: /order/
         subtotal += (items[t].data.price || 0) * items[t].qty;
       }
 
-      var delivery = document.querySelector('input[name="delivery"]:checked');
-      var shippingCost = (delivery && delivery.value === 'ship' && subtotal < 40) ? 5 : 0;
+      var delivery = document.querySelector('input[name="entry.1896226742"]:checked');
+      var shippingCost = (delivery && delivery.value === 'Ship to me' && subtotal < 40) ? 5 : 0;
       var grandTotal = subtotal + shippingCost;
 
       if (shippingCost > 0) {
@@ -275,11 +274,11 @@ permalink: /order/
       totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
       itemsEl.appendChild(totalRow);
 
-      var totalInput = document.createElement('input');
-      totalInput.type = 'hidden';
-      totalInput.name = 'Total';
-      totalInput.value = '$' + grandTotal;
-      itemsEl.appendChild(totalInput);
+      var itemLines = items.map(function (item) {
+        return item.qty + 'x ' + item.data.label + ' ' + item.data.size;
+      }).join(', ');
+      document.getElementById('order-items-hidden').value = itemLines;
+      document.getElementById('order-total-hidden').value = '$' + grandTotal;
     }
 
     var params = new URLSearchParams(window.location.search);
@@ -298,14 +297,14 @@ permalink: /order/
 
     render();
 
-    var deliveryRadios = form.querySelectorAll('input[name="delivery"]');
+    var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
     var addressFields = document.getElementById('order-address-fields');
     var deliveryNote = document.getElementById('order-delivery-note');
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
-        addressFields.style.display = (v === 'pickup') ? 'none' : '';
-        deliveryNote.style.display = (v === 'delivery') ? '' : 'none';
+        addressFields.style.display = (v === 'Pickup') ? 'none' : '';
+        deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
         render();
       });
     }
@@ -313,44 +312,24 @@ permalink: /order/
     var status = form.querySelector('.order-status');
     var submitBtn = form.querySelector('.order-submit');
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    var iframe = document.createElement('iframe');
+    iframe.name = 'order-submit-frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    form.target = 'order-submit-frame';
+
+    form.addEventListener('submit', function () {
       if (status) {
         status.textContent = 'Sending…';
         status.className = 'order-status order-status-pending';
       }
       if (submitBtn) submitBtn.disabled = true;
 
-      var data = new FormData(form);
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then(function (res) {
-        return res.json().then(function (body) { return { ok: res.ok, body: body }; });
-      }).then(function (result) {
-        if (result.ok) {
-          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
-          window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
-          window.location.href = '{{ "/thanks/" | relative_url }}';
-        } else {
-          var msg = 'Something went wrong. Please try again or email support@yellowwingroasters.com.';
-          if (result.body && result.body.errors && result.body.errors.length) {
-            msg = result.body.errors.map(function (er) { return er.message; }).join(' ');
-          }
-          if (status) {
-            status.textContent = msg;
-            status.className = 'order-status order-status-error';
-          }
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      }).catch(function () {
-        if (status) {
-          status.textContent = 'Network error. Check your connection and try again.';
-          status.className = 'order-status order-status-error';
-        }
-        if (submitBtn) submitBtn.disabled = false;
-      });
+      setTimeout(function () {
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+        window.location.href = '{{ "/thanks/" | relative_url }}';
+      }, 1000);
     });
 
     var clearBtn = form.querySelector('.order-clear');
