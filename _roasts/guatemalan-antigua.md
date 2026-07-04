@@ -1,6 +1,5 @@
 ---
-title: Guatemalan Antigua
-subtitle: Smooth Talon
+title: Guatemala Antigua
 slug: guatemalan-antigua
 category: single origin
 order: 4
