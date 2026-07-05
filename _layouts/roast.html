@@ -69,7 +69,7 @@ layout: default
   <div class="add-to-order-wrap" style="justify-content:center;">
     {% for s in sizes %}
       {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
-      <button class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" data-roast="{{ page.slug }}" data-size="{{ s }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}>{{ s }} — ${{ price }}</button>
+      <button class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" data-roast="{{ page.slug }}" data-size="{{ s }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}>{{ s }}</button>
     {% endfor %}
   </div>
 </div>

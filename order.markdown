@@ -239,46 +239,19 @@ permalink: /order/
         qtyWrap.appendChild(qtyInput);
         qtyWrap.appendChild(plus);
 
-        var priceEl = document.createElement('div');
-        priceEl.className = 'order-cart-item-price';
-        var lineTotal = (item.data.price || 0) * item.qty;
-        priceEl.textContent = '$' + lineTotal;
-
         row.appendChild(nameEl);
         if (dotsEl) row.appendChild(dotsEl);
         row.appendChild(sizeEl);
         row.appendChild(qtyWrap);
-        row.appendChild(priceEl);
         row.appendChild(removeBtn);
         itemsEl.appendChild(row);
       }
-
-      var subtotal = 0;
-      for (var t = 0; t < items.length; t++) {
-        subtotal += (items[t].data.price || 0) * items[t].qty;
-      }
-
-      var delivery = document.querySelector('input[name="entry.1896226742"]:checked');
-      var shippingCost = (delivery && delivery.value === 'Ship to me' && subtotal < 40) ? 5 : 0;
-      var grandTotal = subtotal + shippingCost;
-
-      if (shippingCost > 0) {
-        var shippingRow = document.createElement('div');
-        shippingRow.className = 'order-cart-shipping';
-        shippingRow.innerHTML = '<span class="order-cart-total-label">Shipping</span><span class="order-cart-total-value">$' + shippingCost + '</span>';
-        itemsEl.appendChild(shippingRow);
-      }
-
-      var totalRow = document.createElement('div');
-      totalRow.className = 'order-cart-total';
-      totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
-      itemsEl.appendChild(totalRow);
 
       var itemLines = items.map(function (item) {
         return item.qty + 'x ' + item.data.label + ' ' + item.data.size;
       }).join(', ');
       document.getElementById('order-items-hidden').value = itemLines;
-      document.getElementById('order-total-hidden').value = '$' + grandTotal;
+      document.getElementById('order-total-hidden').value = '';
     }
 
     var params = new URLSearchParams(window.location.search);
