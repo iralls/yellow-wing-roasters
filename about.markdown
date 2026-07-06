@@ -15,7 +15,7 @@ Reach out to us at [chirp@yellowwingroasters.com](mailto:chirp@yellowwingroaster
 
 Sign up to hear about new roasts, seasonal blends, and restocks.
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSexuNnc-oeRQ7zaKz4y8m9uqfmafbZ5GNLHma10Y6Nki9dm-g/formResponse" method="POST" target="_blank" class="mailing-list-form">
-  <input type="email" name="entry.790629396" placeholder="your@email.com" required class="mailing-list-input">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse" method="POST" target="_blank" class="mailing-list-form">
+  <input type="email" name="entry.1049864914" placeholder="your@email.com" required class="mailing-list-input">
   <button type="submit" class="mailing-list-btn">Sign Me Up</button>
 </form>
