@@ -1,7 +1,6 @@
 ---
 title: Colombia Supremo
-subtitle: Blue Beacon
-slug: colombian-supremo
+slug: colombia-supremo
 category: single origin
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
