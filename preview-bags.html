@@ -1333,12 +1333,70 @@
     margin-top: auto;
   }
 
+  /* ── Style K2 — like K no-tasting, smaller logo+bird, website at bottom ── */
+  .style-k2 .brand-logo { height: 1.15in; }
+  .style-k2 .bird-img { height: 0.9in; }
+  .style-k2 .nickname { margin-bottom: 0; }
+  .style-k2 .blend-name { margin-top: 0.05in; margin-bottom: 0.02in; }
+  .style-k2 .dots { margin-bottom: 0.02in; }
+  .style-k2 .size-line {
+    margin-top: 0.04in;
+  }
+  .style-k2 .website {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 5.5pt;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    color: #bbb;
+    margin-top: auto;
+  }
+
+  /* ── Style K3 — like K2, dots + size side-by-side ── */
+  .style-k3 .info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.1in;
+    margin-top: 0.12in;
+  }
+  .style-k3 .info-row .dots {
+    margin: 0 !important;
+  }
+  .style-k3 .info-row .info-divider {
+    width: 1px;
+    height: 0.12in;
+    background: #ccc;
+    flex-shrink: 0;
+  }
+  .style-k3 .info-row .size-line {
+    margin-top: 0;
+  }
+  .style-k3 .website {
+    font-size: 7.5pt;
+  }
+
+  /* ── Style K2 at 2x3 — 0.75× scale of 2.75x4 ── */
+  .style-k2:not(.size-275x4) .brand-wrap { margin-bottom: 0.13in; }
+  .style-k2:not(.size-275x4) .brand-logo { height: 0.86in; }
+  .style-k2:not(.size-275x4) .brand-name { font-size: 8.5pt; }
+  .style-k2:not(.size-275x4) .brand-sub { font-size: 5pt; }
+  .style-k2:not(.size-275x4) .bird-img { height: 0.68in; margin-bottom: 0.08in; }
+  .style-k2:not(.size-275x4) .nickname { font-size: 11pt; }
+  .style-k2:not(.size-275x4) .blend-name { font-size: 6pt; }
+  .style-k2:not(.size-275x4) .dots { margin-top: 0.09in !important; }
+  .style-k2:not(.size-275x4) .dot { width: 5px; height: 5px; }
+  .style-k2:not(.size-275x4) .size-line { margin-top: 0.03in; font-size: 5pt; }
+  .style-k2:not(.size-275x4) .sticker { padding-bottom: 0.1in; }
+  .style-k2:not(.size-275x4) .website { font-size: 4.5pt; }
+
   /* ── Per-roast colors ── */
   .early-bird  { --ca: #D4572A; --cb: #3D3028; }
   .lil-sipper  { --ca: #1F6B4A; --cb: #B8002E; }
   .feather-soot { --ca: #E99E00; --cb: #0D0F1F; }
   .dawn-drum   { --ca: #C41E1E; --cb: #E8E0D0; }
   .chimney-sweep { --ca: #4a3828; --cb: #8a7060; }
+  .brazil-estavam { --ca: #6B4226; --cb: #D4A860; }
+  .guatemala-antigua { --ca: #5A6848; --cb: #C8A060; }
 </style>
 </head>
 <body>
@@ -1398,7 +1456,7 @@
       <span class="dot dot-2"></span>
       <span class="dot dot-3"></span>
       <span class="dot dot-4"></span>
-      <span class="dot dot-5"></span>
+      <span class="dot"></span>
     </div>
 
     <div class="size-line">Whole Bean · 12 oz</div>
@@ -1477,7 +1535,7 @@
       <span class="dot dot-2"></span>
       <span class="dot dot-3"></span>
       <span class="dot dot-4"></span>
-      <span class="dot dot-5"></span>
+      <span class="dot"></span>
     </div>
     <div class="size-line"><span style="text-align:right">Whole Bean</span> <img src="/images/audubon-feather-transparent.png" alt="" class="size-feather"> <span style="text-align:left">12 oz</span></div>
   </div>
@@ -1566,7 +1624,7 @@
       <span class="dot dot-2"></span>
       <span class="dot dot-3"></span>
       <span class="dot dot-4"></span>
-      <span class="dot dot-5"></span>
+      <span class="dot"></span>
     </div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
@@ -1853,7 +1911,7 @@
     <div class="nickname">Feather Soot</div>
     <div class="divider"></div>
     <div class="tasting">Bittersweet chocolate · smoke · molasses</div>
-    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
   <div class="sticker dawn-drum">
@@ -1900,7 +1958,7 @@
     <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
     <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
     <div class="nickname">Feather Soot</div>
-    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot dot-5"></span></div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
   </div>
   <div class="sticker dawn-drum">
@@ -1916,6 +1974,234 @@
     <div class="nickname">Chimney Sweep</div>
     <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
     <div class="size-line">Whole Bean · 12 oz</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2″ × 3″ — Style K2 (no tasting, with website)</h1>
+  <p>Like K no-tasting, smaller logo + bird, website at bottom</p>
+</div>
+
+<div class="bag-grid style-k style-k2">
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">House Blend</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker chimney-sweep">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Chimney Sweep</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker brazil-estavam">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-great-horned-owl-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Brazil Estavam Mario</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker guatemala-antigua">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-osprey-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Guatemalan Antigua</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style K2 (no tasting, with website)</h1>
+  <p>Like K no-tasting, smaller logo + bird, website at bottom</p>
+</div>
+
+<div class="bag-grid style-k style-k2 size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">House Blend</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker chimney-sweep">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Chimney Sweep</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker brazil-estavam">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-great-horned-owl-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Brazil Estavam Mario</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker guatemala-antigua">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-osprey-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Guatemalan Antigua</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="dots" style="margin-top: 0.12in"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="size-line">Whole Bean · 12 oz</div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>2.75″ × 4″ — Style K3 (dots + size side-by-side)</h1>
+  <p>Like K2, roast level and whole bean separated by a thin line</p>
+</div>
+
+<div class="bag-grid style-k style-k2 style-k3 size-275x4">
+  <div class="sticker early-bird">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-robin-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Early Bird</div>
+    <div class="blend-name">House Blend</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker lil-sipper">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-hummingbird-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Lil' Sipper</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker feather-soot">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-canary-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Feather Soot</div>
+    <div class="blend-name">Dark Roast</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot dot-4"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker dawn-drum">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-woodpecker-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Dawn Drum</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker chimney-sweep">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-chimney-swift-2-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Chimney Sweep</div>
+    <div class="blend-name">Espresso Blend</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker brazil-estavam">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-great-horned-owl-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Brazil Estavam Mario</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
+  </div>
+  <div class="sticker guatemala-antigua">
+    <div class="brand-wrap"><img src="/images/audubon-feather-transparent.png" alt="" class="brand-logo"><div class="brand-name">Yellow Wing</div><div class="brand-sub">Roasters</div></div>
+    <img src="/images/audubon-osprey-transparent.png" alt="" class="bird-img">
+    <div class="nickname">Guatemalan Antigua</div>
+    <div class="blend-name">Single Origin</div>
+    <div class="info-row">
+      <div class="size-line">Whole Bean</div>
+      <div class="info-divider"></div>
+      <div class="dots"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="website">www.yellowwingroasters.com</div>
   </div>
 </div>
 

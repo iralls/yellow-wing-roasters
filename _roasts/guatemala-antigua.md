@@ -1,6 +1,6 @@
 ---
 title: Guatemala Antigua
-slug: guatemalan-antigua
+slug: guatemala-antigua
 category: single origin
 order: 4
 roast_level: Full City (medium)
