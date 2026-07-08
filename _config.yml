@@ -41,6 +41,7 @@ defaults:
 category_order:
   - blend
   - single origin
+  - pack
   - byob
   - ugly duckling
 

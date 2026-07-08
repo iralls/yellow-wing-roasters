@@ -12,13 +12,13 @@ sizes:
 coming_soon: true
 ---
 
-Four blends, each individually packaged in its own 12oz bag — a great way to explore the full range before committing to a full bag.
+Four blends, each individually packaged in its own 8oz bag — a great way to explore the full range before committing to a full bag.
 
 Includes:
 
-- **[Early Bird](/roasts/early-bird/)** · City+ (light-medium) · Milk chocolate, toasted almond, caramel, sweet jammy finish
+- **[Early Bird](/roasts/early-bird/)** · City+ (light-medium) · Milk chocolate, caramel, smooth body
 - **[Lil' Sipper](/roasts/lil-sipper/)** · City+ (light-medium) · Sweet berry, vanilla, cream
-- **[Feather Soot](/roasts/feather-soot/)** · Full City+ (medium-dark) · Bittersweet chocolate, smoke, molasses
-- **[Chimney Sweep](/roasts/chimney-sweep/)** · Full City (medium) · Milk chocolate, cherry, caramel
+- **[Feather Soot](/roasts/feather-soot/)** · Full City+ (medium-dark) · Dark chocolate, molasses, toasted walnut
+- **[Chimney Sweep](/roasts/chimney-sweep/)** · Full City (medium) · Dark chocolate, toasted almond, sweet jam
 
 All four ship as whole bean. Brewing method varies by blend — details on each roast's page.
