@@ -769,7 +769,6 @@ h1.roast-title {
 
 .order-form input[type="text"],
 .order-form input[type="email"],
-.order-form select,
 .order-form textarea {
   width: 100%;
   padding: 0.55rem 0.7rem;
@@ -780,10 +779,12 @@ h1.roast-title {
 }
 
 .subscribe-select {
-  padding: 0.55rem 0.7rem;
-  font: inherit;
+  padding: 0.4rem 0.9rem;
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: 700;
   border: 1px solid #bbb;
-  border-radius: 0.35rem;
+  border-radius: 999px;
   background: #fff;
   box-sizing: border-box;
 }
@@ -1715,10 +1716,12 @@ h1.roast-title {
 
 .order-form select {
   width: 100%;
-  padding: 0.55rem 0.7rem;
-  font: inherit;
+  padding: 0.4rem 0.9rem;
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: 700;
   border: 1px solid #bbb;
-  border-radius: 0.35rem;
+  border-radius: 999px;
   box-sizing: border-box;
   background: #fff;
 }

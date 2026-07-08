@@ -69,8 +69,12 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
-    <label class="order-radio"><input type="radio" name="delivery" value="pickup" checked onchange="document.getElementById('byob-shipping').style.display='none';"> Local pickup / hand delivery</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="ship" onchange="document.getElementById('byob-shipping').style.display='';"> Ship to me</label>
+    <div class="pill-radios">
+    <label class="order-radio"><input type="radio" name="delivery" value="Pickup" checked onchange="document.getElementById('byob-shipping').style.display='none'; document.getElementById('byob-delivery-note').style.display='none';"> Pickup</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="Hand delivery" onchange="document.getElementById('byob-shipping').style.display=''; document.getElementById('byob-delivery-note').style.display='';"> Hand delivery</label>
+    <label class="order-radio"><input type="radio" name="delivery" value="Ship to me" onchange="document.getElementById('byob-shipping').style.display=''; document.getElementById('byob-delivery-note').style.display='none';"> Ship to me</label>
+    </div>
+    <p id="byob-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
   </fieldset>
 
   <div id="byob-shipping" class="order-shipping" style="display:none;">
