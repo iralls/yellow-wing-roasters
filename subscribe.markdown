@@ -13,8 +13,8 @@ permalink: /subscribe/
 <div class="sub-picker">
 
   {% for r in roasts %}
-    {% unless r.coming_soon or r.no_subscribe or r.category == "ugly duckling" or r.category == "pack" or r.category == "byob" %}
-  <div class="sub-card" data-roast="{{ r.title }}" data-slug="{{ r.slug }}" data-mascot="{{ r.mascot_file }}">
+    {% unless r.coming_soon or r.category == "ugly duckling" or r.category == "pack" or r.category == "byob" %}{% if r.frequencies and r.frequencies.size == 0 %}{% continue %}{% endif %}
+  <div class="sub-card" data-roast="{{ r.title }}" data-slug="{{ r.slug }}" data-mascot="{{ r.mascot_file }}" data-frequencies="{% if r.frequencies %}{{ r.frequencies | join: ',' }}{% else %}Every 2 weeks,Monthly{% endif %}">
     <div class="roasts-entry-visual">
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
     </div>
@@ -28,7 +28,7 @@ permalink: /subscribe/
     {% endunless %}
   {% endfor %}
 
-  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-feather-transparent.png">
+  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-feather-transparent.png" data-frequencies="Monthly">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
@@ -128,7 +128,7 @@ permalink: /subscribe/
 
   var params = new URLSearchParams(window.location.search);
 
-  function selectRoast(roast, slug, mascot) {
+  function selectRoast(roast, slug, mascot, frequencies) {
     hiddenInput.value = roast;
     summary.innerHTML = '<div style="text-align:center;">' + roast + (mascot ? '<br><img src="/images/' + mascot + '" alt="" style="height:4rem; margin-top:0.5rem;">' : '') + '</div>';
     intro.textContent = 'Subscribing to ' + roast + '. Fill out the details below.';
@@ -141,6 +141,23 @@ permalink: /subscribe/
       window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
     }
 
+    var allowed = frequencies ? frequencies.split(',') : ['Every 2 weeks', 'Monthly'];
+    var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
+    var firstVisible = null;
+    for (var f = 0; f < freqRadios.length; f++) {
+      var pill = freqRadios[f].closest('.order-radio');
+      if (allowed.indexOf(freqRadios[f].value) >= 0) {
+        pill.style.display = '';
+        if (!firstVisible) firstVisible = freqRadios[f];
+      } else {
+        pill.style.display = 'none';
+        freqRadios[f].checked = false;
+      }
+    }
+    if (firstVisible && !form.querySelector('input[name="entry.2064801247"]:checked')) {
+      firstVisible.checked = true;
+    }
+
     var size = params.get('size');
     if (size) {
       var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
@@ -151,16 +168,15 @@ permalink: /subscribe/
 
     var freq = params.get('frequency');
     if (freq) {
-      var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
-      for (var f = 0; f < freqRadios.length; f++) {
-        if (freqRadios[f].value === freq) { freqRadios[f].checked = true; break; }
+      for (var fi = 0; fi < freqRadios.length; fi++) {
+        if (freqRadios[fi].value === freq) { freqRadios[fi].checked = true; break; }
       }
     }
   }
 
   for (var i = 0; i < cards.length; i++) {
     cards[i].addEventListener('click', function () {
-      selectRoast(this.getAttribute('data-roast'), this.getAttribute('data-slug'), this.getAttribute('data-mascot'));
+      selectRoast(this.getAttribute('data-roast'), this.getAttribute('data-slug'), this.getAttribute('data-mascot'), this.getAttribute('data-frequencies'));
     });
   }
 
@@ -175,7 +191,7 @@ permalink: /subscribe/
   if (qpRoast) {
     for (var j = 0; j < cards.length; j++) {
       if (cards[j].getAttribute('data-slug') === qpRoast) {
-        selectRoast(cards[j].getAttribute('data-roast'), qpRoast, cards[j].getAttribute('data-mascot'));
+        selectRoast(cards[j].getAttribute('data-roast'), qpRoast, cards[j].getAttribute('data-mascot'), cards[j].getAttribute('data-frequencies'));
         break;
       }
     }

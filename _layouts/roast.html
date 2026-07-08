@@ -74,16 +74,21 @@ layout: default
   </div>
 </div>
 {% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center;">Ordering unavailable until this roast launches.</p>{% endif %}
-{% unless page.coming_soon or page.no_subscribe or page.category == "ugly duckling" or page.category == "pack" %}
+{% if page.frequencies %}{% assign roast_freqs = page.frequencies %}{% else %}{% assign roast_freqs = "Every 2 weeks,Monthly" | split: "," %}{% endif %}
+{% unless page.coming_soon or roast_freqs.size == 0 or page.category == "ugly duckling" or page.category == "pack" %}
 <div class="roast-mv-center subscribe-wrap" style="margin-top:1rem; text-align:center;">
   <div style="display:inline-flex; align-items:center; gap:0.5rem; flex-wrap:wrap; justify-content:center;">
     <select id="sub-size" class="subscribe-select">
       {% for s in sizes %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
     </select>
+    {% if roast_freqs.size > 1 %}
     <select id="sub-frequency" class="subscribe-select">
-      <option value="Every 2 weeks">Every 2 weeks</option>
-      <option value="Monthly">Monthly</option>
+      {% for f in roast_freqs %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
     </select>
+    {% else %}
+    <input type="hidden" id="sub-frequency" value="{{ roast_freqs.first }}">
+    <span class="subscribe-freq-label">{{ roast_freqs.first }}</span>
+    {% endif %}
     <a href="#" id="sub-link" class="subscribe-link">Subscribe &rarr;</a>
   </div>
 </div>
