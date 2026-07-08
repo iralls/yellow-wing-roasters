@@ -28,9 +28,9 @@ permalink: /subscribe/
     {% endunless %}
   {% endfor %}
 
-  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-feather-transparent.png" data-frequencies="Monthly">
+  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-byob-transparent.png" data-frequencies="Monthly">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Rotating Single Origin</div>
