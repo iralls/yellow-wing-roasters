@@ -6,9 +6,45 @@ permalink: /subscribe/
 
 # Subscribe
 
-Set up a recurring delivery of your favorite roast.
+<p id="sub-intro">Set up a recurring delivery of your favorite roast. Pick a bean below to get started.</p>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
+{% assign roasts = site.roasts | sort: "order" %}
+
+<div class="sub-picker">
+
+  {% for r in roasts %}
+    {% unless r.coming_soon or r.no_subscribe or r.category == "ugly duckling" or r.category == "pack" or r.category == "byob" %}
+  <div class="sub-card" data-roast="{{ r.title }}" data-slug="{{ r.slug }}" data-mascot="{{ r.mascot_file }}">
+    <div class="roasts-entry-visual">
+      {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">{{ r.title }}</div>
+      {% if r.roast_dots %}<span class="roasts-entry-level"><span class="roast-dots roast-dots-sm"><span class="roast-dot{% if r.roast_dots >= 1 %} roast-dot-1{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 2 %} roast-dot-2{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 3 %} roast-dot-3{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 4 %} roast-dot-4{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 5 %} roast-dot-5{% endif %}"></span></span></span>{% endif %}
+      {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " }}</div>{% endif %}
+      {% if r.brewing_method %}<div class="roasts-entry-brew">{{ r.brewing_method }}</div>{% endif %}
+    </div>
+  </div>
+    {% endunless %}
+  {% endfor %}
+
+  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-feather-transparent.png">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Rotating Single Origin</div>
+      <div class="roasts-entry-notes">A new single origin each delivery</div>
+      <div class="roasts-entry-brew">We pick, you enjoy</div>
+    </div>
+  </div>
+
+</div>
+
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form sub-form" id="subscribe-form" style="display:none;">
+  <input type="hidden" name="entry.1935997805" id="sub-roast-hidden" value="">
+
+  <div class="sub-selected-summary" id="sub-selected-summary"></div>
 
   <div class="order-field">
     <label for="sub-name">Name</label>
@@ -18,16 +54,6 @@ Set up a recurring delivery of your favorite roast.
   <div class="order-field">
     <label for="sub-email">Email</label>
     <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
-  </div>
-
-  <div class="order-field">
-    <label for="sub-roast">Roast</label>
-    <select id="sub-roast" name="entry.1935997805" required>
-      <option value="" disabled selected>Choose a roast</option>
-      {% assign roasts = site.roasts | sort: "order" %}
-      {% for r in roasts %}{% unless r.coming_soon or r.category == "ugly duckling" or r.category == "pack" %}<option value="{{ r.title }}" data-slug="{{ r.slug }}">{{ r.title }}</option>
-      {% endunless %}{% endfor %}
-    </select>
   </div>
 
   <div class="order-field">
@@ -83,6 +109,7 @@ Set up a recurring delivery of your favorite roast.
 
   <div class="order-actions">
     <button type="submit" class="order-submit">Subscribe</button>
+    <button type="button" class="order-clear" id="sub-change-btn">Change roast</button>
   </div>
 
   <p class="order-status" role="status" aria-live="polite"></p>
@@ -91,44 +118,76 @@ Set up a recurring delivery of your favorite roast.
 <script>
 (function () {
   var form = document.getElementById('subscribe-form');
-  var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
-  var addressFields = document.getElementById('sub-address-fields');
-  var deliveryNote = document.getElementById('sub-delivery-note');
+  var cards = document.querySelectorAll('.sub-card');
+  var hiddenInput = document.getElementById('sub-roast-hidden');
+  var summary = document.getElementById('sub-selected-summary');
+  var picker = document.querySelector('.sub-picker');
+  var intro = document.getElementById('sub-intro');
 
-  for (var i = 0; i < deliveryRadios.length; i++) {
-    deliveryRadios[i].addEventListener('change', function () {
-      var v = this.value;
-      addressFields.style.display = (v === 'Pickup') ? 'none' : '';
-      deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+  var params = new URLSearchParams(window.location.search);
+
+  function selectRoast(roast, slug, mascot) {
+    hiddenInput.value = roast;
+    summary.innerHTML = '<div style="text-align:center;">' + roast + (mascot ? '<br><img src="/images/' + mascot + '" alt="" style="height:4rem; margin-top:0.5rem;">' : '') + '</div>';
+    intro.textContent = 'Subscribing to ' + roast + '. Fill out the details below.';
+    picker.style.display = 'none';
+    form.style.display = '';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    params.set('roast', slug);
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
+    }
+
+    var size = params.get('size');
+    if (size) {
+      var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
+      for (var s = 0; s < sizeRadios.length; s++) {
+        if (sizeRadios[s].value === size) { sizeRadios[s].checked = true; break; }
+      }
+    }
+
+    var freq = params.get('frequency');
+    if (freq) {
+      var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
+      for (var f = 0; f < freqRadios.length; f++) {
+        if (freqRadios[f].value === freq) { freqRadios[f].checked = true; break; }
+      }
+    }
+  }
+
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('click', function () {
+      selectRoast(this.getAttribute('data-roast'), this.getAttribute('data-slug'), this.getAttribute('data-mascot'));
     });
   }
 
-  var params = new URLSearchParams(window.location.search);
+  document.getElementById('sub-change-btn').addEventListener('click', function () {
+    picker.style.display = '';
+    form.style.display = 'none';
+    hiddenInput.value = '';
+    intro.textContent = 'Set up a recurring delivery of your favorite roast. Pick a bean below to get started.';
+  });
+
   var qpRoast = params.get('roast');
   if (qpRoast) {
-    var select = document.getElementById('sub-roast');
-    for (var j = 0; j < select.options.length; j++) {
-      if (select.options[j].getAttribute('data-slug') === qpRoast) {
-        select.selectedIndex = j;
+    for (var j = 0; j < cards.length; j++) {
+      if (cards[j].getAttribute('data-slug') === qpRoast) {
+        selectRoast(cards[j].getAttribute('data-roast'), qpRoast, cards[j].getAttribute('data-mascot'));
         break;
       }
     }
   }
 
-  var qpSize = params.get('size');
-  if (qpSize) {
-    var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
-    for (var s = 0; s < sizeRadios.length; s++) {
-      if (sizeRadios[s].value === qpSize) { sizeRadios[s].checked = true; break; }
-    }
-  }
-
-  var qpFreq = params.get('frequency');
-  if (qpFreq) {
-    var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
-    for (var f = 0; f < freqRadios.length; f++) {
-      if (freqRadios[f].value === qpFreq) { freqRadios[f].checked = true; break; }
-    }
+  var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
+  var addressFields = document.getElementById('sub-address-fields');
+  var deliveryNote = document.getElementById('sub-delivery-note');
+  for (var di = 0; di < deliveryRadios.length; di++) {
+    deliveryRadios[di].addEventListener('change', function () {
+      var v = this.value;
+      addressFields.style.display = (v === 'Pickup') ? 'none' : '';
+      deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+    });
   }
 
   var iframe = document.createElement('iframe');
@@ -146,7 +205,6 @@ Set up a recurring delivery of your favorite roast.
       status.className = 'order-status order-status-pending';
     }
     if (submitBtn) submitBtn.disabled = true;
-
     setTimeout(function () {
       window.location.href = '{{ "/thanks/" | relative_url }}';
     }, 1000);

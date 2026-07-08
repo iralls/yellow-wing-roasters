@@ -74,7 +74,7 @@ layout: default
   </div>
 </div>
 {% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center;">Ordering unavailable until this roast launches.</p>{% endif %}
-{% unless page.coming_soon or page.category == "ugly duckling" or page.category == "pack" %}
+{% unless page.coming_soon or page.no_subscribe or page.category == "ugly duckling" or page.category == "pack" %}
 <div class="roast-mv-center subscribe-wrap" style="margin-top:1rem; text-align:center;">
   <div style="display:inline-flex; align-items:center; gap:0.5rem; flex-wrap:wrap; justify-content:center;">
     <select id="sub-size" class="subscribe-select">
