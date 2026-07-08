@@ -58,7 +58,7 @@ permalink: /subscribe/
 
   <div class="order-field">
     <label>Size</label>
-    <div class="order-radio-group">
+    <div class="pill-radios">
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="12oz" checked> 12oz</label>
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="2lb"> 2lb</label>
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="5lb"> 5lb</label>
@@ -67,7 +67,7 @@ permalink: /subscribe/
 
   <div class="order-field">
     <label>Frequency</label>
-    <div class="order-radio-group">
+    <div class="pill-radios">
       <label class="order-radio"><input type="radio" name="entry.2064801247" value="Every 2 weeks" checked> Every 2 weeks</label>
       <label class="order-radio"><input type="radio" name="entry.2064801247" value="Monthly"> Monthly</label>
     </div>
@@ -75,9 +75,11 @@ permalink: /subscribe/
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
+    <div class="pill-radios">
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup (we'll coordinate)</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me</label>
+    </div>
     <p id="sub-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
   </fieldset>
 

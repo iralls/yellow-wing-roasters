@@ -704,6 +704,36 @@ h1.roast-title {
   margin: 0;
 }
 
+.pill-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pill-radios .order-radio {
+  padding: 0.4rem 0.9rem;
+  background: #e8e0d5;
+  color: #555;
+  border-radius: 999px;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  gap: 0;
+}
+
+.pill-radios .order-radio input {
+  display: none;
+}
+
+.pill-radios .order-radio:has(input:checked) {
+  background: #2c1e14;
+  color: #faf8f5;
+}
+
 .order-delivery-note {
   margin: 0.5rem 0 0;
   font-size: 0.9rem;
