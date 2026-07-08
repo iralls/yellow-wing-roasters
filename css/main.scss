@@ -1569,6 +1569,21 @@ h1.roast-title {
   margin-bottom: 0.5rem;
 }
 
+.roasts-entry-seasonal-badge {
+  width: 100%;
+  text-align: center;
+  background: #e8a0b4;
+  color: #fff;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
 /* ── BYOB section ── */
 
 .byob-section {
@@ -1775,4 +1790,52 @@ h1.roast-title {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #999;
+}
+
+/* ── Subscribe picker ── */
+
+.sub-picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.sub-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+
+.sub-card:hover {
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  border-color: #f0c838;
+}
+
+.sub-card:hover .roasts-entry-mascot {
+  transform: scale(1.08);
+}
+
+.sub-form {
+  margin-top: 0;
+}
+
+.sub-selected-summary {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0.75rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
 }
