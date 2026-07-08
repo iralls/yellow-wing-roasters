@@ -30,9 +30,11 @@ permalink: /order/
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
-    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup (we'll coordinate)</label>
+    <div class="pill-radios">
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
-    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me <span class="order-delivery-note" style="display:inline; font-style:italic;">— free on orders over $40</span></label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me</label>
+    </div>
     <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
   </fieldset>
 
