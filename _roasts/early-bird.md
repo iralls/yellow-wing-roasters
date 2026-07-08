@@ -9,7 +9,7 @@ tasting_notes: Milk chocolate, caramel, smooth body
 brewing_method: Drip, pour-over, French press, espresso
 mascot: robin
 mascot_file: audubon-robin-transparent.png
-coming_soon: true
+coming_soon: false
 
 card_image: /images/audubon-robin-transparent.png
 origins:

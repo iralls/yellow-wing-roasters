@@ -5,11 +5,11 @@ category: blend
 order: 3
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Dark chocolate, toasted almond, bright sweetness
+tasting_notes: Dark chocolate, toasted almond, sweet jam
 brewing_method: Espresso, moka pot, drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
-coming_soon: true
+coming_soon: false
 origins:
   - Brazil
   - Guatemala

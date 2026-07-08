@@ -9,7 +9,7 @@ tasting_notes: Dark chocolate, molasses, toasted walnut
 brewing_method: French press, moka pot, drip
 mascot: canary
 mascot_file: audubon-canary-transparent.png
-coming_soon: true
+coming_soon: false
 origins:
   - Brazil
   - Sumatra

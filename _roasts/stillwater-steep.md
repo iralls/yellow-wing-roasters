@@ -9,7 +9,7 @@ tasting_notes: Dark chocolate, toasted walnut, brown sugar
 brewing_method: Cold brew
 mascot: heron
 mascot_file: audubon-heron-transparent.png
-coming_soon: true
+coming_soon: false
 origins:
   - Brazil
   - Sumatra
