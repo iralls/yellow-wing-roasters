@@ -80,7 +80,7 @@ permalink: /subscribe/
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me</label>
     </div>
-    <p id="sub-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
+    <p id="sub-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
   </fieldset>
 
   <div id="sub-address-fields" class="order-shipping" style="display:none;">

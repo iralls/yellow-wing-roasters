@@ -33,7 +33,7 @@ permalink: /order/
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup (we'll coordinate)</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me <span class="order-delivery-note" style="display:inline; font-style:italic;">— free on orders over $40</span></label>
-    <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, Branford, Madison, and Durham.</p>
+    <p id="order-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
   </fieldset>
 
   <div id="order-address-fields" class="order-shipping" style="display:none;">
