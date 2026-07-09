@@ -9,7 +9,6 @@ permalink: /order/
 
 <div id="order-cart-empty" class="order-empty" style="display:none;">
   <p>Your cart is empty.</p>
-  <a href="{{ '/roasts/' | relative_url }}" class="order-browse-link">Browse our roasts &rarr;</a>
 </div>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse" method="POST" class="order-form" id="order-form" style="display:none;">
