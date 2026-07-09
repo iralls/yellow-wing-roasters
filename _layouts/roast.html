@@ -83,9 +83,10 @@ layout: default
 {% if sub_config %}
 <div class="roast-mv-divider"></div>
 <div class="roast-mv-center" style="text-align:center;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe</div>
   {% if sub_config.sizes.size > 1 %}
   <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-    {% for s in sub_config.sizes %}<label class="order-radio"><input type="radio" name="sub-size" value="{{ s }}"> {{ s }}{% if sub_config.prices %} — ${{ sub_config.prices[s] }}{% endif %}</label>{% endfor %}
+    {% for s in sub_config.sizes %}{% if roast_prices and roast_prices[s] %}{% assign orig_price = roast_prices[s] %}{% else %}{% assign orig_price = pricing.default[s] %}{% endif %}<label class="order-radio"><input type="radio" name="sub-size" value="{{ s }}"> {{ s }}{% if sub_config.prices %} — <s>${{ orig_price }}</s> ${{ sub_config.prices[s] }}{% endif %}</label>{% endfor %}
   </div>
   {% endif %}
   {% if sub_config.frequencies.size > 1 %}
