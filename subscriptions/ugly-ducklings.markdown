@@ -25,7 +25,7 @@ Beans that didn't make the cut — test roasts, experimental profiles, and one-o
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=ugly-ducklings' | relative_url }}" class="add-to-order-btn">Subscribe</a>
+  <a href="{{ '/subscribe/?roast=ugly-ducklings' | relative_url }}" class="add-to-order-btn">Subscribe — $5/mo</a>
 </div>
 
 </div>

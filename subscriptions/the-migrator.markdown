@@ -25,7 +25,7 @@ Each month, we pick a different single origin coffee and roast a fresh 12oz bag 
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=rotating-single-origin' | relative_url }}" class="add-to-order-btn">Subscribe</a>
+  <a href="{{ '/subscribe/?roast=rotating-single-origin' | relative_url }}" class="add-to-order-btn">Subscribe — $16/mo</a>
 </div>
 
 </div>

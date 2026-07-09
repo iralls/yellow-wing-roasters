@@ -210,6 +210,68 @@ h6 {
   border-top: 1px solid #ddd;
 }
 
+.dropdown-menu {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+}
+
+.dropdown-toggle {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.35rem;
+  padding: 0.4rem;
+  cursor: pointer;
+  color: #2c1e14;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-toggle:hover {
+  background: #f5f0ea;
+}
+
+.dropdown-items {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.35rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.35rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  min-width: 10rem;
+  overflow: hidden;
+}
+
+.dropdown-items--open {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.6rem 1rem;
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #2c1e14;
+  text-decoration: none;
+  border-bottom: 1px solid #f0ebe4;
+}
+
+.dropdown-item:last-child {
+  border-bottom: 0;
+}
+
+.dropdown-item:hover {
+  background: #f5f0ea;
+  text-decoration: none;
+  color: #2c1e14;
+}
+
 h1.roast-title {
   display: flex;
   align-items: center;
@@ -1517,7 +1579,6 @@ h1.roast-title {
 .index-hero-birds {
   display: flex;
   gap: 1.5rem;
-  margin-top: 3.5rem;
   opacity: 0.18;
 }
 
@@ -1647,6 +1708,18 @@ h1.roast-title {
   color: #999;
   font-style: italic;
   margin-top: 0.2rem;
+}
+
+.roasts-entry-prices {
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.roasts-entry-sub-price {
+  color: #1f6b4a;
 }
 
 .roasts-entry--soon {
@@ -1897,9 +1970,15 @@ h1.roast-title {
 
 .sub-picker {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin: 1.5rem 0 2rem;
+}
+
+@media (max-width: 40rem) {
+  .sub-picker {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .sub-card {

@@ -1,7 +1,7 @@
 default:
-  12oz: 12
-  2lb: 30
-  5lb: 70
+  12oz: 14
+  2lb: 35
+  5lb: 80
 
 overrides:
   the-aviary:
@@ -9,6 +9,10 @@ overrides:
   ugly-ducklings:
     12oz: 5
   lil-sipper:
-    12oz: 14
-    2lb: 32
-    5lb: 80
+    12oz: 16
+    2lb: 37
+    5lb: 90
+  ethiopia-wush-wush:
+    12oz: 16
+    2lb: 37
+    5lb: 90

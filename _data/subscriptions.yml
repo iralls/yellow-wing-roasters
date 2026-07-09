@@ -1,0 +1,49 @@
+# Blends — all sizes, both frequencies
+early-bird:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+feather-soot:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+chimney-sweep:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+
+# Single origins — all sizes, both frequencies
+brazil-estavam-mario:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+colombia-supremo:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+guatemala-antigua:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+
+# Subscription products — 12oz only, monthly only
+rotating-single-origin:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 16}
+1200bpm-collective:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 27}
+fledglings:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 16}
+murmurations:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 10}
+ugly-ducklings:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 5}

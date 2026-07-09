@@ -25,7 +25,7 @@ Our espresso-focused monthly subscription. Each delivery includes 12oz of Chimne
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=1200bpm-collective' | relative_url }}" class="add-to-order-btn">Subscribe</a>
+  <a href="{{ '/subscribe/?roast=1200bpm-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $27/mo</a>
 </div>
 
 </div>

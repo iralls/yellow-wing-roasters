@@ -137,7 +137,7 @@ permalink: /order/
       for (var ck in cart) {
         if (!matched[ck] && cart[ck] > 0) {
           var parts = ck.split('|');
-          items.push({ data: { roast: parts[0], variant: parts[1], size: parts[2] || '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: 0 }, key: ck, qty: cart[ck] });
+          items.push({ data: { roast: parts[0], variant: parts[1], size: '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: parts[0] === 'peck-your-own' ? {{ site.data.flights["peck-your-own"].price }} : 0 }, key: ck, qty: cart[ck] });
         }
       }
 
@@ -249,19 +249,46 @@ permalink: /order/
         qtyWrap.appendChild(qtyInput);
         qtyWrap.appendChild(plus);
 
+        var priceEl = document.createElement('div');
+        priceEl.className = 'order-cart-item-price';
+        var lineTotal = (item.data.price || 0) * item.qty;
+        priceEl.textContent = '$' + lineTotal;
+
         row.appendChild(nameEl);
         if (dotsEl) row.appendChild(dotsEl);
         row.appendChild(sizeEl);
         row.appendChild(qtyWrap);
+        row.appendChild(priceEl);
         row.appendChild(removeBtn);
         itemsEl.appendChild(row);
       }
+
+      var subtotal = 0;
+      for (var t = 0; t < items.length; t++) {
+        subtotal += (items[t].data.price || 0) * items[t].qty;
+      }
+
+      var delivery = document.querySelector('input[name="entry.1896226742"]:checked');
+      var shippingCost = (delivery && delivery.value === 'Ship to me' && subtotal < 40) ? 5 : 0;
+      var grandTotal = subtotal + shippingCost;
+
+      if (shippingCost > 0) {
+        var shippingRow = document.createElement('div');
+        shippingRow.className = 'order-cart-shipping';
+        shippingRow.innerHTML = '<span class="order-cart-total-label">Shipping</span><span class="order-cart-total-value">$' + shippingCost + '</span>';
+        itemsEl.appendChild(shippingRow);
+      }
+
+      var totalRow = document.createElement('div');
+      totalRow.className = 'order-cart-total';
+      totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
+      itemsEl.appendChild(totalRow);
 
       var itemLines = items.map(function (item) {
         return item.qty + 'x ' + item.data.label + ' ' + item.data.size;
       }).join(', ');
       document.getElementById('order-items-hidden').value = itemLines;
-      document.getElementById('order-total-hidden').value = '';
+      document.getElementById('order-total-hidden').value = '$' + grandTotal;
     }
 
     var params = new URLSearchParams(window.location.search);

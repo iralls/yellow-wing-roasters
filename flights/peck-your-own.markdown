@@ -13,7 +13,7 @@ permalink: /flights/peck-your-own/
     <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
     <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
     <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
-    <img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
+    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
   </div>
 </div>
 
@@ -45,7 +45,7 @@ permalink: /flights/peck-your-own/
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select 4 roasts to continue</button>
+  <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select 4 roasts — ${{ site.data.flights["peck-your-own"].price }}</button>
 </div>
 
 </div>
@@ -62,12 +62,12 @@ permalink: /flights/peck-your-own/
     var remaining = 4 - selected.length;
     if (remaining > 0) {
       countEl.textContent = 'Select ' + remaining + ' more roast' + (remaining === 1 ? '' : 's') + ':';
-      addBtn.textContent = 'Select ' + remaining + ' more';
+      addBtn.textContent = 'Select ' + remaining + ' more — ${{ site.data.flights["peck-your-own"].price }}';
       addBtn.disabled = true;
       addBtn.classList.add('add-to-order-btn--disabled');
     } else {
       countEl.textContent = 'Your picks:';
-      addBtn.textContent = 'Add to order';
+      addBtn.textContent = 'Add to order — ${{ site.data.flights["peck-your-own"].price }}';
       addBtn.disabled = false;
       addBtn.classList.remove('add-to-order-btn--disabled');
     }
