@@ -51,17 +51,6 @@ permalink: /subscribe/
     </div>
   </div>
 
-  <div class="sub-card" data-roast="Ugly Ducklings" data-slug="ugly-ducklings" data-mascot="audubon-duckling-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
-    <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-duckling-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
-    </div>
-    <div class="roasts-entry-info">
-      <div class="roasts-entry-title">Ugly Ducklings</div>
-      <div class="roasts-entry-notes">Leftover and test beans</div>
-      <div class="roasts-entry-brew">Monthly</div>
-    </div>
-  </div>
-
   <div class="sub-card" data-roast="Fledglings (Coffee 101)" data-slug="fledglings" data-mascot="audubon-chicks-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
@@ -69,6 +58,28 @@ permalink: /subscribe/
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Fledglings</div>
       <div class="roasts-entry-notes">Coffee 101</div>
+      <div class="roasts-entry-brew">Monthly</div>
+    </div>
+  </div>
+
+  <div class="sub-card" data-roast="Murmurations" data-slug="murmurations" data-mascot="flock-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/flock-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Murmurations</div>
+      <div class="roasts-entry-notes">Leftover beans</div>
+      <div class="roasts-entry-brew">Monthly</div>
+    </div>
+  </div>
+
+  <div class="sub-card" data-roast="Ugly Ducklings" data-slug="ugly-ducklings" data-mascot="audubon-duckling-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-duckling-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Ugly Ducklings</div>
+      <div class="roasts-entry-notes">Test beans</div>
       <div class="roasts-entry-brew">Monthly</div>
     </div>
   </div>

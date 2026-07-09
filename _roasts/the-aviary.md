@@ -5,7 +5,7 @@ category: pack
 order: 10
 tasting_notes: A range of four blends, from bright and floral to dark and smoky
 brewing_method: Varies by blend
-mascot_file: flock-transparent.png
+mascot_file: audubon-cage-transparent.png
 card_mascot_file: black-bird-transparent.png
 sizes:
   - add to order

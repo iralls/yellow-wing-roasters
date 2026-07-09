@@ -16,12 +16,12 @@ permalink: /subscriptions/ugly-ducklings/
   <h1 class="roast-mv-title">Ugly Ducklings</h1>
 </div>
 
-<p class="roast-mv-tasting">Leftover and Test Beans</p>
+<p class="roast-mv-tasting">Test Beans</p>
 
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-Leftover beans after mixing batches and test beans that didn't make the cut. Every bag is a little different — that's the fun of it. A monthly subscription for the adventurous drinker who doesn't mind a surprise.
+Beans that didn't make the cut — test roasts, experimental profiles, and one-off batches that didn't quite land where we wanted. Every bag is a little different, and that's the fun of it.
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
