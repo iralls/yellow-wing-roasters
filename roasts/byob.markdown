@@ -30,28 +30,26 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 
 <h2 class="roasts-category">Place a BYOB Order</h2>
 
-<form action="https://formspree.io/f/mojraaql" method="POST" class="order-form" id="byob-form">
-  <input type="hidden" name="_subject" value="New BYOB order">
-  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="order-gotcha">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form">
 
   <div class="order-field">
     <label for="byob-name">Name</label>
-    <input id="byob-name" type="text" name="name" required autocomplete="name">
+    <input id="byob-name" type="text" name="entry.1153405702" required autocomplete="name">
   </div>
 
   <div class="order-field">
     <label for="byob-email">Email</label>
-    <input id="byob-email" type="email" name="email" required autocomplete="email">
+    <input id="byob-email" type="email" name="entry.40149380" required autocomplete="email">
   </div>
 
   <div class="order-field">
     <label for="byob-link">Link to green beans</label>
-    <input id="byob-link" type="url" name="bean_link" required placeholder="https://burmancoffee.com/...">
+    <input id="byob-link" type="url" name="entry.1935997805" required placeholder="https://burmancoffee.com/...">
   </div>
 
   <div class="order-field">
     <label for="byob-roast">Roast level</label>
-    <select id="byob-roast" name="roast_level" required>
+    <select id="byob-roast" name="entry.1076774005" required>
       <option value="" disabled selected>Choose a roast level</option>
       <option value="City (light)">City (light)</option>
       <option value="City+ (medium-light)">City+ (medium-light)</option>
@@ -64,15 +62,16 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 
   <div class="order-field">
     <label for="byob-qty">Quantity (lbs of green beans to order)</label>
-    <input id="byob-qty" type="number" name="quantity_lbs" min="1" max="10" value="1" required>
+    <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required>
+    <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
   </div>
 
   <fieldset class="order-delivery">
     <legend>Delivery method</legend>
     <div class="pill-radios">
-    <label class="order-radio"><input type="radio" name="delivery" value="Pickup" checked onchange="document.getElementById('byob-shipping').style.display='none'; document.getElementById('byob-delivery-note').style.display='none';"> Pickup</label>
-    <label class="order-radio"><input type="radio" name="delivery" value="Hand delivery" onchange="document.getElementById('byob-shipping').style.display=''; document.getElementById('byob-delivery-note').style.display='';"> Hand delivery</label>
-    <label class="order-radio order-radio--disabled"><input type="radio" name="delivery" value="Ship to me" disabled> Ship to me</label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
+    <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
+    <label class="order-radio order-radio--disabled"><input type="radio" name="entry.1896226742" value="Ship to me" disabled> Ship to me</label>
     </div>
     <p id="byob-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
     <p class="order-delivery-note">Shipping coming soon.</p>
@@ -81,27 +80,27 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
   <div id="byob-shipping" class="order-shipping" style="display:none;">
     <div class="order-field">
       <label for="byob-address">Street address</label>
-      <input id="byob-address" type="text" name="address" autocomplete="street-address">
+      <input id="byob-address" type="text" name="entry.148046999" autocomplete="street-address">
     </div>
     <div class="order-field">
       <label for="byob-city">City</label>
-      <input id="byob-city" type="text" name="city" autocomplete="address-level2">
+      <input id="byob-city" type="text" name="entry.1534670804" autocomplete="address-level2">
     </div>
     <div class="order-field-row">
       <div class="order-field">
         <label for="byob-state">State</label>
-        <input id="byob-state" type="text" name="state" autocomplete="address-level1">
+        <input id="byob-state" type="text" name="entry.414179858" autocomplete="address-level1">
       </div>
       <div class="order-field">
         <label for="byob-zip">ZIP</label>
-        <input id="byob-zip" type="text" name="zip" autocomplete="postal-code">
+        <input id="byob-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
       </div>
     </div>
   </div>
 
   <div class="order-field">
     <label for="byob-notes">Notes (optional)</label>
-    <textarea id="byob-notes" name="notes" rows="3" placeholder="Any preferences — first crack, second crack, specific development time, etc."></textarea>
+    <textarea id="byob-notes" name="entry.1381358427" rows="3" placeholder="Any preferences — first crack, second crack, specific development time, etc."></textarea>
   </div>
 
   <div class="order-actions">
@@ -117,42 +116,32 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
   var status = form.querySelector('.order-status');
   var submitBtn = form.querySelector('.order-submit');
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+  var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
+  var addressFields = document.getElementById('byob-shipping');
+  var deliveryNote = document.getElementById('byob-delivery-note');
+  for (var di = 0; di < deliveryRadios.length; di++) {
+    deliveryRadios[di].addEventListener('change', function () {
+      var v = this.value;
+      addressFields.style.display = (v === 'Pickup') ? 'none' : '';
+      deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+    });
+  }
+
+  var iframe = document.createElement('iframe');
+  iframe.name = 'byob-submit-frame';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+  form.target = 'byob-submit-frame';
+
+  form.addEventListener('submit', function () {
     if (status) {
       status.textContent = 'Sending…';
       status.className = 'order-status order-status-pending';
     }
     if (submitBtn) submitBtn.disabled = true;
-
-    var data = new FormData(form);
-    fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(function (res) {
-      return res.json().then(function (body) { return { ok: res.ok, body: body }; });
-    }).then(function (result) {
-      if (result.ok) {
-        window.location.href = '{{ "/thanks/" | relative_url }}';
-      } else {
-        var msg = 'Something went wrong. Please try again.';
-        if (result.body && result.body.errors && result.body.errors.length) {
-          msg = result.body.errors.map(function (er) { return er.message; }).join(' ');
-        }
-        if (status) {
-          status.textContent = msg;
-          status.className = 'order-status order-status-error';
-        }
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    }).catch(function () {
-      if (status) {
-        status.textContent = 'Network error. Check your connection and try again.';
-        status.className = 'order-status order-status-error';
-      }
-      if (submitBtn) submitBtn.disabled = false;
-    });
+    setTimeout(function () {
+      window.location.href = '{{ "/thanks/" | relative_url }}';
+    }, 1000);
   });
 })();
 </script>
