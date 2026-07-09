@@ -859,7 +859,22 @@ h1.roast-title {
 }
 
 .order-radio s {
-  color: #bbb;
+  color: #c0392b;
+  margin-right: 0.25em;
+}
+
+.save-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #2e7d32;
+  color: #fff;
+  border-radius: 0.2rem;
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.3em;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .order-radio--disabled {

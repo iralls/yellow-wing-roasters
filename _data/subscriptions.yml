@@ -13,9 +13,9 @@ chimney-sweep:
   prices: {12oz: 12, 2lb: 31, 5lb: 72}
 
 lil-sipper:
-  sizes: [12oz]
+  sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 14}
+  prices: {12oz: 14, 2lb: 35, 5lb: 82}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
@@ -30,6 +30,10 @@ guatemala-antigua:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 12, 2lb: 31, 5lb: 72}
+ethiopia-wush-wush:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 15, 2lb: 37, 5lb: 87}
 
 # Subscription products — 12oz only, monthly only
 rotating-single-origin:
