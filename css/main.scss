@@ -1519,9 +1519,15 @@ h1.roast-title {
 
 .roasts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin: 0 0 2rem;
+}
+
+@media (max-width: 40rem) {
+  .roasts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .roasts-entry {
