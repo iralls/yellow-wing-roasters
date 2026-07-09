@@ -79,7 +79,7 @@ Our current lineup. All roasts ship as whole bean.
   {% for r in cat_roasts %}
     <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" href="{{ r.url | relative_url }}" style="--ca: {{ r.mark_color_a }}; --cb: {{ r.mark_color_b }};">
       <div class="roasts-entry-visual">
-        {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+        {% if r.mascot_grid %}<div class="mascot-grid">{% for m in r.mascot_grid %}<img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item">{% endfor %}</div>{% elsif r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
       </div>
       {% if r.coming_soon %}<div class="roasts-entry-soon-badge">Coming Soon</div>{% endif %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
@@ -92,6 +92,17 @@ Our current lineup. All roasts ship as whole bean.
       </div>
     </a>
   {% endfor %}
+  {% if cat_name == "pack" %}
+  <a class="roasts-entry" href="{{ '/roasts/peck-your-own/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <div class="mascot-grid"><img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Peck Your Own</div>
+      <div class="roasts-entry-notes">Your choice of four 8oz bags</div>
+    </div>
+  </a>
+  {% endif %}
   </div>
 {% endif %}
 {% endif %}

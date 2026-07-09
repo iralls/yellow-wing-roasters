@@ -10,7 +10,11 @@ layout: default
 
 <div class="roast-mv-divider"></div>
 
-{% if page.mascot_file %}
+{% if page.mascot_grid %}
+<div class="roast-mv-center roast-mv-bird-wrap">
+  <div class="mascot-grid mascot-grid-lg">{% for m in page.mascot_grid %}<img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">{% endfor %}</div>
+</div>
+{% elsif page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
 </div>

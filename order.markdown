@@ -124,12 +124,20 @@ permalink: /order/
       var cart = loadCart();
       var items = [];
 
+      var matched = {};
       for (var i = 0; i < roastData.length; i++) {
         var d = roastData[i];
         var k = cartKey(d.roast, d.variant, d.size);
         var qty = cart[k];
         if (qty && qty > 0) {
           items.push({ data: d, key: k, qty: qty });
+          matched[k] = true;
+        }
+      }
+      for (var ck in cart) {
+        if (!matched[ck] && cart[ck] > 0) {
+          var parts = ck.split('|');
+          items.push({ data: { roast: parts[0], variant: parts[1], size: parts[2] || '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: 0 }, key: ck, qty: cart[ck] });
         }
       }
 
