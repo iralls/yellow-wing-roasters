@@ -51,6 +51,17 @@ permalink: /subscribe/
     </div>
   </div>
 
+  <div class="sub-card" data-roast="Fledglings (Coffee 101)" data-slug="fledglings" data-mascot="audubon-chicks-transparent.png" data-frequencies="Monthly">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Fledglings</div>
+      <div class="roasts-entry-notes">Coffee 101</div>
+      <div class="roasts-entry-brew">Monthly</div>
+    </div>
+  </div>
+
 </div>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form sub-form" id="subscribe-form" style="display:none;">
