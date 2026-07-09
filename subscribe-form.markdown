@@ -45,9 +45,10 @@ permalink: /subscribe/
     <div class="pill-radios">
       <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
       <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
-      <label class="order-radio"><input type="radio" name="entry.1896226742" value="Ship to me"> Ship to me</label>
+      <label class="order-radio order-radio--disabled"><input type="radio" name="entry.1896226742" value="Ship to me" disabled> Ship to me</label>
     </div>
     <p id="sub-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
+    <p class="order-delivery-note">Shipping coming soon.</p>
   </fieldset>
 
   <div id="sub-address-fields" class="order-shipping" style="display:none;">

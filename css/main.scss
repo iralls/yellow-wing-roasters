@@ -828,6 +828,11 @@ h1.roast-title {
   color: #faf8f5;
 }
 
+.order-radio--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .order-delivery-note {
   margin: 0.5rem 0 0;
   font-size: 0.9rem;
