@@ -272,6 +272,31 @@ h6 {
   color: #2c1e14;
 }
 
+.dropdown-group {
+  border-bottom: 1px solid #f0ebe4;
+}
+
+.dropdown-group-label {
+  display: block;
+  padding: 0.6rem 1rem;
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #2c1e14;
+  text-decoration: none;
+  border-bottom: 1px solid #f0ebe4;
+  cursor: pointer;
+}
+
+.dropdown-group-label:hover {
+  background: #f5f0ea;
+}
+
+.dropdown-subitem {
+  padding-left: 1.5rem;
+  font-size: 0.8rem;
+}
+
 h1.roast-title {
   display: flex;
   align-items: center;

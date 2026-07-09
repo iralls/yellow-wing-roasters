@@ -3,11 +3,16 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <div class="dropdown-items" id="dropdown-items">
-    <a href="{{ '/blends/' | relative_url }}" class="dropdown-item">Blends</a>
-    <a href="{{ '/single-origins/' | relative_url }}" class="dropdown-item">Single Origins</a>
-    <a href="{{ '/seasonals/' | relative_url }}" class="dropdown-item">Seasonals</a>
-    <a href="{{ '/subscriptions/' | relative_url }}" class="dropdown-item">Subscriptions</a>
-    <a href="{{ '/flights/' | relative_url }}" class="dropdown-item">Flights</a>
+    <div class="dropdown-group">
+      <div class="dropdown-group-label" id="coffee-toggle">Coffee ▸</div>
+      <div class="dropdown-subitems" id="coffee-subitems" style="display:none;">
+      <a href="{{ '/blends/' | relative_url }}" class="dropdown-item dropdown-subitem">Blends</a>
+      <a href="{{ '/single-origins/' | relative_url }}" class="dropdown-item dropdown-subitem">Single Origins</a>
+      <a href="{{ '/seasonals/' | relative_url }}" class="dropdown-item dropdown-subitem">Seasonals</a>
+      <a href="{{ '/subscriptions/' | relative_url }}" class="dropdown-item dropdown-subitem">Subscriptions</a>
+      <a href="{{ '/flights/' | relative_url }}" class="dropdown-item dropdown-subitem">Sample Packs</a>
+      </div>
+    </div>
     <a href="{{ '/about/' | relative_url }}" class="dropdown-item">About Us</a>
     <a href="{{ '/feedback/' | relative_url }}" class="dropdown-item">Feedback</a>
   </div>
@@ -20,6 +25,15 @@
     var open = items.classList.toggle('dropdown-items--open');
     toggle.setAttribute('aria-expanded', open);
   });
+  var coffeeToggle = document.getElementById('coffee-toggle');
+  var coffeeItems = document.getElementById('coffee-subitems');
+  coffeeToggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = coffeeItems.style.display === 'none';
+    coffeeItems.style.display = open ? '' : 'none';
+    coffeeToggle.textContent = open ? 'Coffee ▾' : 'Coffee ▸';
+  });
+
   document.addEventListener('click', function (e) {
     if (!document.getElementById('dropdown-menu').contains(e.target)) {
       items.classList.remove('dropdown-items--open');
