@@ -71,11 +71,14 @@ layout: default
 {% endif %}
 
 <div class="roast-mv-center">
-  <div class="add-to-order-wrap" style="justify-content:center;">
+  <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
     {% for s in sizes %}
       {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
-      <button class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" data-roast="{{ page.slug }}" data-size="{{ s }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}>{{ s }} — ${{ price }}</button>
+      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — ${{ price }}</label>
     {% endfor %}
+  </div>
+  <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">
+    <button class="add-to-order-btn" id="add-to-cart-btn">Add to Cart</button>
   </div>
 </div>
 {% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center;">Ordering unavailable until this roast launches.</p>{% endif %}
@@ -152,17 +155,33 @@ layout: default
     return roast + '|' + (variant || '') + '|' + size;
   }
 
-  document.querySelectorAll('.add-to-order-btn[data-roast]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var k = cartKey(btn.dataset.roast, btn.dataset.variant || '', btn.dataset.size);
+  var sizeRadios = document.querySelectorAll('input[name="order-size"]');
+  var addWrap = document.getElementById('add-to-cart-wrap');
+  var addBtn = document.getElementById('add-to-cart-btn');
+
+  sizeRadios.forEach(function (r) {
+    r.addEventListener('change', function () {
+      if (addWrap) addWrap.style.display = '';
+    });
+  });
+
+  if (addBtn) {
+    addBtn.addEventListener('click', function () {
+      var selected = document.querySelector('input[name="order-size"]:checked');
+      if (!selected) return;
+      var k = cartKey(selected.dataset.roast, '', selected.value);
       var cart = loadCart();
       cart[k] = (cart[k] || 0) + 1;
       saveCart(cart);
-      var orig = btn.textContent;
-      btn.textContent = 'Added!';
-      btn.disabled = true;
-      setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1200);
+      addBtn.textContent = 'Added!';
+      addBtn.disabled = true;
+      setTimeout(function () {
+        addBtn.textContent = 'Add to Cart';
+        addBtn.disabled = false;
+        sizeRadios.forEach(function (r) { r.checked = false; });
+        addWrap.style.display = 'none';
+      }, 1200);
     });
-  });
+  }
 })();
 </script>
