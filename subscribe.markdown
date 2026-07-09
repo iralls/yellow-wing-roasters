@@ -29,12 +29,12 @@ permalink: /subscribe/
     {% endunless %}
   {% endfor %}
 
-  <div class="sub-card" data-roast="The Migrator (Rotating Single Origin)" data-slug="rotating-single-origin" data-mascot="audubon-arctic-tern-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
+  <div class="sub-card" data-roast="Migrator (Rotating Single Origin)" data-slug="rotating-single-origin" data-mascot="audubon-arctic-tern-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">The Migrator</div>
+      <div class="roasts-entry-title">Migrator</div>
       <div class="roasts-entry-notes">A new single origin each delivery</div>
       <div class="roasts-entry-brew">Monthly</div>
     </div>

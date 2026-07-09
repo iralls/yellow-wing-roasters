@@ -21,7 +21,7 @@ Our current lineup. All roasts ship as whole bean.
       <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">The Migrator</div>
+      <div class="roasts-entry-title">Migrator</div>
       <div class="roasts-entry-notes">Rotating single origin</div>
     </div>
   </a>

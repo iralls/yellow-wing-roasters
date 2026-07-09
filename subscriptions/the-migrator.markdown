@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The Migrator
+title: Migrator
 permalink: /subscriptions/the-migrator/
 ---
 
@@ -13,7 +13,7 @@ permalink: /subscriptions/the-migrator/
 </div>
 
 <div class="roast-mv-center">
-  <h1 class="roast-mv-title">The Migrator</h1>
+  <h1 class="roast-mv-title">Migrator</h1>
 </div>
 
 <p class="roast-mv-tasting">Rotating Single Origin</p>
@@ -21,7 +21,7 @@ permalink: /subscriptions/the-migrator/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-Each month, we pick a different single origin coffee and roast it fresh for you. It's a great way to explore new flavors without committing to a full bag of something you've never tried. You never know what's coming next — that's the fun of it.
+Each month, we pick a different single origin coffee and roast a fresh 12oz bag for you. A great way to explore new flavors — you never know what's coming next, and that's the fun of it.
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
