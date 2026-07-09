@@ -1,7 +1,7 @@
 default:
   12oz: 14
   2lb: 36
-  5lb: 84
+  5lb: 83
 
 overrides:
   the-aviary:
@@ -11,8 +11,8 @@ overrides:
   lil-sipper:
     12oz: 16
     2lb: 41
-    5lb: 96
+    5lb: 95
   ethiopia-wush-wush:
     12oz: 17
     2lb: 43
-    5lb: 102
+    5lb: 99

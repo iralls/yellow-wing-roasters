@@ -2,38 +2,38 @@
 early-bird:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 feather-soot:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 chimney-sweep:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 
 lil-sipper:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 14, 2lb: 35, 5lb: 82}
+  prices: {12oz: 14, 2lb: 37, 5lb: 86}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 colombia-supremo:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 guatemala-antigua:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 31, 5lb: 72}
+  prices: {12oz: 12, 2lb: 33, 5lb: 75}
 ethiopia-wush-wush:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 15, 2lb: 37, 5lb: 87}
+  prices: {12oz: 15, 2lb: 39, 5lb: 90}
 
 # Subscription products — 12oz only, monthly only
 rotating-single-origin:
