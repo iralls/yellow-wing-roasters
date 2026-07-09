@@ -45,7 +45,6 @@ category_order:
   - subscriptions
   - pack
   - byob
-  - ugly duckling
 
 exclude:
   - README.md
