@@ -848,6 +848,11 @@ h1.roast-title {
   display: none;
 }
 
+.pill-radios .order-radio:hover {
+  background: #2c1e14;
+  color: #faf8f5;
+}
+
 .pill-radios .order-radio:has(input:checked) {
   background: #2c1e14;
   color: #faf8f5;
@@ -1256,8 +1261,8 @@ h1.roast-title {
 .add-to-order-btn {
   display: inline-block;
   padding: 0.45rem 1rem;
-  background: #2c1e14;
-  color: #faf8f5;
+  background: #e8e0d5;
+  color: #555;
   border: 0;
   border-radius: 999px;
   font-family: $font-display;
@@ -1271,10 +1276,10 @@ h1.roast-title {
 }
 
 .add-to-order-btn:hover {
-  background: #4a3528;
+  background: #2c1e14;
+  color: #faf8f5;
   transform: translateY(-1px);
   text-decoration: none;
-  color: #faf8f5;
 }
 
 .add-to-order-btn--disabled {
