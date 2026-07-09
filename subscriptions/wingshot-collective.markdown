@@ -1,7 +1,7 @@
 ---
 layout: default
-title: 1200bpm Collective
-permalink: /subscriptions/1200bpm-collective/
+title: Wingshot Collective
+permalink: /subscriptions/wingshot-collective/
 ---
 
 <div class="roast-minimal-vertical">
@@ -9,11 +9,11 @@ permalink: /subscriptions/1200bpm-collective/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
 </div>
 
 <div class="roast-mv-center">
-  <h1 class="roast-mv-title">1200bpm Collective</h1>
+  <h1 class="roast-mv-title">Wingshot Collective</h1>
 </div>
 
 <p class="roast-mv-tasting">Espresso Subscription</p>
@@ -25,7 +25,7 @@ Our espresso-focused monthly subscription. Each delivery includes 12oz of Chimne
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=1200bpm-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $27/mo</a>
+  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $27/mo</a>
 </div>
 
 </div>

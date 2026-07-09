@@ -16,13 +16,13 @@ permalink: /subscriptions/
       <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["rotating-single-origin"] %}${{ sub.prices["12oz"] }}/mo</div>
     </div>
   </a>
-  <a class="roasts-entry" href="{{ '/subscriptions/1200bpm-collective/' | relative_url }}">
+  <a class="roasts-entry" href="{{ '/subscriptions/wingshot-collective/' | relative_url }}">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">1200bpm Collective</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["1200bpm-collective"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-title">Wingshot Collective</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["wingshot-collective"] %}${{ sub.prices["12oz"] }}/mo</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/fledglings/' | relative_url }}">
