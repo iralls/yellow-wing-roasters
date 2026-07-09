@@ -1,5 +1,6 @@
 ---
 title: Early Bird
+subtitle: Nest Blend
 slug: early-bird
 category: blend
 order: 1

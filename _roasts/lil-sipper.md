@@ -1,5 +1,6 @@
 ---
 title: "Lil' Sipper"
+subtitle: Light Roast Espresso Blend
 slug: lil-sipper
 category: blend
 order: 4

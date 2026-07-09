@@ -1,5 +1,6 @@
 ---
 title: Stillwater Steep
+subtitle: Cold Brew Blend
 slug: stillwater-steep
 category: blend
 order: 8

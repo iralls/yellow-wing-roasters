@@ -1,5 +1,6 @@
 ---
 title: Feather Soot
+subtitle: Dark Roast
 slug: feather-soot
 category: blend
 order: 2

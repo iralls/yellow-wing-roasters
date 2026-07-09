@@ -435,6 +435,17 @@ h1.roast-title {
   margin: 0 0 0.3rem;
 }
 
+.roast-mv-subtitle {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
 .roast-mv-underline {
   display: block;
   height: 5px;
@@ -1561,6 +1572,16 @@ h1.roast-title {
   font-size: 1.1rem;
   margin-bottom: 0;
   line-height: 1.2;
+}
+
+.roasts-entry-subtitle {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 0.15rem;
 }
 
 .roasts-entry-level {
