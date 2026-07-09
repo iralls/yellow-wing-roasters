@@ -85,15 +85,6 @@ Our current lineup. All roasts ship as whole bean.
     </div>
   </a>
 </div>
-{% elsif cat_name == "byob" %}
-<h2 class="roasts-category">BYOB (Bring Your Own Beans)</h2>
-<div class="byob-section">
-  <a href="{{ '/roasts/byob/' | relative_url }}" class="byob-entry">
-    <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="byob-mascot">
-    <p class="byob-intro">Have a specific green coffee you've been eyeing? Send me a link and I'll roast it for you.</p>
-    <span class="byob-link">Learn more &rarr;</span>
-  </a>
-</div>
 {% else %}
 {% assign cat_roasts = all_roasts | where: "category", cat_name %}
 {% if cat_roasts.size > 0 %}
@@ -115,6 +106,17 @@ Our current lineup. All roasts ship as whole bean.
       </div>
     </a>
   {% endfor %}
+  {% if cat_name == "single origin" %}
+  <a class="roasts-entry" href="{{ '/roasts/byob/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">BYOB</div>
+      <div class="roasts-entry-notes">Bring your own beans</div>
+    </div>
+  </a>
+  {% endif %}
   </div>
 {% endif %}
 {% endif %}

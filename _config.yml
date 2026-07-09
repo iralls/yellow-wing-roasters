@@ -44,7 +44,6 @@ category_order:
   - single origin
   - subscriptions
   - flight
-  - byob
 
 exclude:
   - README.md
