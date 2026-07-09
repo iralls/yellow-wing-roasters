@@ -1841,18 +1841,15 @@ h1.roast-title {
   text-align: center;
   padding: 0.75rem 0.5rem;
   border-radius: 0.5rem;
-  border: 2px solid transparent;
   cursor: pointer;
   transition:
     background 0.15s,
-    box-shadow 0.15s,
-    border-color 0.15s;
+    box-shadow 0.15s;
 }
 
 .sub-card:hover {
   background: #fff;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-  border-color: #f0c838;
 }
 
 .sub-card:hover .roasts-entry-mascot {
