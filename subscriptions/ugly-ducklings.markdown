@@ -21,7 +21,7 @@ permalink: /subscriptions/ugly-ducklings/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-Beans that didn't make the cut — test roasts, experimental profiles, and one-off batches that didn't quite land where we wanted. Every bag is a little different, and that's the fun of it.
+Beans that didn't make the cut — test roasts, experimental profiles, and one-off batches that didn't quite land where we wanted. Each month, you'll get a 12oz bag. Every one is a little different, and that's the fun of it.
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">

@@ -21,7 +21,7 @@ permalink: /subscriptions/murmurations/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-The bits and pieces left over after mixing batches — not enough for a full run, but too good to waste. Every bag is a blend of whatever's on hand, so no two are quite the same.
+The bits and pieces left over after mixing batches — not enough for a full run, but too good to waste. Each month, you'll get a 12oz bag of whatever's on hand. No two are quite the same.
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
