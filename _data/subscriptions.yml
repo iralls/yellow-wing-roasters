@@ -6,7 +6,7 @@ early-bird:
 feather-soot:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 33, 5lb: 75}
+  prices: {12oz: 13, 2lb: 35, 5lb: 80}
 chimney-sweep:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
