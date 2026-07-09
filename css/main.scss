@@ -549,6 +549,27 @@ h1.roast-title {
   text-decoration: underline;
 }
 
+.flight-includes {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.flight-includes li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #eee;
+}
+
+.flight-includes a {
+  color: #8a5020;
+  text-decoration: none;
+}
+
+.flight-includes a:hover {
+  text-decoration: underline;
+}
+
 .roast-mv-variant-title {
   font-family: $font-display;
   font-size: 1.3rem;

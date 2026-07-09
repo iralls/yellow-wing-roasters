@@ -62,6 +62,29 @@ Our current lineup. All roasts ship as whole bean.
     </div>
   </a>
 </div>
+{% elsif cat_name == "flight" %}
+<h2 class="roasts-category">Flights</h2>
+<div class="roasts-grid">
+  <a class="roasts-entry roasts-entry--soon" href="{{ '/flights/the-aviary/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-soon-badge">Coming Soon</div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">The Aviary</div>
+      <div class="roasts-entry-notes">Four blends, one box</div>
+    </div>
+  </a>
+  <a class="roasts-entry" href="{{ '/flights/peck-your-own/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <div class="mascot-grid"><img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Peck Your Own</div>
+      <div class="roasts-entry-notes">Your choice of four 8oz bags</div>
+    </div>
+  </a>
+</div>
 {% elsif cat_name == "byob" %}
 <h2 class="roasts-category">BYOB (Bring Your Own Beans)</h2>
 <div class="byob-section">
@@ -92,17 +115,6 @@ Our current lineup. All roasts ship as whole bean.
       </div>
     </a>
   {% endfor %}
-  {% if cat_name == "pack" %}
-  <a class="roasts-entry" href="{{ '/roasts/peck-your-own/' | relative_url }}">
-    <div class="roasts-entry-visual">
-      <div class="mascot-grid"><img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-    </div>
-    <div class="roasts-entry-info">
-      <div class="roasts-entry-title">Peck Your Own</div>
-      <div class="roasts-entry-notes">Your choice of four 8oz bags</div>
-    </div>
-  </a>
-  {% endif %}
   </div>
 {% endif %}
 {% endif %}
