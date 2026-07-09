@@ -40,7 +40,9 @@ defaults:
 
 category_order:
   - blend
+  - seasonal
   - single origin
+  - subscriptions
   - pack
   - byob
   - ugly duckling

@@ -2,7 +2,7 @@
 title: Stillwater Steep
 subtitle: Cold Brew Blend
 slug: stillwater-steep
-category: blend
+category: seasonal
 order: 8
 roast_level: Full City (medium)
 roast_dots: 3
@@ -10,6 +10,7 @@ tasting_notes: Dark chocolate, toasted walnut, brown sugar
 brewing_method: Cold brew
 mascot: heron
 mascot_file: audubon-heron-transparent.png
+frequencies: []
 coming_soon: false
 origins:
   - Brazil

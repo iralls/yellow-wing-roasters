@@ -13,7 +13,29 @@ Our current lineup. All roasts ship as whole bean.
 
 {% for cat_name in site.category_order %}
 
-{% if cat_name == "byob" %}
+{% if cat_name == "subscriptions" %}
+<h2 class="roasts-category">Subscriptions</h2>
+<div class="roasts-grid">
+  <a class="roasts-entry" href="{{ '/subscriptions/the-migrator/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">The Migrator</div>
+      <div class="roasts-entry-notes">Rotating single origin</div>
+    </div>
+  </a>
+  <a class="roasts-entry" href="{{ '/subscriptions/1200bpm-collective/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">1200bpm Collective</div>
+      <div class="roasts-entry-notes">Espresso focused</div>
+    </div>
+  </a>
+</div>
+{% elsif cat_name == "byob" %}
 <h2 class="roasts-category">BYOB (Bring Your Own Beans)</h2>
 <div class="byob-section">
   <a href="{{ '/roasts/byob/' | relative_url }}" class="byob-entry">

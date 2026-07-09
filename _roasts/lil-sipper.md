@@ -10,6 +10,7 @@ tasting_notes: Sweet berry, vanilla, cream
 brewing_method: Espresso, pour-over
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
+published: false
 origins:
   - Peru
   - Ethiopia

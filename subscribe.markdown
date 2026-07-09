@@ -29,14 +29,25 @@ permalink: /subscribe/
     {% endunless %}
   {% endfor %}
 
-  <div class="sub-card" data-roast="Rotating Single Origin" data-slug="rotating-single-origin" data-mascot="audubon-byob-transparent.png" data-frequencies="Monthly">
+  <div class="sub-card" data-roast="The Migrator (Rotating Single Origin)" data-slug="rotating-single-origin" data-mascot="audubon-arctic-tern-transparent.png" data-frequencies="Monthly">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">Rotating Single Origin</div>
+      <div class="roasts-entry-title">The Migrator</div>
       <div class="roasts-entry-notes">A new single origin each delivery</div>
-      <div class="roasts-entry-brew">We pick, you enjoy</div>
+      <div class="roasts-entry-brew">Monthly</div>
+    </div>
+  </div>
+
+  <div class="sub-card" data-roast="1200bpm Collective (Espresso Subscription)" data-slug="1200bpm-collective" data-mascot="audubon-hummingbird-transparent.png" data-frequencies="Monthly">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">1200bpm Collective</div>
+      <div class="roasts-entry-notes">12oz Chimney Sweep + 12oz roaster's espresso pick</div>
+      <div class="roasts-entry-brew">Monthly</div>
     </div>
   </div>
 
