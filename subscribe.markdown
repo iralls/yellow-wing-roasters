@@ -29,7 +29,7 @@ permalink: /subscribe/
     {% endunless %}
   {% endfor %}
 
-  <div class="sub-card" data-roast="The Migrator (Rotating Single Origin)" data-slug="rotating-single-origin" data-mascot="audubon-arctic-tern-transparent.png" data-frequencies="Monthly">
+  <div class="sub-card" data-roast="The Migrator (Rotating Single Origin)" data-slug="rotating-single-origin" data-mascot="audubon-arctic-tern-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
@@ -40,7 +40,7 @@ permalink: /subscribe/
     </div>
   </div>
 
-  <div class="sub-card" data-roast="1200bpm Collective (Espresso Subscription)" data-slug="1200bpm-collective" data-mascot="audubon-hummingbird-transparent.png" data-frequencies="Monthly">
+  <div class="sub-card" data-roast="1200bpm Collective (Espresso Subscription)" data-slug="1200bpm-collective" data-mascot="audubon-hummingbird-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
@@ -51,7 +51,7 @@ permalink: /subscribe/
     </div>
   </div>
 
-  <div class="sub-card" data-roast="Fledglings (Coffee 101)" data-slug="fledglings" data-mascot="audubon-chicks-transparent.png" data-frequencies="Monthly">
+  <div class="sub-card" data-roast="Fledglings (Coffee 101)" data-slug="fledglings" data-mascot="audubon-chicks-transparent.png" data-frequencies="Monthly" data-sizes="12oz">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
@@ -151,7 +151,7 @@ permalink: /subscribe/
 
   var params = new URLSearchParams(window.location.search);
 
-  function selectRoast(roast, slug, mascot, frequencies) {
+  function selectRoast(roast, slug, mascot, frequencies, sizes) {
     hiddenInput.value = roast;
     summary.innerHTML = '<div style="text-align:center;">' + roast + (mascot ? '<br><img src="/images/' + mascot + '" alt="" style="height:4rem; margin-top:0.5rem;">' : '') + '</div>';
     intro.textContent = 'Subscribing to ' + roast + '. Fill out the details below.';
@@ -181,6 +181,23 @@ permalink: /subscribe/
       firstVisible.checked = true;
     }
 
+    var allowedSizes = sizes ? sizes.split(',') : ['12oz', '2lb', '5lb'];
+    var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
+    var firstVisibleSize = null;
+    for (var si = 0; si < sizeRadios.length; si++) {
+      var sizePill = sizeRadios[si].closest('.order-radio');
+      if (allowedSizes.indexOf(sizeRadios[si].value) >= 0) {
+        sizePill.style.display = '';
+        if (!firstVisibleSize) firstVisibleSize = sizeRadios[si];
+      } else {
+        sizePill.style.display = 'none';
+        sizeRadios[si].checked = false;
+      }
+    }
+    if (firstVisibleSize && !form.querySelector('input[name="entry.1606791078"]:checked')) {
+      firstVisibleSize.checked = true;
+    }
+
     var size = params.get('size');
     if (size) {
       var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
@@ -199,7 +216,7 @@ permalink: /subscribe/
 
   for (var i = 0; i < cards.length; i++) {
     cards[i].addEventListener('click', function () {
-      selectRoast(this.getAttribute('data-roast'), this.getAttribute('data-slug'), this.getAttribute('data-mascot'), this.getAttribute('data-frequencies'));
+      selectRoast(this.getAttribute('data-roast'), this.getAttribute('data-slug'), this.getAttribute('data-mascot'), this.getAttribute('data-frequencies'), this.getAttribute('data-sizes'));
     });
   }
 
@@ -214,7 +231,7 @@ permalink: /subscribe/
   if (qpRoast) {
     for (var j = 0; j < cards.length; j++) {
       if (cards[j].getAttribute('data-slug') === qpRoast) {
-        selectRoast(cards[j].getAttribute('data-roast'), qpRoast, cards[j].getAttribute('data-mascot'), cards[j].getAttribute('data-frequencies'));
+        selectRoast(cards[j].getAttribute('data-roast'), qpRoast, cards[j].getAttribute('data-mascot'), cards[j].getAttribute('data-frequencies'), cards[j].getAttribute('data-sizes'));
         break;
       }
     }
