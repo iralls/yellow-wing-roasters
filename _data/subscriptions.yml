@@ -44,10 +44,6 @@ wingshot-collective:
   sizes: [12oz]
   frequencies: [Monthly]
   prices: {12oz: 27}
-carrier-club:
-  sizes: [sample]
-  frequencies: [As available]
-  prices: {sample: 0}
 fledglings:
   sizes: [12oz]
   frequencies: [Monthly]
