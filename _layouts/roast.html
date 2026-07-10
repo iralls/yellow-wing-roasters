@@ -74,7 +74,7 @@ layout: default
   <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
     {% for s in sizes %}
       {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
-      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — ${{ price }}{% if s == "2lb" %} <span class="save-badge">-5%</span>{% elsif s == "5lb" %} <span class="save-badge">-8%</span>{% endif %}</label>
+      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — ${{ price }}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
     {% endfor %}
   </div>
   <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">

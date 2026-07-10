@@ -1,7 +1,7 @@
 default:
   12oz: 14
-  2lb: 36
-  5lb: 83
+  2lb: 37
+  5lb: 85
 
 overrides:
   the-aviary:
@@ -10,17 +10,17 @@ overrides:
     12oz: 5
   lil-sipper:
     12oz: 16
-    2lb: 41
-    5lb: 95
+    2lb: 42
+    5lb: 97
   ethiopia-wush-wush:
     12oz: 17
-    2lb: 43
-    5lb: 99
+    2lb: 44
+    5lb: 103
   feather-soot:
     12oz: 15
-    2lb: 38
-    5lb: 88
+    2lb: 39
+    5lb: 91
   stillwater-steep:
     12oz: 15
-    2lb: 38
-    5lb: 88
+    2lb: 39
+    5lb: 91
