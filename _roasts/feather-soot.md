@@ -4,8 +4,8 @@ subtitle: Dark Roast
 slug: feather-soot
 category: blend
 order: 2
-roast_level: Full City+ (medium-dark)
-roast_dots: 4
+roast_level: Vienna (dark)
+roast_dots: 5
 tasting_notes: Creamy, sweet milk chocolate
 brewing_method: French press, moka pot, drip
 mascot: canary
