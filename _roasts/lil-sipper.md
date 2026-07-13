@@ -11,7 +11,7 @@ brewing_method: Espresso, pour-over
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Peru
+  - Brazil
   - Colombia
   - Kenya
 coming_soon: false
