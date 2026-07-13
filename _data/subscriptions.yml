@@ -15,7 +15,7 @@ chimney-sweep:
 lil-sipper:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 14, 2lb: 38, 5lb: 88}
+  prices: {12oz: 12, 2lb: 34, 5lb: 77}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:

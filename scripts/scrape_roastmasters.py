@@ -63,6 +63,11 @@ class LinkExtractor(HTMLParser):
             self._current_text = []
 
 
+def extract_price(html: str) -> str:
+    m = re.search(r"1 pound bag - \$(\d+\.\d{2})", html)
+    return m.group(1) if m else ""
+
+
 def extract_sections(html: str) -> tuple[str, str]:
     """Extract Cup Characteristics and Roasting Notes from a product page."""
     text = re.sub(r"<[^>]+>", "\n", html)
@@ -119,9 +124,8 @@ def main():
 
     count = 0
     with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(
-            f, fieldnames=["name", "cup_characteristics", "roasting_notes"]
-        )
+        fieldnames = ["name", "price_1lb", "cup_characteristics", "roasting_notes"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
         for i, (href, name) in enumerate(beans, 1):
@@ -129,14 +133,20 @@ def main():
             print(f"  [{i}/{len(beans)}] {name}")
             try:
                 html = fetch_page(url)
+                price = extract_price(html)
                 cup, roast = extract_sections(html)
                 if not cup and not roast:
                     print("           ⚠ no Cup Characteristics or Roasting Notes found")
             except Exception as e:
                 print(f"           ✗ error: {e}")
-                cup, roast = "", ""
+                price, cup, roast = "", "", ""
             writer.writerow(
-                {"name": name, "cup_characteristics": cup, "roasting_notes": roast}
+                {
+                    "name": name,
+                    "price_1lb": price,
+                    "cup_characteristics": cup,
+                    "roasting_notes": roast,
+                }
             )
             f.flush()
             count += 1
