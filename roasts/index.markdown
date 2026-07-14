@@ -9,24 +9,24 @@ permalink: /roasts/
 <p style="color: #666; font-size: 1.1rem; margin-top: -0.5rem; margin-bottom: 2rem;">Explore our current selection of small-batch roasted coffees.</p>
 
 <!-- Dynamic Filters Bar -->
-<div class="filters-bar" id="filters-bar" style="display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; background-color: #fafafa; padding: 1rem; border-radius: 8px; border: 1px solid #eaeaea;">
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
-    <label for="filter-origin" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Origin</label>
-    <select id="filter-origin" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 140px;">
+<div class="filters-bar" id="filters-bar" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-start; padding: 0.5rem 0;">
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+    <label for="filter-origin" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Origin</label>
+    <select id="filter-origin" class="subscribe-select" style="min-width: 140px;">
       <option value="">All Origins</option>
     </select>
   </div>
   
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
-    <label for="filter-level" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Roast Level</label>
-    <select id="filter-level" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 140px;">
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+    <label for="filter-level" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Roast Level</label>
+    <select id="filter-level" class="subscribe-select" style="min-width: 140px;">
       <option value="">All Levels</option>
     </select>
   </div>
 
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
-    <label for="filter-brewing" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Brewing Method</label>
-    <select id="filter-brewing" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 160px;">
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+    <label for="filter-brewing" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Brewing Method</label>
+    <select id="filter-brewing" class="subscribe-select" style="min-width: 160px;">
       <option value="">All Methods</option>
     </select>
   </div>
