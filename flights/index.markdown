@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Sample Packs
+title: Flights
 permalink: /flights/
 ---
 
-# Sample Packs
+# Flights
 
 <div class="roasts-grid">
   <a class="roasts-entry roasts-entry--soon" href="{{ '/flights/the-aviary/' | relative_url }}">
