@@ -7,7 +7,7 @@ order: 4
 roast_level: Full City (medium)
 roast_dots: 3
 tasting_notes: Sweet berry, vanilla, cream
-brewing_method: Espresso, pour-over
+brewing_method: Espresso, Pour-Over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
