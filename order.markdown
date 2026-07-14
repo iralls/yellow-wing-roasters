@@ -335,11 +335,11 @@ permalink: /order/
       }
       if (submitBtn) submitBtn.disabled = true;
 
-      setTimeout(function () {
+      iframe.onload = function () {
         try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
         window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
         window.location.href = '{{ "/thanks/" | relative_url }}';
-      }, 1000);
+      };
     });
 
     var clearBtn = form.querySelector('.order-clear');

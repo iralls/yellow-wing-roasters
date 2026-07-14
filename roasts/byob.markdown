@@ -139,9 +139,9 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
       status.className = 'order-status order-status-pending';
     }
     if (submitBtn) submitBtn.disabled = true;
-    setTimeout(function () {
+    iframe.onload = function () {
       window.location.href = '{{ "/thanks/" | relative_url }}';
-    }, 1000);
+    };
   });
 })();
 </script>
