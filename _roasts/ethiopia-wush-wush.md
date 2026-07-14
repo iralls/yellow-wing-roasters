@@ -6,7 +6,7 @@ order: 5
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Blueberries, chocolate, pronounced fruit
-brewing_method: Pour-over, drip
+brewing_method: Pour-over, Drip
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
 rotating: true
 ---

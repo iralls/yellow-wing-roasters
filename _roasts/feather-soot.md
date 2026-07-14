@@ -7,7 +7,7 @@ order: 2
 roast_level: Vienna (dark)
 roast_dots: 5
 tasting_notes: Creamy, sweet milk chocolate
-brewing_method: French press, moka pot, drip
+brewing_method: French Press, Moka Pot, Drip
 mascot: canary
 mascot_file: audubon-canary-transparent.png
 coming_soon: false
