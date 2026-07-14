@@ -12,6 +12,7 @@ permalink: /subscribe/
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
   <input type="hidden" name="entry.1935997805" id="sub-roast-hidden" value="">
+  <input type="hidden" name="entry.903789519" id="sub-price-hidden" value="">
 
   <div class="order-field">
     <label for="sub-name">Name</label>
@@ -92,6 +93,7 @@ permalink: /subscribe/
   var params = new URLSearchParams(window.location.search);
   var roast = params.get('roast') || '';
   var hiddenInput = document.getElementById('sub-roast-hidden');
+  var priceHiddenInput = document.getElementById('sub-price-hidden');
   var title = document.getElementById('sub-title');
 
   var subConfig = {
@@ -173,14 +175,22 @@ permalink: /subscribe/
   var submitBtn = form.querySelector('.order-submit');
 
   form.addEventListener('submit', function () {
+    // Gather and set the price right before form submission to Google Forms
+    if (config && config.prices && priceHiddenInput) {
+      var checkedSize = form.querySelector('input[name="entry.1606791078"]:checked');
+      if (checkedSize && config.prices[checkedSize.value]) {
+        priceHiddenInput.value = '$' + config.prices[checkedSize.value];
+      }
+    }
+
     if (status) {
       status.textContent = 'Sending…';
       status.className = 'order-status order-status-pending';
     }
     if (submitBtn) submitBtn.disabled = true;
-    setTimeout(function () {
+    iframe.onload = function () {
       window.location.href = '{{ "/thanks/" | relative_url }}';
-    }, 1000);
+    };
   });
 })();
 </script>
