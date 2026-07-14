@@ -7,7 +7,7 @@ order: 1
 roast_level: City+ (light-medium)
 roast_dots: 2
 tasting_notes: Milk chocolate, caramel, smooth body
-brewing_method: Drip, Pour-over, French Press, Espresso
+brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
 mascot_file: audubon-robin-transparent.png
 coming_soon: false
