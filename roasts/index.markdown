@@ -79,6 +79,26 @@ permalink: /roasts/
   var levels = { 'Light': true, 'Medium': true, 'Dark': true };
   var brewingMethods = {};
 
+  var METHOD_MAP = {
+    'pour-over': 'Pour-over',
+    'espresso': 'Espresso',
+    'drip': 'Drip',
+    'french press': 'French Press',
+    'moka pot': 'Moka Pot',
+    'aeropress': 'AeroPress',
+    'cold brew': 'Cold Brew'
+  };
+
+  function normalizeMethod(method) {
+    var clean = method.trim().toLowerCase();
+    if (METHOD_MAP[clean]) {
+      return METHOD_MAP[clean];
+    }
+    return clean.split(' ').map(function (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+  }
+
   // 1. Scan cards to extract unique filter values
   cards.forEach(function (card) {
     // Origins (comma-separated list)
@@ -97,8 +117,7 @@ permalink: /roasts/
     // Brewing methods
     var brewingAttr = card.getAttribute('data-brewing') || '';
     var methods = brewingAttr.replace(/\bor\b/gi, '').split(',').map(function (m) {
-      var trimmed = m.trim();
-      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+      return normalizeMethod(m);
     }).filter(function (m) {
       return m.length > 0;
     });
