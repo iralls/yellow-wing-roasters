@@ -1,0 +1,174 @@
+---
+layout: default
+title: Roasts
+permalink: /roasts/
+---
+
+# Roasts
+
+<p style="color: #666; font-size: 1.1rem; margin-top: -0.5rem; margin-bottom: 2rem;">Explore our current selection of small-batch roasted coffees.</p>
+
+<!-- Dynamic Filters Bar -->
+<div class="filters-bar" id="filters-bar" style="display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; background-color: #fafafa; padding: 1rem; border-radius: 8px; border: 1px solid #eaeaea;">
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+    <label for="filter-origin" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Origin</label>
+    <select id="filter-origin" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 140px;">
+      <option value="">All Origins</option>
+    </select>
+  </div>
+  
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+    <label for="filter-level" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Roast Level</label>
+    <select id="filter-level" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 140px;">
+      <option value="">All Levels</option>
+    </select>
+  </div>
+
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.25rem;">
+    <label for="filter-brewing" style="font-family: Arial, sans-serif; font-size: 0.8rem; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.05em;">Brewing Method</label>
+    <select id="filter-brewing" style="padding: 0.5rem 1.5rem 0.5rem 0.75rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; font-size: 0.9rem; min-width: 160px;">
+      <option value="">All Methods</option>
+    </select>
+  </div>
+</div>
+
+<!-- Roasts Grid -->
+<div class="roasts-grid" id="roasts-grid">
+  {% assign sorted_roasts = site.roasts | sort: "order" %}
+  {% for r in sorted_roasts %}
+    {% if r.origins %}
+      {% assign origin_list = r.origins | join: "," %}
+    {% else %}
+      {% assign origin_list = r.title | split: " " | first %}
+    {% endif %}
+
+    <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" 
+       href="{{ r.url | relative_url }}"
+       data-origins="{{ origin_list }}"
+       data-roast-dots="{{ r.roast_dots }}"
+       data-brewing="{{ r.brewing_method }}">
+      
+      <div class="roasts-entry-visual">
+        {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+      </div>
+      {% if r.coming_soon %}<div class="roasts-entry-soon-badge">Coming Soon</div>{% endif %}
+      {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      
+      <div class="roasts-entry-info">
+        <div class="roasts-entry-title">{{ r.title }}</div>
+        {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
+        
+        {% if r.roast_dots %}<span class="roasts-entry-level"><span class="roast-dots roast-dots-sm"><span class="roast-dot{% if r.roast_dots >= 1 %} roast-dot-1{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 2 %} roast-dot-2{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 3 %} roast-dot-3{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 4 %} roast-dot-4{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 5 %} roast-dot-5{% endif %}"></span></span></span>{% endif %}
+        
+        {% assign rp = site.data.pricing.overrides[r.slug] %}{% if rp and rp["12oz"] %}{% assign price_12 = rp["12oz"] %}{% else %}{% assign price_12 = site.data.pricing.default["12oz"] %}{% endif %}{% assign sub = site.data.subscriptions[r.slug] %}{% if sub and sub.prices %}{% assign sub_12 = sub.prices["12oz"] %}{% else %}{% assign sub_12 = nil %}{% endif %}
+        <div class="roasts-entry-prices">${{ price_12 }}{% if sub_12 %} / <span class="roasts-entry-sub-price">${{ sub_12 }}</span>{% endif %}</div>
+      </div>
+    </a>
+  {% endfor %}
+</div>
+
+<!-- JavaScript for Dynamic Filters -->
+<script>
+(function () {
+  var cards = document.querySelectorAll('#roasts-grid .roasts-entry');
+  var selectOrigin = document.getElementById('filter-origin');
+  var selectLevel = document.getElementById('filter-level');
+  var selectBrewing = document.getElementById('filter-brewing');
+
+  var origins = {};
+  var levels = { 'Light': true, 'Medium': true, 'Dark': true };
+  var brewingMethods = {};
+
+  // 1. Scan cards to extract unique filter values
+  cards.forEach(function (card) {
+    // Origins (comma-separated list)
+    var originsAttr = card.getAttribute('data-origins') || '';
+    var cardOrigins = originsAttr.split(',').map(function (o) {
+      return o.trim();
+    }).filter(Boolean);
+    
+    // Store back normalized array to ease filtering later
+    card.setAttribute('data-origins-list', JSON.stringify(cardOrigins));
+
+    cardOrigins.forEach(function (origin) {
+      origins[origin] = true;
+    });
+
+    // Brewing methods
+    var brewingAttr = card.getAttribute('data-brewing') || '';
+    var methods = brewingAttr.replace(/\bor\b/gi, '').split(',').map(function (m) {
+      var trimmed = m.trim();
+      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    }).filter(function (m) {
+      return m.length > 0;
+    });
+    
+    card.setAttribute('data-brewing-list', JSON.stringify(methods));
+
+    methods.forEach(function (method) {
+      brewingMethods[method] = true;
+    });
+  });
+
+  // 2. Populate Dropdowns Dynamically
+  // Origins
+  Object.keys(origins).sort().forEach(function (origin) {
+    var opt = document.createElement('option');
+    opt.value = origin;
+    opt.textContent = origin;
+    selectOrigin.appendChild(opt);
+  });
+
+  // Roast Levels
+  Object.keys(levels).forEach(function (level) {
+    var opt = document.createElement('option');
+    opt.value = level;
+    opt.textContent = level;
+    selectLevel.appendChild(opt);
+  });
+
+  // Brewing Methods
+  Object.keys(brewingMethods).sort().forEach(function (method) {
+    var opt = document.createElement('option');
+    opt.value = method;
+    opt.textContent = method;
+    selectBrewing.appendChild(opt);
+  });
+
+  // 3. Filter Application Logic
+  function applyFilters() {
+    var chosenOrigin = selectOrigin.value;
+    var chosenLevel = selectLevel.value;
+    var chosenBrewing = selectBrewing.value;
+
+    cards.forEach(function (card) {
+      // Check if chosenOrigin is in the list of origins for this card
+      var originsList = JSON.parse(card.getAttribute('data-origins-list') || '[]');
+      var matchesOrigin = !chosenOrigin || originsList.indexOf(chosenOrigin) >= 0;
+      
+      // Map roast level category based on dots
+      var dots = parseInt(card.getAttribute('data-roast-dots')) || 3;
+      var levelCat = "Medium";
+      if (dots <= 2) levelCat = "Light";
+      else if (dots >= 4) levelCat = "Dark";
+      var matchesLevel = !chosenLevel || levelCat === chosenLevel;
+
+      // Map brewing method
+      var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
+      var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
+
+      // Show/Hide Card
+      if (matchesOrigin && matchesLevel && matchesBrewing) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // 4. Attach Event Listeners
+  selectOrigin.addEventListener('change', applyFilters);
+  selectLevel.addEventListener('change', applyFilters);
+  selectBrewing.addEventListener('change', applyFilters);
+})();
+</script>
