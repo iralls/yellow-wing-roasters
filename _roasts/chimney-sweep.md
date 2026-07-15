@@ -6,7 +6,7 @@ category: blend
 order: 3
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Milk chocolate, plum, raisin
+tasting_notes: Milk chocolate, plum
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
