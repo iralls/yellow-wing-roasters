@@ -24,8 +24,8 @@ permalink: /flights/
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Peck Your Own</div>
-      <div class="roasts-entry-notes">Your choice of four 8oz bags</div>
-      <div class="roasts-entry-prices">${{ site.data.flights["peck-your-own"].price }}</div>
+      <div class="roasts-entry-notes">Choose at least {{ site.data.flights["peck-your-own"].min_bags }} 8oz bags</div>
+      <div class="roasts-entry-prices">${{ site.data.flights["peck-your-own"].price_per_bag }} per bag (${{ site.data.flights["peck-your-own"].min_bags | times: site.data.flights["peck-your-own"].price_per_bag }} min)</div>
     </div>
   </a>
 </div>

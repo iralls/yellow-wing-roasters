@@ -21,11 +21,11 @@ permalink: /flights/peck-your-own/
   <h1 class="roast-mv-title">Peck Your Own</h1>
 </div>
 
-<p class="roast-mv-tasting">Pick any four of our available roasts — each one comes as an 8oz bag.</p>
+<p class="roast-mv-tasting">Pick at least {{ site.data.flights["peck-your-own"].min_bags }} of our available roasts — each one comes as an 8oz bag.</p>
 
 <div class="roast-mv-divider"></div>
 
-<p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select 4 roasts:</p>
+<p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ site.data.flights["peck-your-own"].min_bags }} roasts:</p>
 
 <div class="roasts-grid" id="pyo-picker">
   {% assign roasts = site.roasts | sort: "order" %}
@@ -45,7 +45,9 @@ permalink: /flights/peck-your-own/
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select 4 roasts — ${{ site.data.flights["peck-your-own"].price }}</button>
+  {% assign default_min = site.data.flights["peck-your-own"].min_bags %}
+  {% assign default_price = default_min | times: site.data.flights["peck-your-own"].price_per_bag %}
+  <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select at least {{ default_min }} roasts — ${{ default_price }}</button>
 </div>
 
 </div>
@@ -58,16 +60,22 @@ permalink: /flights/peck-your-own/
   var addBtn = document.getElementById('pyo-add');
   var countEl = document.getElementById('pyo-count');
 
+  var pricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
+  var minBags = {{ site.data.flights["peck-your-own"].min_bags | default: 4 }};
+
   function update() {
-    var remaining = 4 - selected.length;
+    var count = selected.length;
+    var price = count * pricePerBag;
+    var remaining = minBags - count;
+
     if (remaining > 0) {
       countEl.textContent = 'Select ' + remaining + ' more roast' + (remaining === 1 ? '' : 's') + ':';
-      addBtn.textContent = 'Select ' + remaining + ' more — ${{ site.data.flights["peck-your-own"].price }}';
+      addBtn.textContent = 'Select ' + remaining + ' more — $' + (minBags * pricePerBag);
       addBtn.disabled = true;
       addBtn.classList.add('add-to-order-btn--disabled');
     } else {
-      countEl.textContent = 'Your picks:';
-      addBtn.textContent = 'Add to order — ${{ site.data.flights["peck-your-own"].price }}';
+      countEl.textContent = 'Your picks (' + count + '):';
+      addBtn.textContent = 'Add to order — $' + price;
       addBtn.disabled = false;
       addBtn.classList.remove('add-to-order-btn--disabled');
     }
@@ -87,7 +95,7 @@ permalink: /flights/peck-your-own/
       var idx = selected.indexOf(slug);
       if (idx >= 0) {
         selected.splice(idx, 1);
-      } else if (selected.length < 4) {
+      } else {
         selected.push(slug);
       }
       update();
@@ -95,7 +103,7 @@ permalink: /flights/peck-your-own/
   }
 
   addBtn.addEventListener('click', function () {
-    if (selected.length !== 4) return;
+    if (selected.length < minBags) return;
     var titles = [];
     for (var j = 0; j < selected.length; j++) {
       for (var k = 0; k < options.length; k++) {

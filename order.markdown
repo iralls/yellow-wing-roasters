@@ -137,7 +137,13 @@ permalink: /order/
       for (var ck in cart) {
         if (!matched[ck] && cart[ck] > 0) {
           var parts = ck.split('|');
-          items.push({ data: { roast: parts[0], variant: parts[1], size: '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: parts[0] === 'peck-your-own' ? {{ site.data.flights["peck-your-own"].price }} : 0 }, key: ck, qty: cart[ck] });
+          var itemPrice = 0;
+          if (parts[0] === 'peck-your-own') {
+            var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
+            var pyoPricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
+            itemPrice = choicesCount * pyoPricePerBag;
+          }
+          items.push({ data: { roast: parts[0], variant: parts[1], size: '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: itemPrice }, key: ck, qty: cart[ck] });
         }
       }
 
