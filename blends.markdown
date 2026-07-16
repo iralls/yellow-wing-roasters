@@ -25,4 +25,19 @@ permalink: /blends/
     </div>
   </a>
 {% endfor %}
+  <a class="roasts-entry" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <div class="mascot-grid">
+        <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item">
+        <img src="{{ '/images/audubon-bluejay-transparent.png' | relative_url }}" alt="" class="mascot-grid-item">
+        <img src="{{ '/images/audubon-barred-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="transform: scale(0.8) translateY(-6px);">
+        <img src="{{ '/images/audubon-red-winged-blackbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item">
+      </div>
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">BYOB</div>
+      <div class="roasts-entry-notes">Build Your Own Blend</div>
+      <div class="roasts-entry-prices">$32</div>
+    </div>
+  </a>
 </div>
