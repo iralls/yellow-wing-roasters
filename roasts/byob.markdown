@@ -4,15 +4,21 @@ title: "BYOB — Bring Your Own Beans"
 permalink: /roasts/byob/
 ---
 
+<div class="roast-minimal-vertical">
+
+<div class="roast-mv-divider"></div>
+
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
 </div>
 
-# BYOB
+<div class="roast-mv-center">
+  <h1 class="roast-mv-title">BYOB</h1>
+</div>
 
-*Bring Your Own Beans*
+<p class="roast-mv-tasting"><em>Bring Your Own Beans</em><br>Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest.</p>
 
-Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell me how you'd like it roasted, and I'll handle the rest.
+<div class="roast-mv-divider"></div>
 
 <h2 class="roasts-category">Approved Suppliers</h2>
 
@@ -24,13 +30,15 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 
 <h2 class="roasts-category">How it works</h2>
 
-1. Browse one of the suppliers above and find a green bean you'd like roasted.
-2. Fill out the form below with the link, your preferred roast level, and quantity.
-3. I'll order the beans, roast them, and reach out when they're ready.
+<ol style="text-align: left; display: inline-block; max-width: 600px; margin: 0 auto 1.5rem; padding-left: 2rem; line-height: 1.6;">
+  <li>Browse one of the suppliers above and find a green bean you'd like roasted.</li>
+  <li>Fill out the form below with the link, your preferred roast level, and quantity.</li>
+  <li>We'll order the beans, roast them, and reach out when they're ready.</li>
+</ol>
 
 <h2 class="roasts-category">Place a BYOB Order</h2>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form" style="text-align: left; margin: 2rem auto; max-width: 40rem;">
 
   <div class="order-field">
     <label for="byob-name">Name</label>
@@ -49,7 +57,7 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
 
   <div class="order-field">
     <label for="byob-roast">Roast level</label>
-    <select id="byob-roast" name="entry.1076774005" required>
+    <select id="byob-roast" name="entry.1076774005" class="subscribe-select" required>
       <option value="" disabled selected>Choose a roast level</option>
       <option value="City (light)">City (light)</option>
       <option value="City+ (medium-light)">City+ (medium-light)</option>
@@ -145,3 +153,5 @@ Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean
   });
 })();
 </script>
+
+</div>
