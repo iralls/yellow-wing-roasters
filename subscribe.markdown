@@ -6,6 +6,10 @@ permalink: /subscriptions/
 
 # Subscriptions
 
+<p style="text-align: center; margin: -0.5rem 0 2rem;">
+  Already subscribed? <a href="{{ '/subscriptions/manage/' | relative_url }}">Manage your subscription &rarr;</a>
+</p>
+
 <div class="roasts-grid">
   <a class="roasts-entry" href="{{ '/subscriptions/the-migrator/' | relative_url }}">
     <div class="roasts-entry-visual">

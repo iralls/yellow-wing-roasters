@@ -13,6 +13,8 @@ permalink: /subscribe/
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
   <input type="hidden" name="entry.1935997805" id="sub-roast-hidden" value="">
   <input type="hidden" name="entry.903789519" id="sub-price-hidden" value="">
+  <input type="hidden" name="entry.1261348961" value="Active">
+  <input type="hidden" name="entry.1336119512" value="">
 
   <div class="order-field">
     <label for="sub-name">Name</label>
