@@ -36,7 +36,7 @@ ethiopia-wush-wush:
   prices: {12oz: 15, 2lb: 40, 5lb: 93}
 
 # Subscription products — 12oz only, monthly only
-rotating-single-origin:
+migrator:
   sizes: [12oz]
   frequencies: [Monthly]
   prices: {12oz: 16}

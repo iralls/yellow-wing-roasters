@@ -4,10 +4,12 @@ title: Subscribe
 permalink: /subscribe/
 ---
 
-<div class="roast-minimal-vertical">
+<div class="roast-mv-divider"></div>
 
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title" id="sub-title">Subscribe</h1>
+<h1 id="sub-title">Subscribe</h1>
+
+<div id="sub-image-wrap" style="display: none; margin-bottom: 2rem;">
+  <img id="sub-image" src="" alt="" style="max-height: 8rem; width: auto;">
 </div>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
@@ -87,8 +89,6 @@ permalink: /subscribe/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
-</div>
-
 <script>
 (function () {
   var form = document.getElementById('subscribe-form');
@@ -104,9 +104,31 @@ permalink: /subscribe/
     {% endfor %}
   };
 
+  var imageWrap = document.getElementById('sub-image-wrap');
+  var imageEl = document.getElementById('sub-image');
+  var mascotMap = {
+    {% for r in site.roasts %}
+    '{{ r.slug }}': '{{ "/images/" | append: r.mascot_file | relative_url }}',
+    {% endfor %}
+    'migrator': '{{ "/images/audubon-arctic-tern-transparent.png" | relative_url }}',
+    'wingshot-collective': '{{ "/images/audubon-crosshair-transparent.png" | relative_url }}',
+    'fledglings': '{{ "/images/audubon-chicks-transparent.png" | relative_url }}',
+    'murmurations': '{{ "/images/flock-transparent.png" | relative_url }}',
+    'ugly-ducklings': '{{ "/images/audubon-duckling-transparent.png" | relative_url }}'
+  };
+
   hiddenInput.value = roast;
   if (roast) {
     title.textContent = 'Subscribe — ' + roast.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    var mascotSrc = mascotMap[roast];
+    if (mascotSrc) {
+      imageEl.src = mascotSrc;
+      imageWrap.style.display = 'block';
+    } else {
+      imageWrap.style.display = 'none';
+    }
+  } else {
+    imageWrap.style.display = 'none';
   }
 
   var config = subConfig[roast];

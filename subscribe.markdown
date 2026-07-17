@@ -17,7 +17,7 @@ permalink: /subscriptions/
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Migrator</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["rotating-single-origin"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["migrator"] %}${{ sub.prices["12oz"] }}/mo</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/wingshot-collective/' | relative_url }}">
