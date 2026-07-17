@@ -6,6 +6,7 @@ description: >-
 baseurl: ""
 url: "https://yellowwingroasters.com"
 subscription_api_url: "https://script.google.com/macros/s/AKfycbwLndIoyAjX12dU4wccUsIg-4QiIRIawziVn2POikVQN7PFgXymlA-GcaQHD0rqeN65/exec"
+discount_codes_api_url: "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec"
 
 
 # Theme
