@@ -59,6 +59,15 @@ permalink: /order/
     </div>
   </div>
 
+  <div class="order-field" id="discount-code-section" style="margin-bottom: 1.5rem;">
+    <label for="discount-code-input">Discount / Gift Code</label>
+    <div style="display: flex; gap: 0.5rem; width: 100%;">
+      <input id="discount-code-input" type="text" placeholder="Enter code" style="flex: 1; margin-bottom: 0;" autocomplete="off">
+      <button id="apply-discount-btn" type="button" class="order-submit" style="margin: 0; width: auto; padding: 0 1.5rem; min-height: unset; height: 38px; border-radius: 4px; font-size: 0.9rem;">Apply</button>
+    </div>
+    <span id="discount-status" style="font-size: 0.85rem; font-weight: 500; display: block; margin-top: 0.35rem; min-height: 1.2rem;"></span>
+  </div>
+
   <div class="order-field">
     <label for="order-notes">Notes (optional)</label>
     <textarea id="order-notes" name="entry.1381358427" rows="3"></textarea>
@@ -119,6 +128,10 @@ permalink: /order/
     function cartKey(roast, variant, size) {
       return roast + '|' + (variant || '') + '|' + size;
     }
+
+
+
+    var appliedDiscount = null;
 
     function render() {
       var cart = loadCart();
@@ -274,9 +287,28 @@ permalink: /order/
         subtotal += (items[t].data.price || 0) * items[t].qty;
       }
 
+      var discountValue = 0;
+      if (appliedDiscount) {
+        if (appliedDiscount.type === 'percent') {
+          discountValue = Math.round(subtotal * (appliedDiscount.value / 100) * 100) / 100;
+        } else if (appliedDiscount.type === 'flat') {
+          discountValue = Math.min(subtotal, appliedDiscount.value);
+        }
+      }
+
       var delivery = document.querySelector('input[name="entry.1896226742"]:checked');
       var shippingCost = (delivery && delivery.value === 'Ship to me' && subtotal < 40) ? 5 : 0;
-      var grandTotal = subtotal + shippingCost;
+      var grandTotal = Math.max(0, subtotal - discountValue) + shippingCost;
+
+      if (discountValue > 0) {
+        var discountRow = document.createElement('div');
+        discountRow.className = 'order-cart-total';
+        discountRow.style.borderTop = 'none';
+        discountRow.style.paddingTop = '0.5rem';
+        discountRow.style.color = '#5746e3';
+        discountRow.innerHTML = '<span class="order-cart-total-label">Discount (' + appliedDiscount.code + ')</span><span class="order-cart-total-value">-$' + discountValue.toFixed(2) + '</span>';
+        itemsEl.appendChild(discountRow);
+      }
 
       if (shippingCost > 0) {
         var shippingRow = document.createElement('div');
@@ -287,14 +319,14 @@ permalink: /order/
 
       var totalRow = document.createElement('div');
       totalRow.className = 'order-cart-total';
-      totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal + '</span>';
+      totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
       itemsEl.appendChild(totalRow);
 
       var itemLines = items.map(function (item) {
         return item.qty + 'x ' + item.data.label + ' ' + item.data.size;
       }).join(', ');
       document.getElementById('order-items-hidden').value = itemLines;
-      document.getElementById('order-total-hidden').value = '$' + grandTotal;
+      document.getElementById('order-total-hidden').value = '$' + grandTotal.toFixed(2);
     }
 
     var params = new URLSearchParams(window.location.search);
@@ -325,6 +357,60 @@ permalink: /order/
       });
     }
 
+    // Apply Discount Button Click Handler
+    var applyBtn = document.getElementById('apply-discount-btn');
+    var discountInput = document.getElementById('discount-code-input');
+    var discountStatus = document.getElementById('discount-status');
+
+    applyBtn.addEventListener('click', function () {
+      var code = discountInput.value.trim().toUpperCase();
+      if (!code) {
+        appliedDiscount = null;
+        discountStatus.textContent = '';
+        render();
+        return;
+      }
+
+      discountStatus.textContent = 'Verifying...';
+      discountStatus.style.color = '#666';
+
+      var apiUrl = '{{ site.discount_codes_api_url }}';
+      if (!apiUrl || apiUrl.trim() === "") {
+        discountStatus.textContent = 'Discount service unavailable.';
+        discountStatus.style.color = '#d32f2f';
+        appliedDiscount = null;
+        render();
+        return;
+      }
+
+      var verifyUrl = apiUrl + '?code=' + encodeURIComponent(code);
+      fetch(verifyUrl)
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (data.valid) {
+            appliedDiscount = {
+              code: code,
+              type: data.type,
+              value: parseFloat(data.value)
+            };
+            discountStatus.textContent = 'Code applied successfully!';
+            discountStatus.style.color = '#2e7d32';
+          } else {
+            appliedDiscount = null;
+            discountStatus.textContent = data.message || 'Invalid discount code.';
+            discountStatus.style.color = '#d32f2f';
+          }
+          render();
+        })
+        .catch(function (err) {
+          console.error('Validation fetch error:', err);
+          discountStatus.textContent = 'Could not verify code. Please try again.';
+          discountStatus.style.color = '#d32f2f';
+          appliedDiscount = null;
+          render();
+        });
+    });
+
     var status = form.querySelector('.order-status');
     var submitBtn = form.querySelector('.order-submit');
 
@@ -334,19 +420,80 @@ permalink: /order/
     document.body.appendChild(iframe);
     form.target = 'order-submit-frame';
 
-    form.addEventListener('submit', function () {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
       if (status) {
         status.textContent = 'Sending…';
         status.className = 'order-status order-status-pending';
       }
       if (submitBtn) submitBtn.disabled = true;
 
+      // 1. Calculate discount details to append to Notes
+      var userNotes = document.getElementById('order-notes').value.trim();
+      var finalNotes = userNotes;
+
+      var discountValue = 0;
+      if (appliedDiscount) {
+        var subtotal = 0;
+        var cart = loadCart();
+        for (var i = 0; i < roastData.length; i++) {
+          var d = roastData[i];
+          var k = cartKey(d.roast, d.variant, d.size);
+          var qty = cart[k];
+          if (qty && qty > 0) {
+            subtotal += (d.price || 0) * qty;
+          }
+        }
+        for (var ck in cart) {
+          var parts = ck.split('|');
+          if (parts[0] === 'peck-your-own' && cart[ck] > 0) {
+            var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
+            var pyoPricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
+            subtotal += choicesCount * pyoPricePerBag * cart[ck];
+          }
+        }
+
+        if (appliedDiscount.type === 'percent') {
+          discountValue = Math.round(subtotal * (appliedDiscount.value / 100) * 100) / 100;
+        } else if (appliedDiscount.type === 'flat') {
+          discountValue = Math.min(subtotal, appliedDiscount.value);
+        }
+
+        var notesPrefix = '[DISCOUNT: ' + appliedDiscount.code + ' (-$' + discountValue.toFixed(2) + ')]';
+        finalNotes = userNotes ? notesPrefix + ' | ' + userNotes : notesPrefix;
+      }
+
+      document.getElementById('order-notes').value = finalNotes;
+
+      // 2. Dynamic gift card redemption lookup/subtraction
+      var apiUrl = '{{ site.discount_codes_api_url }}';
+      if (appliedDiscount && appliedDiscount.code.indexOf('GIFT-') === 0 && apiUrl && apiUrl.trim() !== "") {
+        var redeemUrl = apiUrl + '?action=redeem&code=' + encodeURIComponent(appliedDiscount.code) + '&amount=' + encodeURIComponent(discountValue);
+        
+        fetch(redeemUrl)
+          .then(function (response) { return response.json(); })
+          .then(function (data) {
+            proceedToSubmit();
+          })
+          .catch(function (err) {
+            console.error('Failed to deduct gift card amount:', err);
+            proceedToSubmit();
+          });
+      } else {
+        proceedToSubmit();
+      }
+    });
+
+    function proceedToSubmit() {
       iframe.onload = function () {
         try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
         window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
         window.location.href = '{{ "/thanks/" | relative_url }}';
       };
-    });
+
+      form.submit();
+    }
 
     var clearBtn = form.querySelector('.order-clear');
     if (clearBtn) {
