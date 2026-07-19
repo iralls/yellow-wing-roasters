@@ -6,9 +6,17 @@ description: >-
 baseurl: ""
 url: "https://yellowwingroasters.com"
 subscription_api_url: "https://script.google.com/macros/s/AKfycbwLndIoyAjX12dU4wccUsIg-4QiIRIawziVn2POikVQN7PFgXymlA-GcaQHD0rqeN65/exec"
-discount_codes_api_url: "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec"
-
-
+discount_codes_api_url: "https://script.google.com/macros/s/AKfycbyLa8yr6s5eiPAgwnaMIhetJKGBHsyRxLIETRiMQzWdEFU9KqWK2mLTJPccZ_i1Z5S8/exec"
+digital_gift_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSfq0RUOcyBD_UErZhfgKA2OMBCOO6P0nffkgOcInDN_Epns9Q/formResponse"
+digital_gift_entries:
+  purchaser_name: "entry.1174565391"
+  purchaser_email: "entry.1118434606"
+  amount: "entry.1384609460"
+  gift_code: "entry.1963271107"
+  recipient_name: "entry.1199366537"
+  recipient_email: "entry.889676030"
+  gift_message: "entry.466744405"
+  notes: "entry.1004578870"
 # Theme
 remote_theme: sblisesivdin/biscuit
 

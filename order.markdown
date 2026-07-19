@@ -306,7 +306,7 @@ permalink: /order/
         discountRow.style.borderTop = 'none';
         discountRow.style.paddingTop = '0.5rem';
         discountRow.style.color = '#5746e3';
-        discountRow.innerHTML = '<span class="order-cart-total-label">Discount (' + appliedDiscount.code + ')</span><span class="order-cart-total-value">-$' + discountValue.toFixed(2) + '</span>';
+        discountRow.innerHTML = '<span class="order-cart-total-label">Discount (' + appliedDiscount.code + ' &mdash; $' + appliedDiscount.value.toFixed(2) + ' available)</span><span class="order-cart-total-value">-$' + discountValue.toFixed(2) + '</span>';
         itemsEl.appendChild(discountRow);
       }
 
@@ -393,7 +393,7 @@ permalink: /order/
               type: data.type,
               value: parseFloat(data.value)
             };
-            discountStatus.textContent = 'Code applied successfully!';
+            discountStatus.textContent = 'Code applied successfully! (Balance: $' + data.value.toFixed(2) + ')';
             discountStatus.style.color = '#2e7d32';
           } else {
             appliedDiscount = null;
