@@ -56,3 +56,7 @@ ugly-ducklings:
   sizes: [12oz]
   frequencies: [Monthly]
   prices: {12oz: 5}
+rubber-duck-club:
+  sizes: [12oz]
+  frequencies: [Monthly]
+  prices: {12oz: 16}
