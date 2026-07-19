@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Ugly Ducklings
-permalink: /subscriptions/ugly-ducklings/
+title: Runt's Rations
+permalink: /subscriptions/runts-rations/
 ---
 
 <div class="roast-minimal-vertical">
@@ -9,11 +9,11 @@ permalink: /subscriptions/ugly-ducklings/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-duckling-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
 </div>
 
 <div class="roast-mv-center">
-  <h1 class="roast-mv-title">Ugly Ducklings</h1>
+  <h1 class="roast-mv-title">Runt's Rations</h1>
 </div>
 
 <p class="roast-mv-tasting">Test Beans</p>
@@ -25,7 +25,7 @@ Beans that didn't make the cut — test roasts, experimental profiles, and one-o
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=ugly-ducklings' | relative_url }}" class="add-to-order-btn">Subscribe — $5/mo</a>
+  <a href="{{ '/subscribe/?roast=runts-rations' | relative_url }}" class="add-to-order-btn">Subscribe — $5/mo</a>
 </div>
 
 </div>

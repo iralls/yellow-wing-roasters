@@ -47,13 +47,22 @@ permalink: /subscriptions/
       <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["murmurations"] %}${{ sub.prices["12oz"] }}/mo</div>
     </div>
   </a>
-  <a class="roasts-entry" href="{{ '/subscriptions/ugly-ducklings/' | relative_url }}">
+  <a class="roasts-entry" href="{{ '/subscriptions/runts-rations/' | relative_url }}">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-duckling-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">Ugly Ducklings</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["ugly-ducklings"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-title">Runt's Rations</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["runts-rations"] %}${{ sub.prices["12oz"] }}/mo</div>
+    </div>
+  </a>
+  <a class="roasts-entry" href="{{ '/subscriptions/rubber-duck-club/' | relative_url }}">
+    <div class="roasts-entry-visual">
+      <img src="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+    </div>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-title">Rubber Duck Club</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["rubber-duck-club"] %}${{ sub.prices["12oz"] }}/mo</div>
     </div>
   </a>
 </div>

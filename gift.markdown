@@ -74,7 +74,7 @@ permalink: /gift/
         <option value="wingshot-collective">Wingshot Collective</option>
         <option value="fledglings">Fledglings</option>
         <option value="murmurations">Murmurations</option>
-        <option value="ugly-ducklings">Ugly Ducklings</option>
+        <option value="runts-rations">Runt's Rations</option>
         <option value="rubber-duck-club">Rubber Duck Club</option>
       </select>
       <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; margin-bottom: 0;">* All physical gifts are packaged in our standard 12 oz bag size.</p>
@@ -197,7 +197,7 @@ permalink: /gift/
   };
 
   function getUnitPrice(product, size) {
-    var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'ugly-ducklings', 'rubber-duck-club'].indexOf(product) >= 0;
+    var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
     if (isSubscriptionOnly) {
       var config = subConfig[product];
       return (config && config.prices && config.prices[size]) ? config.prices[size] : null;

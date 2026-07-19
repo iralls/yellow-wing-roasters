@@ -52,7 +52,7 @@ murmurations:
   sizes: [12oz]
   frequencies: [Monthly]
   prices: {12oz: 10}
-ugly-ducklings:
+runts-rations:
   sizes: [12oz]
   frequencies: [Monthly]
   prices: {12oz: 5}

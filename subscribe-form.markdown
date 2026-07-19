@@ -114,7 +114,8 @@ permalink: /subscribe/
     'wingshot-collective': '{{ "/images/audubon-crosshair-transparent.png" | relative_url }}',
     'fledglings': '{{ "/images/audubon-chicks-transparent.png" | relative_url }}',
     'murmurations': '{{ "/images/flock-transparent.png" | relative_url }}',
-    'ugly-ducklings': '{{ "/images/audubon-duckling-transparent.png" | relative_url }}'
+    'runts-rations': '{{ "/images/audubon-runt-transparent.png" | relative_url }}',
+    'rubber-duck-club': '{{ "/images/audubon-rubber-duck-transparent.png" | relative_url }}'
   };
 
   hiddenInput.value = roast;
