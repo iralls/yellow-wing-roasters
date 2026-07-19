@@ -161,7 +161,7 @@ permalink: /subscriptions/manage/
   <div class="roast-mv-divider"></div>
 
   <div class="roast-mv-center roast-mv-bird-wrap">
-    <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" style="transform: scale(0.95) translateY(-5px);">
+    <img src="{{ '/images/cuckoo-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" style="transform: scale(1.2) translateY(0px);">
   </div>
 
   <div class="roast-mv-center">
