@@ -11,7 +11,7 @@ permalink: /gift/
 </div>
 
 <div class="roast-mv-center">
-  <h1 class="roast-mv-title" id="gift-page-title">Corvid Care package</h1>
+  <h1 class="roast-mv-title" id="gift-page-title">Corvid care packages</h1>
 </div>
 
 <p class="roast-mv-tasting">Give the gift of freshly roasted coffee, delivered directly to their door.</p>
@@ -168,7 +168,7 @@ permalink: /gift/
   </div>
 
   <div class="order-actions" style="margin-top: 2rem;">
-    <button type="submit" class="order-submit">Order Corvid Care Package</button>
+    <button type="submit" class="order-submit">Order Corvid care packages</button>
   </div>
 
   <p class="order-status" role="status" aria-live="polite"></p>
@@ -249,7 +249,7 @@ permalink: /gift/
   if (queryProduct) {
     productSelect.value = queryProduct;
     if (productSelect.value) {
-      pageTitle.textContent = 'Corvid Care package — ' + productSelect.options[productSelect.selectedIndex].text;
+      pageTitle.textContent = 'Corvid care packages — ' + productSelect.options[productSelect.selectedIndex].text;
     }
   }
 
@@ -257,7 +257,7 @@ permalink: /gift/
 
   productSelect.addEventListener('change', function () {
     var selectedText = this.options[this.selectedIndex].text;
-    pageTitle.textContent = 'Corvid Care package — ' + selectedText;
+    pageTitle.textContent = 'Corvid care packages — ' + selectedText;
     updatePrice();
   });
 
@@ -293,12 +293,12 @@ permalink: /gift/
       if (isDirect) {
         var product = productSelect.value;
         if (product && productSelect.selectedIndex >= 0) {
-          pageTitle.textContent = 'Corvid Care package — ' + productSelect.options[productSelect.selectedIndex].text;
+          pageTitle.textContent = 'Corvid care packages — ' + productSelect.options[productSelect.selectedIndex].text;
         } else {
-          pageTitle.textContent = 'Corvid Care package';
+          pageTitle.textContent = 'Corvid care packages';
         }
       } else {
-        pageTitle.textContent = 'Corvid Care package';
+        pageTitle.textContent = 'Corvid care packages';
       }
 
       updatePrice();
