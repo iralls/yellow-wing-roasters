@@ -4,8 +4,8 @@ subtitle: Espresso Blend
 slug: chimney-sweep
 category: blend
 order: 3
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: Full City+ (medium-dark)
+roast_dots: 4
 tasting_notes: Milk chocolate, plum
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
