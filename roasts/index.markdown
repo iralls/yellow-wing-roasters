@@ -11,6 +11,13 @@ permalink: /roasts/
 <!-- Dynamic Filters Bar -->
 <div class="filters-bar" id="filters-bar" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-start; padding: 0.5rem 0;">
   <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+    <label for="filter-category" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Type</label>
+    <select id="filter-category" class="subscribe-select" style="min-width: 140px;">
+      <option value="">All Types</option>
+    </select>
+  </div>
+
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
     <label for="filter-origin" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Origin</label>
     <select id="filter-origin" class="subscribe-select" style="min-width: 140px;">
       <option value="">All Origins</option>
@@ -44,6 +51,7 @@ permalink: /roasts/
 
     <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" 
        href="{{ r.url | relative_url }}"
+       data-category="{{ r.category }}"
        data-origins="{{ origin_list }}"
        data-roast-dots="{{ r.roast_dots }}"
        data-brewing="{{ r.brewing_method }}">
@@ -71,10 +79,12 @@ permalink: /roasts/
 <script>
 (function () {
   var cards = document.querySelectorAll('#roasts-grid .roasts-entry');
+  var selectCategory = document.getElementById('filter-category');
   var selectOrigin = document.getElementById('filter-origin');
   var selectLevel = document.getElementById('filter-level');
   var selectBrewing = document.getElementById('filter-brewing');
 
+  var categories = {};
   var origins = {};
   var levels = { 'Light': true, 'Medium': true, 'Dark': true };
   var brewingMethods = {};
@@ -101,6 +111,12 @@ permalink: /roasts/
 
   // 1. Scan cards to extract unique filter values
   cards.forEach(function (card) {
+    // Category
+    var cat = (card.getAttribute('data-category') || '').trim();
+    if (cat) {
+      categories[cat] = true;
+    }
+
     // Origins (comma-separated list)
     var originsAttr = card.getAttribute('data-origins') || '';
     var cardOrigins = originsAttr.split(',').map(function (o) {
@@ -130,6 +146,18 @@ permalink: /roasts/
   });
 
   // 2. Populate Dropdowns Dynamically
+  // Type / Category
+  if (selectCategory) {
+    Object.keys(categories).sort().forEach(function (cat) {
+      var opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat.split(' ').map(function (w) {
+        return w.charAt(0).toUpperCase() + w.slice(1);
+      }).join(' ');
+      selectCategory.appendChild(opt);
+    });
+  }
+
   // Origins
   Object.keys(origins).sort().forEach(function (origin) {
     var opt = document.createElement('option');
@@ -156,11 +184,16 @@ permalink: /roasts/
 
   // 3. Filter Application Logic
   function applyFilters() {
+    var chosenCategory = selectCategory ? selectCategory.value : '';
     var chosenOrigin = selectOrigin.value;
     var chosenLevel = selectLevel.value;
     var chosenBrewing = selectBrewing.value;
 
     cards.forEach(function (card) {
+      // Check category match
+      var cardCat = (card.getAttribute('data-category') || '').trim().toLowerCase();
+      var matchesCategory = !chosenCategory || cardCat === chosenCategory.toLowerCase();
+
       // Check if chosenOrigin is in the list of origins for this card
       var originsList = JSON.parse(card.getAttribute('data-origins-list') || '[]');
       var matchesOrigin = !chosenOrigin || originsList.indexOf(chosenOrigin) >= 0;
@@ -177,7 +210,7 @@ permalink: /roasts/
       var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
 
       // Show/Hide Card
-      if (matchesOrigin && matchesLevel && matchesBrewing) {
+      if (matchesCategory && matchesOrigin && matchesLevel && matchesBrewing) {
         card.style.display = '';
       } else {
         card.style.display = 'none';
@@ -186,6 +219,7 @@ permalink: /roasts/
   }
 
   // 4. Attach Event Listeners
+  if (selectCategory) selectCategory.addEventListener('change', applyFilters);
   selectOrigin.addEventListener('change', applyFilters);
   selectLevel.addEventListener('change', applyFilters);
   selectBrewing.addEventListener('change', applyFilters);
