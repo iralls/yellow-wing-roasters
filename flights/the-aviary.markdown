@@ -24,11 +24,40 @@ permalink: /flights/the-aviary/
 
 <ul class="flight-includes">
   <li><a href="/roasts/early-bird/"><strong>Early Bird</strong></a> · City+ (light-medium)</li>
-  <li><a href="/roasts/feather-soot/"><strong>Feather Soot</strong></a> · Full City+ (medium-dark)</li>
-  <li><a href="/roasts/chimney-sweep/"><strong>Chimney Sweep</strong></a> · Full City (medium)</li>
-  <li><a href="/roasts/lil-sipper/"><strong>Lil' Sipper</strong></a> · City+ (light-medium)</li>
+  <li><a href="/roasts/feather-soot/"><strong>Feather Soot</strong></a> · Vienna (dark)</li>
+  <li><a href="/roasts/chimney-sweep/"><strong>Chimney Sweep</strong></a> · Full City+ (medium-dark)</li>
+  <li><a href="/roasts/lil-sipper/"><strong>Lil' Sipper</strong></a> · Full City (medium)</li>
 </ul>
 
 <p class="roast-mv-body">All four ship as whole bean. Brewing method varies by blend — details on each roast's page.</p>
 
+<div class="roast-mv-divider"></div>
+
+<div class="roast-mv-center" id="add-to-cart-wrap" style="text-align:center;">
+  <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ site.data.flights["the-aviary"].price }}</button>
 </div>
+
+</div>
+
+<script>
+(function () {
+  var STORAGE_KEY = 'ywr_cart';
+  var addBtn = document.getElementById('aviary-add-btn');
+  if (addBtn) {
+    addBtn.addEventListener('click', function () {
+      var cart;
+      try { var raw = sessionStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
+      var key = 'the-aviary||';
+      cart[key] = (cart[key] || 0) + 1;
+      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
+      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+      addBtn.textContent = 'Added!';
+      addBtn.disabled = true;
+      setTimeout(function () {
+        addBtn.textContent = 'Add to Order — ${{ site.data.flights["the-aviary"].price }}';
+        addBtn.disabled = false;
+      }, 1200);
+    });
+  }
+})();
+</script>

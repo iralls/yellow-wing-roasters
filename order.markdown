@@ -151,12 +151,36 @@ permalink: /order/
         if (!matched[ck] && cart[ck] > 0) {
           var parts = ck.split('|');
           var itemPrice = 0;
+          var itemLabel = parts[0];
+          var itemSize = parts[2] || '';
+          var itemMascot = null;
+
           if (parts[0] === 'peck-your-own') {
             var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
             var pyoPricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
             itemPrice = choicesCount * pyoPricePerBag;
+            itemLabel = 'Peck Your Own: ' + parts[2];
+          } else if (parts[0] === 'the-aviary') {
+            itemPrice = {{ site.data.flights["the-aviary"].price | default: 38 }};
+            itemLabel = 'The Aviary Flight';
+            itemMascot = 'audubon-cage-transparent.png';
+            if (!itemSize) itemSize = '4 × 8oz bags';
           }
-          items.push({ data: { roast: parts[0], variant: parts[1], size: '', label: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : parts[0], formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : ck, mascot: null, dots: 0, price: itemPrice }, key: ck, qty: cart[ck] });
+
+          items.push({
+            data: {
+              roast: parts[0],
+              variant: parts[1],
+              size: itemSize,
+              label: itemLabel,
+              formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : (parts[0] === 'the-aviary' ? 'The Aviary Flight' : ck),
+              mascot: itemMascot,
+              dots: 0,
+              price: itemPrice
+            },
+            key: ck,
+            qty: cart[ck]
+          });
         }
       }
 
@@ -451,6 +475,8 @@ permalink: /order/
             var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
             var pyoPricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
             subtotal += choicesCount * pyoPricePerBag * cart[ck];
+          } else if (parts[0] === 'the-aviary' && cart[ck] > 0) {
+            subtotal += {{ site.data.flights["the-aviary"].price | default: 38 }} * cart[ck];
           }
         }
 

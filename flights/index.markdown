@@ -7,11 +7,10 @@ permalink: /flights/
 # Flights
 
 <div class="roasts-grid">
-  <a class="roasts-entry roasts-entry--soon" href="{{ '/flights/the-aviary/' | relative_url }}">
+  <a class="roasts-entry" href="{{ '/flights/the-aviary/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
     </div>
-    <div class="roasts-entry-soon-badge">Coming Soon</div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">The Aviary</div>
       <div class="roasts-entry-notes">Four blends, one box</div>
