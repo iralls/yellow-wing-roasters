@@ -6,14 +6,13 @@ category: blend
 order: 4
 roast_level: Full City (medium)
 roast_dots: 3
-tasting_notes: Blackcurrant, vanilla, cream
+tasting_notes: Blackcurrant, vanilla
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Brazil
-  - Colombia
   - Kenya
+  - Ethiopia
 coming_soon: false
 ---
 
