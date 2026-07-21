@@ -87,6 +87,7 @@ permalink: /gift/
         <label class="order-radio"><input type="radio" name="gift-duration" value="3 months"> 3 months</label>
         <label class="order-radio"><input type="radio" name="gift-duration" value="6 months"> 6 months</label>
       </div>
+      <p id="gift-duration-note" style="font-size: 0.85rem; color: #666; margin-top: 0.35rem; display: none;">* Multi-month subscriptions are not available for this coffee.</p>
     </div>
   </div>
 
@@ -211,7 +212,45 @@ permalink: /gift/
     }
   }
 
+  function updateSubscriptionAvailability() {
+    var product = productSelect.value;
+    var isSubscribable = false;
+
+    if (product) {
+      var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
+      if (isSubscriptionOnly || (subConfig && subConfig[product])) {
+        isSubscribable = true;
+      }
+    } else {
+      isSubscribable = true;
+    }
+
+    var durationRadios = form.querySelectorAll('input[name="gift-duration"]');
+    durationRadios.forEach(function (radio) {
+      if (radio.value !== 'One-time') {
+        var label = radio.closest('.order-radio');
+        if (!isSubscribable) {
+          radio.disabled = true;
+          if (label) label.classList.add('order-radio--disabled');
+          if (radio.checked) {
+            var oneTimeRadio = form.querySelector('input[name="gift-duration"][value="One-time"]');
+            if (oneTimeRadio) oneTimeRadio.checked = true;
+          }
+        } else {
+          radio.disabled = false;
+          if (label) label.classList.remove('order-radio--disabled');
+        }
+      }
+    });
+
+    var noteEl = document.getElementById('gift-duration-note');
+    if (noteEl) {
+      noteEl.style.display = (!isSubscribable && product) ? 'block' : 'none';
+    }
+  }
+
   function updatePrice() {
+    updateSubscriptionAvailability();
     var giftType = form.querySelector('input[name="gift-type"]:checked').value;
     if (giftType === 'code') {
       var activeAmountRadio = form.querySelector('input[name="gift-card-amount"]:checked');
