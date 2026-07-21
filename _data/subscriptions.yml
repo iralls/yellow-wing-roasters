@@ -30,10 +30,6 @@ guatemala-antigua:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 12, 2lb: 34, 5lb: 77}
-ethiopia-wush-wush:
-  sizes: [12oz, 2lb, 5lb]
-  frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 15, 2lb: 40, 5lb: 93}
 
 # Subscription products — 12oz only, monthly only
 migrator:
