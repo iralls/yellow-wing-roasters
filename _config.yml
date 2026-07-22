@@ -60,4 +60,5 @@ exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
-  # - preview-bags.html
+  - preview-bags.html
+  - preview-bags-v2.html
