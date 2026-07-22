@@ -30,7 +30,7 @@ permalink: /flights/peck-your-own/
 <div class="roasts-grid" id="pyo-picker">
   {% assign roasts = site.roasts | sort: "order" %}
   {% for r in roasts %}
-    {% unless r.coming_soon or r.category == "ugly duckling" or r.category == "pack" %}
+    {% unless r.coming_soon %}
   <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}">
     <div class="roasts-entry-visual">
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
