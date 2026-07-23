@@ -6,14 +6,14 @@ category: blend
 order: 3
 roast_level: Full City+ (medium-dark)
 roast_dots: 4
-tasting_notes: Milk chocolate, plum
+tasting_notes: Almond, Plum, Bittersweet Chocolate
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
 coming_soon: false
 origins:
-  - Bolivia
   - Brazil
+  - Guatemala
   - Burundi
 ---
 
