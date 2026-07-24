@@ -92,17 +92,21 @@ layout: default
 <div class="roast-mv-divider"></div>
 <div class="roast-mv-center" style="text-align:center;">
   <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe <span class="save-badge">-10%</span></div>
-  {% if sub_config.sizes.size > 1 %}
-  <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-    {% for s in sub_config.sizes %}{% if roast_prices and roast_prices[s] %}{% assign orig_price = roast_prices[s] %}{% else %}{% assign orig_price = pricing.default[s] %}{% endif %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-size" value="{{ s }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }}{% if sub_config.prices %} — <s>${{ orig_price }}</s> ${{ sub_config.prices[s] }}{% endif %}</label>{% endfor %}
-  </div>
+  {% if page.under_construction %}
+    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is under construction.</p>
+  {% else %}
+    {% if sub_config.sizes.size > 1 %}
+    <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
+      {% for s in sub_config.sizes %}{% if roast_prices and roast_prices[s] %}{% assign orig_price = roast_prices[s] %}{% else %}{% assign orig_price = pricing.default[s] %}{% endif %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-size" value="{{ s }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }}{% if sub_config.prices %} — <s>${{ orig_price }}</s> ${{ sub_config.prices[s] }}{% endif %}</label>{% endfor %}
+    </div>
+    {% endif %}
+    {% if sub_config.frequencies.size > 1 %}
+    <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
+      {% for f in sub_config.frequencies %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-freq" value="{{ f }}"{% if page.coming_soon %} disabled{% endif %}> {{ f }}</label>{% endfor %}
+    </div>
+    {% endif %}
+    <a href="#" id="sub-link" class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}"{% if page.coming_soon %} aria-disabled="true"{% endif %}>Subscribe</a>
   {% endif %}
-  {% if sub_config.frequencies.size > 1 %}
-  <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-    {% for f in sub_config.frequencies %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-freq" value="{{ f }}"{% if page.coming_soon %} disabled{% endif %}> {{ f }}</label>{% endfor %}
-  </div>
-  {% endif %}
-  <a href="#" id="sub-link" class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}"{% if page.coming_soon %} aria-disabled="true"{% endif %}>Subscribe</a>
 </div>
 <script>
 (function () {

@@ -132,6 +132,24 @@ permalink: /subscribe/
     imageWrap.style.display = 'none';
   }
 
+  var disabledSubRoasts = {
+    {% for r in site.roasts %}
+    {% if r.under_construction or r.coming_soon %}
+    '{{ r.slug }}': true,
+    {% endif %}
+    {% endfor %}
+  };
+
+  if (disabledSubRoasts[roast]) {
+    form.style.display = 'none';
+    var notice = document.createElement('div');
+    notice.className = 'under-construction-bar';
+    notice.style.marginTop = '1.5rem';
+    notice.innerHTML = '<span class="under-construction-bar-badge">Under Construction</span><span class="under-construction-bar-text">Subscriptions are currently unavailable for this roast while its profile is under construction.</span>';
+    form.parentNode.insertBefore(notice, form);
+    return;
+  }
+
   var config = subConfig[roast];
   if (config) {
     var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');

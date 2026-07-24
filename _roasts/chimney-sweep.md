@@ -10,6 +10,7 @@ tasting_notes: Almond, Plum, Bittersweet Chocolate
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
+under_construction: true
 coming_soon: false
 origins:
   - Brazil
