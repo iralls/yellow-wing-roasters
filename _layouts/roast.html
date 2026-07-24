@@ -25,7 +25,12 @@ layout: default
 </div>
 {% if page.subtitle %}<div class="roast-mv-subtitle">{{ page.subtitle }}</div>{% endif %}
 
-{% if page.coming_soon %}
+{% if page.under_construction %}
+<div class="under-construction-bar">
+  <span class="under-construction-bar-badge">{{ page.status_badge | default: "Under Construction" }}</span>
+  <span class="under-construction-bar-text">{{ page.status_text | default: "Currently weaving this roast profile in the nest! Ordering is open as we refine each batch." }}</span>
+</div>
+{% elsif page.coming_soon %}
 <div class="coming-soon-bar">
   <span class="coming-soon-bar-badge">Coming Soon</span>
   <span class="coming-soon-bar-text">This roast isn't available to order yet — check back soon.</span>

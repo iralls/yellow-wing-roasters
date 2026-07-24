@@ -1338,6 +1338,36 @@ h1.roast-title {
   font-weight: 500;
 }
 
+.under-construction-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffe600;
+  color: #111;
+  border-radius: 0.4rem;
+  padding: 0.65rem 1rem;
+  margin: 0 0 1.25rem;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.under-construction-bar-badge {
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: #111;
+  color: #ffe600;
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.under-construction-bar-text {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
 .coming-soon-footnote {
   font-size: 0.8rem;
   color: #888;
@@ -1780,10 +1810,29 @@ h1.roast-title {
   opacity: 0.6;
 }
 
+.roasts-entry--construction {
+  opacity: 0.8;
+}
+
 .roasts-entry-soon-badge {
   width: 100%;
   text-align: center;
   background: #ffd600;
+  color: #111;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.roasts-entry-construction-badge {
+  width: 100%;
+  text-align: center;
+  background: #ffe600;
   color: #111;
   font-family: $font-display;
   font-weight: 900;

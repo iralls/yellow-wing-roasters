@@ -59,7 +59,11 @@ permalink: /roasts/
       <div class="roasts-entry-visual">
         {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
       </div>
-      {% if r.coming_soon %}<div class="roasts-entry-soon-badge">Coming Soon</div>{% endif %}
+      {% if r.under_construction %}
+        <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Under Construction" }}</div>
+      {% elsif r.coming_soon %}
+        <div class="roasts-entry-soon-badge">Coming Soon</div>
+      {% endif %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
       
       <div class="roasts-entry-info">
