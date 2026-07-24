@@ -145,7 +145,7 @@ permalink: /subscribe/
     var notice = document.createElement('div');
     notice.className = 'under-construction-bar';
     notice.style.marginTop = '1.5rem';
-    notice.innerHTML = '<span class="under-construction-bar-badge">Under Construction</span><span class="under-construction-bar-text">Subscriptions are currently unavailable for this roast while its profile is under construction.</span>';
+    notice.innerHTML = '<span class="under-construction-bar-badge">Mid-Molt</span><span class="under-construction-bar-text">Subscriptions are currently unavailable for this roast while its profile is mid-molt.</span>';
     form.parentNode.insertBefore(notice, form);
     return;
   }

@@ -105,7 +105,7 @@ permalink: /order/
           {% assign default_sizes = "12oz,2lb,5lb" | split: "," %}
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
-            {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
+            {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
             { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         {% endif %}

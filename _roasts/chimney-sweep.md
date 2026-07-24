@@ -12,6 +12,10 @@ mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
 under_construction: true
 coming_soon: false
+temporary_price:
+  12oz: 10
+  2lb: 30
+  5lb: 70
 origins:
   - Brazil
   - Guatemala

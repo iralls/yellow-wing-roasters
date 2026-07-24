@@ -27,8 +27,8 @@ layout: default
 
 {% if page.under_construction %}
 <div class="under-construction-bar">
-  <span class="under-construction-bar-badge">{{ page.status_badge | default: "Under Construction" }}</span>
-  <span class="under-construction-bar-text">{{ page.status_text | default: "Currently weaving this roast profile in the nest! Ordering is open as we refine each batch." }}</span>
+  <span class="under-construction-bar-badge">{{ page.status_badge | default: "Mid-Molt" }}</span>
+  <span class="under-construction-bar-text">{{ page.status_text | default: "We're currently dialing in this blend! Ordering is open as we refine each batch, though component origins and composition may be in flux." }}</span>
 </div>
 {% elsif page.coming_soon %}
 <div class="coming-soon-bar">
@@ -79,7 +79,14 @@ layout: default
   <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
     {% for s in sizes %}
       {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
-      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — ${{ price }}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
+      {% if page.temporary_price and page.temporary_price[s] %}
+        {% assign effective_price = page.temporary_price[s] %}
+        {% assign show_temp = true %}
+      {% else %}
+        {% assign effective_price = price %}
+        {% assign show_temp = false %}
+      {% endif %}
+      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
     {% endfor %}
   </div>
   <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">
@@ -93,7 +100,7 @@ layout: default
 <div class="roast-mv-center" style="text-align:center;">
   <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe <span class="save-badge">-10%</span></div>
   {% if page.under_construction %}
-    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is under construction.</p>
+    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is mid-molt.</p>
   {% else %}
     {% if sub_config.sizes.size > 1 %}
     <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
