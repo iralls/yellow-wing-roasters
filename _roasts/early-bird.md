@@ -4,8 +4,8 @@ subtitle: Nest Blend
 slug: early-bird
 category: blend
 order: 1
-roast_level: City+ (light-medium)
-roast_dots: 2
+roast_level: Full City (medium)
+roast_dots: 3
 tasting_notes: Milk chocolate, caramel, smooth body
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
