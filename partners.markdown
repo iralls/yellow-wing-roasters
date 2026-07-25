@@ -17,7 +17,7 @@ permalink: /partners/
 
 <div class="roasts-grid" style="grid-template-columns: 1fr; max-width: 38rem; margin: 0 auto 3rem;">
 
-  <a class="roast-card-partner" href="{{ '/partners/armor-bjj/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease;">
+  <a class="roast-card-partner" href="{{ '/partners/armor-bjj/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease; margin-bottom: 2rem;">
     <div style="margin-bottom: 0.75rem;">
       <img src="{{ '/images/armor-bjj.png' | relative_url }}" alt="Armor BJJ Logo" style="max-height: 5rem; width: auto; object-fit: contain;">
     </div>
@@ -27,6 +27,19 @@ permalink: /partners/
     <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
       <span style="font-size: 0.85rem; font-weight: 700; color: #8a5020;">View Partner Blends →</span>
       <span onclick="event.stopPropagation(); window.open('https://armorbjj.com/', '_blank'); return false;" style="font-size: 0.85rem; font-weight: 700; color: #8c7b70; text-decoration: underline; cursor: pointer;">armorbjj.com ↗</span>
+    </div>
+  </a>
+
+  <a class="roast-card-partner" href="{{ '/partners/archer/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease;">
+    <div style="margin-bottom: 0.75rem;">
+      <img src="{{ '/images/archer.svg' | relative_url }}" alt="Archer Logo" style="max-height: 3.5rem; width: auto; object-fit: contain;">
+    </div>
+    <div style="font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 800; color: #2c1e14; margin-bottom: 0.25rem;">Archer</div>
+    <div style="font-size: 0.85rem; color: #8c7b70; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;">Electric Aviation & Urban Air Mobility</div>
+    <p style="color: #4a3b32; line-height: 1.6; margin-bottom: 1.25rem;">High-altitude, precision-crafted roasts engineered to power the engineers, pilots, and pioneers building sustainable electric flight at Archer.</p>
+    <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: #8a5020;">View Partner Blends →</span>
+      <span onclick="event.stopPropagation(); window.open('https://archer.com/', '_blank'); return false;" style="font-size: 0.85rem; font-weight: 700; color: #8c7b70; text-decoration: underline; cursor: pointer;">archer.com ↗</span>
     </div>
   </a>
 
