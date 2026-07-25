@@ -46,10 +46,10 @@ permalink: /flights/the-aviary/
   if (addBtn) {
     addBtn.addEventListener('click', function () {
       var cart;
-      try { var raw = sessionStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
+      try { var raw = localStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
       var key = 'the-aviary||';
       cart[key] = (cart[key] || 0) + 1;
-      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
       addBtn.textContent = 'Added!';
       addBtn.disabled = true;

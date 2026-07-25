@@ -98,7 +98,7 @@ permalink: /order/
           {% for v in r.variants %}
             {% for s in row_sizes %}
               {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
-              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
+              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }}, description: {{ r.description | default: "" | jsonify }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
             {% endfor %}
           {% endfor %}
         {% else %}
@@ -106,7 +106,7 @@ permalink: /order/
           {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for s in row_sizes %}
             {% assign pricing = site.data.pricing %}{% assign rp = pricing.overrides[r.slug] %}{% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = pricing.default[s] %}{% endif %}
-            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
+            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r.roast_dots | default: 0 }}, price: {{ unit_price | default: 0 }}, description: {{ r.description | default: "" | jsonify }} }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         {% endif %}
         {% unless forloop.last %},{% endunless %}
@@ -115,13 +115,13 @@ permalink: /order/
 
     function loadCart() {
       try {
-        var raw = sessionStorage.getItem(STORAGE_KEY);
+        var raw = localStorage.getItem(STORAGE_KEY);
         return raw ? JSON.parse(raw) : {};
       } catch (e) { return {}; }
     }
 
     function saveCart(c) {
-      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 

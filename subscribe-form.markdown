@@ -104,6 +104,12 @@ permalink: /subscribe/
     {% endfor %}
   };
 
+  var roastDescriptions = {
+    {% for r in site.roasts %}
+    '{{ r.slug }}': {{ r.description | default: "" | jsonify }}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+
   var imageWrap = document.getElementById('sub-image-wrap');
   var imageEl = document.getElementById('sub-image');
   var mascotMap = {

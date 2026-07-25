@@ -11,7 +11,7 @@
   (function () {
     function getCount() {
       try {
-        var raw = sessionStorage.getItem('ywr_cart');
+        var raw = localStorage.getItem('ywr_cart');
         if (!raw) return 0;
         var c = JSON.parse(raw);
         var total = 0;
