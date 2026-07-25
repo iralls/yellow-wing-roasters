@@ -30,6 +30,21 @@ permalink: /partners/
     </div>
   </a>
 
+  <a class="roast-card-partner" href="{{ '/partners/bishops-orchards/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease; margin-bottom: 2rem;">
+    <div style="margin-bottom: 0.75rem;">
+      <div style="background: #731813; border-radius: 0.35rem; padding: 0.6rem 1.25rem; display: inline-block;">
+        <img src="{{ '/images/bishops.webp' | relative_url }}" alt="Bishop's Orchards Logo" style="max-height: 3.25rem; width: auto; object-fit: contain; display: block;">
+      </div>
+    </div>
+    <div style="font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 800; color: #2c1e14; margin-bottom: 0.25rem;">Bishop's Orchards</div>
+    <div style="font-size: 0.85rem; color: #8c7b70; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;">Farm Market & Winery · Guilford, CT</div>
+    <p style="color: #4a3b32; line-height: 1.6; margin-bottom: 1.25rem;">Custom small-batch orchard roasts crafted to complement fresh apple ciders, baked goods, and New England harvest mornings at Bishop's Orchards.</p>
+    <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: #8a5020;">View Partner Blends →</span>
+      <span onclick="event.stopPropagation(); window.open('https://bishopsorchards.com/', '_blank'); return false;" style="font-size: 0.85rem; font-weight: 700; color: #8c7b70; text-decoration: underline; cursor: pointer;">bishopsorchards.com ↗</span>
+    </div>
+  </a>
+
   <a class="roast-card-partner" href="{{ '/partners/archer/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease;">
     <div style="margin-bottom: 0.75rem;">
       <img src="{{ '/images/archer.svg' | relative_url }}" alt="Archer Logo" style="max-height: 3.5rem; width: auto; object-fit: contain;">
