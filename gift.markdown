@@ -292,6 +292,35 @@ permalink: /gift/
     }
   }
 
+  // Pre-populate digital gift card fields if set in URL params
+  var queryType = params.get('type');
+  var queryRecipientName = params.get('recipient_name') || params.get('recipientName');
+  var queryRecipientEmail = params.get('recipient_email') || params.get('recipientEmail');
+  var queryAmount = params.get('amount');
+
+  if (queryType === 'code' || queryType === 'digital' || queryRecipientName || queryRecipientEmail) {
+    var codeRadio = form.querySelector('input[name="gift-type"][value="code"]');
+    if (codeRadio) {
+      codeRadio.checked = true;
+      toggleGiftFields();
+    }
+  }
+
+  if (queryRecipientName) {
+    var nameInput = document.getElementById('gift-recipient-name');
+    if (nameInput) nameInput.value = queryRecipientName;
+  }
+
+  if (queryRecipientEmail) {
+    var emailInput = document.getElementById('gift-recipient-email');
+    if (emailInput) emailInput.value = queryRecipientEmail;
+  }
+
+  if (queryAmount) {
+    var amountRadio = form.querySelector('input[name="gift-card-amount"][value="' + queryAmount + '"]');
+    if (amountRadio) amountRadio.checked = true;
+  }
+
   updatePrice();
 
   productSelect.addEventListener('change', function () {

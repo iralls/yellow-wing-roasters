@@ -45,6 +45,19 @@ permalink: /partners/
     </div>
   </a>
 
+  <a class="roast-card-partner" href="{{ '/partners/guilford-food-bank/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease; margin-bottom: 2rem;">
+    <div style="margin-bottom: 0.75rem;">
+      <img src="{{ '/images/guilford-food-bank.jpg' | relative_url }}" alt="Guilford Food Bank Logo" style="max-height: 5rem; width: auto; object-fit: contain;">
+    </div>
+    <div style="font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 800; color: #2c1e14; margin-bottom: 0.25rem;">Guilford Food Bank</div>
+    <div style="font-size: 0.85rem; color: #8c7b70; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;">Community Food Bank · Guilford, CT</div>
+    <p style="color: #4a3b32; line-height: 1.6; margin-bottom: 1.25rem;">We roast custom community blends in partnership with the Guilford Food Bank to support local families and fight food insecurity on the Shoreline.</p>
+    <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: #8a5020;">View Partner Blends →</span>
+      <span onclick="event.stopPropagation(); window.open('https://www.guilfordfoodbank.org/', '_blank'); return false;" style="font-size: 0.85rem; font-weight: 700; color: #8c7b70; text-decoration: underline; cursor: pointer;">guilfordfoodbank.org ↗</span>
+    </div>
+  </a>
+
   <a class="roast-card-partner" href="{{ '/partners/country-paint/' | relative_url }}" style="display: block; text-decoration: none; color: inherit; background: #fcfbfa; border: 1px solid #e8e0d5; border-radius: 0.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); transition: border-color 0.15s ease; margin-bottom: 2rem;">
     <div style="margin-bottom: 0.75rem;">
       <img src="{{ '/images/country-paint.webp' | relative_url }}" alt="Country Paint & Hardware Logo" style="max-height: 7rem; width: auto; object-fit: contain;">
