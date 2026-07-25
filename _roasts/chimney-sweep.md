@@ -20,6 +20,6 @@ origins:
   - Brazil
   - Guatemala
   - Burundi
+description: >-
+  This is our everyday espresso—smooth, rich, and balanced. It’s got a rich milk chocolate base that feels clean and polished, with just enough sweetness to keep it interesting. It’s smooth enough to drink as a straight shot, but it has the bright, balanced finish that makes a great, punchy cappuccino.
 ---
-
-This is our everyday espresso—smooth, rich, and balanced. It’s got a rich milk chocolate base that feels clean and polished, with just enough sweetness to keep it interesting. It’s smooth enough to drink as a straight shot, but it has the bright, balanced finish that makes a great, punchy cappuccino.

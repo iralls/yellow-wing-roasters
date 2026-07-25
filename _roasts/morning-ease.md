@@ -11,6 +11,6 @@ mascot: mourning-dove
 mascot_file: audubon-mourning-dove-transparent.png
 coming_soon: true
 published: false
+description: >-
+  Nothing to mourn here! All the smooth, nutty, mild-chocolate character of a great morning cup, without the caffeine.
 ---
-
-Nothing to mourn here! All the smooth, nutty, mild-chocolate character of a great morning cup, without the caffeine.

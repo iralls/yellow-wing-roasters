@@ -14,6 +14,6 @@ coming_soon: false
 origins:
   - Sumatra
   - Bolivia
+description: >-
+  A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.
 ---
-
-A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.

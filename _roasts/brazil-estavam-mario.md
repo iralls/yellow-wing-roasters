@@ -9,6 +9,6 @@ tasting_notes: Fig · Prune · Hazelnut
 brewing_method: Drip, French Press, Espresso
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
+description: >-
+  This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.
 ---
-
-This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.

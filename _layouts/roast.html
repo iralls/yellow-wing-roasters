@@ -69,10 +69,8 @@ layout: default
 
 <div class="roast-mv-divider"></div>
 
-{% if page.blurb %}<p class="roast-mv-body">{{ page.blurb }}</p>{% endif %}
-
-{% if content != "" %}
-<div class="roast-mv-body">{{ content }}</div>
+{% if page.description and page.description != "" %}
+<div class="roast-mv-body">{{ page.description | markdownify }}</div>
 {% endif %}
 
 <div class="roast-mv-center">
@@ -161,10 +159,10 @@ layout: default
 (function () {
   var STORAGE_KEY = 'ywr_cart';
   function loadCart() {
-    try { var raw = sessionStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
+    try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
   }
   function saveCart(c) {
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
     window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
   }
   function cartKey(roast, variant, size) {
