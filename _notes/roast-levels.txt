@@ -1,0 +1,10 @@
+Here is a quick-reference roast level matrix, ordered from lightest to darkest, to help you visualize where each level sits, what it looks like, and how it behaves in your blend:
+
+| Roast Level | Where it Happens | Bean Appearance | Primary Flavor Focus | Best Used For in Your Blend |
+| --- | --- | --- | --- | --- |
+| **City** | Just as First Crack finishes | Light brown, dry, matte | High acidity, raw fruit, herbal, grassy notes | *Too light* for this espresso (can taste sour/underdeveloped). |
+| **City+** | Middle of development (after First Crack, well before Second) | Medium brown, dry, matte | Bright fruit, citric acidity, floral, balanced sweetness | **Your 20% Guji Uraga Natural** (Preserves the blood orange and spice notes). |
+| **Full City** | Late development (right approaching Second Crack) | Medium-deep brown, dry (maybe a faint whisper of sheen) | Balanced sweetness, medium body, muted acidity, caramel | **Your 40% Guatemala Antigua Washed** (Brings structural balance and clean sweetness). |
+| **Full City+** | Right at the threshold of Second Crack | Deep medium-brown, very slight sheen of oil starting | Low acidity, heavy body, deep chocolate, toasted nuts | **Your 40% Brazil Estiva Natural** (Maximizes heavy body, crema, and chocolate base). |
+| **Vienna** | Just into Second Crack | Dark brown, visible light oil sheen | Bittersweet, heavy roast character, low acidity | *Too dark* for this blend (will flatten the flavors and cause bitterness). |
+| **French** | Deep into Second Crack | Very dark, shiny, glossy with oil | Pungent, charcoal, burnt sugar, thin body | *Avoid* (destroys all origin characteristics). |
