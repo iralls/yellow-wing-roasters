@@ -25,7 +25,7 @@ permalink: /flights/the-aviary/
 <ul class="flight-includes">
   <li><a href="/roasts/early-bird/"><strong>Early Bird</strong></a> · City+ (light-medium)</li>
   <li><a href="/roasts/feather-soot/"><strong>Feather Soot</strong></a> · Vienna (dark)</li>
-  <li><a href="/roasts/chimney-sweep/"><strong>Chimney Sweep</strong></a> · Full City+ (medium-dark)</li>
+  <li><a href="/roasts/chimney-sweep/"><strong>Chimney Sweep</strong></a> · Full City (medium)</li>
   <li><a href="/roasts/lil-sipper/"><strong>Lil' Sipper</strong></a> · Full City (medium)</li>
 </ul>
 

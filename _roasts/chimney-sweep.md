@@ -4,9 +4,9 @@ subtitle: Espresso Blend
 slug: chimney-sweep
 category: blend
 order: 3
-roast_level: Full City+ (medium-dark)
-roast_dots: 4
-tasting_notes: Almond, Plum, Bittersweet Chocolate
+roast_level: Full City (medium)
+roast_dots: 3
+tasting_notes: Dark Chocolate, Blood Orange, Brown Sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
@@ -19,7 +19,7 @@ temporary_price:
 origins:
   - Brazil
   - Guatemala
-  - Burundi
+  - Ethiopia
 description: >-
   This is our everyday espresso—smooth, rich, and balanced. It’s got a rich milk chocolate base that feels clean and polished, with just enough sweetness to keep it interesting. It’s smooth enough to drink as a straight shot, but it has the bright, balanced finish that makes a great, punchy cappuccino.
 ---
