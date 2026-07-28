@@ -12,8 +12,8 @@ mascot: canary
 mascot_file: audubon-canary-transparent.png
 coming_soon: false
 origins:
+  - Brazil
   - Sumatra
-  - Bolivia
 description: >-
   A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.
 ---
