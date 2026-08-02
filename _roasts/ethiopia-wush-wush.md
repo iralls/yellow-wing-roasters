@@ -3,8 +3,7 @@ title: "Ethiopia 'Wush Wush'"
 slug: ethiopia-wush-wush
 category: single origin
 order: 5
-roast_level: City+ (light-medium)
-roast_dots: 2
+roast_level: 2
 tasting_notes: Blueberries, chocolate, pronounced fruit
 brewing_method: Pour-over, Drip
 processing_method: Natural

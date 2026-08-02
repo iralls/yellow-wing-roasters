@@ -4,8 +4,7 @@ subtitle: Espresso Blend
 slug: lil-sipper
 category: blend
 order: 4
-roast_level: City+ (light-medium)
-roast_dots: 2
+roast_level: 2
 tasting_notes: Blackcurrant, vanilla
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird

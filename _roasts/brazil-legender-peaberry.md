@@ -3,8 +3,7 @@ title: Brazil Legender Peaberry
 slug: brazil-legender-peaberry
 category: single origin
 order: 4
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: 4
 tasting_notes: Dark chocolate, toasted almonds
 brewing_method: Espresso, Drip, French Press
 processing_method: Natural

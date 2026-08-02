@@ -1,0 +1,15 @@
+1:
+  name: "City (light)"
+  dots: 1
+2:
+  name: "City+ (light-medium)"
+  dots: 2
+3:
+  name: "Full City (medium)"
+  dots: 3
+4:
+  name: "Full City+ (medium-dark)"
+  dots: 4
+5:
+  name: "Vienna (dark)"
+  dots: 5

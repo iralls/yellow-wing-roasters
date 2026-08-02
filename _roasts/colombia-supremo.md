@@ -5,8 +5,7 @@ category: single origin
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 order: 3
-roast_level: City+ (light-medium)
-roast_dots: 2
+roast_level: 2
 tasting_notes: Caramel, brown sugar, sweet finish
 brewing_method: Pour-over, Drip, AeroPress
 processing_method: Washed

@@ -49,11 +49,12 @@ permalink: /roasts/
       {% assign origin_list = r.title | split: " " | first %}
     {% endif %}
 
+    {% assign r_level_key = r.roast_level | append: "" %}{% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}{% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots %}{% endif %}
     <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" 
        href="{{ r.url | relative_url }}"
        data-category="{{ r.category }}"
        data-origins="{{ origin_list }}"
-       data-roast-dots="{{ r.roast_dots }}"
+       data-roast-dots="{{ r_dots }}"
        data-brewing="{{ r.brewing_method }}">
       
       <div class="roasts-entry-visual">
@@ -72,7 +73,7 @@ permalink: /roasts/
         <div class="roasts-entry-title">{{ r.title }}</div>
         {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         
-        {% if r.roast_dots %}<span class="roasts-entry-level"><span class="roast-dots roast-dots-sm"><span class="roast-dot{% if r.roast_dots >= 1 %} roast-dot-1{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 2 %} roast-dot-2{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 3 %} roast-dot-3{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 4 %} roast-dot-4{% endif %}"></span><span class="roast-dot{% if r.roast_dots >= 5 %} roast-dot-5{% endif %}"></span></span></span>{% endif %}
+        {% if r_dots %}<span class="roasts-entry-level"><span class="roast-dots roast-dots-sm"><span class="roast-dot{% if r_dots >= 1 %} roast-dot-1{% endif %}"></span><span class="roast-dot{% if r_dots >= 2 %} roast-dot-2{% endif %}"></span><span class="roast-dot{% if r_dots >= 3 %} roast-dot-3{% endif %}"></span><span class="roast-dot{% if r_dots >= 4 %} roast-dot-4{% endif %}"></span><span class="roast-dot{% if r_dots >= 5 %} roast-dot-5{% endif %}"></span></span></span>{% endif %}
         
         {% assign rp = site.data.pricing.overrides[r.slug] %}{% if rp and rp["12oz"] %}{% assign price_12 = rp["12oz"] %}{% else %}{% assign price_12 = site.data.pricing.default["12oz"] %}{% endif %}
         {% if r.temporary_price and r.temporary_price["12oz"] %}

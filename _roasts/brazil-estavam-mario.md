@@ -3,8 +3,7 @@ title: Brazil Estavam Mario
 slug: brazil-estavam-mario
 category: single origin
 order: 3
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: 4
 tasting_notes: Fig · Prune · Hazelnut
 brewing_method: Drip, French Press, Espresso
 processing_method: Natural

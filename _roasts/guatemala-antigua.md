@@ -3,8 +3,7 @@ title: Guatemala Antigua
 slug: guatemala-antigua
 category: single origin
 order: 4
-roast_level: Full City (medium)
-roast_dots: 3
+roast_level: 3
 tasting_notes: Dark chocolate, toasted nut, caramel
 brewing_method: Espresso, Moka Pot, French Press
 processing_method: Washed

@@ -51,19 +51,22 @@ layout: default
     <div class="roast-mv-meta-value">{{ page.processing_method | default: page.process }}</div>
   </div>
   {% endif %}
-  {% if page.roast_dots %}
+  {% assign r_level_key = page.roast_level | append: "" %}
+  {% assign level_info = site.data.roast_levels[page.roast_level] | default: site.data.roast_levels[r_level_key] %}
+  {% if level_info %}{% assign roast_dots = level_info.dots %}{% assign roast_level_name = level_info.name %}{% else %}{% assign roast_dots = page.roast_dots %}{% assign roast_level_name = page.roast_level %}{% endif %}
+  {% if roast_dots %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Roast Level</div>
     <div class="roast-mv-meta-value">
       <span class="roast-dots">
-        <span class="roast-dot{% if page.roast_dots >= 1 %} roast-dot-1{% endif %}"></span>
-        <span class="roast-dot{% if page.roast_dots >= 2 %} roast-dot-2{% endif %}"></span>
-        <span class="roast-dot{% if page.roast_dots >= 3 %} roast-dot-3{% endif %}"></span>
-        <span class="roast-dot{% if page.roast_dots >= 4 %} roast-dot-4{% endif %}"></span>
-        <span class="roast-dot{% if page.roast_dots >= 5 %} roast-dot-5{% endif %}"></span>
+        <span class="roast-dot{% if roast_dots >= 1 %} roast-dot-1{% endif %}"></span>
+        <span class="roast-dot{% if roast_dots >= 2 %} roast-dot-2{% endif %}"></span>
+        <span class="roast-dot{% if roast_dots >= 3 %} roast-dot-3{% endif %}"></span>
+        <span class="roast-dot{% if roast_dots >= 4 %} roast-dot-4{% endif %}"></span>
+        <span class="roast-dot{% if roast_dots >= 5 %} roast-dot-5{% endif %}"></span>
       </span>
     </div>
-    <div class="roast-mv-meta-sublabel">{{ page.roast_level }}</div>
+    <div class="roast-mv-meta-sublabel">{{ roast_level_name }}</div>
   </div>
   {% endif %}
   <div class="roast-mv-meta-item">
