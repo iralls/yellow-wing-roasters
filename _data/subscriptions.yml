@@ -30,6 +30,11 @@ guatemala-antigua:
   sizes: [12oz, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 12, 2lb: 34, 5lb: 77}
+sumatra-mandheling:
+  sizes: [12oz, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 13, 2lb: 36, 5lb: 82}
+
 
 # Subscription products — 12oz only, monthly only
 migrator:
