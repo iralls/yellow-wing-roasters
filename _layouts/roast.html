@@ -35,6 +35,11 @@ layout: default
   <span class="coming-soon-bar-badge">Coming Soon</span>
   <span class="coming-soon-bar-text">This roast isn't available to order yet — check back soon.</span>
 </div>
+{% elsif page.low_stock %}
+<div class="under-construction-bar" style="background:#fff3e0; border-color:#ffe0b2; color:#e65100;">
+  <span class="under-construction-bar-badge" style="background:#e65100; color:#fff;">Low Stock</span>
+  <span class="under-construction-bar-text" style="color:#e65100;">Quantities are limited! Subscriptions are unavailable for this roast while stock is low.</span>
+</div>
 {% endif %}
 
 {% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " }}</p>{% endif %}
@@ -99,6 +104,8 @@ layout: default
   <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe <span class="save-badge">-10%</span></div>
   {% if page.under_construction %}
     <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is mid-molt.</p>
+  {% elsif page.low_stock %}
+    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable due to low stock.</p>
   {% else %}
     {% if sub_config.sizes.size > 1 %}
     <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">

@@ -212,13 +212,22 @@ permalink: /gift/
     }
   }
 
+  // Disable multi-month gift subscriptions for roasts that are under_construction or low_stock
+  var disabledSubRoasts = {
+    {% for r in site.roasts %}
+    {% if r.under_construction or r.low_stock %}
+    '{{ r.slug }}': true,
+    {% endif %}
+    {% endfor %}
+  };
+
   function updateSubscriptionAvailability() {
     var product = productSelect.value;
     var isSubscribable = false;
 
     if (product) {
       var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
-      if (isSubscriptionOnly || (subConfig && subConfig[product])) {
+      if ((isSubscriptionOnly || (subConfig && subConfig[product])) && !disabledSubRoasts[product]) {
         isSubscribable = true;
       }
     } else {

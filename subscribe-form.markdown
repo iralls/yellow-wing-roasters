@@ -140,7 +140,15 @@ permalink: /subscribe/
 
   var disabledSubRoasts = {
     {% for r in site.roasts %}
-    {% if r.under_construction or r.coming_soon %}
+    {% if r.under_construction or r.coming_soon or r.low_stock %}
+    '{{ r.slug }}': true,
+    {% endif %}
+    {% endfor %}
+  };
+
+  var lowStockRoasts = {
+    {% for r in site.roasts %}
+    {% if r.low_stock %}
     '{{ r.slug }}': true,
     {% endif %}
     {% endfor %}
@@ -151,7 +159,10 @@ permalink: /subscribe/
     var notice = document.createElement('div');
     notice.className = 'under-construction-bar';
     notice.style.marginTop = '1.5rem';
-    notice.innerHTML = '<span class="under-construction-bar-badge">Mid-Molt</span><span class="under-construction-bar-text">Subscriptions are currently unavailable for this roast while its profile is mid-molt.</span>';
+    var isLowStock = lowStockRoasts[roast];
+    var badgeText = isLowStock ? 'Low Stock' : 'Mid-Molt';
+    var bodyText = isLowStock ? 'Subscriptions are currently unavailable for this roast due to low stock.' : 'Subscriptions are currently unavailable for this roast while its profile is mid-molt.';
+    notice.innerHTML = '<span class="under-construction-bar-badge">' + badgeText + '</span><span class="under-construction-bar-text">' + bodyText + '</span>';
     form.parentNode.insertBefore(notice, form);
     return;
   }

@@ -19,6 +19,8 @@ permalink: /single-origins/
       <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
     {% elsif r.coming_soon %}
       <div class="roasts-entry-soon-badge">Coming Soon</div>
+    {% elsif r.low_stock %}
+      <div class="roasts-entry-lowstock-badge">Low Stock</div>
     {% endif %}
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
     <div class="roasts-entry-info">

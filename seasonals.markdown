@@ -19,6 +19,8 @@ permalink: /seasonals/
       <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
     {% elsif r.coming_soon %}
       <div class="roasts-entry-soon-badge">Coming Soon</div>
+    {% elsif r.low_stock %}
+      <div class="roasts-entry-lowstock-badge">Low Stock</div>
     {% endif %}
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">{{ r.title }}</div>
