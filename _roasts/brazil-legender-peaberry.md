@@ -3,7 +3,9 @@ title: Brazil Legender Peaberry
 slug: brazil-legender-peaberry
 category: single origin
 order: 4
-roast_level: 4
+roast_level: 3
+region: Machado, Sul de Minas
+elevation: 1,100 – 1,200m
 tasting_notes: Dark chocolate, toasted almonds
 brewing_method: Espresso, Drip, French Press
 processing_method: Natural

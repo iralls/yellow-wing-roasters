@@ -4,6 +4,8 @@ slug: ethiopia-wush-wush
 category: single origin
 order: 5
 roast_level: 2
+region: Kaffa
+elevation: 1,800 – 2,100m
 tasting_notes: Blueberries, chocolate, pronounced fruit
 brewing_method: Pour-over, Drip
 processing_method: Natural

@@ -4,6 +4,8 @@ slug: brazil-estavam-mario
 category: single origin
 order: 3
 roast_level: 4
+region: Sul de Minas
+elevation: 1,100 – 1,200m
 tasting_notes: Fig · Prune · Hazelnut
 brewing_method: Drip, French Press, Espresso
 processing_method: Natural

@@ -45,6 +45,18 @@ layout: default
 {% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " }}</p>{% endif %}
 
 <div class="roast-mv-meta-row">
+  {% if page.region %}
+  <div class="roast-mv-meta-item">
+    <div class="roast-mv-meta-label">Region</div>
+    <div class="roast-mv-meta-value">{{ page.region }}</div>
+  </div>
+  {% endif %}
+  {% if page.elevation %}
+  <div class="roast-mv-meta-item">
+    <div class="roast-mv-meta-label">Elevation</div>
+    <div class="roast-mv-meta-value">{{ page.elevation }}</div>
+  </div>
+  {% endif %}
   {% if page.processing_method or page.process %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Processing Method</div>
