@@ -45,6 +45,12 @@ layout: default
 {% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " }}</p>{% endif %}
 
 <div class="roast-mv-meta-row">
+  {% if page.processing_method or page.process %}
+  <div class="roast-mv-meta-item">
+    <div class="roast-mv-meta-label">Processing Method</div>
+    <div class="roast-mv-meta-value">{{ page.processing_method | default: page.process }}</div>
+  </div>
+  {% endif %}
   {% if page.roast_dots %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Roast Level</div>
