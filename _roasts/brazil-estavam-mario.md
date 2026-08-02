@@ -1,5 +1,5 @@
 ---
-title: Brazil Estavam Mario Natural
+title: Brazil Estavam Mario
 slug: brazil-estavam-mario
 category: single origin
 order: 3
