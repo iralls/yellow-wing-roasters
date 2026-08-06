@@ -11,7 +11,7 @@ permalink: /blends/
 
 <div class="roasts-grid">
 {% for r in cat_roasts %}
-  <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" href="{{ r.url | relative_url }}">
+  <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" data-roast="{{ r.slug }}" href="{{ r.url | relative_url }}">
     <div class="roasts-entry-visual">
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
     </div>
@@ -36,7 +36,7 @@ permalink: /blends/
     </div>
   </a>
 {% endfor %}
-  <a class="roasts-entry" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
+  <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
     <div class="roasts-entry-visual">
       <div class="mascot-grid">
         <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item">
