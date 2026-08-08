@@ -44,6 +44,18 @@ permalink: /flights/peck-your-own/
   {% endfor %}
 </div>
 
+<div class="roast-mv-center" style="margin-top:1.5rem; margin-bottom:0.5rem;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <select id="pyo-grind-select" class="subscribe-select" style="min-width: 12rem;">
+    <option value="Whole Bean" selected>Whole Bean</option>
+    <option value="Drip / Filter">Drip / Filter</option>
+    <option value="Espresso">Espresso</option>
+    <option value="French Press">French Press</option>
+    <option value="Pour Over">Pour Over</option>
+    <option value="Cold Brew">Cold Brew</option>
+  </select>
+</div>
+
 <div class="roast-mv-center" style="margin-top:1rem;">
   {% assign default_min = site.data.flights["peck-your-own"].min_bags %}
   {% assign default_price = default_min | times: site.data.flights["peck-your-own"].price_per_bag %}
@@ -113,9 +125,11 @@ permalink: /flights/peck-your-own/
         }
       }
     }
+    var grindSelect = document.getElementById('pyo-grind-select');
+    var grind = grindSelect ? grindSelect.value : 'Whole Bean';
     var cart;
     try { var raw = localStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
-    var key = 'peck-your-own||' + titles.join(', ');
+    var key = 'peck-your-own||' + titles.join(', ') + '|' + grind;
     cart[key] = (cart[key] || 0) + 1;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
     window.dispatchEvent(new CustomEvent('ywr-cart-changed'));

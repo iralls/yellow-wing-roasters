@@ -2031,16 +2031,34 @@ h1.roast-title {
   border-color: #2c1e14;
 }
 
-.order-form select {
-  width: 100%;
-  padding: 0.4rem 0.9rem;
+.order-form select,
+.subscribe-select {
+  padding: 0.45rem 2rem 0.45rem 1rem;
   font-family: $font-display;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   border: 1px solid #bbb;
   border-radius: 999px;
   box-sizing: border-box;
-  background: #fff;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c1e14' d='M6 8.825L1.175 4 2.238 2.938 6 6.7 9.763 2.938 10.825 4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  color: #2c1e14;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.order-form select:hover,
+.subscribe-select:hover {
+  border-color: #2c1e14;
+}
+
+.order-form select:focus,
+.subscribe-select:focus {
+  outline: none;
+  border-color: #2c1e14;
+  box-shadow: 0 0 0 2px rgba(44, 30, 20, 0.15);
 }
 
 .order-form select optgroup {
@@ -2050,7 +2068,8 @@ h1.roast-title {
   background: #fff;
 }
 
-.order-form select option {
+.order-form select option,
+.subscribe-select option {
   color: #2c1e14;
   background: #fff;
 }

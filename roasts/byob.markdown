@@ -69,6 +69,18 @@ permalink: /roasts/byob/
   </div>
 
   <div class="order-field">
+    <label for="byob-grind">Grind level</label>
+    <select id="byob-grind" class="subscribe-select">
+      <option value="Whole Bean" selected>Whole Bean</option>
+      <option value="Drip / Filter">Drip / Filter</option>
+      <option value="Espresso">Espresso</option>
+      <option value="French Press">French Press</option>
+      <option value="Pour Over">Pour Over</option>
+      <option value="Cold Brew">Cold Brew</option>
+    </select>
+  </div>
+
+  <div class="order-field">
     <label for="byob-qty">Quantity (lbs of green beans to order)</label>
     <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required>
     <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
@@ -142,6 +154,14 @@ permalink: /roasts/byob/
   form.target = 'byob-submit-frame';
 
   form.addEventListener('submit', function () {
+    var grindEl = document.getElementById('byob-grind');
+    var notesEl = document.getElementById('byob-notes');
+    if (grindEl && notesEl) {
+      var currentNotes = notesEl.value.trim();
+      var grindPrefix = '[Grind: ' + grindEl.value + ']';
+      notesEl.value = currentNotes ? grindPrefix + ' ' + currentNotes : grindPrefix;
+    }
+
     if (status) {
       status.textContent = 'Sending…';
       status.className = 'order-status order-status-pending';

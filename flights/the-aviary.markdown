@@ -29,9 +29,21 @@ permalink: /flights/the-aviary/
   <li><a href="/roasts/lil-sipper/"><strong>Lil' Sipper</strong></a> · City+ (light-medium)</li>
 </ul>
 
-<p class="roast-mv-body">All four ship as whole bean. Brewing method varies by blend — details on each roast's page.</p>
+<p class="roast-mv-body">Brewing method varies by blend — details on each roast's page.</p>
 
 <div class="roast-mv-divider"></div>
+
+<div class="roast-mv-center" style="margin-bottom:1rem;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <select id="aviary-grind-select" class="subscribe-select" style="min-width: 12rem;">
+    <option value="Whole Bean" selected>Whole Bean</option>
+    <option value="Drip / Filter">Drip / Filter</option>
+    <option value="Espresso">Espresso</option>
+    <option value="French Press">French Press</option>
+    <option value="Pour Over">Pour Over</option>
+    <option value="Cold Brew">Cold Brew</option>
+  </select>
+</div>
 
 <div class="roast-mv-center" id="add-to-cart-wrap" style="text-align:center;">
   <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ site.data.flights["the-aviary"].price }}</button>
@@ -45,9 +57,11 @@ permalink: /flights/the-aviary/
   var addBtn = document.getElementById('aviary-add-btn');
   if (addBtn) {
     addBtn.addEventListener('click', function () {
+      var grindSelect = document.getElementById('aviary-grind-select');
+      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
       var cart;
       try { var raw = localStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
-      var key = 'the-aviary||';
+      var key = 'the-aviary|||' + grind;
       cart[key] = (cart[key] || 0) + 1;
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));

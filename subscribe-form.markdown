@@ -38,6 +38,18 @@ permalink: /subscribe/
   </div>
 
   <div class="order-field">
+    <label for="sub-grind-select">Grind</label>
+    <select id="sub-grind-select" class="subscribe-select" style="width: 100%;">
+      <option value="Whole Bean" selected>Whole Bean</option>
+      <option value="Drip / Filter">Drip / Filter</option>
+      <option value="Espresso">Espresso</option>
+      <option value="French Press">French Press</option>
+      <option value="Pour Over">Pour Over</option>
+      <option value="Cold Brew">Cold Brew</option>
+    </select>
+  </div>
+
+  <div class="order-field">
     <label>Frequency</label>
     <div class="pill-radios">
       <label class="order-radio"><input type="radio" name="entry.2064801247" value="Every 2 weeks" checked> Every 2 weeks</label>
@@ -212,6 +224,19 @@ permalink: /subscribe/
       }
     }
     if (firstFreq) firstFreq.checked = true;
+
+    var qpGrind = params.get('grind');
+    if (qpGrind) {
+      var grindSelect = document.getElementById('sub-grind-select');
+      if (grindSelect) {
+        for (var gr = 0; gr < grindSelect.options.length; gr++) {
+          if (grindSelect.options[gr].value.toLowerCase() === qpGrind.toLowerCase()) {
+            grindSelect.selectedIndex = gr;
+            break;
+          }
+        }
+      }
+    }
   }
 
   var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
@@ -235,6 +260,12 @@ permalink: /subscribe/
   var submitBtn = form.querySelector('.order-submit');
 
   form.addEventListener('submit', function () {
+    var grindSelect = document.getElementById('sub-grind-select');
+    var grindVal = grindSelect ? grindSelect.value : 'Whole Bean';
+    if (hiddenInput.value && hiddenInput.value.indexOf('Grind:') < 0) {
+      hiddenInput.value = hiddenInput.value + ' (Grind: ' + grindVal + ')';
+    }
+
     // Gather and set the price right before form submission to Google Forms
     if (config && config.prices && priceHiddenInput) {
       var checkedSize = form.querySelector('input[name="entry.1606791078"]:checked');

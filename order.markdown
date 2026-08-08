@@ -126,11 +126,9 @@ permalink: /order/
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 
-    function cartKey(roast, variant, size) {
-      return roast + '|' + (variant || '') + '|' + size;
+    function cartKey(roast, variant, size, grind) {
+      return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
     }
-
-
 
     var appliedDiscount = null;
 
@@ -138,30 +136,37 @@ permalink: /order/
       var cart = loadCart();
       var items = [];
 
-      var matched = {};
-      for (var i = 0; i < roastData.length; i++) {
-        var d = roastData[i];
-        var k = cartKey(d.roast, d.variant, d.size);
-        var qty = cart[k];
-        if (qty && qty > 0) {
-          items.push({ data: d, key: k, qty: qty });
-          matched[k] = true;
-        }
-      }
       for (var ck in cart) {
-        if (!matched[ck] && cart[ck] > 0) {
-          var parts = ck.split('|');
+        if (cart[ck] <= 0) continue;
+        var parts = ck.split('|');
+        var rSlug = parts[0];
+        var vSlug = parts[1] || '';
+        var rSize = parts[2] || '';
+        var rGrind = parts[3] || 'Whole Bean';
+
+        var matchedData = null;
+        for (var i = 0; i < roastData.length; i++) {
+          var d = roastData[i];
+          if (d.roast === rSlug && d.variant === vSlug && d.size === rSize) {
+            matchedData = d;
+            break;
+          }
+        }
+
+        if (matchedData) {
+          items.push({ data: matchedData, key: ck, qty: cart[ck], grind: rGrind });
+        } else {
           var itemPrice = 0;
-          var itemLabel = parts[0];
-          var itemSize = parts[2] || '';
+          var itemLabel = rSlug;
+          var itemSize = rSize;
           var itemMascot = null;
 
-          if (parts[0] === 'peck-your-own') {
-            var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
+          if (rSlug === 'peck-your-own') {
+            var choicesCount = (rSize || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
             var pyoPricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
             itemPrice = choicesCount * pyoPricePerBag;
-            itemLabel = 'Peck Your Own: ' + parts[2];
-          } else if (parts[0] === 'the-aviary') {
+            itemLabel = 'Peck Your Own: ' + rSize;
+          } else if (rSlug === 'the-aviary') {
             itemPrice = {{ site.data.flights["the-aviary"].price | default: 38 }};
             itemLabel = 'The Aviary Flight';
             itemMascot = 'audubon-cage-transparent.png';
@@ -170,17 +175,18 @@ permalink: /order/
 
           items.push({
             data: {
-              roast: parts[0],
-              variant: parts[1],
+              roast: rSlug,
+              variant: vSlug,
               size: itemSize,
               label: itemLabel,
-              formName: parts[0] === 'peck-your-own' ? 'Peck Your Own: ' + parts[2] : (parts[0] === 'the-aviary' ? 'The Aviary Flight' : ck),
+              formName: rSlug === 'peck-your-own' ? 'Peck Your Own: ' + rSize : (rSlug === 'the-aviary' ? 'The Aviary Flight' : ck),
               mascot: itemMascot,
               dots: 0,
               price: itemPrice
             },
             key: ck,
-            qty: cart[ck]
+            qty: cart[ck],
+            grind: rGrind
           });
         }
       }
@@ -227,7 +233,7 @@ permalink: /order/
 
         var sizeEl = document.createElement('span');
         sizeEl.className = 'order-cart-item-size';
-        sizeEl.textContent = item.data.size;
+        sizeEl.textContent = item.data.size + (item.grind ? ' · ' + item.grind : '');
 
         var qtyWrap = document.createElement('div');
         qtyWrap.className = 'order-cart-qty-wrap';
@@ -348,7 +354,7 @@ permalink: /order/
       itemsEl.appendChild(totalRow);
 
       var itemLines = items.map(function (item) {
-        return item.qty + 'x ' + item.data.label + ' ' + item.data.size;
+        return item.qty + 'x ' + item.data.label + ' ' + item.data.size + (item.grind ? ' (' + item.grind + ')' : '');
       }).join(', ');
       document.getElementById('order-items-hidden').value = itemLines;
       document.getElementById('order-total-hidden').value = '$' + grandTotal.toFixed(2);

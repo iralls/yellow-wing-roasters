@@ -514,6 +514,18 @@ permalink: /roasts/build-your-own-blend/
         <input id="byob-email" type="email" name="entry.1584009735" required autocomplete="email">
       </div>
 
+      <div class="order-field">
+        <label for="byob-blend-grind-select">Grind level</label>
+        <select id="byob-blend-grind-select" class="subscribe-select" style="width: 100%;">
+          <option value="Whole Bean" selected>Whole Bean</option>
+          <option value="Drip / Filter">Drip / Filter</option>
+          <option value="Espresso">Espresso</option>
+          <option value="French Press">French Press</option>
+          <option value="Pour Over">Pour Over</option>
+          <option value="Cold Brew">Cold Brew</option>
+        </select>
+      </div>
+
       <fieldset class="order-delivery">
         <legend>Delivery method</legend>
         <div class="pill-radios">
@@ -1082,7 +1094,9 @@ permalink: /roasts/build-your-own-blend/
       var rst = roast ? roast.value : 'Medium';
       parts.push(name + ' (' + pct + '% - ' + rst + ')');
     });
-    return parts.join(', ');
+    var grindEl = document.getElementById('byob-blend-grind-select');
+    var grindVal = grindEl ? grindEl.value : 'Whole Bean';
+    return parts.join(', ') + ' [Grind: ' + grindVal + ']';
   }
 
   // Escape helpers

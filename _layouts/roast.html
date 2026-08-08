@@ -100,8 +100,20 @@ layout: default
 <div class="roast-mv-body">{{ page.description | markdownify }}</div>
 {% endif %}
 
+<div class="roast-mv-center" style="margin-top:0.75rem;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <select id="order-grind-select" class="subscribe-select"{% if page.coming_soon %} disabled{% endif %} style="min-width: 12rem;">
+    <option value="Whole Bean" selected>Whole Bean</option>
+    <option value="Drip / Filter">Drip / Filter</option>
+    <option value="Espresso">Espresso</option>
+    <option value="French Press">French Press</option>
+    <option value="Pour Over">Pour Over</option>
+    <option value="Cold Brew">Cold Brew</option>
+  </select>
+</div>
+
 <div class="roast-mv-center">
-  <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
+  <fieldset class="pill-radios{% if page.coming_soon %} pill-radios--disabled{% endif %}"{% if page.coming_soon %} disabled{% endif %} style="justify-content:center; margin-bottom:0.5rem; border:none; padding:0;">
     {% for s in sizes %}
       {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
       {% if page.temporary_price and page.temporary_price[s] %}
@@ -111,9 +123,9 @@ layout: default
         {% assign effective_price = price %}
         {% assign show_temp = false %}
       {% endif %}
-      <label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
+      <label class="order-radio"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
     {% endfor %}
-  </div>
+  </fieldset>
   <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">
     <button class="add-to-order-btn" id="add-to-cart-btn">Add to Cart</button>
   </div>
@@ -194,8 +206,8 @@ layout: default
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
     window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
   }
-  function cartKey(roast, variant, size) {
-    return roast + '|' + (variant || '') + '|' + size;
+  function cartKey(roast, variant, size, grind) {
+    return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
   }
 
   var sizeRadios = document.querySelectorAll('input[name="order-size"]');
@@ -212,7 +224,9 @@ layout: default
     addBtn.addEventListener('click', function () {
       var selected = document.querySelector('input[name="order-size"]:checked');
       if (!selected) return;
-      var k = cartKey(selected.dataset.roast, '', selected.value);
+      var grindSelect = document.getElementById('order-grind-select');
+      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
+      var k = cartKey(selected.dataset.roast, '', selected.value, grind);
       var cart = loadCart();
       cart[k] = (cart[k] || 0) + 1;
       saveCart(cart);
