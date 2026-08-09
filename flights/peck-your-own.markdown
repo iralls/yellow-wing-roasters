@@ -48,11 +48,11 @@ permalink: /flights/peck-your-own/
   <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
   <select id="pyo-grind-select" class="subscribe-select" style="min-width: 12rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
-    <option value="Drip / Filter">Drip / Filter</option>
-    <option value="Espresso">Espresso</option>
-    <option value="French Press">French Press</option>
-    <option value="Pour Over">Pour Over</option>
-    <option value="Cold Brew">Cold Brew</option>
+    <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
+    <option value="Coarser — French Press">Coarser — French Press</option>
+    <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
+    <option value="Finer — Pour Over">Finer — Pour Over</option>
+    <option value="Finest — Espresso">Finest — Espresso</option>
   </select>
 </div>
 

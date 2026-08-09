@@ -41,11 +41,11 @@ permalink: /subscribe/
     <label for="sub-grind-select">Grind</label>
     <select id="sub-grind-select" class="subscribe-select" style="width: 100%;">
       <option value="Whole Bean" selected>Whole Bean</option>
-      <option value="Drip / Filter">Drip / Filter</option>
-      <option value="Espresso">Espresso</option>
-      <option value="French Press">French Press</option>
-      <option value="Pour Over">Pour Over</option>
-      <option value="Cold Brew">Cold Brew</option>
+      <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
+      <option value="Coarser — French Press">Coarser — French Press</option>
+      <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
+      <option value="Finer — Pour Over">Finer — Pour Over</option>
+      <option value="Finest — Espresso">Finest — Espresso</option>
     </select>
   </div>
 
@@ -230,7 +230,8 @@ permalink: /subscribe/
       var grindSelect = document.getElementById('sub-grind-select');
       if (grindSelect) {
         for (var gr = 0; gr < grindSelect.options.length; gr++) {
-          if (grindSelect.options[gr].value.toLowerCase() === qpGrind.toLowerCase()) {
+          var optVal = grindSelect.options[gr].value.toLowerCase();
+          if (optVal === qpGrind.toLowerCase() || optVal.indexOf(qpGrind.toLowerCase()) >= 0) {
             grindSelect.selectedIndex = gr;
             break;
           }

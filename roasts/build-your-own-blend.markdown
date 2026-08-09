@@ -518,11 +518,11 @@ permalink: /roasts/build-your-own-blend/
         <label for="byob-blend-grind-select">Grind level</label>
         <select id="byob-blend-grind-select" class="subscribe-select" style="width: 100%;">
           <option value="Whole Bean" selected>Whole Bean</option>
-          <option value="Drip / Filter">Drip / Filter</option>
-          <option value="Espresso">Espresso</option>
-          <option value="French Press">French Press</option>
-          <option value="Pour Over">Pour Over</option>
-          <option value="Cold Brew">Cold Brew</option>
+          <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
+          <option value="Coarser — French Press">Coarser — French Press</option>
+          <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
+          <option value="Finer — Pour Over">Finer — Pour Over</option>
+          <option value="Finest — Espresso">Finest — Espresso</option>
         </select>
       </div>
 
