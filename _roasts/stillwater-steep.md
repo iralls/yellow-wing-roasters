@@ -4,7 +4,7 @@ subtitle: Cold Brew Blend
 slug: stillwater-steep
 category: seasonal
 order: 8
-roast_level: 3
+roast_level: 4
 tasting_notes: Dark chocolate, toasted walnut, brown sugar
 brewing_method: Cold Brew
 mascot: heron
