@@ -580,40 +580,71 @@ permalink: /roasts/build-your-own-blend/
     {% for b in site.data.roastmasters_beans %}
       {
         name: {{ b.name | jsonify }},
+        url: {{ b.url | jsonify }},
         price: parseFloat("{{ b.price_1lb }}") || 0,
-        cup_characteristics: {{ b.cup_characteristics | jsonify }}
+        cup_characteristics: {{ b.cup_characteristics | jsonify }},
+        roasting_notes: {{ b.roasting_notes | jsonify }}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];
 
-  var BEAN_PROFILES = {
-    "Burundi Kayave Washing Station": { origin: "Burundi", acidity: 4, body: 4, notes: ["Plum", "Raisin", "Bittersweet Chocolate", "Dates"] },
-    "Burundi Masha Washing Station": { origin: "Burundi", acidity: 4, body: 3, notes: ["Red Apple", "Lemon", "Baker's Chocolate", "Butterscotch"] },
-    "Ethiopia 'Wush Wush' Natural Grade 1": { origin: "Ethiopia", acidity: 3, body: 3, notes: ["Melon", "Papaya", "Pecan", "Cherry", "Tangerine"] },
-    "Ethiopia Yirgacheffe Idido Wogida Grade 1": { origin: "Ethiopia", acidity: 4, body: 3, notes: ["Maple", "Rosewater", "Brown Sugar", "Chestnut"] },
-    "Kenya AA Murage": { origin: "Kenya", acidity: 5, body: 3, notes: ["Blackcurrant", "Lime", "Black Tea"] },
-    "Kenya AB Gathaithi": { origin: "Kenya", acidity: 5, body: 3, notes: ["Blackberry", "Blueberry", "Vanilla", "Blackcurrant"] },
-    "Kenya AB Rita": { origin: "Kenya", acidity: 4, body: 3, notes: ["Black Tea", "Sugary", "Bright", "Juicy"] },
-    "Costa Rica Brumas del Zurqui Geisha Natural": { origin: "Costa Rica", acidity: 4, body: 2, notes: ["Jasmine", "Peach", "Orange Blossom"] },
-    "Costa Rica Brumas del Zurqui San Roque Natural": { origin: "Costa Rica", acidity: 3, body: 4, notes: ["Plum", "Tamarind", "Maple Syrup", "Cola"] },
-    "Costa Rica Brumas Villa Sarchi": { origin: "Costa Rica", acidity: 4, body: 3, notes: ["Honey", "Dark Chocolate", "Green Apple", "Lemon"] },
-    "Costa Rica La Minita Tarrazu": { origin: "Costa Rica", acidity: 4, body: 3, notes: ["Delicate Body", "Sweet Fruit", "Fine Acidity"] },
-    "Costa Rica Santa Maria Dota Tarrazu": { origin: "Costa Rica", acidity: 3, body: 3, notes: ["Sweetness", "Nuance", "Chocolate"] },
-    "Guatemala Antigua Santo Domingo SHB": { origin: "Guatemala", acidity: 4, body: 4, notes: ["Bittersweet Chocolate", "Zesty Acidity"] },
-    "Panama Auromar Pacamara Natural": { origin: "Panama", acidity: 3, body: 4, notes: ["Chocolate", "Raspberry", "Fig", "Cherry"] },
-    "Panama Don Julian Geisha Natural": { origin: "Panama", acidity: 4, body: 3, notes: ["Pineapple", "Mango", "Kiwi", "Jasmine"] },
-    "Panama Don Julian Washed Geisha": { origin: "Panama", acidity: 4, body: 3, notes: ["Jasmine", "Bergamot", "Lemon", "Lemongrass"] },
-    "Panama Elida Estate Catuai Natural": { origin: "Panama", acidity: 3, body: 3, notes: ["Cherry", "Blackcurrant", "Black Tea"] },
-    "Panama Mi Finquita Geisha Natural": { origin: "Panama", acidity: 4, body: 3, notes: ["Jasmine", "Lavender", "Magnolia", "Bright Citrus"] },
-    "Bolivia Fair Trade & Organic": { origin: "Bolivia", acidity: 2, body: 4, notes: ["Milk Chocolate", "Sweetness"] },
-    "Brazil Estavam Mario Natural": { origin: "Brazil", acidity: 2, body: 4, notes: ["Fig", "Prune", "Tamarind", "Hazelnut", "Almond"] },
-    "Brazil Legender Especial Peaberry Natural": { origin: "Brazil", acidity: 2, body: 4, notes: ["Dark Chocolate", "Viscous", "Toasted Almond"] },
-    "Colombia Finca La Primavera Chiroso": { origin: "Colombia", acidity: 3, body: 3, notes: ["Molasses", "Tamari", "Cedar", "Dates"] },
-    "Colombia Milton Monroy Geisha Natural": { origin: "Colombia", acidity: 4, body: 3, notes: ["Orange", "Tangerine", "Rosewater", "Watermelon"] },
-    "Colombia Supremo Huila": { origin: "Colombia", acidity: 3, body: 4, notes: ["Acidity", "Sweetness", "Body"] },
-    "Peru Fair Trade Organic": { origin: "Peru", acidity: 4, body: 4, notes: ["Bittersweet Chocolate", "Apple Acidity", "Ripe Berry"] },
-    "Sumatra Mandheling Fair Trade Organic": { origin: "Sumatra", acidity: 1, body: 5, notes: ["Earthy", "Smoky", "Tobacco", "Hazelnut"] }
-  };
+  function getProfile(name) {
+    var bean = getBeanData(name);
+    var text = (bean.cup_characteristics || "").toLowerCase();
+    var nameLower = (name || "").toLowerCase();
+
+    var origin = "";
+    var origins = ["Bolivia", "Brazil", "Burundi", "Colombia", "Costa Rica", "Ethiopia", "Guatemala", "Kenya", "Panama", "Peru", "Sumatra"];
+    for (var i = 0; i < origins.length; i++) {
+      if (nameLower.indexOf(origins[i].toLowerCase()) >= 0) {
+        origin = origins[i];
+        break;
+      }
+    }
+    if (!origin && name) {
+      origin = name.split(" ")[0];
+    }
+
+    var acidity = 3;
+    if (text.indexOf("zesty") >= 0 || text.indexOf("bright") >= 0 || text.indexOf("piquant") >= 0 || text.indexOf("high acidity") >= 0 || text.indexOf("acetic") >= 0 || text.indexOf("tart") >= 0 || text.indexOf("citric") >= 0 || nameLower.indexOf("kenya") >= 0 || nameLower.indexOf("yirgacheffe") >= 0) {
+      acidity = 4;
+    } else if (text.indexOf("low acidity") >= 0 || text.indexOf("light acidity") >= 0 || text.indexOf("mild acidity") >= 0 || nameLower.indexOf("sumatra") >= 0 || nameLower.indexOf("brazil") >= 0) {
+      acidity = 2;
+    }
+
+    var body = 3;
+    if (text.indexOf("heavy") >= 0 || text.indexOf("viscous") >= 0 || text.indexOf("creamy") >= 0 || text.indexOf("thick") >= 0 || text.indexOf("smooth body") >= 0 || text.indexOf("broad mouthfeel") >= 0 || text.indexOf("syrupy") >= 0 || nameLower.indexOf("sumatra") >= 0) {
+      body = 4;
+    } else if (text.indexOf("delicate") >= 0 || text.indexOf("light body") >= 0 || text.indexOf("silky") >= 0) {
+      body = 2;
+    }
+
+    var notes = [];
+    var possibleNotes = [
+      "Bittersweet Chocolate", "Dark Chocolate", "Milk Chocolate", "Baker's Chocolate", "Chocolate", "Cocoa",
+      "Plum", "Raisin", "Dates", "Red Apple", "Green Apple", "Meyer Lemon", "Lemon", "Lime", "Orange", "Tangerine",
+      "Blackberry", "Blueberry", "Blackcurrant", "Cherry", "Black Cherry", "Peach", "Nectarine", "Melon", "Papaya", "Fig", "Tamarind", "Pineapple", "Mango", "Kiwi", "Grape",
+      "Honey", "Maple Syrup", "Maple", "Butterscotch", "Brown Sugar", "Sugar", "Molasses",
+      "Jasmine", "Rosewater", "Lavender", "Magnolia", "Floral", "Bergamot", "Lemongrass",
+      "Hazelnut", "Toasted Almond", "Almond", "Chestnut", "Pecan", "Vanilla",
+      "Black Tea", "Cedar", "Earthy", "Smoky", "Tobacco", "Cola"
+    ];
+    possibleNotes.forEach(function (pn) {
+      if (text.indexOf(pn.toLowerCase()) >= 0 && notes.indexOf(pn) < 0) {
+        notes.push(pn);
+      }
+    });
+    if (notes.length === 0) {
+      notes = ["Sweet", "Balanced"];
+    }
+
+    return {
+      origin: origin,
+      acidity: acidity,
+      body: body,
+      notes: notes
+    };
+  }
 
   var selectedBeans = []; // Array of selected bean name strings
 
@@ -665,7 +696,7 @@ permalink: /roasts/build-your-own-blend/
     }
 
     var bean = getBeanData(name);
-    var profile = BEAN_PROFILES[name] || { acidity: 3, body: 3 };
+    var profile = getProfile(name);
 
     detailsPlaceholder.style.display = 'none';
     detailsActive.style.display = '';
@@ -728,7 +759,7 @@ permalink: /roasts/build-your-own-blend/
         return;
       }
 
-      var profile = BEAN_PROFILES[b.name] || { origin: "", acidity: 3, body: 3, notes: [] };
+      var profile = getProfile(b.name);
 
       // Apply origin filter
       if (originVal && profile.origin !== originVal) return;
@@ -1005,7 +1036,7 @@ permalink: /roasts/build-your-own-blend/
     selectedBeans.forEach(function (name) {
       var slider = document.getElementById('slider-' + escapeId(name));
       var weight = slider ? parseInt(slider.value, 10) : 0;
-      var profile = BEAN_PROFILES[name] || { acidity: 3, body: 3, notes: [] };
+      var profile = getProfile(name);
 
       var roast = document.getElementById('roast-' + escapeId(name));
       var roastVal = roast ? roast.value : 'Medium';

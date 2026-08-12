@@ -1,7 +1,7 @@
 """
 Scrape green coffee bean data from roastmasters.com.
 
-Extracts bean name, Cup Characteristics, and Roasting Notes
+Extracts bean name, URL, price, Cup Characteristics, and Roasting Notes
 from each product page and writes to CSV.
 """
 
@@ -124,7 +124,7 @@ def main():
 
     count = 0
     with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
-        fieldnames = ["name", "price_1lb", "cup_characteristics", "roasting_notes"]
+        fieldnames = ["name", "url", "price_1lb", "cup_characteristics", "roasting_notes"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -143,6 +143,7 @@ def main():
             writer.writerow(
                 {
                     "name": name,
+                    "url": url,
                     "price_1lb": price,
                     "cup_characteristics": cup,
                     "roasting_notes": roast,
