@@ -112,65 +112,67 @@ layout: default
   </select>
 </div>
 
-<div class="roast-mv-center">
-  <fieldset class="pill-radios{% if page.coming_soon %} pill-radios--disabled{% endif %}"{% if page.coming_soon %} disabled{% endif %} style="justify-content:center; margin-bottom:0.5rem; border:none; padding:0;">
+<div class="roast-mv-center" style="margin-top:0.75rem;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Roast Amount</div>
+  <select id="order-size-select" class="subscribe-select"{% if page.coming_soon %} disabled{% endif %} style="min-width: 12rem;">
     {% for s in sizes %}
-      {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
-      {% if page.temporary_price and page.temporary_price[s] %}
-        {% assign effective_price = page.temporary_price[s] %}
-        {% assign show_temp = true %}
-      {% else %}
-        {% assign effective_price = price %}
-        {% assign show_temp = false %}
-      {% endif %}
-      <label class="order-radio"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}</label>
+      <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
     {% endfor %}
-  </fieldset>
-  <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">
-    <button class="add-to-order-btn" id="add-to-cart-btn">Add to Cart</button>
-  </div>
+  </select>
 </div>
-{% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center;">Ordering unavailable until this roast launches.</p>{% endif %}
+
 {% assign sub_config = site.data.subscriptions[page.slug] %}
-{% if sub_config %}
-<div class="roast-mv-divider"></div>
-<div class="roast-mv-center" style="text-align:center;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe</div>
-  {% if page.under_construction %}
-    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is mid-molt.</p>
+{% assign sub_available = true %}
+{% if page.under_construction or page.low_stock or page.coming_soon or sub_config == nil %}
+  {% assign sub_available = false %}
+{% endif %}
+
+<div class="purchase-options-container" style="max-width: 22rem; margin: 1.5rem auto 1rem; text-align: left;">
+  <div class="purchase-option-card" id="option-card-onetime" style="border: 1.5px solid #2c1e14; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: #fff; cursor: pointer; transition: border-color 0.15s, background-color 0.15s;">
+    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; margin: 0;">
+      <span style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #2c1e14; font-size: 0.9rem;">
+        <input type="radio" name="purchase-type" value="onetime" checked style="accent-color: #2c1e14; margin: 0;"{% if page.coming_soon %} disabled{% endif %}>
+        One-time purchase
+      </span>
+      <span id="price-display-onetime" style="font-weight: 700; color: #2c1e14; font-size: 0.95rem;"></span>
+    </label>
+  </div>
+
+  {% if sub_available %}
+  <div class="purchase-option-card" id="option-card-sub" style="border: 1.5px solid #e0d8cf; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: #faf8f5; cursor: pointer; transition: border-color 0.15s, background-color 0.15s;">
+    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; margin: 0;">
+      <span style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #2c1e14; font-size: 0.9rem;">
+        <input type="radio" name="purchase-type" value="subscribe" style="accent-color: #2c1e14; margin: 0;">
+        Subscribe
+      </span>
+      <span id="price-display-sub" style="font-weight: 700; color: #2c1e14; font-size: 0.95rem;"></span>
+    </label>
+    <div id="sub-details-panel" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #e0d8cf;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+        <span class="roast-mv-meta-label" style="margin: 0; font-size: 0.7rem;">Frequency</span>
+        <select id="sub-freq-select" class="subscribe-select" style="padding: 0.35rem 1.8rem 0.35rem 0.75rem; font-size: 0.8rem;">
+          {% for f in sub_config.frequencies %}
+            <option value="{{ f }}">{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+  {% elsif page.under_construction %}
+    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">Subscriptions unavailable while this roast profile is mid-molt.</p>
   {% elsif page.low_stock %}
-    <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable due to low stock.</p>
-  {% else %}
-    {% if sub_config.sizes.size > 1 %}
-    <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-      {% for s in sub_config.sizes %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-size" value="{{ s }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }}</label>{% endfor %}
-    </div>
-    {% endif %}
-    {% if sub_config.frequencies.size > 1 %}
-    <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-      {% for f in sub_config.frequencies %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-freq" value="{{ f }}"{% if page.coming_soon %} disabled{% endif %}> {{ f }}</label>{% endfor %}
-    </div>
-    {% endif %}
-    <a href="#" id="sub-link" class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}"{% if page.coming_soon %} aria-disabled="true"{% endif %}>Subscribe</a>
+    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">Subscriptions unavailable due to low stock.</p>
   {% endif %}
 </div>
-<script>
-(function () {
-  var linkEl = document.getElementById('sub-link');
-  function getChecked(name, fallback) {
-    var el = document.querySelector('input[name="' + name + '"]:checked');
-    return el ? el.value : fallback;
-  }
-  function updateLink() {
-    linkEl.href = '{{ "/subscribe/" | relative_url }}?roast={{ page.slug }}&size=' + encodeURIComponent(getChecked('sub-size', '{{ sub_config.sizes.first }}')) + '&frequency=' + encodeURIComponent(getChecked('sub-freq', '{{ sub_config.frequencies.first }}'));
-  }
-  document.querySelectorAll('input[name="sub-size"], input[name="sub-freq"]').forEach(function (r) {
-    r.addEventListener('change', updateLink);
-  });
-  updateLink();
-})();
-</script>
-{% endif %}
+
+<div class="roast-mv-center" style="margin-top: 1rem;">
+  <button class="add-to-order-btn" id="add-to-cart-btn"{% if page.coming_soon %} disabled{% endif %}>Add to Cart</button>
+  {% if sub_available %}
+  <a href="#" id="sub-link" class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" style="display: none;"{% if page.coming_soon %} aria-disabled="true"{% endif %}>Subscribe</a>
+  {% endif %}
+</div>
+
+{% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">Ordering unavailable until this roast launches.</p>{% endif %}
 
 {% if page.origins %}
 <div class="roast-mv-divider"></div>
@@ -210,23 +212,88 @@ layout: default
     return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
   }
 
-  var sizeRadios = document.querySelectorAll('input[name="order-size"]');
-  var addWrap = document.getElementById('add-to-cart-wrap');
-  var addBtn = document.getElementById('add-to-cart-btn');
+  var pricesOneTime = {
+    {% for s in sizes %}
+      {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
+      {% if page.temporary_price and page.temporary_price[s] %}{% assign eff_price = page.temporary_price[s] %}{% else %}{% assign eff_price = price %}{% endif %}
+      '{{ s }}': { price: {{ price | default: 0 }}, effective: {{ eff_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
 
-  sizeRadios.forEach(function (r) {
-    r.addEventListener('change', function () {
-      if (addWrap) addWrap.style.display = '';
-    });
-  });
+  var pricesSub = {
+    {% if sub_config and sub_config.prices %}
+      {% for entry in sub_config.prices %}
+        '{{ entry[0] }}': {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    {% endif %}
+  };
+
+  var sizeSelect = document.getElementById('order-size-select');
+  var grindSelect = document.getElementById('order-grind-select');
+  var priceOneTimeEl = document.getElementById('price-display-onetime');
+  var priceSubEl = document.getElementById('price-display-sub');
+  var cardOneTime = document.getElementById('option-card-onetime');
+  var cardSub = document.getElementById('option-card-sub');
+  var radioOneTime = document.querySelector('input[name="purchase-type"][value="onetime"]');
+  var radioSub = document.querySelector('input[name="purchase-type"][value="subscribe"]');
+  var subPanel = document.getElementById('sub-details-panel');
+  var addBtn = document.getElementById('add-to-cart-btn');
+  var subLink = document.getElementById('sub-link');
+  var freqSelect = document.getElementById('sub-freq-select');
+
+  function updatePricesAndMode() {
+    var size = sizeSelect ? sizeSelect.value : '12oz';
+    var otInfo = pricesOneTime[size] || { price: 12, effective: 12 };
+    if (priceOneTimeEl) {
+      if (otInfo.effective < otInfo.price) {
+        priceOneTimeEl.innerHTML = '<s>$' + otInfo.price + '</s> <strong style="color:#d32f2f;">$' + otInfo.effective + '</strong>';
+      } else {
+        priceOneTimeEl.textContent = '$' + otInfo.effective;
+      }
+    }
+
+    var subP = (pricesSub && pricesSub[size]) ? pricesSub[size] : otInfo.effective;
+    if (priceSubEl) {
+      priceSubEl.textContent = '$' + subP;
+    }
+
+    var isSub = radioSub && radioSub.checked;
+    if (isSub) {
+      if (cardSub) { cardSub.style.borderColor = '#2c1e14'; cardSub.style.background = '#fff'; }
+      if (cardOneTime) { cardOneTime.style.borderColor = '#e0d8cf'; cardOneTime.style.background = '#faf8f5'; }
+      if (subPanel) subPanel.style.display = 'block';
+      if (addBtn) addBtn.style.display = 'none';
+      if (subLink) subLink.style.display = 'inline-block';
+    } else {
+      if (cardOneTime) { cardOneTime.style.borderColor = '#2c1e14'; cardOneTime.style.background = '#fff'; }
+      if (cardSub) { cardSub.style.borderColor = '#e0d8cf'; cardSub.style.background = '#faf8f5'; }
+      if (subPanel) subPanel.style.display = 'none';
+      if (addBtn) addBtn.style.display = 'inline-block';
+      if (subLink) subLink.style.display = 'none';
+    }
+
+    if (subLink) {
+      var freq = freqSelect ? freqSelect.value : '{{ sub_config.frequencies.first | default: "Monthly" }}';
+      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
+      subLink.href = '{{ "/subscribe/" | relative_url }}?roast={{ page.slug }}&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
+    }
+  }
+
+  if (sizeSelect) sizeSelect.addEventListener('change', updatePricesAndMode);
+  if (grindSelect) grindSelect.addEventListener('change', updatePricesAndMode);
+  if (freqSelect) freqSelect.addEventListener('change', updatePricesAndMode);
+  if (radioOneTime) radioOneTime.addEventListener('change', updatePricesAndMode);
+  if (radioSub) radioSub.addEventListener('change', updatePricesAndMode);
+  if (cardOneTime) cardOneTime.addEventListener('click', function(e) { if (e.target !== radioOneTime) { radioOneTime.checked = true; updatePricesAndMode(); } });
+  if (cardSub) cardSub.addEventListener('click', function(e) { if (e.target !== radioSub && (!freqSelect || !freqSelect.contains(e.target))) { radioSub.checked = true; updatePricesAndMode(); } });
+
+  updatePricesAndMode();
 
   if (addBtn) {
     addBtn.addEventListener('click', function () {
-      var selected = document.querySelector('input[name="order-size"]:checked');
-      if (!selected) return;
-      var grindSelect = document.getElementById('order-grind-select');
+      var size = sizeSelect ? sizeSelect.value : '12oz';
       var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-      var k = cartKey(selected.dataset.roast, '', selected.value, grind);
+      var k = cartKey('{{ page.slug }}', '', size, grind);
       var cart = loadCart();
       cart[k] = (cart[k] || 0) + 1;
       saveCart(cart);
@@ -235,8 +302,6 @@ layout: default
       setTimeout(function () {
         addBtn.textContent = 'Add to Cart';
         addBtn.disabled = false;
-        sizeRadios.forEach(function (r) { r.checked = false; });
-        addWrap.style.display = 'none';
       }, 1200);
     });
   }

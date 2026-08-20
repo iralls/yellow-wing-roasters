@@ -29,13 +29,13 @@ permalink: /subscribe/
   </div>
 
   <div class="order-field">
-    <label>Size</label>
-    <div class="pill-radios">
-      <label class="order-radio"><input type="radio" name="entry.1606791078" value="12oz" checked> 12oz</label>
-      <label class="order-radio"><input type="radio" name="entry.1606791078" value="1lb"> 1lb</label>
-      <label class="order-radio"><input type="radio" name="entry.1606791078" value="2lb"> 2lb</label>
-      <label class="order-radio"><input type="radio" name="entry.1606791078" value="5lb"> 5lb</label>
-    </div>
+    <label for="sub-size-select">Size</label>
+    <select id="sub-size-select" name="entry.1606791078" class="subscribe-select" style="width: 100%;">
+      <option value="12oz" selected>12oz</option>
+      <option value="1lb">1lb</option>
+      <option value="2lb">2lb</option>
+      <option value="5lb">5lb</option>
+    </select>
   </div>
 
   <div class="order-field">
@@ -51,11 +51,11 @@ permalink: /subscribe/
   </div>
 
   <div class="order-field">
-    <label>Frequency</label>
-    <div class="pill-radios">
-      <label class="order-radio"><input type="radio" name="entry.2064801247" value="Every 2 weeks" checked> Every 2 weeks</label>
-      <label class="order-radio"><input type="radio" name="entry.2064801247" value="Monthly"> Monthly</label>
-    </div>
+    <label for="sub-freq-select">Frequency</label>
+    <select id="sub-freq-select" name="entry.2064801247" class="subscribe-select" style="width: 100%;">
+      <option value="Every 2 weeks" selected>Every 2 weeks</option>
+      <option value="Monthly">Monthly</option>
+    </select>
   </div>
 
   <fieldset class="order-delivery">
@@ -182,49 +182,45 @@ permalink: /subscribe/
 
   var config = subConfig[roast];
   if (config) {
-    var sizeRadios = form.querySelectorAll('input[name="entry.1606791078"]');
-    var firstSize = null;
-    for (var si = 0; si < sizeRadios.length; si++) {
-      var sizePill = sizeRadios[si].closest('.order-radio');
-      var sizeVal = sizeRadios[si].value;
-      if (config.sizes.indexOf(sizeVal) >= 0) {
-        sizePill.style.display = '';
-        if (config.prices && config.prices[sizeVal]) {
-          sizePill.childNodes[sizePill.childNodes.length - 1].textContent = ' ' + sizeVal + ' — $' + config.prices[sizeVal];
+    var sizeSelect = document.getElementById('sub-size-select');
+    if (sizeSelect && config.sizes) {
+      sizeSelect.innerHTML = '';
+      var qpSize = params.get('size');
+      var selectedSizeIdx = 0;
+      for (var si = 0; si < config.sizes.length; si++) {
+        var sizeVal = config.sizes[si];
+        var opt = document.createElement('option');
+        opt.value = sizeVal;
+        opt.textContent = sizeVal;
+        sizeSelect.appendChild(opt);
+        if (qpSize && qpSize === sizeVal) {
+          selectedSizeIdx = si;
         }
-        if (!firstSize) firstSize = sizeRadios[si];
-      } else {
-        sizePill.style.display = 'none';
-        sizeRadios[si].checked = false;
+      }
+      if (sizeSelect.options.length > 0) {
+        sizeSelect.selectedIndex = selectedSizeIdx;
       }
     }
-    var qpSize = params.get('size');
-    if (qpSize) {
-      for (var qs = 0; qs < sizeRadios.length; qs++) {
-        if (sizeRadios[qs].value === qpSize) { sizeRadios[qs].checked = true; firstSize = null; break; }
-      }
-    }
-    if (firstSize) firstSize.checked = true;
 
-    var freqRadios = form.querySelectorAll('input[name="entry.2064801247"]');
-    var firstFreq = null;
-    for (var fi = 0; fi < freqRadios.length; fi++) {
-      var freqPill = freqRadios[fi].closest('.order-radio');
-      if (config.frequencies.indexOf(freqRadios[fi].value) >= 0) {
-        freqPill.style.display = '';
-        if (!firstFreq) firstFreq = freqRadios[fi];
-      } else {
-        freqPill.style.display = 'none';
-        freqRadios[fi].checked = false;
+    var freqSelect = document.getElementById('sub-freq-select');
+    if (freqSelect && config.frequencies) {
+      freqSelect.innerHTML = '';
+      var qpFreq = params.get('frequency');
+      var selectedFreqIdx = 0;
+      for (var fi = 0; fi < config.frequencies.length; fi++) {
+        var freqVal = config.frequencies[fi];
+        var fOpt = document.createElement('option');
+        fOpt.value = freqVal;
+        fOpt.textContent = freqVal;
+        freqSelect.appendChild(fOpt);
+        if (qpFreq && qpFreq === freqVal) {
+          selectedFreqIdx = fi;
+        }
+      }
+      if (freqSelect.options.length > 0) {
+        freqSelect.selectedIndex = selectedFreqIdx;
       }
     }
-    var qpFreq = params.get('frequency');
-    if (qpFreq) {
-      for (var qf = 0; qf < freqRadios.length; qf++) {
-        if (freqRadios[qf].value === qpFreq) { freqRadios[qf].checked = true; firstFreq = null; break; }
-      }
-    }
-    if (firstFreq) firstFreq.checked = true;
 
     var qpGrind = params.get('grind');
     if (qpGrind) {
@@ -270,9 +266,9 @@ permalink: /subscribe/
 
     // Gather and set the price right before form submission to Google Forms
     if (config && config.prices && priceHiddenInput) {
-      var checkedSize = form.querySelector('input[name="entry.1606791078"]:checked');
-      if (checkedSize && config.prices[checkedSize.value]) {
-        priceHiddenInput.value = '$' + config.prices[checkedSize.value];
+      var selectedSize = form.querySelector('select[name="entry.1606791078"]');
+      if (selectedSize && config.prices[selectedSize.value]) {
+        priceHiddenInput.value = '$' + config.prices[selectedSize.value];
       }
     }
 
