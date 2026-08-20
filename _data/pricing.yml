@@ -1,5 +1,6 @@
 default:
   12oz: 14
+  1lb: 18
   2lb: 37
   5lb: 85
 
@@ -12,30 +13,37 @@ overrides:
     12oz: 16
   ethiopia-wush-wush:
     12oz: 17
+    1lb: 22
     2lb: 44
     5lb: 103
   feather-soot:
     12oz: 15
+    1lb: 19
     2lb: 39
     5lb: 91
   stillwater-steep:
     12oz: 15
+    1lb: 19
     2lb: 39
     5lb: 91
   lil-sipper:
     12oz: 15
+    1lb: 19
     2lb: 39
     5lb: 91
   sumatra-mandheling:
     12oz: 15
+    1lb: 19
     2lb: 39
     5lb: 91
   ethiopia-guji-uraga:
     12oz: 16
+    1lb: 20
     2lb: 41
     5lb: 97
   bolivia-fair-trade-organic:
     12oz: 15
+    1lb: 19
     2lb: 39
     5lb: 91
 

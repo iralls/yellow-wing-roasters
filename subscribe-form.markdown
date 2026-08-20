@@ -32,6 +32,7 @@ permalink: /subscribe/
     <label>Size</label>
     <div class="pill-radios">
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="12oz" checked> 12oz</label>
+      <label class="order-radio"><input type="radio" name="entry.1606791078" value="1lb"> 1lb</label>
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="2lb"> 2lb</label>
       <label class="order-radio"><input type="radio" name="entry.1606791078" value="5lb"> 5lb</label>
     </div>

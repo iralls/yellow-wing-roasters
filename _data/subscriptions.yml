@@ -1,43 +1,43 @@
 # Blends — all sizes, both frequencies
 early-bird:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
 feather-soot:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
 chimney-sweep:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
 
 lil-sipper:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
 colombia-supremo:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
 guatemala-antigua:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
 sumatra-mandheling:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
 bolivia-fair-trade-organic:
-  sizes: [12oz, 2lb, 5lb]
+  sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
 
 
 
