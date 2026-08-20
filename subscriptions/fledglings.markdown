@@ -25,7 +25,7 @@ Your guided entry into specialty coffee. Each month, you'll get a 12oz bag of on
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=fledglings' | relative_url }}" class="add-to-order-btn">Subscribe — $16/mo</a>
+  <a href="{{ '/subscribe/?roast=fledglings' | relative_url }}" class="add-to-order-btn">Subscribe — $14/mo</a>
 </div>
 
 </div>

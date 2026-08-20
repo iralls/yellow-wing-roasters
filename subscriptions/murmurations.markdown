@@ -25,7 +25,7 @@ The bits and pieces left over after mixing batches — not enough for a full run
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=murmurations' | relative_url }}" class="add-to-order-btn">Subscribe — $10/mo</a>
+  <a href="{{ '/subscribe/?roast=murmurations' | relative_url }}" class="add-to-order-btn">Subscribe — $8/mo</a>
 </div>
 
 </div>

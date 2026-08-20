@@ -123,7 +123,7 @@ layout: default
         {% assign effective_price = price %}
         {% assign show_temp = false %}
       {% endif %}
-      <label class="order-radio"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}{% if s == "2lb" %} <span class="save-badge">-3%</span>{% elsif s == "5lb" %} <span class="save-badge">-6%</span>{% endif %}</label>
+      <label class="order-radio"><input type="radio" name="order-size" value="{{ s }}" data-roast="{{ page.slug }}" data-price="{{ effective_price }}"> {{ s }} — {% if show_temp %}<s>${{ price }}</s> <strong style="color:#d32f2f;">${{ effective_price }}</strong>{% else %}${{ price }}{% endif %}</label>
     {% endfor %}
   </fieldset>
   <div class="roast-mv-center" id="add-to-cart-wrap" style="display:none;">
@@ -135,7 +135,7 @@ layout: default
 {% if sub_config %}
 <div class="roast-mv-divider"></div>
 <div class="roast-mv-center" style="text-align:center;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe <span class="save-badge">-10%</span></div>
+  <div class="roast-mv-meta-label" style="margin-bottom:0.5rem;">Subscribe</div>
   {% if page.under_construction %}
     <p class="coming-soon-footnote" style="text-align:center; margin-bottom:0.5rem;">Subscriptions unavailable while this roast profile is mid-molt.</p>
   {% elsif page.low_stock %}
@@ -143,7 +143,7 @@ layout: default
   {% else %}
     {% if sub_config.sizes.size > 1 %}
     <div class="pill-radios" style="justify-content:center; margin-bottom:0.5rem;">
-      {% for s in sub_config.sizes %}{% if roast_prices and roast_prices[s] %}{% assign orig_price = roast_prices[s] %}{% else %}{% assign orig_price = pricing.default[s] %}{% endif %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-size" value="{{ s }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }}{% if sub_config.prices %} — <s>${{ orig_price }}</s> ${{ sub_config.prices[s] }}{% endif %}</label>{% endfor %}
+      {% for s in sub_config.sizes %}<label class="order-radio{% if page.coming_soon %} order-radio--disabled{% endif %}"><input type="radio" name="sub-size" value="{{ s }}"{% if page.coming_soon %} disabled{% endif %}> {{ s }}</label>{% endfor %}
     </div>
     {% endif %}
     {% if sub_config.frequencies.size > 1 %}

@@ -2,42 +2,42 @@
 early-bird:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 feather-soot:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
 chimney-sweep:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 
 lil-sipper:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 colombia-supremo:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 guatemala-antigua:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 34, 5lb: 77}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 sumatra-mandheling:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
 bolivia-fair-trade-organic:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 36, 5lb: 82}
+  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
 
 
 
@@ -45,24 +45,24 @@ bolivia-fair-trade-organic:
 migrator:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 16}
+  prices: {12oz: 14}
 wingshot-collective:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 27}
+  prices: {12oz: 25}
 fledglings:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 16}
+  prices: {12oz: 14}
 murmurations:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 10}
+  prices: {12oz: 8}
 runts-rations:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 5}
+  prices: {12oz: 3}
 rubber-duck-club:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 16}
+  prices: {12oz: 14}

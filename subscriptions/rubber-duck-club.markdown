@@ -25,7 +25,7 @@ Help us debug our roasts. Every month, we’ll send you our latest experimental 
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=rubber-duck-club' | relative_url }}" class="add-to-order-btn">Subscribe — $16/mo</a>
+  <a href="{{ '/subscribe/?roast=rubber-duck-club' | relative_url }}" class="add-to-order-btn">Subscribe — $14/mo</a>
 </div>
 
 </div>

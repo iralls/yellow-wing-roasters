@@ -13,9 +13,9 @@ under_construction: true
 coming_soon: false
 temporary_price:
   12oz: 10
-  1lb: 14
-  2lb: 30
-  5lb: 70
+  1lb: 13
+  2lb: 26
+  5lb: 66
 origins:
   - Brazil
   - Guatemala
