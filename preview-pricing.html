@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — $/oz Ratio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Montserrat", sans-serif; background: #faf8f5; padding: 3rem 2rem; }
+
+  h1 { font-size: 1.4rem; font-weight: 900; color: #0D0F1F; margin-bottom: 0.5rem; }
+  .subtitle { font-size: 0.8rem; color: #888; margin-bottom: 2rem; }
+
+  .chart { max-width: 44rem; margin: 0 auto; }
+
+  .chart-section { font-size: 0.7rem; font-weight: 900; color: #999; letter-spacing: 0.1em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; padding-left: 13rem; }
+
+  .chart-row {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;
+  }
+  .chart-label {
+    width: 12rem; text-align: right; font-size: 0.75rem; font-weight: 700; color: #555;
+  }
+  .chart-bar-wrap { flex: 1; position: relative; height: 1.5rem; }
+  .chart-bar {
+    height: 100%; border-radius: 0.25rem; position: relative;
+    display: flex; align-items: center; justify-content: flex-end; padding-right: 0.5rem;
+    font-size: 0.6rem; font-weight: 700; color: #fff;
+  }
+  .chart-value {
+    position: absolute; right: -3.5rem; font-size: 0.65rem; font-weight: 700; color: #555;
+  }
+
+  .legend {
+    display: flex; gap: 1.5rem; margin-top: 2rem; justify-content: center; flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: #555; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div style="text-align:center;">
+  <h1>Price per Ounce — Current vs. Competitors</h1>
+  <div class="subtitle">Ordered by price per ounce (lowest / best value first).</div>
+</div>
+
+<div class="chart">
+
+  <div class="chart-section">Costco — Mayorga Cubano Roast</div>
+
+  <div class="chart-row">
+    <div class="chart-label">16oz — $12.50</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:44%; background:#3b71ca;">
+        <span class="chart-value">$0.78/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Yellow Wing — Bulk Tiers ($0.88/oz)</div>
+
+  <div class="chart-row">
+    <div class="chart-label">1lb (16oz) — $14</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:50%; background:#E99E00;">
+        <span class="chart-value">$0.88/oz</span>
+      </div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-label">2lb (32oz) — $28</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:50%; background:#E99E00;">
+        <span class="chart-value">$0.88/oz</span>
+      </div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-label">5lb (80oz) — $70</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:50%; background:#E99E00;">
+        <span class="chart-value">$0.88/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Yellow Wing — Standard & Specialty 12oz ($1.00/oz)</div>
+
+  <div class="chart-row">
+    <div class="chart-label">Standard 12oz — $12</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:57%; background:#E99E00;">
+        <span class="chart-value">$1.00/oz</span>
+      </div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-label">Specialty 12oz — $12</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:57%; background:#d38d00;">
+        <span class="chart-value">$1.00/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Yellow Wing — Single Origin 12oz ($1.17/oz)</div>
+
+  <div class="chart-row">
+    <div class="chart-label">Single Origin 12oz — $14</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:67%; background:#b87900;">
+        <span class="chart-value">$1.17/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Caffe Vita Caffe Del Sol</div>
+
+  <div class="chart-row">
+    <div class="chart-label">12oz — $15</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:71%; background:#6b8e5a;">
+        <span class="chart-value">$1.25/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Willoughby's House Blend</div>
+
+  <div class="chart-row">
+    <div class="chart-label">12oz — $15</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:71%; background:#8a6830;">
+        <span class="chart-value">$1.25/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">La Colombe Nizza</div>
+
+  <div class="chart-row">
+    <div class="chart-label">12oz — $16</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:76%; background:#555;">
+        <span class="chart-value">$1.33/oz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-section">Stumptown Hair Bender</div>
+
+  <div class="chart-row">
+    <div class="chart-label">12oz — $19</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:90%; background:#c44d2a;">
+        <span class="chart-value">$1.58/oz</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3b71ca;"></div>Costco (Mayorga)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E99E00;"></div>Yellow Wing Standard</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d38d00;"></div>Yellow Wing Specialty</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#b87900;"></div>Yellow Wing Single Origin</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6b8e5a;"></div>Caffe Vita</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8a6830;"></div>Willoughby's</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#555;"></div>La Colombe</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c44d2a;"></div>Stumptown</div>
+</div>
+
+</body>
+</html>

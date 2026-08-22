@@ -9,13 +9,8 @@ tasting_notes: Dark Chocolate, Blood Orange, Brown Sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
-under_construction: true
+under_construction: false
 coming_soon: false
-temporary_price:
-  12oz: 10
-  1lb: 13
-  2lb: 26
-  5lb: 66
 origins:
   - Brazil
   - Guatemala

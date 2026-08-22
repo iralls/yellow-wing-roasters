@@ -2,42 +2,50 @@
 early-bird:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 feather-soot:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
 chimney-sweep:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 
 lil-sipper:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 colombia-supremo:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 guatemala-antigua:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 sumatra-mandheling:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 bolivia-fair-trade-organic:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 17, 2lb: 34, 5lb: 86}
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
+ethiopia-wush-wush:
+  sizes: [12oz, 1lb, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 14, 1lb: 17, 2lb: 34, 5lb: 85}
+ethiopia-guji-uraga:
+  sizes: [12oz, 1lb, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 14, 1lb: 16, 2lb: 32, 5lb: 80}
 
 
 
@@ -53,7 +61,7 @@ wingshot-collective:
 fledglings:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 14}
+  prices: {12oz: 12}
 murmurations:
   sizes: [12oz]
   frequencies: [Monthly]
@@ -61,8 +69,8 @@ murmurations:
 runts-rations:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 3}
+  prices: {12oz: 5}
 rubber-duck-club:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 14}
+  prices: {12oz: 10}

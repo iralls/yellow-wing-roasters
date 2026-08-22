@@ -1,50 +1,50 @@
 default:
   12oz: 12
-  1lb: 16
-  2lb: 32
-  5lb: 80
+  1lb: 14
+  2lb: 28
+  5lb: 70
 
 overrides:
   the-aviary:
     price: 38
   runts-rations:
-    12oz: 3
+    12oz: 5
   rubber-duck-club:
-    12oz: 14
+    12oz: 10
   ethiopia-wush-wush:
-    12oz: 15
-    1lb: 20
-    2lb: 40
-    5lb: 100
+    12oz: 14
+    1lb: 17
+    2lb: 34
+    5lb: 85
   feather-soot:
-    12oz: 13
-    1lb: 17
-    2lb: 34
-    5lb: 86
+    12oz: 12
+    1lb: 15
+    2lb: 30
+    5lb: 75
   stillwater-steep:
-    12oz: 13
-    1lb: 17
-    2lb: 34
-    5lb: 86
+    12oz: 12
+    1lb: 15
+    2lb: 30
+    5lb: 75
   lil-sipper:
-    12oz: 13
-    1lb: 17
-    2lb: 34
-    5lb: 86
+    12oz: 12
+    1lb: 15
+    2lb: 30
+    5lb: 75
   sumatra-mandheling:
-    12oz: 13
-    1lb: 17
-    2lb: 34
-    5lb: 86
+    12oz: 12
+    1lb: 16
+    2lb: 32
+    5lb: 80
   ethiopia-guji-uraga:
     12oz: 14
-    1lb: 18
-    2lb: 37
-    5lb: 93
+    1lb: 16
+    2lb: 32
+    5lb: 80
   bolivia-fair-trade-organic:
-    12oz: 13
-    1lb: 17
-    2lb: 34
-    5lb: 86
+    12oz: 12
+    1lb: 15
+    2lb: 30
+    5lb: 75
 
 
