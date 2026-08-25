@@ -41,7 +41,10 @@ permalink: /roasts/
 
 <!-- Roasts Grid -->
 <div class="roasts-grid" id="roasts-grid">
-  {% assign sorted_roasts = site.roasts | sort: "order" %}
+  {% assign blends = site.roasts | where: "category", "blend" | sort: "order" %}
+  {% assign seasonals = site.roasts | where: "category", "seasonal" | sort: "order" %}
+  {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
+  {% assign sorted_roasts = blends | concat: seasonals | concat: single_origins %}
   {% for r in sorted_roasts %}
     {% if r.origins %}
       {% assign origin_list = r.origins | join: "," %}
