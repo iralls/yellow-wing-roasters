@@ -1,14 +1,14 @@
 ---
-title: "Breakfast (Book)worm"
+title: "Homeroom Hoot"
 subtitle: "Back to School Blend"
-slug: breakfast-bookworm
+slug: homeroom-hoot
 category: seasonal
 order: 5
 roast_level: 3
 tasting_notes: Smooth cocoa, toasted nut, caramel sweetness
 brewing_method: Pour-over, Espresso, Drip, French Press
-mascot: bookworm
-mascot_file: audubon-book-transparent.png
+mascot: barred-owl
+mascot_file: audubon-barred-owl-transparent.png
 just_hatched: true
 origins:
   - Colombia
