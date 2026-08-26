@@ -32,7 +32,7 @@ layout: default
 </div>
 {% elsif page.coming_soon %}
 <div class="coming-soon-bar">
-  <span class="coming-soon-bar-badge">Coming Soon</span>
+  <span class="coming-soon-bar-badge">{{ page.status_badge | default: "Incubating" }}</span>
   <span class="coming-soon-bar-text">This roast isn't available to order yet — check back soon.</span>
 </div>
 {% elsif page.low_stock %}

@@ -18,7 +18,7 @@ permalink: /blends/
     {% if r.under_construction %}
       <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
     {% elsif r.coming_soon %}
-      <div class="roasts-entry-soon-badge">Coming Soon</div>
+      <div class="roasts-entry-soon-badge">{{ r.status_badge | default: "Incubating" }}</div>
     {% elsif r.low_stock %}
       <div class="roasts-entry-lowstock-badge">Low Stock</div>
     {% endif %}
