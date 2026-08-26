@@ -3,7 +3,7 @@ title: Mulled Feathers
 subtitle: Holiday Blend
 slug: mulled-feathers
 category: seasonal
-order: 11
+order: 12
 roast_level: 3
 tasting_notes: Allspice, clove, dark chocolate, orange peel
 brewing_method: Pour-over, Espresso, Drip, French Press
