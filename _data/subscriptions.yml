@@ -22,6 +22,11 @@ boo-boo-patoo:
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
 
+mulled-feathers:
+  sizes: [12oz, 1lb, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
+
 homeroom-hoot:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
