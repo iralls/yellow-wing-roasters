@@ -8,6 +8,9 @@ permalink: /seasonals/
 
 {% assign all_roasts = site.roasts | sort: "order" %}
 {% assign cat_roasts = all_roasts | where: "category", "seasonal" %}
+{% assign cat_active = cat_roasts | where_exp: "item", "item.coming_soon != true" %}
+{% assign cat_incubating = cat_roasts | where_exp: "item", "item.coming_soon == true" %}
+{% assign cat_roasts = cat_active | concat: cat_incubating %}
 
 <div class="roasts-grid">
 {% for r in cat_roasts %}
@@ -19,6 +22,8 @@ permalink: /seasonals/
       <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
     {% elsif r.coming_soon %}
       <div class="roasts-entry-soon-badge">{{ r.status_badge | default: "Incubating" }}</div>
+    {% elsif r.just_hatched %}
+      <div class="roasts-entry-hatched-badge">{{ r.status_badge | default: "Just Hatched" }}</div>
     {% elsif r.low_stock %}
       <div class="roasts-entry-lowstock-badge">Low Stock</div>
     {% endif %}

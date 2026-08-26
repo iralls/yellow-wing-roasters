@@ -42,8 +42,20 @@ permalink: /roasts/
 <!-- Roasts Grid -->
 <div class="roasts-grid" id="roasts-grid">
   {% assign blends = site.roasts | where: "category", "blend" | sort: "order" %}
+  {% assign blends_active = blends | where_exp: "item", "item.coming_soon != true" %}
+  {% assign blends_incubating = blends | where_exp: "item", "item.coming_soon == true" %}
+  {% assign blends = blends_active | concat: blends_incubating %}
+
   {% assign seasonals = site.roasts | where: "category", "seasonal" | sort: "order" %}
+  {% assign seasonals_active = seasonals | where_exp: "item", "item.coming_soon != true" %}
+  {% assign seasonals_incubating = seasonals | where_exp: "item", "item.coming_soon == true" %}
+  {% assign seasonals = seasonals_active | concat: seasonals_incubating %}
+
   {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
+  {% assign single_origins_active = single_origins | where_exp: "item", "item.coming_soon != true" %}
+  {% assign single_origins_incubating = single_origins | where_exp: "item", "item.coming_soon == true" %}
+  {% assign single_origins = single_origins_active | concat: single_origins_incubating %}
+
   {% assign sorted_roasts = blends | concat: seasonals | concat: single_origins %}
   {% for r in sorted_roasts %}
     {% if r.origins %}
@@ -67,6 +79,8 @@ permalink: /roasts/
         <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
       {% elsif r.coming_soon %}
         <div class="roasts-entry-soon-badge">{{ r.status_badge | default: "Incubating" }}</div>
+      {% elsif r.just_hatched %}
+        <div class="roasts-entry-hatched-badge">{{ r.status_badge | default: "Just Hatched" }}</div>
       {% elsif r.low_stock %}
         <div class="roasts-entry-lowstock-badge">Low Stock</div>
       {% endif %}
