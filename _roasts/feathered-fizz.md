@@ -11,9 +11,9 @@ mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png
 coming_soon: true
 origins:
-  - Kenya
-  - Ethiopia
-  - Peru
+  - Kenya Washed
+  - Ethiopia Natural
+  - Peru Washed
 description: >-
   A vibrant New Year's blend crafted to celebrate the countdown. Effervescent notes of bergamot and black tea layer over ripe blackberry and a smooth bittersweet chocolate finish.
 ---

@@ -19,9 +19,9 @@ temporary_price:
 
 card_image: /images/audubon-robin-transparent.png
 origins:
-  - Colombia
-  - Peru
-  - Kenya
+  - Colombia Washed
+  - Peru Washed
+  - Kenya Washed
 description: >-
   Our signature house blend, modeled after Willoughby's. It's balanced and smooth, pairing a rich cocoa and caramel sweetness with just a hint of bright fruit to keep things interesting. Easy-drinking, consistent, and great however you like to brew it.
 ---

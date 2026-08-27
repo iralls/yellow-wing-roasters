@@ -10,8 +10,8 @@ brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Kenya
-  - Ethiopia
+  - Kenya Washed
+  - Ethiopia Washed
 under_construction: true
 coming_soon: false
 temporary_price:

@@ -11,9 +11,9 @@ mascot: cardinal
 mascot_file: audubon-cardinal-transparent.png
 coming_soon: true
 origins:
-  - Guatemala
-  - Burundi
-  - Ethiopia
+  - Guatemala Washed
+  - Burundi Washed
+  - Ethiopia Washed
 description: >-
   A warm, festive holiday blend roasted to a rich Full City profile. Delivers vibrant notes of sweet orange peel, dark chocolate, and cozy mulling spices for a comforting winter cup.
 ---

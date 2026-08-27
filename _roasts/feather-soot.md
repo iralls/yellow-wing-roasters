@@ -11,8 +11,8 @@ mascot: canary
 mascot_file: audubon-canary-transparent.png
 coming_soon: false
 origins:
-  - Bolivia
-  - Sumatra
+  - Bolivia Washed
+  - Sumatra Wet-Hulled
 description: >-
   A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.
 ---

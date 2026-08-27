@@ -12,9 +12,9 @@ mascot_file: audubon-chimney-swift-2-transparent.png
 under_construction: false
 coming_soon: false
 origins:
-  - Brazil
-  - Guatemala
-  - Ethiopia
+  - Brazil Natural
+  - Guatemala Washed
+  - Ethiopia Natural
 description: >-
   This is our everyday espresso—smooth, rich, and balanced. It’s got a rich milk chocolate base that feels clean and polished, with just enough sweetness to keep it interesting. It’s smooth enough to drink as a straight shot, but it has the bright, balanced finish that makes a great, punchy cappuccino.
 ---

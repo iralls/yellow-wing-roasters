@@ -11,8 +11,8 @@ mascot: heron
 mascot_file: audubon-heron-transparent.png
 coming_soon: false
 origins:
-  - Bolivia
-  - Sumatra
+  - Bolivia Washed
+  - Sumatra Wet-Hulled
 description: >-
   Made specifically for cold brewing. We roast this to bring out a deep, fudge-like sweetness that stays smooth even when poured over a full glass of ice. It's naturally sweet, rich, and your best bet for a great iced coffee.
 ---

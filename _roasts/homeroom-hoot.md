@@ -11,8 +11,8 @@ mascot: barred-owl
 mascot_file: audubon-barred-owl-transparent.png
 just_hatched: true
 origins:
-  - Colombia
-  - Peru
+  - Colombia Washed
+  - Peru Washed
 description: >-
   A comforting Back to School blend combining smooth beans roasted to a balanced Full City profile. Delivers rich cocoa warmth and caramel sweetness for a focused, easy-drinking morning cup.
 ---

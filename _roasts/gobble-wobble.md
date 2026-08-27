@@ -11,9 +11,9 @@ mascot: turkey
 mascot_file: turkey-transparent.png
 coming_soon: true
 origins:
-  - Ethiopia
-  - Brazil
-  - Kenya
+  - Ethiopia Washed
+  - Brazil Natural
+  - Kenya Washed
 description: >-
   A festive Thanksgiving blend roasted to a rich Full City profile. Delivers warm notes of roasted pecan and brown sugar balanced by a vibrant pop of blackcurrant and tart cranberry sweetness.
 ---
