@@ -9,6 +9,8 @@ tasting_notes: Sweet blueberry, milk chocolate, dark cherry, honeysuckle
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: mourning-doves
 mascot_file: mourning-doves-transparent.png
+bg_pattern: /images/patterns/hearts-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Ethiopia Natural

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
 {% include head.html %}
 </head>
-<body>
+<body{% if page.bg_pattern %} style="background-image: url('{{ page.bg_pattern | relative_url }}'); background-repeat: repeat; background-size: {{ page.bg_pattern_size | default: '380px 380px' }};"{% endif %}>
   {% include cart-indicator.html %}
   {% include dropdown-menu.html %}
   <div class="container">

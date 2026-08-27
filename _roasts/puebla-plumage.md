@@ -9,6 +9,8 @@ tasting_notes: Bittersweet chocolate, sweet fig, toasted hazelnut, cocoa
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: golden-eagle
 mascot_file: golden-eagle-transparent.png
+bg_pattern: /images/patterns/mexico-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Guatemala Washed

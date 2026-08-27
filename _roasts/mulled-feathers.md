@@ -9,6 +9,8 @@ tasting_notes: Allspice, clove, dark chocolate, orange peel
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: cardinal
 mascot_file: audubon-cardinal-transparent.png
+bg_pattern: /images/patterns/holiday-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Guatemala Washed

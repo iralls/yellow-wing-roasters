@@ -9,6 +9,8 @@ tasting_notes: Black tea, bergamot, ripe blackberry, bittersweet chocolate
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png
+bg_pattern: /images/patterns/champagne-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Kenya Washed

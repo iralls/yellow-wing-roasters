@@ -9,6 +9,8 @@ tasting_notes: Blackcurrant, tart cranberry, roasted pecan, brown sugar
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: turkey
 mascot_file: turkey-transparent.png
+bg_pattern: /images/patterns/thanksgiving-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Ethiopia Washed

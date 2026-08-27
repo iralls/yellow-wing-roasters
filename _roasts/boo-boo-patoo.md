@@ -9,6 +9,8 @@ tasting_notes: Rich chocolate, toasted nuts
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: potoo
 mascot_file: audubon-potoo-transparent.png
+bg_pattern: /images/patterns/halloween-pattern.svg
+bg_pattern_size: 380px 380px
 coming_soon: true
 origins:
   - Brazil Natural
