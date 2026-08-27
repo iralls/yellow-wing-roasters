@@ -17,6 +17,8 @@ layout: default
 {% elsif page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  {% assign m_name = site.data.mascots[page.mascot] | default: page.mascot_name | default: page.mascot %}
+  {% if m_name %}<div class="roast-mv-bird-label">{{ m_name }}</div>{% endif %}
 </div>
 {% endif %}
 

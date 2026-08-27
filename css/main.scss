@@ -509,11 +509,25 @@ h1.roast-title {
 
 .roast-mv-bird-wrap {
   margin-bottom: 2rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .roast-mv-bird {
   height: 10rem;
   width: auto;
+}
+
+.roast-mv-bird-label {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a7060;
+  margin-top: 0.5rem;
+  text-align: center;
 }
 
 .roast-mv-title {
@@ -1772,6 +1786,7 @@ h1.roast-title {
 .roasts-entry-visual {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.65rem;
@@ -1783,6 +1798,17 @@ h1.roast-title {
   object-fit: contain;
   filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.15));
   transition: transform 0.2s;
+}
+
+.roasts-entry-mascot-label {
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #998070;
+  margin-top: 0.35rem;
+  text-align: center;
 }
 
 .roasts-entry:hover .roasts-entry-mascot {

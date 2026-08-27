@@ -9,6 +9,7 @@ elevation: 1,800 – 2,100m
 tasting_notes: Blueberries, chocolate, pronounced fruit
 brewing_method: Pour-over, Drip
 processing_method: Natural
+mascot: rose-breasted-grosbeak
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
 rotating: true
 description: >-
