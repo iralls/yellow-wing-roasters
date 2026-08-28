@@ -1,72 +1,74 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
-  <!-- Homeroom Hoot Pattern: Open Books Only (Clean, visible, elegant spacing) -->
-  <g fill-opacity="0.22" stroke-opacity="0.25">
+  <!-- Homeroom Hoot Pattern: Black & White Open Books and Classic Yellow Pencils -->
+  <g fill-opacity="0.25" stroke-opacity="0.25">
     
-    <!-- 1. Open Book (Top Left) -->
-    <g transform="translate(45, 30) rotate(-12) scale(0.75)">
-      <!-- Book Pages -->
-      <path fill="#ffffff" stroke="#94a3b8" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <!-- Book Cover Spine (Red Cover) -->
-      <path fill="#c1121f" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#800f2f" stroke-width="1.2"/>
+    <!-- 1. Black & White Open Book (Top Left) -->
+    <g transform="translate(45, 30) rotate(-12) scale(0.8)">
+      <!-- Pages -->
+      <path fill="#ffffff" stroke="#64748b" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
+      <!-- Black Cover Spine -->
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#0f172a" stroke-width="1.2"/>
       <!-- Text Lines -->
-      <line x1="6" y1="13" x2="14" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="6" y1="17" x2="14" y2="17" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="13" x2="30" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="17" x2="30" y2="17" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="6" y1="13" x2="14" y2="13" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="6" y1="17" x2="14" y2="17" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="22" y1="13" x2="30" y2="13" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="22" y1="17" x2="30" y2="17" stroke="#94a3b8" stroke-width="1"/>
     </g>
 
-    <!-- 2. Open Book (Top Right) -->
-    <g transform="translate(165, 45) rotate(15) scale(0.75)">
-      <path fill="#ffffff" stroke="#94a3b8" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <!-- Blue Cover -->
-      <path fill="#0077b6" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#023e8a" stroke-width="1.2"/>
-      <line x1="6" y1="13" x2="14" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="6" y1="17" x2="14" y2="17" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="13" x2="30" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="17" x2="30" y2="17" stroke="#cbd5e1" stroke-width="1"/>
+    <!-- 2. Classic Yellow Pencil (Top Right) -->
+    <g transform="translate(170, 45) rotate(35) scale(0.85)">
+      <!-- Yellow Hex Body -->
+      <rect fill="#ffb703" stroke="#d48806" stroke-width="1" x="0" y="2" width="22" height="5" rx="0.5"/>
+      <!-- Pink Eraser & Silver Ferrule -->
+      <rect fill="#f43f5e" x="-4" y="2" width="2.5" height="5" rx="0.5"/>
+      <rect fill="#94a3b8" x="-1.5" y="2" width="1.5" height="5"/>
+      <!-- Sharpened Wood Tip -->
+      <polygon fill="#fde68a" stroke="#d48806" stroke-width="0.8" points="22,2 27,4.5 22,7"/>
+      <!-- Graphite Lead Point -->
+      <polygon fill="#0f172a" points="25.5,3.7 27,4.5 25.5,5.3"/>
     </g>
 
-    <!-- 3. Open Book (Bottom Left) -->
-    <g transform="translate(45, 155) rotate(-15) scale(0.75)">
-      <path fill="#ffffff" stroke="#94a3b8" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <!-- Leather Amber Cover -->
-      <path fill="#d48806" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#8a5800" stroke-width="1.2"/>
-      <line x1="6" y1="13" x2="14" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="6" y1="17" x2="14" y2="17" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="13" x2="30" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="17" x2="30" y2="17" stroke="#cbd5e1" stroke-width="1"/>
+    <!-- 3. Classic Yellow Pencil (Bottom Left) -->
+    <g transform="translate(45, 160) rotate(-25) scale(0.85)">
+      <rect fill="#ffb703" stroke="#d48806" stroke-width="1" x="0" y="2" width="22" height="5" rx="0.5"/>
+      <rect fill="#f43f5e" x="-4" y="2" width="2.5" height="5" rx="0.5"/>
+      <rect fill="#94a3b8" x="-1.5" y="2" width="1.5" height="5"/>
+      <polygon fill="#fde68a" stroke="#d48806" stroke-width="0.8" points="22,2 27,4.5 22,7"/>
+      <polygon fill="#0f172a" points="25.5,3.7 27,4.5 25.5,5.3"/>
     </g>
 
-    <!-- 4. Open Book (Bottom Right) -->
-    <g transform="translate(165, 150) rotate(18) scale(0.75)">
-      <path fill="#ffffff" stroke="#94a3b8" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <!-- Green Cover -->
-      <path fill="#2d5a27" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#1b4332" stroke-width="1.2"/>
-      <line x1="6" y1="13" x2="14" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="6" y1="17" x2="14" y2="17" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="13" x2="30" y2="13" stroke="#cbd5e1" stroke-width="1"/>
-      <line x1="22" y1="17" x2="30" y2="17" stroke="#cbd5e1" stroke-width="1"/>
+    <!-- 4. Black & White Open Book (Bottom Right) -->
+    <g transform="translate(165, 150) rotate(15) scale(0.8)">
+      <path fill="#ffffff" stroke="#64748b" stroke-width="1.2" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26" stroke="#0f172a" stroke-width="1.2"/>
+      <line x1="6" y1="13" x2="14" y2="13" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="6" y1="17" x2="14" y2="17" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="22" y1="13" x2="30" y2="13" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="22" y1="17" x2="30" y2="17" stroke="#94a3b8" stroke-width="1"/>
     </g>
 
-    <!-- Corner Wrap Open Book (Seamless Tiling) -->
+    <!-- Corner Wrap Book (Seamless Tiling) -->
     <g transform="translate(-5, -5) scale(0.65)">
       <path fill="#ffffff" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <path fill="#c1121f" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
     </g>
     <g transform="translate(235, -5) scale(0.65)">
       <path fill="#ffffff" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <path fill="#c1121f" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
     </g>
     <g transform="translate(-5, 235) scale(0.65)">
       <path fill="#ffffff" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <path fill="#c1121f" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
     </g>
     <g transform="translate(235, 235) scale(0.65)">
       <path fill="#ffffff" d="M 2 8 C 8 4, 14 6, 18 8 C 22 6, 28 4, 34 8 L 34 26 C 28 22, 22 24, 18 26 C 14 24, 8 22, 2 26 Z"/>
-      <path fill="#c1121f" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
+      <path fill="#1e293b" d="M 0 9 L 0 27 C 8 23, 14 25, 18 27 C 22 25, 28 23, 36 27 L 36 9 M 18 8 L 18 26"/>
     </g>
 
-    <circle cx="120" cy="115" r="2.5" fill="#d48806"/>
+    <!-- Floating Accents -->
+    <circle cx="120" cy="115" r="2.5" fill="#ffb703"/>
+    <circle cx="115" cy="40" r="1.5" fill="#94a3b8"/>
+    <circle cx="125" cy="190" r="1.5" fill="#94a3b8"/>
 
   </g>
 </svg>
