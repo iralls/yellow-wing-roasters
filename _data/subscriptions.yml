@@ -15,7 +15,7 @@ chimney-sweep:
 lil-sipper:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 13, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
 
 boo-boo-patoo:
   sizes: [12oz, 1lb, 2lb, 5lb]
