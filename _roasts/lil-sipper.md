@@ -5,12 +5,12 @@ slug: lil-sipper
 category: blend
 order: 4
 roast_level: 2
-tasting_notes: Blackcurrant, vanilla
+tasting_notes: Rosewater, Lemon, Maple, Toasted Nut
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Kenya Washed
+  - Colombia Washed
   - Ethiopia Washed
 under_construction: true
 coming_soon: false
