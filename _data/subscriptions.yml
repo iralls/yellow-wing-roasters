@@ -57,7 +57,7 @@ homeroom-hoot:
 brazil-estavam-mario:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 14, 2lb: 28, 5lb: 70}
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
 colombia-supremo:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
@@ -73,7 +73,7 @@ sumatra-mandheling:
 bolivia-fair-trade-organic:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
+  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
 ethiopia-wush-wush:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
