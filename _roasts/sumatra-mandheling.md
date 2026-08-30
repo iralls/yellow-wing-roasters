@@ -1,5 +1,5 @@
 ---
-title: Sumatra Mandheling
+title: Sumatra Mandheling Fair Trade Organic
 slug: sumatra-mandheling
 category: single origin
 order: 6
