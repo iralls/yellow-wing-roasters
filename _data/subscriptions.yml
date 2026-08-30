@@ -69,7 +69,7 @@ guatemala-antigua:
 sumatra-mandheling:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 12, 1lb: 16, 2lb: 32, 5lb: 80}
+  prices: {12oz: 13, 1lb: 16, 2lb: 32, 5lb: 80}
 bolivia-fair-trade-organic:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
@@ -77,7 +77,7 @@ bolivia-fair-trade-organic:
 ethiopia-wush-wush:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
-  prices: {12oz: 14, 1lb: 17, 2lb: 34, 5lb: 85}
+  prices: {12oz: 14, 1lb: 18, 2lb: 36, 5lb: 90}
 ethiopia-guji-uraga:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
