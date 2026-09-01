@@ -42,6 +42,11 @@ layout: default
   <span class="under-construction-bar-badge" style="background:#e65100; color:#fff;">Low Stock</span>
   <span class="under-construction-bar-text" style="color:#e65100;">Quantities are limited! Subscriptions are unavailable for this roast while stock is low.</span>
 </div>
+{% elsif page.migrating_soon %}
+<div class="under-construction-bar" style="background:#fff3e0; border-color:#ffe0b2; color:#c2410c;">
+  <span class="under-construction-bar-badge" style="background:#c2410c; color:#fff;">{{ page.status_badge | default: "Migrating Soon" }}</span>
+  <span class="under-construction-bar-text" style="color:#c2410c;">{{ page.status_text | default: "Seasonal favorite heading south soon! Order now before it leaves the roost." }}</span>
+</div>
 {% elsif page.just_hatched %}
 <div class="under-construction-bar" style="background:#e8f5e9; border-color:#c8e6c9; color:#1b5e20;">
   <span class="under-construction-bar-badge" style="background:#2e7d32; color:#fff;">{{ page.status_badge | default: "Just Hatched" }}</span>

@@ -21,6 +21,8 @@ permalink: /single-origins/
       <div class="roasts-entry-soon-badge">{{ r.status_badge | default: "Incubating" }}</div>
     {% elsif r.just_hatched %}
       <div class="roasts-entry-hatched-badge">{{ r.status_badge | default: "Just Hatched" }}</div>
+    {% elsif r.migrating_soon %}
+      <div class="roasts-entry-migrating-badge">{{ r.status_badge | default: "Migrating Soon" }}</div>
     {% elsif r.low_stock %}
       <div class="roasts-entry-lowstock-badge">Low Stock</div>
     {% endif %}

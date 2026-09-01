@@ -13,7 +13,6 @@ origins:
   - Colombia Washed
   - Ethiopia Washed
 under_construction: true
-coming_soon: false
 temporary_price:
   12oz: 10
   1lb: 13
