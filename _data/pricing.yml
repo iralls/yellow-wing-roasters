@@ -61,5 +61,10 @@ overrides:
     1lb: 15
     2lb: 30
     5lb: 75
+  homeroom-hoot:
+    12oz: 12
+    1lb: 15
+    2lb: 30
+    5lb: 75
 
 
