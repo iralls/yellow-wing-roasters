@@ -576,17 +576,61 @@ permalink: /roasts/build-your-own-blend/
 
 <script>
 (function () {
-  var BEANS_DATA = [
-    {% for b in site.data.roastmasters_beans %}
-      {
-        name: {{ b.name | jsonify }},
-        url: {{ b.url | jsonify }},
-        price: parseFloat("{{ b.price_1lb }}") || 0,
-        cup_characteristics: {{ b.cup_characteristics | jsonify }},
-        roasting_notes: {{ b.roasting_notes | jsonify }}
-      }{% unless forloop.last %},{% endunless %}
-    {% endfor %}
+  var rawBeans = [
+    {% if site.data.custom_beans %}
+      {% for b in site.data.custom_beans %}
+        {% if b.name and b.name != "" %}
+        {
+          name: {{ b.name | jsonify }},
+          url: {{ b.url | default: "" | jsonify }},
+          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
+          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
+          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
+        },
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if site.data.other_beans %}
+      {% for b in site.data.other_beans %}
+        {% if b.name and b.name != "" %}
+        {
+          name: {{ b.name | jsonify }},
+          url: {{ b.url | default: "" | jsonify }},
+          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
+          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
+          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
+        },
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if site.data.roastmasters_beans %}
+      {% for b in site.data.roastmasters_beans %}
+        {% if b.name and b.name != "" %}
+        {
+          name: {{ b.name | jsonify }},
+          url: {{ b.url | default: "" | jsonify }},
+          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
+          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
+          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
+        },
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   ];
+
+  // Deduplicate beans by name (custom beans listed first take priority)
+  var seen = {};
+  var BEANS_DATA = [];
+  for (var i = 0; i < rawBeans.length; i++) {
+    var item = rawBeans[i];
+    if (item && item.name) {
+      var key = item.name.trim().toLowerCase();
+      if (!seen[key]) {
+        seen[key] = true;
+        BEANS_DATA.push(item);
+      }
+    }
+  }
 
   function getProfile(name) {
     var bean = getBeanData(name);
@@ -594,7 +638,12 @@ permalink: /roasts/build-your-own-blend/
     var nameLower = (name || "").toLowerCase();
 
     var origin = "";
-    var origins = ["Bolivia", "Brazil", "Burundi", "Colombia", "Costa Rica", "Ethiopia", "Guatemala", "Kenya", "Panama", "Peru", "Sumatra"];
+    var origins = [
+      "Bolivia", "Brazil", "Burundi", "Colombia", "Costa Rica", "DR Congo",
+      "Ecuador", "El Salvador", "Ethiopia", "Guatemala", "Honduras", "Indonesia",
+      "Java", "Kenya", "Mexico", "Nicaragua", "Panama", "Papua New Guinea",
+      "Peru", "Rwanda", "Sumatra", "Tanzania", "Uganda", "Yemen"
+    ];
     for (var i = 0; i < origins.length; i++) {
       if (nameLower.indexOf(origins[i].toLowerCase()) >= 0) {
         origin = origins[i];
@@ -677,7 +726,37 @@ permalink: /roasts/build-your-own-blend/
   var submitBtn = document.getElementById('byob-submit-btn');
   var hiddenRecipe = document.getElementById('hidden-recipe');
 
+  // Populate origin filter options dynamically from available beans
+  function populateOriginFilter() {
+    var originSet = {};
+    BEANS_DATA.forEach(function (b) {
+      var nameLower = b.name.toLowerCase();
+      if (nameLower.indexOf('decaf') >= 0 || 
+          nameLower.indexOf('espresso') >= 0 || 
+          nameLower.indexOf('villa sarchi') >= 0 || 
+          b.price > 12.00) {
+        return;
+      }
+      var prof = getProfile(b.name);
+      if (prof.origin) {
+        originSet[prof.origin] = true;
+      }
+    });
+
+    var origins = Object.keys(originSet).sort();
+    var currentVal = filterOrigin.value;
+    filterOrigin.innerHTML = '<option value="">All Origins</option>';
+    origins.forEach(function (orig) {
+      var opt = document.createElement('option');
+      opt.value = orig;
+      opt.textContent = orig;
+      if (orig === currentVal) opt.selected = true;
+      filterOrigin.appendChild(opt);
+    });
+  }
+
   // Initialize
+  populateOriginFilter();
   updateDropdownOptions();
 
   // Listeners for Filters
@@ -767,7 +846,7 @@ permalink: /roasts/build-your-own-blend/
       // Apply flavor profile keyword filter
       if (noteKeyword) {
         var hasMatch = false;
-        var characteristicsText = b.cup_characteristics.toLowerCase();
+        var characteristicsText = (b.cup_characteristics || "").toLowerCase();
         
         if (noteKeyword === 'chocolate' && (characteristicsText.indexOf('chocolate') >= 0 || characteristicsText.indexOf('cocoa') >= 0)) hasMatch = true;
         else if (noteKeyword === 'fruit' && (characteristicsText.indexOf('plum') >= 0 || characteristicsText.indexOf('berry') >= 0 || characteristicsText.indexOf('cherry') >= 0 || characteristicsText.indexOf('fig') >= 0 || characteristicsText.indexOf('apple') >= 0 || characteristicsText.indexOf('grape') >= 0 || characteristicsText.indexOf('melon') >= 0 || characteristicsText.indexOf('date') >= 0)) hasMatch = true;
