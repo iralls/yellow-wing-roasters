@@ -5,7 +5,7 @@ slug: mulled-feathers
 category: seasonal
 order: 12
 roast_level: 3
-tasting_notes: Allspice, clove, dark chocolate, orange peel
+tasting_notes: Dark Chocolate, Caramel & Brown Sugar, Crisp Red Apple, Toasted Nuts
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: cardinal
 mascot_file: audubon-cardinal-transparent.png
@@ -17,5 +17,5 @@ origins:
   - Burundi Washed
   - Ethiopia Washed
 description: >-
-  A warm, festive holiday blend roasted to a rich Full City profile. Delivers vibrant notes of sweet orange peel, dark chocolate, and cozy mulling spices for a comforting winter cup.
+  A cozy, cold-weather blend built for slow winter mornings and holiday gatherings. It pairs a rich foundation of dark chocolate and melted caramel with a festive pop of crisp red apple and comforting toasted nuts. Bold, warming, and sweet, it holds up perfectly black or with a splash of cream.
 ---
