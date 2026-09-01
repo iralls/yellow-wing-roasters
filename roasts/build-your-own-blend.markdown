@@ -373,6 +373,13 @@ permalink: /roasts/build-your-own-blend/
           <option value="Sumatra">Sumatra</option>
         </select>
       </div>
+
+      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+        <label for="filter-process" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Process</label>
+        <select id="filter-process" class="subscribe-select" style="min-width: 140px;">
+          <option value="">All Processes</option>
+        </select>
+      </div>
       
       <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
         <label for="filter-notes" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Flavor Profile</label>
@@ -427,6 +434,7 @@ permalink: /roasts/build-your-own-blend/
           <h3 class="details-title" id="details-title">Burundi Kayave</h3>
           <p class="details-characteristics" id="details-desc">Aromas of maple syrup...</p>
           <div class="details-stats-row">
+            <span class="details-stat-pill" id="details-process-pill">Process: Washed</span>
             <span class="details-stat-pill" id="details-acidity-pill">Acidity: 4/5</span>
             <span class="details-stat-pill" id="details-body-pill">Body: 4/5</span>
           </div>
@@ -634,7 +642,7 @@ permalink: /roasts/build-your-own-blend/
 
   function getProfile(name) {
     var bean = getBeanData(name);
-    var text = (bean.cup_characteristics || "").toLowerCase();
+    var text = (((bean.cup_characteristics || "") + " " + (bean.roasting_notes || ""))).toLowerCase();
     var nameLower = (name || "").toLowerCase();
 
     var origin = "";
@@ -652,6 +660,26 @@ permalink: /roasts/build-your-own-blend/
     }
     if (!origin && name) {
       origin = name.split(" ")[0];
+    }
+
+    var process = "washed";
+    var processLabel = "Washed";
+
+    if (nameLower.indexOf("asd") >= 0 || nameLower.indexOf("anaerobic") >= 0 || /\b(?:anaerobic|carbonic|thermal shock)\b/i.test(text)) {
+      process = "anaerobic";
+      processLabel = "Anaerobic / ASD";
+    } else if (nameLower.indexOf("honey") >= 0 || /\b(?:honey process|pulped natural|semi-washed)\b/i.test(text)) {
+      process = "honey";
+      processLabel = "Honey";
+    } else if (nameLower.indexOf("natural") >= 0 || nameLower.indexOf("dry process") >= 0 || nameLower.indexOf("dry-process") >= 0 || /\b(?:natural process|natural method|dry process|dry-process|naturals as beans)\b/i.test(text) || /\bnaturals\b/i.test(text)) {
+      process = "natural";
+      processLabel = "Natural";
+    } else if (/\b(?:wet hulled|wet-hulled|giling basah)\b/i.test(text) || nameLower.indexOf("sumatra") >= 0) {
+      process = "wet-hulled";
+      processLabel = "Wet-Hulled";
+    } else if (nameLower.indexOf("washed") >= 0 || nameLower.indexOf("washing station") >= 0 || /\b(?:washed coffee|washed coffees|washed process|fully washed|washing station)\b/i.test(text)) {
+      process = "washed";
+      processLabel = "Washed";
     }
 
     var acidity = 3;
@@ -689,6 +717,8 @@ permalink: /roasts/build-your-own-blend/
 
     return {
       origin: origin,
+      process: process,
+      processLabel: processLabel,
       acidity: acidity,
       body: body,
       notes: notes
@@ -699,6 +729,7 @@ permalink: /roasts/build-your-own-blend/
 
   // Elements
   var filterOrigin = document.getElementById('filter-origin');
+  var filterProcess = document.getElementById('filter-process');
   var filterNotes = document.getElementById('filter-notes');
   var filterAcidity = document.getElementById('filter-acidity');
   var filterBody = document.getElementById('filter-body');
@@ -710,6 +741,7 @@ permalink: /roasts/build-your-own-blend/
   var detailsActive = document.getElementById('details-active');
   var detailsTitle = document.getElementById('details-title');
   var detailsDesc = document.getElementById('details-desc');
+  var detailsProcess = document.getElementById('details-process-pill');
   var detailsAcidity = document.getElementById('details-acidity-pill');
   var detailsBody = document.getElementById('details-body-pill');
 
@@ -755,12 +787,53 @@ permalink: /roasts/build-your-own-blend/
     });
   }
 
+  // Populate process filter options dynamically from available beans
+  function populateProcessFilter() {
+    if (!filterProcess) return;
+    var processMap = {};
+    BEANS_DATA.forEach(function (b) {
+      var nameLower = b.name.toLowerCase();
+      if (nameLower.indexOf('decaf') >= 0 || 
+          nameLower.indexOf('espresso') >= 0 || 
+          nameLower.indexOf('villa sarchi') >= 0 || 
+          b.price > 12.00) {
+        return;
+      }
+      var prof = getProfile(b.name);
+      if (prof.process && prof.processLabel) {
+        processMap[prof.process] = prof.processLabel;
+      }
+    });
+
+    var order = ["washed", "natural", "honey", "anaerobic", "wet-hulled"];
+    var availableKeys = Object.keys(processMap).sort(function(a, b) {
+      var idxA = order.indexOf(a);
+      var idxB = order.indexOf(b);
+      if (idxA >= 0 && idxB >= 0) return idxA - idxB;
+      if (idxA >= 0) return -1;
+      if (idxB >= 0) return 1;
+      return a.localeCompare(b);
+    });
+
+    var currentVal = filterProcess.value;
+    filterProcess.innerHTML = '<option value="">All Processes</option>';
+    availableKeys.forEach(function (procKey) {
+      var opt = document.createElement('option');
+      opt.value = procKey;
+      opt.textContent = processMap[procKey];
+      if (procKey === currentVal) opt.selected = true;
+      filterProcess.appendChild(opt);
+    });
+  }
+
   // Initialize
   populateOriginFilter();
+  populateProcessFilter();
   updateDropdownOptions();
 
   // Listeners for Filters
   filterOrigin.addEventListener('change', updateDropdownOptions);
+  if (filterProcess) filterProcess.addEventListener('change', updateDropdownOptions);
   filterNotes.addEventListener('change', updateDropdownOptions);
   filterAcidity.addEventListener('change', updateDropdownOptions);
   filterBody.addEventListener('change', updateDropdownOptions);
@@ -782,6 +855,7 @@ permalink: /roasts/build-your-own-blend/
     
     detailsTitle.textContent = name;
     detailsDesc.textContent = bean.cup_characteristics || "No description available.";
+    if (detailsProcess) detailsProcess.textContent = 'Process: ' + profile.processLabel;
     detailsAcidity.textContent = 'Acidity: ' + profile.acidity + '/5';
     detailsBody.textContent = 'Body: ' + profile.body + '/5';
 
@@ -816,6 +890,7 @@ permalink: /roasts/build-your-own-blend/
   // Re-filter and update options in dropdown
   function updateDropdownOptions() {
     var originVal = filterOrigin.value;
+    var processVal = filterProcess ? filterProcess.value : '';
     var noteKeyword = filterNotes.value;
     var acidityVal = filterAcidity.value;
     var bodyVal = filterBody.value;
@@ -842,6 +917,9 @@ permalink: /roasts/build-your-own-blend/
 
       // Apply origin filter
       if (originVal && profile.origin !== originVal) return;
+
+      // Apply process filter
+      if (processVal && profile.process !== processVal) return;
 
       // Apply flavor profile keyword filter
       if (noteKeyword) {
