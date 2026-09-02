@@ -1,8 +1,7 @@
 ---
-title: "Sky Dance"
+title: "Morning Meep"
 subtitle: "Espresso Blend"
-slug: sky-dance
-published: false
+slug: morning-meep
 category: blend
 order: 6
 roast_level: 3
