@@ -1,7 +1,7 @@
 ---
-title: "Frost Tamper"
+title: "Cold Snap Swoop"
 subtitle: "Chilly Morning Espresso Blend"
-slug: frost-tamper
+slug: cold-snap-swoop
 category: seasonal
 order: 6
 roast_level: 3
