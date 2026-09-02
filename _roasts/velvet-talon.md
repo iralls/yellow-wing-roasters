@@ -2,6 +2,7 @@
 title: "Velvet Talon"
 subtitle: "Espresso Blend"
 slug: velvet-talon
+published: false
 category: blend
 order: 6
 roast_level: 3
