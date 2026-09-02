@@ -2,6 +2,7 @@
 title: Gobble Wobble
 subtitle: Thanksgiving Blend
 slug: gobble-wobble
+published: false
 category: seasonal
 order: 11
 roast_level: 3

@@ -2,6 +2,7 @@
 title: Feathered Fizz
 subtitle: New Year's Blend
 slug: feathered-fizz
+published: false
 category: seasonal
 order: 13
 roast_level: 2
