@@ -2,6 +2,7 @@
 title: "Sky Dance"
 subtitle: "Espresso Blend"
 slug: sky-dance
+published: false
 category: blend
 order: 6
 roast_level: 3
