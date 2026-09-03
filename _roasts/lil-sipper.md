@@ -19,5 +19,5 @@ temporary_price:
   2lb: 26
   5lb: 66
 description: >-
-  A lively, modern espresso. It's bright and refreshing with a clean sweetness that feels a bit more vibrant than your average cup. Perfect for those who want to try something a little different.
+  A lively, modern espresso defined by bright floral aromatics and a clean, refreshing sweetness. Vibrant and layered without losing its silky balance, it’s a dynamic cup for anyone looking to explore specialty coffee beyond the traditional profile.
 ---
