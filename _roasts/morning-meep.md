@@ -1,8 +1,8 @@
 ---
 title: "Morning Meep"
-subtitle: "Espresso Blend"
+subtitle: "Chilly Morning Espresso Blend"
 slug: morning-meep
-category: blend
+category: seasonal
 order: 6
 roast_level: 3
 tasting_notes: Cinnamon, dark chocolate, spiced orange
