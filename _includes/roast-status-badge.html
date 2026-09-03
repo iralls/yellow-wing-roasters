@@ -1,0 +1,8 @@
+{% assign r_roast = include.roast %}
+{% if r_roast.status %}
+  {% assign s_info = site.data.statuses[r_roast.status] %}
+  {% assign s_badge = r_roast.status_badge | default: s_info.badge %}
+  {% if s_badge %}
+    <div class="roasts-entry-badge roasts-entry-badge--{{ r_roast.status }}">{{ s_badge }}</div>
+  {% endif %}
+{% endif %}

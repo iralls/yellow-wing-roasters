@@ -8,6 +8,6 @@ tasting_notes: Bright, honey, citrus, light body
 brewing_method: Pour-over, Drip
 mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png
-coming_soon: true
+status: incubating
 published: false
 ---

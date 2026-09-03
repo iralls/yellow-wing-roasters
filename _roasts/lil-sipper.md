@@ -12,7 +12,7 @@ mascot_file: audubon-hummingbird-transparent.png
 origins:
   - Colombia Washed
   - Ethiopia Washed
-under_construction: true
+status: mid_molt
 temporary_price:
   12oz: 10
   1lb: 13

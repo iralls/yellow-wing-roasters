@@ -9,7 +9,7 @@ tasting_notes: Cinnamon, dark chocolate, spiced orange
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: american-woodcock
 mascot_file: american-woodcock-transparent.png
-just_hatched: true
+status: just_hatched
 origins:
   - Guatemala Washed
   - Ethiopia Natural

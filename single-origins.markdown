@@ -8,24 +8,18 @@ permalink: /single-origins/
 
 {% assign all_roasts = site.roasts | sort: "order" %}
 {% assign cat_roasts = all_roasts | where: "category", "single origin" %}
+{% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+{% assign cat_incubating = cat_roasts | where_exp: "item", "item.status == 'incubating'" %}
+{% assign cat_flown = cat_roasts | where_exp: "item", "item.status == 'flown_south'" %}
+{% assign cat_roasts = cat_active | concat: cat_incubating | concat: cat_flown %}
 
 <div class="roasts-grid">
 {% for r in cat_roasts %}
-  <a class="roasts-entry{% if r.coming_soon %} roasts-entry--soon{% endif %}" href="{{ r.url | relative_url }}">
+  <a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}" href="{{ r.url | relative_url }}">
     <div class="roasts-entry-visual">
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
     </div>
-    {% if r.under_construction %}
-      <div class="roasts-entry-construction-badge">{{ r.status_badge | default: "Mid-Molt" }}</div>
-    {% elsif r.coming_soon %}
-      <div class="roasts-entry-soon-badge">{{ r.status_badge | default: "Incubating" }}</div>
-    {% elsif r.just_hatched %}
-      <div class="roasts-entry-hatched-badge">{{ r.status_badge | default: "Just Hatched" }}</div>
-    {% elsif r.migrating_soon %}
-      <div class="roasts-entry-migrating-badge">{{ r.status_badge | default: "Migrating Soon" }}</div>
-    {% elsif r.low_stock %}
-      <div class="roasts-entry-lowstock-badge">Low Stock</div>
-    {% endif %}
+    {% include roast-status-badge.html roast=r %}
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">{{ r.title }}</div>

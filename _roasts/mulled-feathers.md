@@ -12,7 +12,7 @@ mascot: cardinal
 mascot_file: audubon-cardinal-transparent.png
 bg_pattern: /images/patterns/winter-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Guatemala Washed
   - Burundi Washed

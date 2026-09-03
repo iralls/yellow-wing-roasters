@@ -30,7 +30,8 @@ permalink: /flights/peck-your-own/
 <div class="roasts-grid" id="pyo-picker">
   {% assign roasts = site.roasts | sort: "order" %}
   {% for r in roasts %}
-    {% unless r.coming_soon %}
+    {% assign s_meta = site.data.statuses[r.status] %}
+    {% if s_meta == nil or s_meta.orderable != false %}
   <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}">
     <div class="roasts-entry-visual">
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
@@ -40,7 +41,7 @@ permalink: /flights/peck-your-own/
       {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " }}</div>{% endif %}
     </div>
   </div>
-    {% endunless %}
+    {% endif %}
   {% endfor %}
 </div>
 

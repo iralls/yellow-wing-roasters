@@ -11,7 +11,7 @@ brewing_method: Espresso, Drip, French Press
 processing_method: Natural
 mascot: goldfinch
 mascot_file: audubon-goldfinch-transparent.png
-low_stock: true
+status: low_stock
 sizes: [12oz]
 description: >-
   Sweet, viscous cup. Good component for an espresso.

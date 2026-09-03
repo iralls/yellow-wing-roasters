@@ -12,7 +12,7 @@ mascot: golden-eagle
 mascot_file: golden-eagle-transparent.png
 bg_pattern: /images/patterns/mexico-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Guatemala Washed
   - Bolivia Washed

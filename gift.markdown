@@ -44,29 +44,32 @@ permalink: /gift/
         <option value="" disabled selected>Choose a coffee...</option>
         <option disabled style="font-weight: bold; color: #2c1e14;">── Blends ──</option>
         {% for roast in site.roasts %}
-          {% unless roast.coming_soon %}
+          {% assign s_meta = site.data.statuses[roast.status] %}
+          {% if s_meta == nil or s_meta.orderable != false %}
             {% if roast.category == "blend" %}
               <option value="{{ roast.slug }}">{{ roast.title }}</option>
             {% endif %}
-          {% endunless %}
+          {% endif %}
         {% endfor %}
 
         <option disabled style="font-weight: bold; color: #2c1e14;">── Single Origins ──</option>
         {% for roast in site.roasts %}
-          {% unless roast.coming_soon %}
+          {% assign s_meta = site.data.statuses[roast.status] %}
+          {% if s_meta == nil or s_meta.orderable != false %}
             {% if roast.category == "single origin" %}
               <option value="{{ roast.slug }}">{{ roast.title }}</option>
             {% endif %}
-          {% endunless %}
+          {% endif %}
         {% endfor %}
 
         <option disabled style="font-weight: bold; color: #2c1e14;">── Seasonals ──</option>
         {% for roast in site.roasts %}
-          {% unless roast.coming_soon %}
+          {% assign s_meta = site.data.statuses[roast.status] %}
+          {% if s_meta == nil or s_meta.orderable != false %}
             {% if roast.category == "seasonal" %}
               <option value="{{ roast.slug }}">{{ roast.title }}</option>
             {% endif %}
-          {% endunless %}
+          {% endif %}
         {% endfor %}
 
         <option disabled style="font-weight: bold; color: #2c1e14;">── Subscriptions ──</option>
@@ -212,11 +215,14 @@ permalink: /gift/
     }
   }
 
-  // Disable multi-month gift subscriptions for roasts that are under_construction or low_stock
+  // Disable multi-month gift subscriptions for roasts where subscribable is false
   var disabledSubRoasts = {
     {% for r in site.roasts %}
-    {% if r.under_construction or r.low_stock %}
+    {% if r.status %}
+      {% assign s_meta = site.data.statuses[r.status] %}
+      {% if s_meta.subscribable == false %}
     '{{ r.slug }}': true,
+      {% endif %}
     {% endif %}
     {% endfor %}
   };

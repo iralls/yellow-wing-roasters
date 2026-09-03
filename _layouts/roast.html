@@ -27,30 +27,16 @@ layout: default
 </div>
 {% if page.subtitle %}<div class="roast-mv-subtitle">{{ page.subtitle }}</div>{% endif %}
 
-{% if page.under_construction %}
-<div class="under-construction-bar">
-  <span class="under-construction-bar-badge">{{ page.status_badge | default: "Mid-Molt" }}</span>
-  <span class="under-construction-bar-text">{{ page.status_text | default: "We're currently dialing in this blend! Ordering is open as we refine each batch, though component origins and composition may be in flux." }}</span>
-</div>
-{% elsif page.coming_soon %}
-<div class="coming-soon-bar">
-  <span class="coming-soon-bar-badge">{{ page.status_badge | default: "Incubating" }}</span>
-  <span class="coming-soon-bar-text">This roast isn't available to order yet — check back soon.</span>
-</div>
-{% elsif page.low_stock %}
-<div class="under-construction-bar" style="background:#fff3e0; border-color:#ffe0b2; color:#e65100;">
-  <span class="under-construction-bar-badge" style="background:#e65100; color:#fff;">Low Stock</span>
-  <span class="under-construction-bar-text" style="color:#e65100;">Quantities are limited! Subscriptions are unavailable for this roast while stock is low.</span>
-</div>
-{% elsif page.migrating_soon %}
-<div class="under-construction-bar" style="background:#fff3e0; border-color:#ffe0b2; color:#c2410c;">
-  <span class="under-construction-bar-badge" style="background:#c2410c; color:#fff;">{{ page.status_badge | default: "Migrating Soon" }}</span>
-  <span class="under-construction-bar-text" style="color:#c2410c;">{{ page.status_text | default: "Seasonal favorite heading south soon! Order now before it leaves the roost." }}</span>
-</div>
-{% elsif page.just_hatched %}
-<div class="under-construction-bar" style="background:#e8f5e9; border-color:#c8e6c9; color:#1b5e20;">
-  <span class="under-construction-bar-badge" style="background:#2e7d32; color:#fff;">{{ page.status_badge | default: "Just Hatched" }}</span>
-  <span class="under-construction-bar-text" style="color:#1b5e20;">Fresh new arrival! This roast just launched and is ready to order.</span>
+{% if page.status %}
+  {% assign p_status_info = site.data.statuses[page.status] %}
+  {% assign p_status_badge = page.status_badge | default: p_status_info.badge %}
+  {% assign p_status_text = page.status_text | default: p_status_info.banner_text %}
+{% endif %}
+
+{% if p_status_info %}
+<div class="roast-status-bar roast-status-bar--{{ page.status }}">
+  <span class="roast-status-bar-badge roast-status-bar-badge--{{ page.status }}">{{ p_status_badge }}</span>
+  <span class="roast-status-bar-text">{{ p_status_text }}</span>
 </div>
 {% endif %}
 
@@ -112,9 +98,22 @@ layout: default
 <div class="roast-mv-body">{{ page.description | markdownify }}</div>
 {% endif %}
 
+{% assign is_orderable = true %}
+{% if p_status_info and p_status_info.orderable == false %}
+  {% assign is_orderable = false %}
+{% endif %}
+
+{% assign sub_config = site.data.subscriptions[page.slug] %}
+{% assign sub_available = true %}
+{% if p_status_info and p_status_info.subscribable == false %}
+  {% assign sub_available = false %}
+{% elsif sub_config == nil %}
+  {% assign sub_available = false %}
+{% endif %}
+
 <div class="roast-mv-center" style="margin-top:0.75rem;">
   <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
-  <select id="order-grind-select" class="subscribe-select"{% if page.coming_soon %} disabled{% endif %} style="min-width: 12rem;">
+  <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
     <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
     <option value="Coarser — French Press">Coarser — French Press</option>
@@ -126,24 +125,18 @@ layout: default
 
 <div class="roast-mv-center" style="margin-top:0.75rem;">
   <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Roast Amount</div>
-  <select id="order-size-select" class="subscribe-select"{% if page.coming_soon %} disabled{% endif %} style="min-width: 12rem;">
+  <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
     {% for s in sizes %}
       <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
     {% endfor %}
   </select>
 </div>
 
-{% assign sub_config = site.data.subscriptions[page.slug] %}
-{% assign sub_available = true %}
-{% if page.under_construction or page.low_stock or page.coming_soon or sub_config == nil %}
-  {% assign sub_available = false %}
-{% endif %}
-
 <div class="purchase-options-container" style="max-width: 22rem; margin: 1.5rem auto 1rem; text-align: left;">
   <div class="purchase-option-card" id="option-card-onetime" style="border: 1.5px solid #2c1e14; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: #fff; cursor: pointer; transition: border-color 0.15s, background-color 0.15s;">
     <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; margin: 0;">
       <span style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #2c1e14; font-size: 0.9rem;">
-        <input type="radio" name="purchase-type" value="onetime" checked style="accent-color: #2c1e14; margin: 0;"{% if page.coming_soon %} disabled{% endif %}>
+        <input type="radio" name="purchase-type" value="onetime" checked style="accent-color: #2c1e14; margin: 0;"{% unless is_orderable %} disabled{% endunless %}>
         One-time purchase
       </span>
       <span id="price-display-onetime" style="font-weight: 700; color: #2c1e14; font-size: 0.95rem;"></span>
@@ -170,21 +163,19 @@ layout: default
       </div>
     </div>
   </div>
-  {% elsif page.under_construction %}
-    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">Subscriptions unavailable while this roast profile is mid-molt.</p>
-  {% elsif page.low_stock %}
-    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">Subscriptions unavailable due to low stock.</p>
+  {% elsif p_status_info and p_status_info.sub_footnote %}
+    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">{{ p_status_info.sub_footnote }}</p>
   {% endif %}
 </div>
 
 <div class="roast-mv-center" style="margin-top: 1rem;">
-  <button class="add-to-order-btn" id="add-to-cart-btn"{% if page.coming_soon %} disabled{% endif %}>Add to Cart</button>
+  <button class="add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>Add to Cart</button>
   {% if sub_available %}
-  <a href="#" id="sub-link" class="add-to-order-btn{% if page.coming_soon %} add-to-order-btn--disabled{% endif %}" style="display: none;"{% if page.coming_soon %} aria-disabled="true"{% endif %}>Subscribe</a>
+  <a href="#" id="sub-link" class="add-to-order-btn{% unless is_orderable %} add-to-order-btn--disabled{% endunless %}" style="display: none;"{% unless is_orderable %} aria-disabled="true"{% endunless %}>Subscribe</a>
   {% endif %}
 </div>
 
-{% if page.coming_soon %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">Ordering unavailable until this roast launches.</p>{% endif %}
+{% unless is_orderable %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
 
 {% if page.origins %}
 <div class="roast-mv-divider"></div>

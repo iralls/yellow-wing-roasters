@@ -1359,73 +1359,55 @@ h1.roast-title {
   text-decoration: none;
 }
 
+.add-to-order-btn:disabled,
 .add-to-order-btn--disabled {
   background: #ddd;
   color: #aaa;
   cursor: not-allowed;
   pointer-events: none;
+  transform: none;
 }
 
-.coming-soon-bar {
+/* ── Unified Roast Detail Status Banners ── */
+.roast-status-bar {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #ffd600;
-  color: #111;
   border-radius: 0.4rem;
+  border: 1px solid transparent;
   padding: 0.65rem 1rem;
   max-width: 32rem;
   margin: 0 auto 1.25rem;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   box-sizing: border-box;
+
+  &--incubating     { background: #ffd600; border-color: #ffd600; color: #111; }
+  &--just_hatched   { background: #e8f5e9; border-color: #c8e6c9; color: #1b5e20; }
+  &--mid_molt       { background: #ffe600; border-color: #ffe600; color: #111; }
+  &--migrating_soon { background: #fff3e0; border-color: #ffe0b2; color: #c2410c; }
+  &--low_stock      { background: #fff3e0; border-color: #ffe0b2; color: #e65100; }
+  &--flown_south    { background: #f1f5f9; border-color: #cbd5e1; color: #334155; }
 }
 
-.coming-soon-bar-badge {
+.roast-status-bar-badge {
   font-weight: 900;
   font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: #111;
-  color: #ffd600;
   border-radius: 0.25rem;
   padding: 0.2rem 0.55rem;
   white-space: nowrap;
   flex-shrink: 0;
+
+  &--incubating     { background: #111; color: #ffd600; }
+  &--just_hatched   { background: #2e7d32; color: #fff; }
+  &--mid_molt       { background: #111; color: #ffe600; }
+  &--migrating_soon { background: #c2410c; color: #fff; }
+  &--low_stock      { background: #e65100; color: #fff; }
+  &--flown_south    { background: #475569; color: #fff; letter-spacing: 0.08em; }
 }
 
-.coming-soon-bar-text {
-  font-size: 0.88rem;
-  font-weight: 500;
-}
-
-.under-construction-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: #ffe600;
-  color: #111;
-  border-radius: 0.4rem;
-  padding: 0.65rem 1rem;
-  max-width: 32rem;
-  margin: 0 auto 1.25rem;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-}
-
-.under-construction-bar-badge {
-  font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: #111;
-  color: #ffe600;
-  border-radius: 0.25rem;
-  padding: 0.2rem 0.55rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.under-construction-bar-text {
+.roast-status-bar-text {
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -1907,19 +1889,16 @@ h1.roast-title {
   color: #1f6b4a;
 }
 
+.roasts-entry--incubating,
+.roasts-entry--flown_south,
 .roasts-entry--soon {
   opacity: 0.6;
 }
 
-.roasts-entry--construction {
-  opacity: 0.8;
-}
-
-.roasts-entry-soon-badge {
+/* ── Unified Roast Card Badges ── */
+.roasts-entry-badge {
   width: 100%;
   text-align: center;
-  background: #ffd600;
-  color: #111;
   font-family: $font-display;
   font-weight: 900;
   font-size: 0.65rem;
@@ -1928,72 +1907,20 @@ h1.roast-title {
   padding: 0.3rem 0;
   border-radius: 0.3rem;
   margin-bottom: 0.5rem;
-}
+  box-sizing: border-box;
 
-.roasts-entry-construction-badge {
-  width: 100%;
-  text-align: center;
-  background: #ffe600;
-  color: #111;
-  font-family: $font-display;
-  font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
+  &--incubating     { background: #ffd600; color: #111; }
+  &--just_hatched   { background: #2e7d32; color: #fff; }
+  &--mid_molt       { background: #ffe600; color: #111; }
+  &--migrating_soon { background: #c2410c; color: #fff; }
+  &--low_stock      { background: #e65100; color: #fff; }
+  &--flown_south    { background: #475569; color: #fff; font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.3rem 0.2rem; line-height: 1.2; }
 }
 
 .roasts-entry-seasonal-badge {
   width: 100%;
   text-align: center;
   background: #e8a0b4;
-  color: #fff;
-  font-family: $font-display;
-  font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
-}
-
-.roasts-entry-lowstock-badge {
-  width: 100%;
-  text-align: center;
-  background: #e65100;
-  color: #fff;
-  font-family: $font-display;
-  font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
-}
-
-.roasts-entry-hatched-badge {
-  width: 100%;
-  text-align: center;
-  background: #2e7d32;
-  color: #fff;
-  font-family: $font-display;
-  font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
-}
-
-.roasts-entry-migrating-badge {
-  width: 100%;
-  text-align: center;
-  background: #c2410c;
   color: #fff;
   font-family: $font-display;
   font-weight: 900;

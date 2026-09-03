@@ -12,7 +12,7 @@ mascot: turkey
 mascot_file: turkey-transparent.png
 bg_pattern: /images/patterns/thanksgiving-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Ethiopia Washed
   - Brazil Natural

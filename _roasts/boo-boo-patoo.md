@@ -11,7 +11,7 @@ mascot: potoo
 mascot_file: audubon-potoo-transparent.png
 bg_pattern: /images/patterns/halloween-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Brazil Natural
   - Bolivia Washed

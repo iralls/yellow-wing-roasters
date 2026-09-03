@@ -9,7 +9,7 @@ tasting_notes: Milk chocolate, caramel, smooth body
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
 mascot_file: audubon-robin-transparent.png
-under_construction: true
+status: mid_molt
 temporary_price:
   12oz: 10
   1lb: 13

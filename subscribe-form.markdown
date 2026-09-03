@@ -153,29 +153,26 @@ permalink: /subscribe/
 
   var disabledSubRoasts = {
     {% for r in site.roasts %}
-    {% if r.under_construction or r.coming_soon or r.low_stock %}
-    '{{ r.slug }}': true,
-    {% endif %}
-    {% endfor %}
-  };
-
-  var lowStockRoasts = {
-    {% for r in site.roasts %}
-    {% if r.low_stock %}
-    '{{ r.slug }}': true,
+    {% if r.status %}
+      {% assign s_meta = site.data.statuses[r.status] %}
+      {% if s_meta.subscribable == false %}
+    '{{ r.slug }}': {
+      status: '{{ r.status }}',
+      badge: '{{ r.status_badge | default: s_meta.badge }}',
+      footnote: '{{ s_meta.sub_footnote | default: s_meta.footnote }}'
+    },
+      {% endif %}
     {% endif %}
     {% endfor %}
   };
 
   if (disabledSubRoasts[roast]) {
     form.style.display = 'none';
+    var item = disabledSubRoasts[roast];
     var notice = document.createElement('div');
-    notice.className = 'under-construction-bar';
+    notice.className = 'roast-status-bar roast-status-bar--' + item.status;
     notice.style.marginTop = '1.5rem';
-    var isLowStock = lowStockRoasts[roast];
-    var badgeText = isLowStock ? 'Low Stock' : 'Mid-Molt';
-    var bodyText = isLowStock ? 'Subscriptions are currently unavailable for this roast due to low stock.' : 'Subscriptions are currently unavailable for this roast while its profile is mid-molt.';
-    notice.innerHTML = '<span class="under-construction-bar-badge">' + badgeText + '</span><span class="under-construction-bar-text">' + bodyText + '</span>';
+    notice.innerHTML = '<span class="roast-status-bar-badge roast-status-bar-badge--' + item.status + '">' + item.badge + '</span><span class="roast-status-bar-text">' + item.footnote + '</span>';
     form.parentNode.insertBefore(notice, form);
     return;
   }

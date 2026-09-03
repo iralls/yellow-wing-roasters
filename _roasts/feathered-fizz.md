@@ -12,7 +12,7 @@ mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png
 bg_pattern: /images/patterns/champagne-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Kenya Washed
   - Ethiopia Natural

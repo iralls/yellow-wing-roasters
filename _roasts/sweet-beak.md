@@ -12,7 +12,7 @@ mascot: lovebirds
 mascot_file: lovebirds-transparent.png
 bg_pattern: /images/patterns/hearts-pattern.svg
 bg_pattern_size: 380px 380px
-coming_soon: true
+status: incubating
 origins:
   - Ethiopia Natural
   - Bolivia Washed
