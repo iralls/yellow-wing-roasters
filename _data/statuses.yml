@@ -37,7 +37,7 @@ mid_molt:
   sub_footnote: "Subscriptions unavailable while this roast profile is mid-molt."
 
 low_stock:
-  badge: "Low Stock"
+  badge: "Final Peckings"
   orderable: true
   subscribable: false
   dim_card: false
