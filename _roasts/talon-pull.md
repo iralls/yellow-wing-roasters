@@ -13,5 +13,5 @@ origins:
   - Ethiopia Washed
   - Guatemala Washed
 description: >-
-  A clean, smooth espresso blend crafted from two washed coffees. Warm, subdued spices and rich cocoa layer into a complex, balanced cup that pulls a vibrant straight shot and shines in milk drinks.
+  A clean, smooth blend crafted from two washed coffees with warm, subdued spices and rich cocoa. While it performs exceptionally as an espresso—and shines best in milk-based drinks—it also brews wonderfully as drip coffee or in a French press.
 ---

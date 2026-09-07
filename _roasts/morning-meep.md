@@ -1,6 +1,5 @@
 ---
 title: "Morning Meep"
-subtitle: "Chilly Morning Espresso Blend"
 slug: morning-meep
 category: seasonal
 order: 6
@@ -14,7 +13,7 @@ origins:
   - Guatemala Washed
   - Ethiopia Natural
 description: |
-  An espresso that delivers a rich chocolate base, dialed up with warm cinnamon spice, brown sugar sweetness, and hints of orange and dried berry.
+  Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of orange and dried berry.
 
-  It pulls a smooth, balanced shot with plenty of crema—bright enough to drink straight, but sweet and spiced enough to shine in milk drinks.
+  While it performs exceptionally as an espresso—pulling a smooth, balanced shot with plenty of crema—it also brews remarkably well as drip coffee or in a French press.
 ---
