@@ -58,6 +58,11 @@ morning-meep:
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
 
+talon-pull:
+  sizes: [12oz, 1lb, 2lb, 5lb]
+  frequencies: [Every 2 weeks, Monthly]
+  prices: {12oz: 12, 1lb: 15, 2lb: 30, 5lb: 75}
+
 
 # Single origins — all sizes, both frequencies
 brazil-estavam-mario:
