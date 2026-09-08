@@ -71,5 +71,10 @@ overrides:
     1lb: 15
     2lb: 30
     5lb: 75
+  ethiopia-yirgacheffe:
+    12oz: 14
+    1lb: 18
+    2lb: 36
+    5lb: 90
 
 
