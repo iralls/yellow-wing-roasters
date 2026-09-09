@@ -6,7 +6,7 @@ permalink: /roasts/
 
 # Roasts
 
-<p style="color: #666; font-size: 1.1rem; margin-top: -0.5rem; margin-bottom: 2rem;">Explore our current selection of small-batch roasted coffees.</p>
+<p class="category-intro">Explore our current selection of small-batch roasted coffees.</p>
 
 <!-- Dynamic Filters Bar -->
 <div class="filters-bar" id="filters-bar" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-start; padding: 0.5rem 0;">

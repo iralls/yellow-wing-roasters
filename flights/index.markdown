@@ -6,6 +6,8 @@ permalink: /flights/
 
 # Flights
 
+<p class="category-intro">Curated multi-roast samplers and customizable tasting flights to explore our full lineup.</p>
+
 <div class="roasts-grid">
   <a class="roasts-entry" href="{{ '/flights/the-aviary/' | relative_url }}">
     <div class="roasts-entry-visual">

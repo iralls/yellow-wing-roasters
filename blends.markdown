@@ -6,6 +6,8 @@ permalink: /blends/
 
 # Blends
 
+<p class="category-intro">Our signature and everyday blends, carefully balanced to bring out rich, complementary flavors in every cup.</p>
+
 {% assign all_roasts = site.roasts | sort: "order" %}
 {% assign cat_roasts = all_roasts | where: "category", "blend" %}
 {% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}

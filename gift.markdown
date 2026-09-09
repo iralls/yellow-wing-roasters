@@ -14,7 +14,7 @@ permalink: /gift/
   <h1 class="roast-mv-title" id="gift-page-title">Corvid care packages</h1>
 </div>
 
-<p class="roast-mv-tasting">Give the gift of freshly roasted coffee, delivered directly to their door.</p>
+<p class="category-intro" style="text-align: center; margin-top: -0.25rem; margin-bottom: 2.25rem;">Send freshly roasted coffees, recurring gift subscriptions, or digital gift cards directly to their door.</p>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="gift-form">
   <!-- Dynamic Name Hidden Inputs -->

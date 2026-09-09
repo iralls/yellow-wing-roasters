@@ -6,7 +6,9 @@ permalink: /subscriptions/
 
 # Subscriptions
 
-<p style="text-align: center; margin: -0.5rem 0 2rem;">
+<p class="category-intro">Enjoy freshly roasted coffee delivered straight to your door on your schedule, from curated rotating flights to everyday favorites.</p>
+
+<p style="margin: -1.75rem 0 2.5rem; font-size: 0.95rem;">
   Already subscribed? <a href="{{ '/subscriptions/manage/' | relative_url }}">Manage your subscription &rarr;</a>
 </p>
 

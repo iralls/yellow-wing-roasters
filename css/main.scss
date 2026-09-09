@@ -1752,6 +1752,16 @@ h1.roast-title {
   }
 }
 
+.category-intro {
+  font-family: $font-body;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #786252;
+  line-height: 1.55;
+  margin-top: -1rem;
+  margin-bottom: 2.75rem;
+}
+
 .roasts-entry {
   display: flex;
   flex-direction: column;

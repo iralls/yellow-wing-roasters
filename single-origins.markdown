@@ -6,6 +6,8 @@ permalink: /single-origins/
 
 # Single Origins
 
+<p class="category-intro">Exceptional coffees highlighting the unique character of individual farms and regions, with select offerings rotating throughout the year.</p>
+
 {% assign all_roasts = site.roasts | sort: "order" %}
 {% assign cat_roasts = all_roasts | where: "category", "single origin" %}
 {% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
