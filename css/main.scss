@@ -508,10 +508,11 @@ h1.roast-title {
 }
 
 .roast-mv-bird-wrap {
-  margin-bottom: 2rem;
-  display: inline-flex;
+  margin: 0 auto 2rem;
+  display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   backdrop-filter: blur(3.5px);
   -webkit-backdrop-filter: blur(3.5px);
 }
