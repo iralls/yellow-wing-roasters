@@ -281,14 +281,14 @@ permalink: /subscriptions/manage/
         })
         .then(function (data) {
           if (data.error) {
-            showError(data.error);
+            showError("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
           } else {
             renderSubscriptions(data.subscriptions || []);
             showResults(email);
           }
         })
         .catch(function (err) {
-          showError("Could not connect to the lookup database. Please verify your internet connection or try again later.");
+          showError("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
         });
     }
   });
@@ -447,7 +447,7 @@ permalink: /subscriptions/manage/
       })
       .then(function (data) {
         if (data.error) {
-          alert("Error: " + data.error);
+          alert("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
           buttonEl.textContent = originalText;
           buttonEl.disabled = false;
         } else {
@@ -460,7 +460,7 @@ permalink: /subscriptions/manage/
         }
       })
       .catch(function (err) {
-        alert("Failed to update status. Please check your internet connection.");
+        alert("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
         buttonEl.textContent = originalText;
         buttonEl.disabled = false;
       });
