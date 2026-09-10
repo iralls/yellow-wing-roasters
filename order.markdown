@@ -518,12 +518,23 @@ permalink: /order/
       }
     });
 
+    function clearCart() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+    }
+
     function proceedToSubmit() {
-      iframe.onload = function () {
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
-        window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+      var redirected = false;
+      function finish() {
+        if (redirected) return;
+        redirected = true;
+        clearCart();
         window.location.href = '{{ "/thanks/" | relative_url }}';
-      };
+      }
+
+      iframe.onload = finish;
+      setTimeout(finish, 5000);
 
       form.submit();
     }
@@ -531,10 +542,19 @@ permalink: /order/
     var clearBtn = form.querySelector('.order-clear');
     if (clearBtn) {
       clearBtn.addEventListener('click', function () {
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
-        saveCart({});
+        clearCart();
         render();
       });
     }
+
+    window.addEventListener('pageshow', function () {
+      if (submitBtn) submitBtn.disabled = false;
+      if (status) {
+        status.textContent = '';
+        status.className = 'order-status';
+      }
+      render();
+    });
+    window.addEventListener('storage', render);
   })();
 </script>
