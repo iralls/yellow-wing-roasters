@@ -122,6 +122,8 @@ permalink: /roasts/
               {% assign c_arr = c_arr | push: c %}
             {% endfor %}
             <div class="roasts-entry-overlay-origins">{{ c_arr | uniq | join: " · " }}</div>
+          {% elsif r.brewing_method %}
+            <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
           {% endif %}
           {% unless r.status == 'incubating' or r.status == 'flown_south' %}
             <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>

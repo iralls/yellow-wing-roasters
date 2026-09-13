@@ -2251,7 +2251,8 @@ h1.roast-title {
   transform: translateY(0);
 }
 
-.roasts-entry-overlay-origins {
+.roasts-entry-overlay-origins,
+.roasts-entry-overlay-brewing {
   font-family: $font-display;
   font-weight: 700;
   font-size: 0.72rem;
