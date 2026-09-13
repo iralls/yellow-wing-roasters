@@ -5,6 +5,7 @@ slug: chimney-sweep
 category: blend
 order: 3
 roast_level: 3
+descriptor: smooth and robust
 tasting_notes: dark chocolate, blood orange, brown sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift

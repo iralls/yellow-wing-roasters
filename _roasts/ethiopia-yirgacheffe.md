@@ -7,6 +7,7 @@ order: 10
 roast_level: 2
 region: Yirgacheffe, Gedeo Zone
 elevation: 1,900 – 2,200m
+descriptor: floral and delicate
 tasting_notes: rosewater, maple sweetness, candied lemon, roasted chestnut
 brewing_method: Pour-over, Drip, Chemex, Espresso
 processing_method: Washed

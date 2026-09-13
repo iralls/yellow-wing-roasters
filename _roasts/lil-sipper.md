@@ -5,6 +5,7 @@ slug: lil-sipper
 category: blend
 order: 4
 roast_level: 2
+descriptor: vibrant and complex
 tasting_notes: rosewater, lemon, maple, toasted nut
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird

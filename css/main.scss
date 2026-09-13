@@ -568,6 +568,17 @@ h1.roast-title {
   background: linear-gradient(to right, var(--c-a) 50%, var(--c-b) 50%);
 }
 
+.roast-mv-descriptor {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3a2a1d;
+  margin-bottom: 0.35rem;
+  text-align: center;
+  backdrop-filter: blur(3.5px);
+  -webkit-backdrop-filter: blur(3.5px);
+}
+
 .roast-mv-tasting {
   font-style: italic;
   color: #8a7060;
@@ -1874,6 +1885,15 @@ h1.roast-title {
   display: block;
   line-height: 1;
   margin-bottom: 0.2rem;
+}
+
+.roasts-entry-descriptor {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #3a2a1d;
+  margin-top: 0.35rem;
+  line-height: 1.25;
 }
 
 .roasts-entry-notes {

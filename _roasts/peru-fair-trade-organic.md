@@ -6,6 +6,7 @@ order: 9
 roast_level: 3
 region: Cajamarca
 elevation: 1,400 – 1,800m
+descriptor: crisp and nuanced
 tasting_notes: bittersweet chocolate, ripe berry, apple, grape
 brewing_method: Pour-over, Drip, French Press
 processing_method: Washed

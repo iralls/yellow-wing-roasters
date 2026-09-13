@@ -6,6 +6,7 @@ order: 3
 roast_level: 3
 region: Sul de Minas
 elevation: 1,100 – 1,200m
+descriptor: earthy and sweet
 tasting_notes: fig · prune · hazelnut
 brewing_method: Drip, French Press, Espresso
 processing_method: Natural

@@ -86,6 +86,7 @@ permalink: /roasts/
         {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         
         {% if r_dots %}<span class="roasts-entry-level"><span class="roast-dots roast-dots-sm"><span class="roast-dot{% if r_dots >= 1 %} roast-dot-1{% endif %}"></span><span class="roast-dot{% if r_dots >= 2 %} roast-dot-2{% endif %}"></span><span class="roast-dot{% if r_dots >= 3 %} roast-dot-3{% endif %}"></span><span class="roast-dot{% if r_dots >= 4 %} roast-dot-4{% endif %}"></span><span class="roast-dot{% if r_dots >= 5 %} roast-dot-5{% endif %}"></span></span></span>{% endif %}
+        {% if r.descriptor %}<div class="roasts-entry-descriptor">{{ r.descriptor | downcase }}</div>{% endif %}
         {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
         {% assign rp = site.data.pricing.overrides[r.slug] %}{% if rp and rp["12oz"] %}{% assign price_12 = rp["12oz"] %}{% else %}{% assign price_12 = site.data.pricing.default["12oz"] %}{% endif %}
         {% if r.temporary_price and r.temporary_price["12oz"] %}

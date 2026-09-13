@@ -6,6 +6,7 @@ order: 5
 roast_level: 2
 region: Kaffa
 elevation: 1,800 – 2,100m
+descriptor: bold and fruit-forward
 tasting_notes: blueberries, chocolate, pronounced fruit
 brewing_method: Pour-over, Drip
 processing_method: Natural

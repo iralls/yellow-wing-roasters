@@ -5,6 +5,7 @@ slug: homeroom-hoot
 category: seasonal
 order: 5
 roast_level: 3
+descriptor: cozy and comforting
 tasting_notes: smooth cocoa, toasted nut, caramel sweetness
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: barred-owl

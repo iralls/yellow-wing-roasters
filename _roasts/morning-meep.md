@@ -4,6 +4,7 @@ slug: morning-meep
 category: seasonal
 order: 6
 roast_level: 3
+descriptor: nutty and spiced
 tasting_notes: cinnamon, dark chocolate, spiced orange
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: american-woodcock

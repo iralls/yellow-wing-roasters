@@ -4,6 +4,7 @@ slug: morning-ease
 category: blend
 order: 9
 roast_level: 2
+descriptor: mellow and comforting
 tasting_notes: smooth, nutty, mild chocolate
 brewing_method: Drip, French Press, Pour-over
 mascot: mourning-dove

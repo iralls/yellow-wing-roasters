@@ -6,6 +6,7 @@ published: false
 category: seasonal
 order: 13
 roast_level: 2
+descriptor: effervescent and vibrant
 tasting_notes: black tea, bergamot, ripe blackberry, bittersweet chocolate
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: woodpecker

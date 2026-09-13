@@ -5,6 +5,7 @@ slug: early-bird
 category: blend
 order: 1
 roast_level: 2
+descriptor: balanced and smooth
 tasting_notes: milk chocolate, caramel, smooth body
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin

@@ -6,6 +6,7 @@ published: false
 category: seasonal
 order: 14
 roast_level: 3
+descriptor: lush and delicate
 tasting_notes: sweet blueberry, milk chocolate, dark cherry, honeysuckle
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: lovebirds

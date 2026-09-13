@@ -5,6 +5,7 @@ slug: stillwater-steep
 category: seasonal
 order: 8
 roast_level: 4
+descriptor: deep and refreshing
 tasting_notes: dark chocolate, toasted walnut, brown sugar
 brewing_method: Cold Brew
 mascot: heron

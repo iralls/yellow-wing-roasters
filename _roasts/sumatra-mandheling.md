@@ -6,6 +6,7 @@ order: 6
 roast_level: 4
 region: Mandheling, North Sumatra
 elevation: 1,100 – 1,600m
+descriptor: earthy and smoky
 tasting_notes: earthy, smoky, hazelnut, cedar
 brewing_method: French Press, Moka Pot, Drip, Espresso
 processing_method: Wet-Hulled

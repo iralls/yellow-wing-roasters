@@ -4,6 +4,7 @@ slug: talon-pull
 category: seasonal
 order: 7
 roast_level: 3
+descriptor: clean and robust
 tasting_notes: clean, smooth, warm spice, dark chocolate
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: red-shouldered-hawk
