@@ -40,7 +40,6 @@ layout: default
 </div>
 {% endif %}
 
-{% if page.descriptor %}<div class="roast-mv-descriptor">{{ page.descriptor | downcase }}</div>{% endif %}
 {% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " | downcase }}</p>{% endif %}
 
 {% assign r_level_key = page.roast_level | append: "" %}
