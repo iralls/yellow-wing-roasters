@@ -59,8 +59,17 @@ permalink: /roasts/
   {% assign single_origins_flown = single_origins | where_exp: "item", "item.status == 'flown_south'" %}
   {% assign single_origins = single_origins_active | concat: single_origins_incubating | concat: single_origins_flown %}
 
-  {% assign sorted_roasts = blends | concat: seasonals | concat: single_origins %}
+  {% assign sorted_roasts = blends | concat: single_origins | concat: seasonals %}
+  {% assign current_category = "" %}
   {% for r in sorted_roasts %}
+    {% if r.category != current_category %}
+      {% assign current_category = r.category %}
+      <div class="roasts-section-break" data-category="{{ current_category }}">
+        <div class="roasts-section-break-line"></div>
+        <span class="roasts-section-break-title">{% if current_category == 'blend' %}Blends{% elsif current_category == 'single origin' %}Single Origins{% elsif current_category == 'seasonal' %}Seasonals{% else %}{{ current_category | capitalize }}{% endif %}</span>
+        <div class="roasts-section-break-line"></div>
+      </div>
+    {% endif %}
     {% if r.origins %}
       {% assign origin_list = r.origins | join: "," %}
     {% else %}
@@ -280,6 +289,17 @@ permalink: /roasts/
       } else {
         card.style.display = 'none';
       }
+    });
+
+    // Update section break visibility
+    var sectionBreaks = document.querySelectorAll('#roasts-grid .roasts-section-break');
+    sectionBreaks.forEach(function (breakEl) {
+      var sectionCat = (breakEl.getAttribute('data-category') || '').trim().toLowerCase();
+      var hasVisible = Array.prototype.some.call(cards, function (card) {
+        var cardCat = (card.getAttribute('data-category') || '').trim().toLowerCase();
+        return cardCat === sectionCat && card.style.display !== 'none';
+      });
+      breakEl.style.display = hasVisible ? '' : 'none';
     });
   }
 

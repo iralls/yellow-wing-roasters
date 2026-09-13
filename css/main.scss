@@ -1760,6 +1760,34 @@ h1.roast-title {
   }
 }
 
+.roasts-section-break {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 2rem 0 0.5rem;
+}
+
+.roasts-section-break:first-child {
+  margin-top: 0;
+}
+
+.roasts-section-break-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(44, 30, 20, 0.12);
+}
+
+.roasts-section-break-title {
+  font-family: $font-display;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a7060;
+  white-space: nowrap;
+}
+
 .category-intro {
   font-family: $font-body;
   font-style: italic;
