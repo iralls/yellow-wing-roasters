@@ -1,41 +1,265 @@
-<a href="{{ '/order/' | relative_url }}" class="cart-indicator" id="ywr-cart-indicator" aria-label="View order">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-    <line x1="3" y1="6" x2="21" y2="6"/>
-    <path d="M16 10a4 4 0 0 1-8 0"/>
-  </svg>
-  <span class="cart-count" id="ywr-cart-count" aria-live="polite">0</span>
-</a>
+<div class="cart-indicator-wrap" id="ywr-cart-wrap">
+  <a href="{{ '/order/' | relative_url }}" class="cart-indicator" id="ywr-cart-indicator" aria-label="View order">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+    <span class="cart-count" id="ywr-cart-count" aria-live="polite">0</span>
+  </a>
+
+  <div class="cart-dropdown-pane" id="ywr-cart-pane">
+    <div class="cart-dropdown" id="ywr-cart-dropdown" role="region" aria-label="Shopping cart preview">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+{% assign pricing = site.data.pricing %}
+{% assign flight_aviary = site.data.flights["the-aviary"].price | default: 38 %}
+{% assign flight_pyo = site.data.flights["peck-your-own"].price_per_bag | default: 10 %}
+{% assign roasts_url = '/roasts/' | relative_url %}
+{% assign order_url = '/order/' | relative_url %}
+{% assign images_base = '/images/' | relative_url %}
 
 <script>
   (function () {
-    function getCount() {
+    var defaultPrices = {{ pricing.default | jsonify }};
+    var flightAviaryPrice = {{ flight_aviary }};
+    var flightPyoPrice = {{ flight_pyo }};
+    var ROASTS_URL = {{ roasts_url | jsonify }};
+    var ORDER_URL = {{ order_url | jsonify }};
+    var IMAGES_BASE = {{ images_base | jsonify }};
+
+    {% assign all_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
+    var roastsData = {
+      {% for r in site.roasts %}
+        {{ r.slug | jsonify }}: {
+          title: {{ r.title | jsonify }},
+          mascot: {{ r.mascot_file | jsonify }},
+          variants: {
+            {% if r.variants %}
+              {% for v in r.variants %}
+                {{ v.slug | jsonify }}: {{ v.name | jsonify }}{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            {% endif %}
+          },
+          prices: {
+            {% assign rp = pricing.overrides[r.slug] %}
+            {% for s in all_sizes %}
+              {% if r.temporary_price and r.temporary_price[s] %}{% assign up = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign up = rp[s] %}{% else %}{% assign up = pricing.default[s] %}{% endif %}
+              {{ s | jsonify }}: {{ up | default: 12 }}{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    };
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getMascotUrl(filename) {
+      if (!filename) return null;
+      var clean = String(filename).replace(/^\/?(images\/)?/, '');
+      return IMAGES_BASE + clean;
+    }
+
+    function getCart() {
       try {
         var raw = localStorage.getItem('ywr_cart');
-        if (!raw) return 0;
-        var c = JSON.parse(raw);
-        var total = 0;
-        for (var k in c) {
-          if (Object.prototype.hasOwnProperty.call(c, k)) {
-            var n = parseInt(c[k], 10);
-            if (!isNaN(n) && n > 0) total += n;
-          }
-        }
-        return total;
-      } catch (e) { return 0; }
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
     }
+
+    function parseCartItem(ck, qty) {
+      var parts = ck.split('|');
+      var rSlug = parts[0] || '';
+      var vSlug = parts[1] || '';
+      var rSize = parts[2] || '';
+      var rGrind = parts[3] || 'Whole Bean';
+
+      var title = '';
+      var meta = '';
+      var mascot = null;
+      var unitPrice = 0;
+
+      if (rSlug === 'the-aviary') {
+        title = 'The Aviary Flight';
+        meta = '4 × 8oz' + (rGrind ? ' · ' + rGrind : '');
+        mascot = 'audubon-cage-transparent.png';
+        unitPrice = flightAviaryPrice;
+      } else if (rSlug === 'peck-your-own') {
+        title = 'Peck Your Own';
+        var count = (rSize || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
+        meta = (count > 0 ? count + ' × 8oz bags' : 'Sampler flight') + (rGrind ? ' · ' + rGrind : '');
+        mascot = 'audubon-cardinal-transparent.png';
+        unitPrice = (count || 4) * flightPyoPrice;
+      } else if (roastsData[rSlug]) {
+        var r = roastsData[rSlug];
+        title = r.title;
+        if (vSlug && r.variants && r.variants[vSlug]) {
+          title += ' — ' + r.variants[vSlug];
+        }
+        meta = (rSize ? rSize : '12oz') + (rGrind ? ' · ' + rGrind : '');
+        mascot = r.mascot;
+        var sizeKey = rSize || '12oz';
+        unitPrice = (r.prices && r.prices[sizeKey]) || defaultPrices[sizeKey] || 12;
+      } else {
+        title = rSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+        meta = (rSize ? rSize : '') + (rGrind ? ' · ' + rGrind : '');
+        var sKey = rSize || '12oz';
+        unitPrice = defaultPrices[sKey] || 12;
+      }
+
+      return {
+        key: ck,
+        title: title,
+        meta: meta,
+        mascot: mascot,
+        unitPrice: unitPrice,
+        qty: qty,
+        lineTotal: unitPrice * qty
+      };
+    }
+
     function update() {
       var indicator = document.getElementById('ywr-cart-indicator');
       var el = document.getElementById('ywr-cart-count');
-      if (!indicator || !el) return;
-      var n = getCount();
-      el.textContent = n;
-      indicator.classList.toggle('cart-indicator-empty', n === 0);
+      var dropdown = document.getElementById('ywr-cart-dropdown');
+      if (!indicator || !el || !dropdown) return;
+
+      var cart = getCart();
+      var total = 0;
+      var items = [];
+      var subtotal = 0;
+
+      for (var k in cart) {
+        if (Object.prototype.hasOwnProperty.call(cart, k)) {
+          var n = parseInt(cart[k], 10);
+          if (!isNaN(n) && n > 0) {
+            total += n;
+            var item = parseCartItem(k, n);
+            items.push(item);
+            subtotal += item.lineTotal;
+          }
+        }
+      }
+
+      el.textContent = total;
+      indicator.classList.toggle('cart-indicator-empty', total === 0);
+
+      if (items.length === 0) {
+        dropdown.innerHTML =
+          '<div class="cart-dropdown-empty">' +
+            '<p class="cart-dropdown-empty-msg">Your cart is empty</p>' +
+            '<a href="' + escapeHtml(ROASTS_URL) + '" class="cart-dropdown-empty-btn">Explore Roasts &rarr;</a>' +
+          '</div>';
+        return;
+      }
+
+      var html = '<div class="cart-dropdown-header">' +
+        '<span class="cart-dropdown-heading">Your Cart</span>' +
+        '<span class="cart-dropdown-badge">' + total + (total === 1 ? ' item' : ' items') + '</span>' +
+      '</div>';
+
+      html += '<div class="cart-dropdown-list">';
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        var mascotUrl = getMascotUrl(it.mascot);
+        html += '<div class="cart-dropdown-item">' +
+          '<div class="cart-dropdown-item-thumb">' +
+            (mascotUrl
+              ? '<img src="' + escapeHtml(mascotUrl) + '" alt="" class="cart-dropdown-item-img" onerror="this.onerror=null;this.style.display=\'none\';">'
+              : '<span class="cart-dropdown-item-ph" aria-hidden="true">&#9749;</span>') +
+          '</div>' +
+          '<div class="cart-dropdown-item-info">' +
+            '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' + escapeHtml(it.title) + '</div>' +
+            '<div class="cart-dropdown-item-meta">' + escapeHtml(it.meta) + '</div>' +
+            '<div class="cart-dropdown-item-qty-price">' + it.qty + ' &times; $' + it.unitPrice + '</div>' +
+          '</div>' +
+          '<div class="cart-dropdown-item-actions">' +
+            '<div class="cart-dropdown-item-total">$' + it.lineTotal + '</div>' +
+            '<button type="button" class="cart-dropdown-item-remove" data-key="' + escapeHtml(it.key) + '" title="Remove item" aria-label="Remove ' + escapeHtml(it.title) + '">&times;</button>' +
+          '</div>' +
+        '</div>';
+      }
+      html += '</div>';
+
+      html += '<div class="cart-dropdown-footer">' +
+        '<div class="cart-dropdown-subtotal-row">' +
+          '<span class="cart-dropdown-subtotal-label">Subtotal</span>' +
+          '<span class="cart-dropdown-subtotal-val">$' + subtotal + '</span>' +
+        '</div>' +
+        '<a href="' + escapeHtml(ORDER_URL) + '" class="cart-dropdown-checkout-btn">View Cart &amp; Checkout &rarr;</a>' +
+      '</div>';
+
+      dropdown.innerHTML = html;
     }
+
     update();
     window.addEventListener('pageshow', update);
     window.addEventListener('ywr-cart-changed', update);
     window.addEventListener('storage', update);
+
+    // Hover controller with grace period to prevent menu from prematurely closing during diagonal pointer moves
+    var wrap = document.getElementById('ywr-cart-wrap');
+    var closeTimer = null;
+
+    function openDropdown() {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      if (wrap) wrap.classList.add('is-open');
+    }
+
+    function scheduleClose() {
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () {
+        if (wrap) wrap.classList.remove('is-open');
+      }, 300);
+    }
+
+    if (wrap) {
+      wrap.addEventListener('mouseenter', openDropdown);
+      wrap.addEventListener('mouseleave', scheduleClose);
+      wrap.addEventListener('focusin', openDropdown);
+      wrap.addEventListener('focusout', function (e) {
+        if (!wrap.contains(e.relatedTarget)) {
+          scheduleClose();
+        }
+      });
+    }
+
+    var dropdownEl = document.getElementById('ywr-cart-dropdown');
+    if (dropdownEl) {
+      dropdownEl.addEventListener('click', function (e) {
+        var removeBtn = e.target.closest('.cart-dropdown-item-remove');
+        if (!removeBtn) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var key = removeBtn.getAttribute('data-key');
+        if (!key) return;
+
+        try {
+          var raw = localStorage.getItem('ywr_cart');
+          var cart = raw ? JSON.parse(raw) : {};
+          delete cart[key];
+          localStorage.setItem('ywr_cart', JSON.stringify(cart));
+        } catch (err) {}
+        window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+      });
+    }
 
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('.roasts-entry-quick-add');

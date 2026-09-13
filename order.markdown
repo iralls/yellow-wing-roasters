@@ -556,5 +556,6 @@ permalink: /order/
       render();
     });
     window.addEventListener('storage', render);
+    window.addEventListener('ywr-cart-changed', render);
   })();
 </script>
