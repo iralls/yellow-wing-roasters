@@ -8,7 +8,7 @@ region: Sul de Minas
 elevation: 1,100 – 1,200m
 descriptor: earthy and sweet
 tasting_notes: fig · prune · hazelnut
-brewing_method: Drip, French Press, Espresso
+brewing_method: Espresso, French Press, Drip
 processing_method: Natural
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
