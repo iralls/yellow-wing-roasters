@@ -19,9 +19,19 @@ permalink: /flights/
       <div class="roasts-entry-prices">${{ site.data.flights["the-aviary"].price }}</div>
     </div>
   </a>
-  <a class="roasts-entry" href="{{ '/flights/peck-your-own/' | relative_url }}">
+  <a class="roasts-entry" data-roast="peck-your-own" href="{{ '/flights/peck-your-own/' | relative_url }}">
     <div class="roasts-entry-visual">
-      <div class="mascot-grid"><img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+      <div class="mascot-grid mascot-grid-3x3">
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-baltimore-oriole-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-rose-breasted-grosbeak-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-red-tailed-hawk-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Peck Your Own</div>
