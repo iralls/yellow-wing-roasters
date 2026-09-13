@@ -57,6 +57,9 @@ permalink: /blends/
           {% endfor %}
           <div class="roasts-entry-overlay-origins">{{ c_arr | uniq | join: " · " }}</div>
         {% endif %}
+        {% unless r.status == 'incubating' or r.status == 'flown_south' %}
+          <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
+        {% endunless %}
       </div>
     </div>
     <div class="roasts-entry-info">

@@ -36,5 +36,39 @@
     window.addEventListener('pageshow', update);
     window.addEventListener('ywr-cart-changed', update);
     window.addEventListener('storage', update);
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.roasts-entry-quick-add');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var slug = btn.getAttribute('data-slug');
+      if (!slug) return;
+
+      var key = slug + '||12oz|Whole Bean';
+      var cart;
+      try {
+        var raw = localStorage.getItem('ywr_cart');
+        cart = raw ? JSON.parse(raw) : {};
+      } catch (err) {
+        cart = {};
+      }
+      cart[key] = (cart[key] || 0) + 1;
+      try {
+        localStorage.setItem('ywr_cart', JSON.stringify(cart));
+      } catch (err) {}
+      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+
+      btn.classList.add('is-added');
+      btn.textContent = 'Added!';
+      btn.disabled = true;
+
+      setTimeout(function () {
+        btn.classList.remove('is-added');
+        btn.textContent = 'Quick Add';
+        btn.disabled = false;
+      }, 1200);
+    }, true);
   })();
 </script>

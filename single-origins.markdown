@@ -49,6 +49,9 @@ permalink: /single-origins/
             <span class="roasts-entry-overlay-specialty">{{ r_specialty }}</span>
           </div>
         {% endif %}
+        {% unless r.status == 'incubating' or r.status == 'flown_south' %}
+          <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
+        {% endunless %}
       </div>
     </div>
     <div class="roasts-entry-info">

@@ -1954,7 +1954,7 @@ h1.roast-title {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1.75rem 1.25rem;
+  padding: 1.35rem 1.15rem;
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
@@ -2008,6 +2008,48 @@ h1.roast-title {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #3a2a1d;
+}
+
+.roasts-entry-quick-add {
+  margin-top: 0.95rem;
+  padding: 0.45rem 1.15rem;
+  background: #2c1e14;
+  color: #faf8f5;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+  line-height: 1.35;
+  white-space: nowrap;
+
+  &:hover {
+    background: #443022;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.is-added {
+    background: #3a6b46;
+    color: #fff;
+    cursor: default;
+    transform: none;
+    border-color: transparent;
+  }
 }
 
 /* ── Info Below Card ── */
