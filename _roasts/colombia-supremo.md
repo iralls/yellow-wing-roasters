@@ -8,7 +8,7 @@ order: 3
 roast_level: 2
 region: Huila
 elevation: 1,500 – 1,800m
-tasting_notes: Caramel, brown sugar, sweet finish
+tasting_notes: caramel, brown sugar, sweet finish
 brewing_method: Pour-over, Drip, AeroPress
 processing_method: Washed
 description: >-

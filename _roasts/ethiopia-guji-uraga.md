@@ -6,7 +6,7 @@ order: 7
 roast_level: 2
 region: Uraga, Guji Zone
 elevation: 1,900 – 2,100m
-tasting_notes: Orange, aromatic spices
+tasting_notes: orange, aromatic spices
 brewing_method: Pour-over, Drip, Espresso
 processing_method: Natural (Dry Process)
 mascot: baltimore-oriole

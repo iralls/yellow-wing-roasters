@@ -6,7 +6,7 @@ published: false
 category: seasonal
 order: 13
 roast_level: 2
-tasting_notes: Black tea, bergamot, ripe blackberry, bittersweet chocolate
+tasting_notes: black tea, bergamot, ripe blackberry, bittersweet chocolate
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png

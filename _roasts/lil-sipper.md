@@ -5,7 +5,7 @@ slug: lil-sipper
 category: blend
 order: 4
 roast_level: 2
-tasting_notes: Rosewater, Lemon, Maple, Toasted Nut
+tasting_notes: rosewater, lemon, maple, toasted nut
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png

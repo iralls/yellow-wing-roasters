@@ -40,7 +40,7 @@ layout: default
 </div>
 {% endif %}
 
-{% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " }}</p>{% endif %}
+{% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " | downcase }}</p>{% endif %}
 
 {% assign r_level_key = page.roast_level | append: "" %}
 {% assign level_info = site.data.roast_levels[page.roast_level] | default: site.data.roast_levels[r_level_key] %}

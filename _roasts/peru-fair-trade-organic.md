@@ -6,7 +6,7 @@ order: 9
 roast_level: 3
 region: Cajamarca
 elevation: 1,400 – 1,800m
-tasting_notes: Bittersweet chocolate, ripe berry, apple, grape
+tasting_notes: bittersweet chocolate, ripe berry, apple, grape
 brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
 mascot: killdeer

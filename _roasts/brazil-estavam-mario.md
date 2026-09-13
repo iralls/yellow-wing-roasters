@@ -6,7 +6,7 @@ order: 3
 roast_level: 3
 region: Sul de Minas
 elevation: 1,100 – 1,200m
-tasting_notes: Fig · Prune · Hazelnut
+tasting_notes: fig · prune · hazelnut
 brewing_method: Drip, French Press, Espresso
 processing_method: Natural
 mascot: great-horned-owl

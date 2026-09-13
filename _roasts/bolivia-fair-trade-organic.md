@@ -6,7 +6,7 @@ order: 8
 roast_level: 3
 region: Caranavi, Yungas
 elevation: 1,400 – 1,800m
-tasting_notes: Milk chocolate, rich aroma, sweet finish
+tasting_notes: milk chocolate, rich aroma, sweet finish
 brewing_method: Drip, Pour-over, French Press
 processing_method: Washed
 mascot: red-tailed-hawk

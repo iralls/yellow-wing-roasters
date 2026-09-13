@@ -6,7 +6,7 @@ published: false
 category: seasonal
 order: 11
 roast_level: 3
-tasting_notes: Blackcurrant, tart cranberry, roasted pecan, brown sugar
+tasting_notes: blackcurrant, tart cranberry, roasted pecan, brown sugar
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: turkey
 mascot_file: turkey-transparent.png

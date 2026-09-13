@@ -6,7 +6,7 @@ published: false
 category: seasonal
 order: 14
 roast_level: 3
-tasting_notes: Sweet blueberry, milk chocolate, dark cherry, honeysuckle
+tasting_notes: sweet blueberry, milk chocolate, dark cherry, honeysuckle
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: lovebirds
 mascot_file: lovebirds-transparent.png

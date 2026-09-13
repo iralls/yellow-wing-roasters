@@ -38,7 +38,7 @@ permalink: /flights/peck-your-own/
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">{{ r.title }}</div>
-      {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " }}</div>{% endif %}
+      {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
     </div>
   </div>
     {% endif %}

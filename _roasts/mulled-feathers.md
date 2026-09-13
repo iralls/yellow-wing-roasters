@@ -6,7 +6,7 @@ published: false
 category: seasonal
 order: 12
 roast_level: 3
-tasting_notes: Dark Chocolate, Caramel & Brown Sugar, Crisp Red Apple, Toasted Nuts
+tasting_notes: dark chocolate, caramel & brown sugar, crisp red apple, toasted nuts
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: cardinal
 mascot_file: audubon-cardinal-transparent.png

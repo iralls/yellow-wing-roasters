@@ -5,7 +5,7 @@ slug: feather-soot
 category: blend
 order: 2
 roast_level: 5
-tasting_notes: Creamy, sweet milk chocolate
+tasting_notes: creamy, sweet milk chocolate
 brewing_method: French Press, Moka Pot, Drip
 mascot: canary
 mascot_file: audubon-canary-transparent.png

@@ -6,7 +6,7 @@ order: 4
 roast_level: 3
 region: Machado, Sul de Minas
 elevation: 1,100 – 1,200m
-tasting_notes: Dark chocolate, toasted almonds
+tasting_notes: dark chocolate, toasted almonds
 brewing_method: Espresso, Drip, French Press
 processing_method: Natural
 mascot: goldfinch

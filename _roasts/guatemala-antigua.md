@@ -6,7 +6,7 @@ order: 4
 roast_level: 3
 region: Antigua Valley
 elevation: 1,500 – 1,700m
-tasting_notes: Dark chocolate, toasted nut, caramel
+tasting_notes: dark chocolate, toasted nut, caramel
 brewing_method: Espresso, Moka Pot, French Press
 processing_method: Washed
 mascot: osprey

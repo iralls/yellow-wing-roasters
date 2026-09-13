@@ -1877,8 +1877,12 @@ h1.roast-title {
 }
 
 .roasts-entry-notes {
-  font-size: 0.88rem;
-  color: #666;
+  font-family: $font-body;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #8a7060;
+  line-height: 1.35;
+  margin-top: 0.2rem;
 }
 
 .roasts-entry-brew {

@@ -4,7 +4,7 @@ slug: dawn-drum
 category: blend
 order: 7
 roast_level: 1
-tasting_notes: Bright, honey, citrus, light body
+tasting_notes: bright, honey, citrus, light body
 brewing_method: Pour-over, Drip
 mascot: woodpecker
 mascot_file: audubon-woodpecker-transparent.png

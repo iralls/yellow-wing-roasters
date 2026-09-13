@@ -5,7 +5,7 @@ slug: early-bird
 category: blend
 order: 1
 roast_level: 2
-tasting_notes: Milk chocolate, caramel, smooth body
+tasting_notes: milk chocolate, caramel, smooth body
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
 mascot_file: audubon-robin-transparent.png

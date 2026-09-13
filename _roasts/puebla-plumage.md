@@ -6,7 +6,7 @@ published: false
 category: seasonal
 order: 15
 roast_level: 3
-tasting_notes: Bittersweet chocolate, sweet fig, toasted hazelnut, cocoa
+tasting_notes: bittersweet chocolate, sweet fig, toasted hazelnut, cocoa
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: golden-eagle
 mascot_file: golden-eagle-transparent.png

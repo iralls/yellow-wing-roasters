@@ -5,7 +5,7 @@ slug: chimney-sweep
 category: blend
 order: 3
 roast_level: 3
-tasting_notes: Dark Chocolate, Blood Orange, Brown Sugar
+tasting_notes: dark chocolate, blood orange, brown sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
