@@ -1,15 +1,25 @@
 1:
   name: "City (light)"
+  specialty: "City"
+  layman: "Light"
   dots: 1
 2:
   name: "City+ (light-medium)"
+  specialty: "City+"
+  layman: "Light-Medium"
   dots: 2
 3:
   name: "Full City (medium)"
+  specialty: "Full City"
+  layman: "Medium"
   dots: 3
 4:
   name: "Full City+ (medium-dark)"
+  specialty: "Full City+"
+  layman: "Medium-Dark"
   dots: 4
 5:
   name: "Vienna (dark)"
+  specialty: "Vienna"
+  layman: "Dark"
   dots: 5

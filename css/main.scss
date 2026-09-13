@@ -1741,26 +1741,22 @@ h1.roast-title {
 
 .roasts-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin: 0 0 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 0 0 3rem;
 }
 
-@media (max-width: 64rem) {
-  .roasts-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 48rem) {
+@media (max-width: 58rem) {
   .roasts-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 }
 
-@media (max-width: 32rem) {
+@media (max-width: 36rem) {
   .roasts-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
@@ -1777,28 +1773,13 @@ h1.roast-title {
 .roasts-entry {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   text-decoration: none;
   color: inherit;
-  padding: 1.25rem 0.85rem;
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition:
-    background 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
   position: relative;
+  transition: transform 0.25s ease;
 }
 
 .roasts-entry:hover {
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
   text-decoration: none;
   color: inherit;
 }
@@ -1809,15 +1790,53 @@ h1.roast-title {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.65rem;
+  width: 100%;
+  height: 18rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.roasts-entry:hover .roasts-entry-visual {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
 }
 
 .roasts-entry-mascot {
-  height: 4.5rem;
   width: auto;
+  max-width: 80%;
+  height: auto;
+  max-height: 11.5rem;
   object-fit: contain;
-  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.15));
-  transition: transform 0.2s;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.roasts-entry:hover .roasts-entry-mascot {
+  transform: scale(1.04);
+}
+
+/* Fine-tuned sizing for wider/stouter mascots */
+[data-roast="early-bird"] .roasts-entry-mascot,
+[data-roast="lil-sipper"] .roasts-entry-mascot,
+[data-roast="feather-soot"] .roasts-entry-mascot,
+[data-roast="morning-meep"] .roasts-entry-mascot,
+.roasts-entry-mascot[src*="audubon-robin"],
+.roasts-entry-mascot[src*="audubon-hummingbird"],
+.roasts-entry-mascot[src*="audubon-canary"],
+.roasts-entry-mascot[src*="american-woodcock"] {
+  max-height: 9.75rem;
+  max-width: 72%;
 }
 
 .roasts-entry-mascot-label {
@@ -1831,23 +1850,21 @@ h1.roast-title {
   text-align: center;
 }
 
-.roasts-entry:hover .roasts-entry-mascot {
-  transform: scale(1.08);
-}
-
 .mascot-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.35rem;
-  width: 5rem;
-  margin: 0 auto;
+  gap: 0.5rem;
+  width: 9.5rem;
+  height: 9.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .mascot-grid-item {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
 
 .mascot-grid-lg {
@@ -1855,20 +1872,106 @@ h1.roast-title {
   gap: 0.5rem;
 }
 
-.roasts-entry-info {
+/* ── Hover Overlay inside Card ── */
+.roasts-entry-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(254, 252, 249, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 1.75rem 1.25rem;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 4;
+}
+
+.roasts-entry:hover .roasts-entry-overlay,
+.roasts-entry:focus-within .roasts-entry-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.roasts-entry-overlay-origins {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8a7060;
+  line-height: 1.35;
+  margin-top: 0.85rem;
+  max-width: 15rem;
+}
+
+.roasts-entry-overlay-notes {
+  font-family: $font-body;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: #5c4434;
+  line-height: 1.45;
+  margin-bottom: 0.85rem;
+  max-width: 15rem;
+}
+
+.roasts-entry-overlay-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(44, 30, 20, 0.06);
+  border-radius: 999px;
+}
+
+.roasts-entry-overlay-specialty {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3a2a1d;
+}
+
+/* ── Info Below Card ── */
+.roasts-entry-info {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  padding: 0.85rem 0.25rem 0;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.roasts-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.roasts-entry-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .roasts-entry-title {
   font-family: $font-display;
   font-weight: 800;
   font-size: 1.2rem;
-  margin-bottom: 0.1rem;
   line-height: 1.25;
+  color: #2c1e14;
+  margin-bottom: 0;
+  text-align: left;
 }
 
 .roasts-entry-subtitle {
@@ -1877,94 +1980,122 @@ h1.roast-title {
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #888;
-  margin-bottom: 0.25rem;
-}
-
-.roasts-entry-level {
-  display: block;
-  line-height: 1;
-  margin-bottom: 0.2rem;
-}
-
-.roasts-entry-descriptor {
-  font-family: $font-display;
-  font-weight: 700;
-  font-size: 0.78rem;
-  color: #3a2a1d;
-  margin-top: 0.35rem;
-  line-height: 1.25;
-}
-
-.roasts-entry-notes {
-  font-family: $font-body;
-  font-size: 0.8rem;
-  font-style: italic;
-  color: #8a7060;
-  line-height: 1.35;
-  margin-top: 0.2rem;
-}
-
-.roasts-entry-brew {
-  font-size: 0.8rem;
   color: #999;
-  font-style: italic;
   margin-top: 0.2rem;
+  margin-bottom: 0;
+  text-align: left;
 }
 
 .roasts-entry-prices {
   font-family: $font-display;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #666;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #2c1e14;
   margin-top: 0.35rem;
+  text-align: left;
+}
+
+.roasts-entry-prices s {
+  color: #999;
+  font-weight: 500;
+  margin-right: 0.3rem;
+}
+
+.roasts-entry-temp-price {
+  color: #d32f2f;
+  font-weight: 800;
 }
 
 .roasts-entry-sub-price {
   color: #1f6b4a;
 }
 
+.roasts-entry-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+  max-width: 48%;
+}
+
+.roasts-entry-layman {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a7060;
+  white-space: nowrap;
+  line-height: 1.25;
+}
+
+.roasts-entry-descriptor {
+  font-family: $font-body;
+  font-style: italic;
+  font-size: 0.84rem;
+  color: #3a2a1d;
+  line-height: 1.35;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.roasts-entry-notes {
+  font-family: $font-body;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #8a7060;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+}
+
 .roasts-entry--incubating,
 .roasts-entry--flown_south,
 .roasts-entry--soon {
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 /* ── Unified Roast Card Badges ── */
 .roasts-entry-badge {
-  width: 100%;
-  text-align: center;
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 5;
+  pointer-events: none;
   font-family: $font-display;
   font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
   box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 
   &--incubating     { background: #ffd600; color: #111; }
   &--just_hatched   { background: #2e7d32; color: #fff; }
   &--mid_molt       { background: #ffe600; color: #111; }
   &--migrating_soon { background: #c2410c; color: #fff; }
   &--low_stock      { background: #e65100; color: #fff; }
-  &--flown_south    { background: #475569; color: #fff; font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.3rem 0.2rem; line-height: 1.2; }
+  &--flown_south    { background: #475569; color: #fff; font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.28rem 0.6rem; line-height: 1.2; }
 }
 
 .roasts-entry-seasonal-badge {
-  width: 100%;
-  text-align: center;
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 5;
+  pointer-events: none;
   background: #e8a0b4;
   color: #fff;
   font-family: $font-display;
   font-weight: 900;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  padding: 0.3rem 0;
-  border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* ── BYOB section ── */
