@@ -2260,7 +2260,7 @@ h1.roast-title {
   text-transform: uppercase;
   color: #8a7060;
   line-height: 1.35;
-  margin-top: 0.85rem;
+  margin-top: 0.65rem;
   max-width: 15rem;
 }
 
@@ -2270,7 +2270,7 @@ h1.roast-title {
   font-size: 0.92rem;
   color: #5c4434;
   line-height: 1.45;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.65rem;
   max-width: 15rem;
 }
 
@@ -2292,8 +2292,35 @@ h1.roast-title {
   color: #3a2a1d;
 }
 
+.roasts-entry-overlay-status {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  padding: 0.42rem 0.85rem;
+  text-align: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 5;
+  border-bottom-left-radius: 0.85rem;
+  border-bottom-right-radius: 0.85rem;
+
+  &--incubating     { background: #ffd600; color: #111; }
+  &--just_hatched   { background: #2e7d32; color: #fff; }
+  &--mid_molt       { background: #ffe600; color: #111; }
+  &--migrating_soon { background: #c2410c; color: #fff; }
+  &--low_stock      { background: #e65100; color: #fff; }
+  &--flown_south    { background: #475569; color: #fff; }
+  &--rotating       { background: #e8a0b4; color: #fff; }
+}
+
 .roasts-entry-quick-add {
-  margin-top: 0.95rem;
+  margin-top: 0.75rem;
   padding: 0.45rem 1.15rem;
   background: #2c1e14;
   color: #faf8f5;
@@ -2455,7 +2482,8 @@ h1.roast-title {
   top: 0.85rem;
   left: 0.85rem;
   z-index: 5;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: default;
   font-family: $font-display;
   font-weight: 900;
   font-size: 0.62rem;
@@ -2479,7 +2507,8 @@ h1.roast-title {
   top: 0.85rem;
   right: 0.85rem;
   z-index: 5;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: default;
   background: #e8a0b4;
   color: #fff;
   font-family: $font-display;

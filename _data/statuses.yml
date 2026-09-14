@@ -4,6 +4,7 @@ flown_south:
   subscribable: false
   dim_card: true
   banner_text: "This seasonal roast has flown south for the season and is no longer available to order."
+  overlay_text: "No longer available to order."
   footnote: "Ordering unavailable while this roast has flown south for the season."
 
 incubating:
@@ -12,6 +13,7 @@ incubating:
   subscribable: false
   dim_card: true
   banner_text: "This roast isn't available to order yet — check back soon."
+  overlay_text: "In development — check back soon!"
   footnote: "Ordering unavailable until this roast launches."
 
 just_hatched:
@@ -20,6 +22,7 @@ just_hatched:
   subscribable: true
   dim_card: false
   banner_text: "Fresh new arrival! This roast just launched and is ready to order."
+  overlay_text: "Fresh new arrival, ready to order."
 
 migrating_soon:
   badge: "Migrating Soon"
@@ -27,6 +30,7 @@ migrating_soon:
   subscribable: true
   dim_card: false
   banner_text: "Seasonal favorite heading south soon! Order now before it leaves the roost."
+  overlay_text: "Leaving the roost soon — order before it's gone!"
 
 mid_molt:
   badge: "Mid-Molt"
@@ -34,6 +38,7 @@ mid_molt:
   subscribable: false
   dim_card: false
   banner_text: "We're currently dialing in this blend! Ordering is open as we refine each batch, though component origins and composition may be in flux."
+  overlay_text: "Dialing in this profile — batches may evolve as we refine."
   sub_footnote: "Subscriptions unavailable while this roast profile is mid-molt."
 
 low_stock:
@@ -42,4 +47,5 @@ low_stock:
   subscribable: false
   dim_card: false
   banner_text: "Quantities are limited! Subscriptions are unavailable for this roast while stock is low."
+  overlay_text: "Limited quantities remaining."
   sub_footnote: "Subscriptions unavailable due to low stock."

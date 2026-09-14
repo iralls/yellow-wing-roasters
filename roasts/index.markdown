@@ -128,6 +128,7 @@ permalink: /roasts/
           {% unless r.status == 'incubating' or r.status == 'flown_south' %}
             <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
           {% endunless %}
+          {% include roast-overlay-status.html roast=r %}
         </div>
       </div>
       

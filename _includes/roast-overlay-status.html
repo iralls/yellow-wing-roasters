@@ -1,0 +1,10 @@
+{% assign r_roast = include.roast %}
+{% if r_roast.status %}
+  {% assign s_info = site.data.statuses[r_roast.status] %}
+  {% assign s_desc = r_roast.status_text | default: s_info.overlay_text | default: s_info.banner_text %}
+  {% if s_desc %}
+    <div class="roasts-entry-overlay-status roasts-entry-overlay-status--{{ r_roast.status }}">{{ s_desc }}</div>
+  {% endif %}
+{% elsif r_roast.rotating %}
+  <div class="roasts-entry-overlay-status roasts-entry-overlay-status--rotating">Rotating selection throughout the year.</div>
+{% endif %}
