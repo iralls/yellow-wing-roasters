@@ -6,7 +6,7 @@ type: blend
 order: 6
 roast_level: 3
 descriptor: nutty and spiced
-tasting_notes: cinnamon, dark chocolate, spiced orange
+tasting_notes: cinnamon, spiced chocolate, dark fruit
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: american-woodcock
 mascot_file: american-woodcock-transparent.png
@@ -15,7 +15,7 @@ origins:
   - Guatemala Washed
   - Ethiopia Natural
 description: |
-  Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of orange and dried berry.
+  Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of dark fruit and jammy sweetness.
 
   While it performs exceptionally as an espresso—pulling a smooth, balanced shot with plenty of crema—it also brews remarkably well as drip coffee or in a French press.
 ---

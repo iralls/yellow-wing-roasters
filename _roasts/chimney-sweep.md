@@ -7,7 +7,7 @@ type: blend
 order: 3
 roast_level: 3
 descriptor: smooth and robust
-tasting_notes: dark chocolate, blood orange, brown sugar
+tasting_notes: dark chocolate, stone fruit, brown sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
