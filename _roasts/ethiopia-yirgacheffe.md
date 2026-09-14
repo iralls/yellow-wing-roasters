@@ -1,6 +1,6 @@
 ---
 title: "Ethiopia Yirgacheffe"
-subtitle: "Idido Wogida Grade 1"
+subtitle: "Grade 1"
 slug: ethiopia-yirgacheffe
 category: single origin
 type: single-origin
@@ -9,11 +9,11 @@ roast_level: 2
 region: Yirgacheffe, Gedeo Zone
 elevation: 1,900 – 2,200m
 descriptor: floral and delicate
-tasting_notes: rosewater, maple sweetness, candied lemon, roasted chestnut
+tasting_notes: florals, maple, citrus, spices
 brewing_method: Pour-over, Drip, Chemex, Espresso
 processing_method: Washed
 mascot: double-crested-cormorant
 mascot_file: double-crested-cormorant-transparent.png
 description: >-
-  A first-rate washed Yirgacheffe from the Idido Wogida washing station. Roasted to City+ to preserve its vibrant floral character, it delivers aromatic notes of rosewater, candied lemon, and sweet maple, backed by a satisfying mouthfeel and subtle exotic spices.
+  A classic washed Yirgacheffe with a smooth, full body. Expect floral aromas and sweet notes of maple and brown sugar, balanced by bright citrus and warm spices on the finish.
 ---
