@@ -12,6 +12,7 @@ brewing_method: Espresso, French Press, Drip
 processing_method: Natural
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
+status: flown_south
 description: >-
   This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.
 ---
