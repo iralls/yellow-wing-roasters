@@ -89,7 +89,7 @@ ethiopia-wush-wush:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 14, 1lb: 18, 2lb: 36, 5lb: 90}
-ethiopia-guji-uraga:
+ethiopia-guji:
   sizes: [12oz, 1lb, 2lb, 5lb]
   frequencies: [Every 2 weeks, Monthly]
   prices: {12oz: 14, 1lb: 16, 2lb: 32, 5lb: 80}
