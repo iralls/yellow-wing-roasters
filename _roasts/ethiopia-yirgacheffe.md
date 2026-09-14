@@ -3,6 +3,7 @@ title: "Ethiopia Yirgacheffe"
 subtitle: "Idido Wogida Grade 1"
 slug: ethiopia-yirgacheffe
 category: single origin
+type: single-origin
 order: 10
 roast_level: 2
 region: Yirgacheffe, Gedeo Zone

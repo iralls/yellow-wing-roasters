@@ -2,6 +2,7 @@
 title: Colombia Supremo
 slug: colombia-supremo
 category: single origin
+type: single-origin
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 order: 3

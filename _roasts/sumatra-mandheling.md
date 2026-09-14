@@ -2,6 +2,7 @@
 title: Sumatra Mandheling Fair Trade Organic
 slug: sumatra-mandheling
 category: single origin
+type: single-origin
 order: 6
 roast_level: 4
 region: Mandheling, North Sumatra

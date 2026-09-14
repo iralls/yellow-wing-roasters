@@ -3,6 +3,7 @@ title: Chimney Sweep
 subtitle: Espresso Blend
 slug: chimney-sweep
 category: blend
+type: blend
 order: 3
 roast_level: 3
 descriptor: smooth and robust

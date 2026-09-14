@@ -92,6 +92,7 @@ permalink: /roasts/
     <a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}" 
        href="{{ r.url | relative_url }}"
        data-category="{{ r.category }}"
+       data-type="{{ r.type }}"
        data-origins="{{ origin_list }}"
        data-roast-dots="{{ r_dots }}"
        data-brewing="{{ r.brewing_method }}"
@@ -164,7 +165,7 @@ permalink: /roasts/
   var selectLevel = document.getElementById('filter-level');
   var selectBrewing = document.getElementById('filter-brewing');
 
-  var categories = {};
+  var types = {};
   var origins = {};
   var levels = { 'Light': true, 'Medium': true, 'Dark': true };
   var brewingMethods = {};
@@ -191,10 +192,10 @@ permalink: /roasts/
 
   // 1. Scan cards to extract unique filter values
   cards.forEach(function (card) {
-    // Category
-    var cat = (card.getAttribute('data-category') || '').trim();
-    if (cat) {
-      categories[cat] = true;
+    // Type (blend or single-origin)
+    var t = (card.getAttribute('data-type') || '').trim().toLowerCase();
+    if (t) {
+      types[t] = true;
     }
 
     // Origins (comma-separated list)
@@ -226,15 +227,16 @@ permalink: /roasts/
   });
 
   // 2. Populate Dropdowns Dynamically
-  // Type / Category
+  // Type (Blend, Single Origin)
   if (selectCategory) {
-    Object.keys(categories).sort().forEach(function (cat) {
-      var opt = document.createElement('option');
-      opt.value = cat;
-      opt.textContent = cat.split(' ').map(function (w) {
-        return w.charAt(0).toUpperCase() + w.slice(1);
-      }).join(' ');
-      selectCategory.appendChild(opt);
+    var typeOrder = ['blend', 'single-origin'];
+    typeOrder.forEach(function (t) {
+      if (types[t]) {
+        var opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = (t === 'single-origin' || t === 'single origin') ? 'Single Origin' : 'Blend';
+        selectCategory.appendChild(opt);
+      }
     });
   }
 
@@ -264,15 +266,15 @@ permalink: /roasts/
 
   // 3. Filter Application Logic
   function applyFilters() {
-    var chosenCategory = selectCategory ? selectCategory.value : '';
+    var chosenType = selectCategory ? selectCategory.value : '';
     var chosenOrigin = selectOrigin.value;
     var chosenLevel = selectLevel.value;
     var chosenBrewing = selectBrewing.value;
 
     cards.forEach(function (card) {
-      // Check category match
-      var cardCat = (card.getAttribute('data-category') || '').trim().toLowerCase();
-      var matchesCategory = !chosenCategory || cardCat === chosenCategory.toLowerCase();
+      // Check type match
+      var cardType = (card.getAttribute('data-type') || '').trim().toLowerCase();
+      var matchesType = !chosenType || cardType === chosenType.toLowerCase();
 
       // Check if chosenOrigin is in the list of origins for this card
       var originsList = JSON.parse(card.getAttribute('data-origins-list') || '[]');
@@ -290,7 +292,7 @@ permalink: /roasts/
       var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
 
       // Show/Hide Card
-      if (matchesCategory && matchesOrigin && matchesLevel && matchesBrewing) {
+      if (matchesType && matchesOrigin && matchesLevel && matchesBrewing) {
         card.style.display = '';
       } else {
         card.style.display = 'none';

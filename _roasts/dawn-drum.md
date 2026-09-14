@@ -2,6 +2,7 @@
 title: Dawn Drum
 slug: dawn-drum
 category: blend
+type: blend
 order: 7
 roast_level: 1
 descriptor: crisp and bright

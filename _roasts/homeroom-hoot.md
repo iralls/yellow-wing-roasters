@@ -3,6 +3,7 @@ title: "Homeroom Hoot"
 subtitle: "Back to School Blend"
 slug: homeroom-hoot
 category: seasonal
+type: blend
 order: 5
 roast_level: 2
 descriptor: cozy and comforting

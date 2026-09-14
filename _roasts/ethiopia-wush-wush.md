@@ -2,6 +2,7 @@
 title: "Ethiopia 'Wush Wush'"
 slug: ethiopia-wush-wush
 category: single origin
+type: single-origin
 order: 5
 roast_level: 2
 region: Kaffa

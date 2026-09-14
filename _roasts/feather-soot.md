@@ -3,6 +3,7 @@ title: Feather Soot
 subtitle: Dark Roast
 slug: feather-soot
 category: blend
+type: blend
 order: 2
 roast_level: 5
 descriptor: rich and chocolatey

@@ -2,6 +2,7 @@
 title: Morning Ease
 slug: morning-ease
 category: blend
+type: blend
 order: 9
 roast_level: 2
 descriptor: mellow and comforting

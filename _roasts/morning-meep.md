@@ -2,6 +2,7 @@
 title: "Morning Meep"
 slug: morning-meep
 category: seasonal
+type: blend
 order: 6
 roast_level: 3
 descriptor: nutty and spiced

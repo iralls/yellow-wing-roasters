@@ -2,6 +2,7 @@
 title: "Ethiopia 'Guji Uraga'"
 slug: ethiopia-guji-uraga
 category: single origin
+type: single-origin
 order: 7
 roast_level: 2
 region: Uraga, Guji Zone

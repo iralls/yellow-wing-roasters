@@ -4,6 +4,7 @@ subtitle: Thanksgiving Blend
 slug: gobble-wobble
 published: false
 category: seasonal
+type: blend
 order: 11
 roast_level: 3
 descriptor: warm and festive

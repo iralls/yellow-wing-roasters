@@ -3,6 +3,7 @@ title: "Lil' Sipper"
 subtitle: Espresso Blend
 slug: lil-sipper
 category: blend
+type: blend
 order: 4
 roast_level: 2
 descriptor: vibrant and complex

@@ -3,6 +3,7 @@ title: Stillwater Steep
 subtitle: Cold Brew Blend
 slug: stillwater-steep
 category: seasonal
+type: blend
 order: 8
 roast_level: 4
 descriptor: deep and refreshing
