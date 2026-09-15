@@ -65,7 +65,7 @@ permalink: /gift/
       <div class="gift-type-card" data-value="code" role="radio" aria-checked="false" tabindex="0">
         <div class="roasts-entry-visual">
           <span class="gift-type-badge">&#10003; Selected</span>
-          <img src="{{ '/images/qr-code-transparent.png' | relative_url }}" alt="Digital Gift Card" class="roasts-entry-mascot">
+          <img src="{{ '/images/qr-code2-full-transparent.png' | relative_url }}" alt="Digital Gift Card" class="roasts-entry-mascot">
           <div class="roasts-entry-overlay">
             <div class="roasts-entry-overlay-notes">an instant prepaid digital gift code sent via email for them to pick any roasts</div>
             <div class="roasts-entry-overlay-brewing">Email Delivery</div>
