@@ -3217,4 +3217,50 @@ h1.roast-title {
   text-overflow: ellipsis;
 }
 
+.gift-select-option-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: $font-display;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8a7060;
+  background: rgba(44, 30, 20, 0.06);
+  padding: 0.26rem 0.65rem;
+  border-radius: 999px;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  line-height: 1.2;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+
+  span {
+    font-size: 0.75rem;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+
+  &:hover {
+    background: #2c1e14;
+    color: #faf8f5 !important;
+    text-decoration: none;
+    transform: translateY(-1px);
+
+    span {
+      transform: translate(1px, -1px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+
 

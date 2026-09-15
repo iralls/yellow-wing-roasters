@@ -28,21 +28,74 @@ permalink: /gift/
   <input type="hidden" id="gift-card-amount-hidden" value="">
   <input type="hidden" id="gift-code-hidden" value="">
 
-  <div class="order-field">
-    <label>Gift Type</label>
-    <div class="pill-radios">
-      <label class="order-radio"><input type="radio" name="gift-type" value="direct" checked> Direct Coffee / Subscription</label>
-      <label class="order-radio"><input type="radio" name="gift-type" value="code"> Digital Gift Card (Prepaid Code)</label>
+  <div class="order-field" style="margin-bottom: 2rem;">
+    <label style="text-align: center; margin-bottom: 0.85rem; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8a7060; font-weight: 700;">Choose Gift Type</label>
+
+    <div style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
+      <input type="radio" name="gift-type" id="gift-type-direct" value="direct" checked>
+      <input type="radio" name="gift-type" id="gift-type-code" value="code">
+    </div>
+
+    <div class="gift-type-grid" role="radiogroup" aria-label="Gift Type">
+      <!-- Card 1: Subscription -->
+      <div class="gift-type-card is-selected" data-value="direct" role="radio" aria-checked="true" tabindex="0">
+        <div class="roasts-entry-visual">
+          <span class="gift-type-badge">&#10003; Selected</span>
+          <img src="{{ '/images/mailbox-transparent.png' | relative_url }}" alt="Subscription" class="roasts-entry-mascot">
+          <div class="roasts-entry-overlay">
+            <div class="roasts-entry-overlay-notes">a recurring subscription or fresh single bag delivered directly to their door</div>
+            <div class="roasts-entry-overlay-brewing">Physical Delivery</div>
+          </div>
+        </div>
+        <div class="roasts-entry-info">
+          <div class="roasts-entry-header">
+            <div class="roasts-entry-main">
+              <div class="roasts-entry-title">Subscription</div>
+              <div class="roasts-entry-subtitle">Direct Delivery</div>
+            </div>
+            <div class="roasts-entry-meta">
+              <div class="roasts-entry-layman">Physical</div>
+              <div class="roasts-entry-descriptor">ships to their door</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Digital Gift Card -->
+      <div class="gift-type-card" data-value="code" role="radio" aria-checked="false" tabindex="0">
+        <div class="roasts-entry-visual">
+          <span class="gift-type-badge">&#10003; Selected</span>
+          <img src="{{ '/images/qr-code-transparent.png' | relative_url }}" alt="Digital Gift Card" class="roasts-entry-mascot">
+          <div class="roasts-entry-overlay">
+            <div class="roasts-entry-overlay-notes">an instant prepaid digital gift code sent via email for them to pick any roasts</div>
+            <div class="roasts-entry-overlay-brewing">Email Delivery</div>
+          </div>
+        </div>
+        <div class="roasts-entry-info">
+          <div class="roasts-entry-header">
+            <div class="roasts-entry-main">
+              <div class="roasts-entry-title">Digital Gift Card</div>
+              <div class="roasts-entry-subtitle">Prepaid Code</div>
+            </div>
+            <div class="roasts-entry-meta">
+              <div class="roasts-entry-layman">Digital</div>
+              <div class="roasts-entry-descriptor">sent via email</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Direct Gifting Fields -->
   <div id="direct-gift-fields">
     <div class="order-field">
-      <label for="gift-product">Select Coffee / Subscription</label>
-      <select id="gift-product" class="subscribe-select" style="width: 100%;">
+      <label for="gift-select-trigger">Select Coffee / Subscription</label>
+
+      <!-- Hidden native select for form submission & data mapping -->
+      <select id="gift-product" class="subscribe-select" style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;" tabindex="-1" aria-hidden="true">
         <option value="" disabled selected>Choose a coffee...</option>
-        <option disabled style="font-weight: bold; color: #2c1e14;">── Blends ──</option>
+        <option disabled>── Blends ──</option>
         {% for roast in site.roasts %}
           {% assign s_meta = site.data.statuses[roast.status] %}
           {% if s_meta == nil or s_meta.orderable != false %}
@@ -52,7 +105,7 @@ permalink: /gift/
           {% endif %}
         {% endfor %}
 
-        <option disabled style="font-weight: bold; color: #2c1e14;">── Single Origins ──</option>
+        <option disabled>── Single Origins ──</option>
         {% for roast in site.roasts %}
           {% assign s_meta = site.data.statuses[roast.status] %}
           {% if s_meta == nil or s_meta.orderable != false %}
@@ -62,7 +115,7 @@ permalink: /gift/
           {% endif %}
         {% endfor %}
 
-        <option disabled style="font-weight: bold; color: #2c1e14;">── Seasonals ──</option>
+        <option disabled>── Seasonals ──</option>
         {% for roast in site.roasts %}
           {% assign s_meta = site.data.statuses[roast.status] %}
           {% if s_meta == nil or s_meta.orderable != false %}
@@ -72,7 +125,7 @@ permalink: /gift/
           {% endif %}
         {% endfor %}
 
-        <option disabled style="font-weight: bold; color: #2c1e14;">── Subscriptions ──</option>
+        <option disabled>── Subscriptions ──</option>
         <option value="migrator">Migrator</option>
         <option value="wingshot-collective">Wingshot Collective</option>
         <option value="fledglings">Fledglings</option>
@@ -80,6 +133,177 @@ permalink: /gift/
         <option value="runts-rations">Runt's Rations</option>
         <option value="rubber-duck-club">Rubber Duck Club</option>
       </select>
+
+      <!-- Custom Dropdown with Thumbnails -->
+      <div class="gift-select-wrap" id="gift-select-wrap">
+        <button type="button" class="gift-select-trigger" id="gift-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <div class="gift-select-trigger-content">
+            <div class="gift-select-trigger-thumb" id="gift-select-trigger-thumb">
+              <span class="gift-select-trigger-ph" id="gift-select-trigger-ph" aria-hidden="true">&#9749;</span>
+              <img src="" alt="" class="gift-select-trigger-img" id="gift-select-trigger-img" style="display: none;">
+            </div>
+            <div class="gift-select-trigger-info">
+              <div class="gift-select-trigger-title gift-select-trigger-title--placeholder" id="gift-select-trigger-title">Choose a coffee or subscription...</div>
+              <div class="gift-select-trigger-meta" id="gift-select-trigger-meta" style="display: none;"></div>
+            </div>
+          </div>
+          <span class="gift-select-chevron" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2.5 4.5L6 8L9.5 4.5" stroke="#2c1e14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+
+        <div class="gift-select-menu" id="gift-select-menu" role="listbox" style="display: none;">
+          <!-- Blends -->
+          <div class="gift-select-group">
+            <div class="gift-select-group-header">Blends</div>
+            {% for roast in site.roasts %}
+              {% assign s_meta = site.data.statuses[roast.status] %}
+              {% if s_meta == nil or s_meta.orderable != false %}
+                {% if roast.category == "blend" %}
+                  <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.descriptor | default: roast.subtitle | default: 'Blend' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
+                    <div class="gift-select-option-thumb">
+                      {% if roast.mascot_file %}
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                      {% else %}
+                        <span class="gift-select-trigger-ph">&#9749;</span>
+                      {% endif %}
+                    </div>
+                    <div class="gift-select-option-info">
+                      <div class="gift-select-option-title">{{ roast.title }}</div>
+                      <div class="gift-select-option-meta">{{ roast.descriptor | default: roast.subtitle | default: "Blend" }}</div>
+                    </div>
+                    <a href="{{ roast.url | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore {{ roast.title }} in a new tab">Explore <span>&nearr;</span></a>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Single Origins -->
+          <div class="gift-select-group">
+            <div class="gift-select-group-header">Single Origins</div>
+            {% for roast in site.roasts %}
+              {% assign s_meta = site.data.statuses[roast.status] %}
+              {% if s_meta == nil or s_meta.orderable != false %}
+                {% if roast.category == "single origin" %}
+                  <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.region | default: roast.descriptor | default: 'Single Origin' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
+                    <div class="gift-select-option-thumb">
+                      {% if roast.mascot_file %}
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                      {% else %}
+                        <span class="gift-select-trigger-ph">&#9749;</span>
+                      {% endif %}
+                    </div>
+                    <div class="gift-select-option-info">
+                      <div class="gift-select-option-title">{{ roast.title }}</div>
+                      <div class="gift-select-option-meta">{{ roast.region | default: roast.descriptor | default: "Single Origin" }}</div>
+                    </div>
+                    <a href="{{ roast.url | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore {{ roast.title }} in a new tab">Explore <span>&nearr;</span></a>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Seasonals -->
+          <div class="gift-select-group">
+            <div class="gift-select-group-header">Seasonals</div>
+            {% for roast in site.roasts %}
+              {% assign s_meta = site.data.statuses[roast.status] %}
+              {% if s_meta == nil or s_meta.orderable != false %}
+                {% if roast.category == "seasonal" %}
+                  <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.descriptor | default: 'Seasonal Roast' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
+                    <div class="gift-select-option-thumb">
+                      {% if roast.mascot_file %}
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                      {% else %}
+                        <span class="gift-select-trigger-ph">&#9749;</span>
+                      {% endif %}
+                    </div>
+                    <div class="gift-select-option-info">
+                      <div class="gift-select-option-title">{{ roast.title }}</div>
+                      <div class="gift-select-option-meta">{{ roast.descriptor | default: "Seasonal Roast" }}</div>
+                    </div>
+                    <a href="{{ roast.url | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore {{ roast.title }} in a new tab">Explore <span>&nearr;</span></a>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Subscriptions -->
+          <div class="gift-select-group">
+            <div class="gift-select-group-header">Subscriptions</div>
+            <div class="gift-select-option" data-value="migrator" data-title="Migrator" data-meta="Rotating roaster's choice single origin" data-img="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Migrator</div>
+                <div class="gift-select-option-meta">Rotating roaster's choice single origin</div>
+              </div>
+              <a href="{{ '/subscriptions/the-migrator/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Migrator in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+
+            <div class="gift-select-option" data-value="wingshot-collective" data-title="Wingshot Collective" data-meta="Rotating espresso exploration pick" data-img="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Wingshot Collective</div>
+                <div class="gift-select-option-meta">Rotating espresso exploration pick</div>
+              </div>
+              <a href="{{ '/subscriptions/wingshot-collective/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Wingshot Collective in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+
+            <div class="gift-select-option" data-value="fledglings" data-title="Fledglings" data-meta="Approachable monthly coffee &amp; brew guide" data-img="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Fledglings</div>
+                <div class="gift-select-option-meta">Approachable monthly coffee &amp; brew guide</div>
+              </div>
+              <a href="{{ '/subscriptions/fledglings/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Fledglings in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+
+            <div class="gift-select-option" data-value="murmurations" data-title="Murmurations" data-meta="Small-batch roasts leftover beans blend" data-img="{{ '/images/flock-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/flock-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Murmurations</div>
+                <div class="gift-select-option-meta">Small-batch roasts leftover beans blend</div>
+              </div>
+              <a href="{{ '/subscriptions/murmurations/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Murmurations in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+
+            <div class="gift-select-option" data-value="runts-rations" data-title="Runt's Rations" data-meta="Test roasts &amp; experimental profiles" data-img="{{ '/images/audubon-runt-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Runt's Rations</div>
+                <div class="gift-select-option-meta">Test roasts &amp; experimental profiles</div>
+              </div>
+              <a href="{{ '/subscriptions/runts-rations/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Runt's Rations in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+
+            <div class="gift-select-option" data-value="rubber-duck-club" data-title="Rubber Duck Club" data-meta="Debug brand-new experimental test roasts" data-img="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" role="option" tabindex="0">
+              <div class="gift-select-option-thumb">
+                <img src="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+              </div>
+              <div class="gift-select-option-info">
+                <div class="gift-select-option-title">Rubber Duck Club</div>
+                <div class="gift-select-option-meta">Debug brand-new experimental test roasts</div>
+              </div>
+              <a href="{{ '/subscriptions/rubber-duck-club/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Rubber Duck Club in a new tab">Explore <span>&nearr;</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
       <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; margin-bottom: 0;">* All physical gifts are packaged in our standard 12 oz bag size.</p>
     </div>
 
@@ -298,20 +522,192 @@ permalink: /gift/
     }
   }
 
+  // Custom Select Elements
+  var customSelectWrap = document.getElementById('gift-select-wrap');
+  var customTrigger = document.getElementById('gift-select-trigger');
+  var customTriggerImg = document.getElementById('gift-select-trigger-img');
+  var customTriggerPh = document.getElementById('gift-select-trigger-ph');
+  var customTriggerTitle = document.getElementById('gift-select-trigger-title');
+  var customTriggerMeta = document.getElementById('gift-select-trigger-meta');
+  var customMenu = document.getElementById('gift-select-menu');
+  var customOptions = customMenu ? customMenu.querySelectorAll('.gift-select-option') : [];
+
+  function updateCustomDropdownDisplay(val) {
+    if (!val) {
+      if (customTriggerImg) customTriggerImg.style.display = 'none';
+      if (customTriggerPh) customTriggerPh.style.display = 'block';
+      if (customTriggerTitle) {
+        customTriggerTitle.textContent = 'Choose a coffee or subscription...';
+        customTriggerTitle.classList.add('gift-select-trigger-title--placeholder');
+      }
+      if (customTriggerMeta) {
+        customTriggerMeta.style.display = 'none';
+        customTriggerMeta.textContent = '';
+      }
+      customOptions.forEach(function (opt) {
+        opt.classList.remove('is-selected');
+      });
+      return;
+    }
+
+    customOptions.forEach(function (opt) {
+      if (opt.getAttribute('data-value') === val) {
+        opt.classList.add('is-selected');
+        var title = opt.getAttribute('data-title');
+        var meta = opt.getAttribute('data-meta');
+        var img = opt.getAttribute('data-img');
+
+        if (customTriggerTitle) {
+          customTriggerTitle.textContent = title;
+          customTriggerTitle.classList.remove('gift-select-trigger-title--placeholder');
+        }
+        if (customTriggerMeta) {
+          if (meta) {
+            customTriggerMeta.textContent = meta;
+            customTriggerMeta.style.display = 'block';
+          } else {
+            customTriggerMeta.style.display = 'none';
+          }
+        }
+
+        if (customTriggerImg && customTriggerPh) {
+          if (img) {
+            customTriggerImg.src = img;
+            customTriggerImg.style.display = 'block';
+            customTriggerPh.style.display = 'none';
+          } else {
+            customTriggerImg.style.display = 'none';
+            customTriggerPh.style.display = 'block';
+          }
+        }
+      } else {
+        opt.classList.remove('is-selected');
+      }
+    });
+  }
+
+  function toggleDropdown(show) {
+    if (!customMenu || !customTrigger) return;
+    var isOpening = (typeof show === 'boolean') ? show : (customMenu.style.display !== 'block');
+    customMenu.style.display = isOpening ? 'block' : 'none';
+    customTrigger.classList.toggle('is-open', isOpening);
+    customTrigger.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+    if (isOpening) {
+      var selectedOpt = customMenu.querySelector('.gift-select-option.is-selected');
+      if (selectedOpt) {
+        selectedOpt.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }
+
+  if (customTrigger) {
+    customTrigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      toggleDropdown();
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (customSelectWrap && !customSelectWrap.contains(e.target)) {
+      toggleDropdown(false);
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && customMenu && customMenu.style.display === 'block') {
+      toggleDropdown(false);
+      if (customTrigger) customTrigger.focus();
+    }
+  });
+
+  customOptions.forEach(function (opt) {
+    opt.addEventListener('click', function (e) {
+      if (e.target.closest('.gift-select-option-link')) {
+        return;
+      }
+      e.preventDefault();
+      var val = this.getAttribute('data-value');
+      productSelect.value = val;
+      updateCustomDropdownDisplay(val);
+      toggleDropdown(false);
+      if (customTrigger) {
+        customTrigger.focus();
+        customTrigger.style.borderColor = '';
+      }
+      productSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    opt.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('.gift-select-option-link')) {
+          return;
+        }
+        e.preventDefault();
+        this.click();
+      }
+    });
+  });
+
+  var optionLinks = customMenu ? customMenu.querySelectorAll('.gift-select-option-link') : [];
+  optionLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  });
+
+  // Gift Type Card selection
+  var giftTypeCards = form.querySelectorAll('.gift-type-card');
+
+  function selectGiftType(type) {
+    var radio = form.querySelector('input[name="gift-type"][value="' + type + '"]');
+    if (radio && !radio.checked) {
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  giftTypeCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var type = this.getAttribute('data-value');
+      selectGiftType(type);
+    });
+
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectGiftType(this.getAttribute('data-value'));
+      }
+    });
+  });
+
   // Pre-populate product if set in URL params (Direct only)
   var queryProduct = params.get('product') || params.get('roast');
   if (queryProduct) {
     productSelect.value = queryProduct;
-    if (productSelect.value) {
+    if (productSelect.value && productSelect.selectedIndex >= 0) {
       pageTitle.textContent = 'Corvid care packages — ' + productSelect.options[productSelect.selectedIndex].text;
     }
   }
 
+  // Pre-populate gift type if set in URL params
+  var queryType = params.get('type');
+  if (queryType === 'code' || queryType === 'digital') {
+    selectGiftType('code');
+  }
+
+  updateCustomDropdownDisplay(productSelect.value);
   updatePrice();
 
   productSelect.addEventListener('change', function () {
-    var selectedText = this.options[this.selectedIndex].text;
-    pageTitle.textContent = 'Corvid care packages — ' + selectedText;
+    var selectedText = (this.options && this.selectedIndex >= 0 && this.options[this.selectedIndex])
+      ? this.options[this.selectedIndex].text
+      : '';
+    if (selectedText && this.value) {
+      pageTitle.textContent = 'Corvid care packages — ' + selectedText;
+    } else {
+      pageTitle.textContent = 'Corvid care packages';
+    }
+    updateCustomDropdownDisplay(this.value);
     updatePrice();
   });
 
@@ -331,8 +727,14 @@ permalink: /gift/
       document.getElementById('direct-address-container').style.display = isDirect ? 'block' : 'none';
       document.getElementById('digital-gift-fields').style.display = isDirect ? 'none' : 'block';
 
+      // Update Card Visual State
+      giftTypeCards.forEach(function (c) {
+        var matches = c.getAttribute('data-value') === radio.value;
+        c.classList.toggle('is-selected', matches);
+        c.setAttribute('aria-checked', matches ? 'true' : 'false');
+      });
+
       // Required fields toggling
-      document.getElementById('gift-product').required = isDirect;
       document.getElementById('gift-address').required = isDirect;
       document.getElementById('gift-city').required = isDirect;
       document.getElementById('gift-state').required = isDirect;
@@ -381,7 +783,12 @@ permalink: /gift/
     if (giftType === 'direct') {
       var product = productSelect.value;
       if (!product) {
-        alert('Please select a coffee/subscription product.');
+        alert('Please select a coffee or subscription product.');
+        toggleDropdown(true);
+        if (customTrigger) {
+          customTrigger.focus();
+          customTrigger.style.borderColor = '#d32f2f';
+        }
         return;
       }
 
