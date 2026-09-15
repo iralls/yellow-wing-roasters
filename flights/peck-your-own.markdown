@@ -32,14 +32,61 @@ permalink: /flights/peck-your-own/
   {% for r in roasts %}
     {% assign s_meta = site.data.statuses[r.status] %}
     {% if s_meta == nil or s_meta.orderable != false %}
-  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}">
+      {% assign r_level_key = r.roast_level | append: "" %}
+      {% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}
+      {% if level_info %}
+        {% assign r_dots = level_info.dots %}
+        {% assign r_layman = level_info.layman %}
+        {% assign r_specialty = level_info.specialty | default: level_info.name %}
+      {% else %}
+        {% assign r_dots = r.roast_dots %}
+        {% assign r_layman = "" %}
+        {% assign r_specialty = r.roast_level %}
+      {% endif %}
+  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}">
     <div class="roasts-entry-visual">
+      {% include roast-status-badge.html roast=r %}
+      {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      <span class="gift-type-badge">&#10003; Selected</span>
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+      <div class="roasts-entry-overlay">
+        {% if r.tasting_notes %}<div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
+        {% if r_dots %}
+          <div class="roasts-entry-overlay-level">
+            <span class="roast-dots">
+              <span class="roast-dot{% if r_dots >= 1 %} roast-dot-1{% endif %}"></span>
+              <span class="roast-dot{% if r_dots >= 2 %} roast-dot-2{% endif %}"></span>
+              <span class="roast-dot{% if r_dots >= 3 %} roast-dot-3{% endif %}"></span>
+              <span class="roast-dot{% if r_dots >= 4 %} roast-dot-4{% endif %}"></span>
+              <span class="roast-dot{% if r_dots >= 5 %} roast-dot-5{% endif %}"></span>
+            </span>
+            <span class="roasts-entry-overlay-specialty">{{ r_specialty }}</span>
+          </div>
+        {% endif %}
+        {% if r.origins %}
+          {% assign c_arr = "" | split: "," %}
+          {% for o in r.origins %}
+            {% assign c = o | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
+            {% assign c_arr = c_arr | push: c %}
+          {% endfor %}
+          <div class="roasts-entry-overlay-origins">{{ c_arr | uniq | join: " · " }}</div>
+        {% elsif r.brewing_method %}
+          <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
+        {% endif %}
+        {% include roast-overlay-status.html roast=r %}
+      </div>
     </div>
     <div class="roasts-entry-info">
-      <div class="roasts-entry-title">{{ r.title }}</div>
-      {% if r.descriptor %}<div class="roasts-entry-descriptor">{{ r.descriptor | downcase }}</div>{% endif %}
-      {% if r.tasting_notes %}<div class="roasts-entry-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">{{ r.title }}</div>
+          {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
+        </div>
+        <div class="roasts-entry-meta">
+          {% if r_layman %}<div class="roasts-entry-layman">{{ r_layman }}</div>{% endif %}
+          {% if r.descriptor %}<div class="roasts-entry-descriptor">{{ r.descriptor | downcase }}</div>{% endif %}
+        </div>
+      </div>
     </div>
   </div>
     {% endif %}
