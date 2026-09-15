@@ -174,10 +174,10 @@ permalink: /subscriptions/manage/
 
   <!-- Phase 1: Lookup Form -->
   <div id="lookup-section" class="lookup-container">
-    <form id="lookup-form">
+    <form id="lookup-form" class="order-form" style="margin: 0;">
       <div class="order-field">
         <label for="lookup-email">Email Address</label>
-        <input id="lookup-email" type="email" class="subscribe-select" style="width: 100%; font-family: inherit; padding: 0.6rem;" required placeholder="Enter the email address you subscribed with...">
+        <input id="lookup-email" type="email" required placeholder="Enter the email address you subscribed with..." autocomplete="email">
       </div>
       <div class="order-actions" style="margin-top: 1.5rem;">
         <button type="submit" id="lookup-btn" class="order-submit">Look Up Subscription</button>
