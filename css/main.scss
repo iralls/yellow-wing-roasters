@@ -2272,6 +2272,10 @@ h1.roast-title {
   line-height: 1.45;
   margin-bottom: 0.65rem;
   max-width: 15rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .roasts-entry-overlay-level {

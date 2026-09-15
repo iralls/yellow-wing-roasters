@@ -16,55 +16,73 @@ permalink: /subscriptions/
   <a class="roasts-entry" href="{{ '/subscriptions/the-migrator/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">a rotating roaster's choice single origin coffee each month</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Migrator</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["migrator"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["migrator"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/wingshot-collective/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">12oz chimney sweep plus a 12oz roaster's choice espresso exploration pick</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Wingshot Collective</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["wingshot-collective"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["wingshot-collective"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/fledglings/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">an approachable monthly coffee paired with a simple brew guide</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Fledglings</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["fledglings"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["fledglings"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/murmurations/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/flock-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">leftover beans from small-batch roasts — no two bags are the same</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Murmurations</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["murmurations"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["murmurations"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/runts-rations/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">test roasts and experimental profiles that didn't quite make the cut</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Runt's Rations</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["runts-rations"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["runts-rations"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
   <a class="roasts-entry" href="{{ '/subscriptions/rubber-duck-club/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">help us debug brand-new beans and experimental test roasts before release</div>
+      </div>
     </div>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">Rubber Duck Club</div>
-      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["rubber-duck-club"] %}${{ sub.prices["12oz"] }}/mo</div>
+      <div class="roasts-entry-prices">{% assign sub = site.data.subscriptions["rubber-duck-club"] %}${{ sub.prices["12oz"] }}</div>
     </div>
   </a>
 </div>
