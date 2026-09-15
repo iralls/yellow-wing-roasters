@@ -97,8 +97,11 @@ permalink: /flights/peck-your-own/
     for (var i = 0; i < options.length; i++) {
       var slug = options[i].getAttribute('data-slug');
       var isSelected = selected.indexOf(slug) >= 0;
-      options[i].style.outline = isSelected ? '2px solid #2c1e14' : '';
-      options[i].style.background = isSelected ? '#fff' : '';
+      if (isSelected) {
+        options[i].classList.add('is-selected');
+      } else {
+        options[i].classList.remove('is-selected');
+      }
     }
   }
 

@@ -2835,3 +2835,27 @@ h1.roast-title {
   margin-bottom: 1rem;
   border-bottom: 1px solid #ddd;
 }
+
+/* ── Peck Your Own Flight Picker ── */
+.pyo-option {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pyo-option.is-selected .roasts-entry-visual {
+  background: #fffdf5;
+  border-color: rgba(240, 200, 56, 0.55);
+  box-shadow:
+    0 10px 26px rgba(44, 30, 20, 0.06),
+    0 0 24px rgba(240, 200, 56, 0.35);
+  transform: translateY(-3px);
+}
+
+.pyo-option.is-selected:hover .roasts-entry-visual {
+  border-color: rgba(240, 200, 56, 0.7);
+  box-shadow:
+    0 14px 32px rgba(44, 30, 20, 0.08),
+    0 0 30px rgba(240, 200, 56, 0.45);
+  transform: translateY(-4px);
+}
+
