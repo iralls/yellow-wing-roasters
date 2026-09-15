@@ -2148,6 +2148,14 @@ h1.roast-title {
   max-width: 72%;
 }
 
+/* Fine-tuned sizing for taller/slender mascots */
+[data-roast="ethiopia-yirgacheffe"] .roasts-entry-mascot,
+[data-slug="ethiopia-yirgacheffe"] .roasts-entry-mascot,
+.roasts-entry-mascot[src*="double-crested-cormorant"] {
+  max-height: 13.5rem;
+  max-width: 85%;
+}
+
 .roasts-entry-mascot-label {
   font-family: $font-display;
   font-weight: 600;
