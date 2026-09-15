@@ -112,7 +112,7 @@ migrator:
 wingshot-collective:
   sizes: [12oz]
   frequencies: [Monthly]
-  prices: {12oz: 25}
+  prices: {12oz: 14}
 fledglings:
   sizes: [12oz]
   frequencies: [Monthly]

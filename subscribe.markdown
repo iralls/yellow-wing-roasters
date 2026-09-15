@@ -29,7 +29,7 @@ permalink: /subscriptions/
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
       <div class="roasts-entry-overlay">
-        <div class="roasts-entry-overlay-notes">12oz chimney sweep plus a 12oz roaster's choice espresso exploration pick</div>
+        <div class="roasts-entry-overlay-notes">a rotating roaster's choice espresso exploration pick each month</div>
       </div>
     </div>
     <div class="roasts-entry-info">

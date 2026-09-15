@@ -21,11 +21,11 @@ permalink: /subscriptions/wingshot-collective/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-Our espresso-focused monthly subscription. Each delivery includes 12oz of Chimney Sweep — our go-to espresso blend — plus 12oz of the roaster's latest espresso exploration pick. It's a mix of the reliable and the unexpected, built for espresso lovers who want to keep things interesting.
+Our espresso-focused monthly subscription. Each month, we pick a fresh 12oz bag of the roaster's choice espresso exploration—built for espresso lovers who want to keep things interesting.
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $25/mo</a>
+  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $14/mo</a>
 </div>
 
 </div>
