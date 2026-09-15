@@ -25,7 +25,7 @@ Our espresso-focused monthly subscription. Each month, we pick a fresh 12oz bag 
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — $14/mo</a>
+  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["wingshot-collective"].prices["12oz"] }}/mo</a>
 </div>
 
 </div>
