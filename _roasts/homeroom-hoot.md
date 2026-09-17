@@ -20,10 +20,6 @@ price:
   2lb: 30
   5lb: 75
 
-subscription:
-  frequencies:
-    - Every 2 weeks
-    - Monthly
 origins:
   - Colombia Washed
   - Peru Washed

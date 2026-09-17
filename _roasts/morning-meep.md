@@ -17,10 +17,6 @@ price:
   2lb: 30
   5lb: 75
 
-subscription:
-  frequencies:
-    - Every 2 weeks
-    - Monthly
 origins:
   - Guatemala Washed
   - Ethiopia Natural

@@ -21,10 +21,6 @@ price:
   2lb: 28
   5lb: 70
 
-subscription:
-  frequencies:
-    - Every 2 weeks
-    - Monthly
 origins:
   - Guatemala Washed
   - Bolivia Washed
