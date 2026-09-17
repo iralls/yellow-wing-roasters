@@ -58,7 +58,7 @@ defaults:
       path: ""
       type: subscriptions
     values:
-      layout: default
+      layout: subscription
   - scope:
       path: ""
       type: flights
