@@ -4,7 +4,6 @@ subtitle: Cinco de Mayo Blend
 slug: puebla-plumage
 published: false
 category: seasonal
-type: blend
 order: 15
 roast_level: 3
 descriptor: festive and layered

@@ -2,7 +2,6 @@
 title: Peru Fair Trade Organic
 slug: peru-fair-trade-organic
 category: single origin
-type: single-origin
 order: 9
 roast_level: 3
 region: Cajamarca

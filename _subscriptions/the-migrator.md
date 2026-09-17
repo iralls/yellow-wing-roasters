@@ -2,6 +2,7 @@
 title: Migrator
 slug: migrator
 subtitle: Rotating Single Origin
+category: subscriptions
 order: 1
 permalink: /subscriptions/the-migrator/
 mascot_file: audubon-arctic-tern-transparent.png

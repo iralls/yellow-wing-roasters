@@ -2,6 +2,7 @@
 title: Fledglings
 slug: fledglings
 subtitle: Coffee 101
+category: subscriptions
 order: 3
 permalink: /subscriptions/fledglings/
 mascot_file: audubon-chicks-transparent.png

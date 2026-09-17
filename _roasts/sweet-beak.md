@@ -4,7 +4,6 @@ subtitle: Valentine's Day Blend
 slug: sweet-beak
 published: false
 category: seasonal
-type: blend
 order: 14
 roast_level: 3
 descriptor: lush and delicate

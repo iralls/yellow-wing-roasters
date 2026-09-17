@@ -3,7 +3,6 @@ title: Boo Boo Patoo
 subtitle: Halloween Blend
 slug: boo-boo-patoo
 category: seasonal
-type: blend
 order: 10
 roast_level: 3
 descriptor: sweet and indulgent

@@ -4,7 +4,6 @@ subtitle: Holiday Blend
 slug: mulled-feathers
 published: false
 category: seasonal
-type: blend
 order: 12
 roast_level: 3
 descriptor: cozy and warming

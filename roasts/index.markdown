@@ -59,14 +59,16 @@ permalink: /roasts/
   {% assign single_origins_flown = single_origins | where_exp: "item", "item.status == 'flown_south'" %}
   {% assign single_origins = single_origins_active | concat: single_origins_incubating | concat: single_origins_flown %}
 
-  {% assign sorted_roasts = blends | concat: single_origins | concat: seasonals %}
+  {% assign subscriptions = site.subscriptions | sort: "order" %}
+  {% assign sorted_roasts = blends | concat: seasonals | concat: single_origins | concat: subscriptions %}
   {% assign current_category = "" %}
   {% for r in sorted_roasts %}
-    {% if r.category != current_category %}
-      {% assign current_category = r.category %}
+    {% assign cat = r.category %}
+    {% if cat != current_category %}
+      {% assign current_category = cat %}
       <div class="roasts-section-break" data-category="{{ current_category }}">
         <div class="roasts-section-break-line"></div>
-        <span class="roasts-section-break-title">{% if current_category == 'blend' %}Blends{% elsif current_category == 'single origin' %}Single Origins{% elsif current_category == 'seasonal' %}Seasonals{% else %}{{ current_category | capitalize }}{% endif %}</span>
+        <span class="roasts-section-break-title">{% if current_category == 'blend' %}Blends{% elsif current_category == 'seasonal' %}Seasonals{% elsif current_category == 'single origin' %}Single Origins{% elsif current_category == 'subscriptions' %}Subscriptions{% else %}{{ current_category | capitalize }}{% endif %}</span>
         <div class="roasts-section-break-line"></div>
       </div>
     {% endif %}
@@ -145,14 +147,22 @@ permalink: /roasts/
   });
 
   // 2. Populate Dropdowns Dynamically
-  // Type (Blend, Single Origin)
+  // Type (Blend, Seasonal, Single Origin, Subscriptions)
   if (selectCategory) {
-    var typeOrder = ['blend', 'single-origin'];
+    var typeOrder = ['blend', 'seasonal', 'single-origin', 'subscriptions'];
+    var typeLabels = {
+      'blend': 'Blend',
+      'seasonal': 'Seasonal',
+      'single-origin': 'Single Origin',
+      'single origin': 'Single Origin',
+      'subscriptions': 'Subscriptions',
+      'subscription': 'Subscriptions'
+    };
     typeOrder.forEach(function (t) {
       if (types[t]) {
         var opt = document.createElement('option');
         opt.value = t;
-        opt.textContent = (t === 'single-origin' || t === 'single origin') ? 'Single Origin' : 'Blend';
+        opt.textContent = typeLabels[t] || (t.charAt(0).toUpperCase() + t.slice(1));
         selectCategory.appendChild(opt);
       }
     });
@@ -199,11 +209,19 @@ permalink: /roasts/
       var matchesOrigin = !chosenOrigin || originsList.indexOf(chosenOrigin) >= 0;
       
       // Map roast level category based on dots
-      var dots = parseInt(card.getAttribute('data-roast-dots')) || 3;
-      var levelCat = "Medium";
-      if (dots <= 2) levelCat = "Light";
-      else if (dots >= 4) levelCat = "Dark";
-      var matchesLevel = !chosenLevel || levelCat === chosenLevel;
+      var dotsAttr = card.getAttribute('data-roast-dots');
+      var matchesLevel = true;
+      if (chosenLevel) {
+        if (dotsAttr && dotsAttr.trim() !== '') {
+          var dots = parseInt(dotsAttr, 10);
+          var levelCat = "Medium";
+          if (dots <= 2) levelCat = "Light";
+          else if (dots >= 4) levelCat = "Dark";
+          matchesLevel = (levelCat === chosenLevel);
+        } else {
+          matchesLevel = false;
+        }
+      }
 
       // Map brewing method
       var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');

@@ -2,7 +2,6 @@
 title: Brazil Estavam Mario
 slug: brazil-estavam-mario
 category: single origin
-type: single-origin
 order: 3
 roast_level: 3
 region: Sul de Minas

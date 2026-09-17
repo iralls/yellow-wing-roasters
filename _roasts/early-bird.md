@@ -3,7 +3,6 @@ title: Early Bird
 subtitle: Nest Blend
 slug: early-bird
 category: blend
-type: blend
 order: 1
 roast_level: 2
 descriptor: balanced and smooth

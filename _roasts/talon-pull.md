@@ -2,7 +2,6 @@
 title: "Talon Pull"
 slug: talon-pull
 category: seasonal
-type: blend
 order: 7
 roast_level: 3
 descriptor: clean and robust

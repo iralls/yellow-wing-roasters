@@ -2,6 +2,7 @@
 title: Wingshot Collective
 slug: wingshot-collective
 subtitle: Espresso Subscription
+category: subscriptions
 order: 2
 permalink: /subscriptions/wingshot-collective/
 mascot_file: audubon-crosshair-transparent.png

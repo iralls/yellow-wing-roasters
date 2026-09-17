@@ -4,7 +4,6 @@ subtitle: New Year's Blend
 slug: feathered-fizz
 published: false
 category: seasonal
-type: blend
 order: 13
 roast_level: 2
 descriptor: effervescent and vibrant

@@ -2,7 +2,6 @@
 title: Guatemala Antigua
 slug: guatemala-antigua
 category: single origin
-type: single-origin
 order: 4
 roast_level: 3
 region: Antigua Valley

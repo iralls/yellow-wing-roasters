@@ -11,17 +11,19 @@
   {% assign r_specialty = r.roast_level %}
 {% endif %}
 {% assign rp = r.price | default: r.prices %}
-{% assign price_12 = rp["12oz"] %}
+{% assign price_12 = rp["12oz"] | default: rp %}
 {% if r.origins %}
   {% assign origin_list = r.origins | join: "," %}
-{% else %}
+{% elsif r.category == 'single origin' %}
   {% assign origin_list = r.title | split: " " | first %}
+{% else %}
+  {% assign origin_list = "" %}
 {% endif %}
 
 <a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    href="{{ r.url | relative_url }}"
    data-category="{{ r.category }}"
-   data-type="{{ r.type }}"
+   data-type="{{ r.category | slugify }}"
    data-origins="{{ origin_list }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
@@ -31,7 +33,11 @@
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
     <div class="roasts-entry-overlay">
-      {% if r.tasting_notes %}<div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
+      {% if r.tasting_notes %}
+        <div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>
+      {% elsif r.descriptor %}
+        <div class="roasts-entry-overlay-notes">{{ r.descriptor }}</div>
+      {% endif %}
       {% if r_dots %}
         <div class="roasts-entry-overlay-level">
           <span class="roast-dots">
@@ -54,9 +60,13 @@
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
       {% endif %}
-      {% unless r.status == 'incubating' or r.status == 'flown_south' %}
-        <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
-      {% endunless %}
+      {% if r.category == 'subscriptions' %}
+        <button type="button" class="roasts-entry-sub-btn" onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ '/subscribe/?roast=' | append: r.slug | relative_url }}';">Subscribe</button>
+      {% else %}
+        {% unless r.status == 'incubating' or r.status == 'flown_south' %}
+          <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
+        {% endunless %}
+      {% endif %}
       {% include roast-overlay-status.html roast=r %}
     </div>
   </div>
@@ -64,7 +74,9 @@
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
         <div class="roasts-entry-title">{{ r.title }}</div>
-        {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
+        {% unless r.category == 'subscriptions' %}
+          {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
+        {% endunless %}
         <div class="roasts-entry-prices">
           {% if r.temporary_price and r.temporary_price["12oz"] %}
             <s>${{ price_12 }}</s> <span class="roasts-entry-temp-price">${{ r.temporary_price["12oz"] }}</span>
@@ -74,8 +86,12 @@
         </div>
       </div>
       <div class="roasts-entry-meta">
-        {% if r_layman %}<div class="roasts-entry-layman">{{ r_layman }}</div>{% endif %}
-        {% if r.descriptor %}<div class="roasts-entry-descriptor">{{ r.descriptor | downcase }}</div>{% endif %}
+        {% if r.category == 'subscriptions' %}
+          {% if r.subtitle %}<div class="roasts-entry-descriptor">{{ r.subtitle | downcase }}</div>{% endif %}
+        {% else %}
+          {% if r_layman %}<div class="roasts-entry-layman">{{ r_layman }}</div>{% endif %}
+          {% if r.descriptor %}<div class="roasts-entry-descriptor">{{ r.descriptor | downcase }}</div>{% endif %}
+        {% endif %}
       </div>
     </div>
   </div>
