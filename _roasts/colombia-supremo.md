@@ -13,6 +13,7 @@ descriptor: bright and classic
 tasting_notes: caramel, brown sugar, sweet finish
 brewing_method: Pour-over, Drip, AeroPress
 processing_method: Washed
+status: low_stock
 description: >-
   Bright, clean, and incredibly easy to drink. This one hits with a classic caramel sweetness and a smooth, sugary finish. It's the definition of a balanced cup—no bitterness, just straightforward goodness.
 ---
