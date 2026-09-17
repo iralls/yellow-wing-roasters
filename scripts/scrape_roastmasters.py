@@ -9,13 +9,15 @@ import csv
 import re
 import time
 from html.parser import HTMLParser
+from pathlib import Path
 from urllib.parse import urljoin
 
 import requests
 
 BASE_URL = "https://www.roastmasters.com"
 INDEX_URL = f"{BASE_URL}/green_coffee.html"
-OUTPUT_FILE = "roastmasters_beans.csv"
+DATA_DIR = Path(__file__).resolve().parent.parent / "_data"
+OUTPUT_FILE = str(DATA_DIR / "roastmasters_beans.csv")
 REQUEST_DELAY = 1  # seconds between requests, be polite
 
 SESSION = requests.Session()

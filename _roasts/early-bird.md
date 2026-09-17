@@ -28,7 +28,6 @@ temporary_price:
   2lb: 26
   5lb: 66
 
-card_image: /images/audubon-robin-transparent.png
 origins:
   - Colombia Washed
   - Peru Washed
