@@ -12,3 +12,5 @@ run.sh
 preview-*.html
 *.swp
 IMPLEMENTATION_PLAN.md
+scratch/
+__pycache__/
