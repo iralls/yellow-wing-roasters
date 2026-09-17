@@ -76,5 +76,15 @@ exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
-  - preview-bags.html
-  - preview-bags-v2.html
+  - AGENTS.md
+  - IMPLEMENTATION_PLAN.md
+  - TODO.txt
+  - run.sh
+  - agy.sh
+  - scripts
+  - scratch
+  - "*.bak"
+  - "*-preview.html"
+  - "preview-*.html"
+  - social-preview-generator.html
+  - roastmasters_beans.csv
