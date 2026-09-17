@@ -5,6 +5,147 @@ permalink: /color-schemes/
 published: true
 ---
 
+<style>
+.color-preview-section {
+  margin: 3rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid #ddd;
+}
+
+.color-preview-section h2 {
+  margin: 0 0 0.25rem;
+}
+
+.color-preview-intro {
+  color: #555;
+  margin: 0 0 2rem;
+  font-size: 0.95em;
+}
+
+.color-scheme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1.75rem;
+  margin: 0 0 2rem;
+}
+
+.color-scheme-card {
+  border: 1px solid #ddd;
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+
+.color-scheme-strip {
+  display: flex;
+  height: 3.5rem;
+}
+
+.color-swatch {
+  flex: 1;
+}
+
+.color-scheme-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.color-scheme-name {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
+  margin: 0 0 0.2rem;
+  color: #111;
+}
+
+.color-scheme-desc {
+  font-size: 0.85em;
+  color: #666;
+  margin: 0 0 0.85rem;
+  line-height: 1.4;
+}
+
+.color-swatch-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.color-swatch-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82em;
+}
+
+.color-swatch-dot {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.color-swatch-name {
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+.color-swatch-hex {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #999;
+  letter-spacing: 0.03em;
+}
+
+.color-scheme-mock {
+  margin: 0.85rem 0 0;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.35;
+}
+
+.color-scheme-mock-header {
+  padding: 0.5rem 0.75rem;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+
+.color-scheme-mock-body {
+  padding: 0.5rem 0.75rem 0.65rem;
+}
+
+.color-scheme-mock-note {
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.color-scheme-mock-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.3rem;
+  font-weight: 600;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.85em;
+}
+
+.color-preview-note {
+  font-size: 0.88em;
+  color: #666;
+  background: #f7f7f7;
+  border-radius: 0.4rem;
+  padding: 0.85rem 1rem;
+  margin: 0;
+}
+
+.color-preview-note strong {
+  color: #333;
+}
+</style>
 
 # Color schemes
 
