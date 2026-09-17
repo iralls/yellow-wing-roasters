@@ -16,9 +16,9 @@ origins:
   - Sumatra Wet-Hulled
 price:
   12oz: 12
-  1lb: 14
-  2lb: 28
-  5lb: 70
+  1lb: 15
+  2lb: 30
+  5lb: 75
 
 subscription:
   frequencies:
