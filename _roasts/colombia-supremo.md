@@ -12,6 +12,8 @@ descriptor: bright and classic
 tasting_notes: caramel, brown sugar, sweet finish
 brewing_method: Pour-over, Drip, AeroPress
 processing_method: Washed
+origins:
+  - Colombia Washed
 status: low_stock
 price:
   12oz: 12

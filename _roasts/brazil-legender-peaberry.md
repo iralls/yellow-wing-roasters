@@ -10,6 +10,8 @@ descriptor: dense and chocolatey
 tasting_notes: dark chocolate, toasted almonds
 brewing_method: Espresso, Drip, French Press
 processing_method: Natural
+origins:
+  - Brazil Natural
 mascot: goldfinch
 mascot_file: audubon-goldfinch-transparent.png
 status: low_stock

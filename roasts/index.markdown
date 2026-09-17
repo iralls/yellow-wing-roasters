@@ -25,6 +25,13 @@ permalink: /roasts/
   </div>
   
   <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
+    <label for="filter-process" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Process</label>
+    <select id="filter-process" class="subscribe-select" style="min-width: 140px;">
+      <option value="">All Processes</option>
+    </select>
+  </div>
+
+  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
     <label for="filter-level" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Roast Level</label>
     <select id="filter-level" class="subscribe-select" style="min-width: 140px;">
       <option value="">All Levels</option>
@@ -82,11 +89,13 @@ permalink: /roasts/
   var cards = document.querySelectorAll('#roasts-grid .roasts-entry');
   var selectCategory = document.getElementById('filter-category');
   var selectOrigin = document.getElementById('filter-origin');
+  var selectProcess = document.getElementById('filter-process');
   var selectLevel = document.getElementById('filter-level');
   var selectBrewing = document.getElementById('filter-brewing');
 
   var types = {};
   var origins = {};
+  var processes = {};
   var levels = { 'Light': true, 'Medium': true, 'Dark': true };
   var brewingMethods = {};
 
@@ -130,6 +139,32 @@ permalink: /roasts/
     cardOrigins.forEach(function (origin) {
       origins[origin] = true;
     });
+
+    // Processes (comma-separated list)
+    var processAttr = card.getAttribute('data-process') || '';
+    var cardProcesses = processAttr.split(',').map(function (p) {
+      return p.trim();
+    }).filter(Boolean);
+    
+    card.setAttribute('data-process-list', JSON.stringify(cardProcesses));
+
+    cardProcesses.forEach(function (proc) {
+      processes[proc] = true;
+    });
+
+    // Beans (comma-separated list of Origin:Process)
+    var beansAttr = card.getAttribute('data-beans') || '';
+    var cardBeans = beansAttr.split(',').map(function (b) {
+      var parts = b.split(':');
+      return {
+        origin: parts[0] ? parts[0].trim() : '',
+        process: parts[1] ? parts[1].trim() : ''
+      };
+    }).filter(function (b) {
+      return b.origin || b.process;
+    });
+    
+    card.setAttribute('data-beans-list', JSON.stringify(cardBeans));
 
     // Brewing methods
     var brewingAttr = card.getAttribute('data-brewing') || '';
@@ -176,6 +211,27 @@ permalink: /roasts/
     selectOrigin.appendChild(opt);
   });
 
+  // Processes
+  if (selectProcess) {
+    var processOrder = ['Washed', 'Natural', 'Wet-Hulled'];
+    processOrder.forEach(function (proc) {
+      if (processes[proc]) {
+        var opt = document.createElement('option');
+        opt.value = proc;
+        opt.textContent = proc;
+        selectProcess.appendChild(opt);
+      }
+    });
+    Object.keys(processes).sort().forEach(function (proc) {
+      if (processOrder.indexOf(proc) === -1) {
+        var opt = document.createElement('option');
+        opt.value = proc;
+        opt.textContent = proc;
+        selectProcess.appendChild(opt);
+      }
+    });
+  }
+
   // Roast Levels
   Object.keys(levels).forEach(function (level) {
     var opt = document.createElement('option');
@@ -196,6 +252,7 @@ permalink: /roasts/
   function applyFilters() {
     var chosenType = selectCategory ? selectCategory.value : '';
     var chosenOrigin = selectOrigin.value;
+    var chosenProcess = selectProcess ? selectProcess.value : '';
     var chosenLevel = selectLevel.value;
     var chosenBrewing = selectBrewing.value;
 
@@ -204,10 +261,17 @@ permalink: /roasts/
       var cardType = (card.getAttribute('data-type') || '').trim().toLowerCase();
       var matchesType = !chosenType || cardType === chosenType.toLowerCase();
 
-      // Check if chosenOrigin is in the list of origins for this card
-      var originsList = JSON.parse(card.getAttribute('data-origins-list') || '[]');
-      var matchesOrigin = !chosenOrigin || originsList.indexOf(chosenOrigin) >= 0;
-      
+      // Compound Origin & Process matching at the bean component level
+      var beansList = JSON.parse(card.getAttribute('data-beans-list') || '[]');
+      var matchesBean = true;
+      if (chosenOrigin || chosenProcess) {
+        matchesBean = beansList.some(function (bean) {
+          var matchOrigin = !chosenOrigin || bean.origin === chosenOrigin;
+          var matchProcess = !chosenProcess || bean.process === chosenProcess;
+          return matchOrigin && matchProcess;
+        });
+      }
+
       // Map roast level category based on dots
       var dotsAttr = card.getAttribute('data-roast-dots');
       var matchesLevel = true;
@@ -227,8 +291,8 @@ permalink: /roasts/
       var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
       var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
 
-      // Show/Hide Card
-      if (matchesType && matchesOrigin && matchesLevel && matchesBrewing) {
+      // Show/Hide Card: ALL filters strictly ANDed together
+      if (matchesType && matchesBean && matchesLevel && matchesBrewing) {
         card.style.display = '';
       } else {
         card.style.display = 'none';
@@ -250,6 +314,7 @@ permalink: /roasts/
   // 4. Attach Event Listeners
   if (selectCategory) selectCategory.addEventListener('change', applyFilters);
   selectOrigin.addEventListener('change', applyFilters);
+  if (selectProcess) selectProcess.addEventListener('change', applyFilters);
   selectLevel.addEventListener('change', applyFilters);
   selectBrewing.addEventListener('change', applyFilters);
 })();

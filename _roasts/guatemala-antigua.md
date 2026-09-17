@@ -10,6 +10,8 @@ descriptor: comforting and velvety
 tasting_notes: dark chocolate, toasted nut, caramel
 brewing_method: Espresso, Moka Pot, French Press
 processing_method: Washed
+origins:
+  - Guatemala Washed
 mascot: osprey
 mascot_file: audubon-osprey-transparent.png
 price:

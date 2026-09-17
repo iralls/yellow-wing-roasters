@@ -10,6 +10,8 @@ descriptor: crisp and nuanced
 tasting_notes: bittersweet chocolate, ripe berry, apple, grape
 brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
+origins:
+  - Peru Washed
 mascot: killdeer
 mascot_file: audubon-killdeer-transparent.png
 price:

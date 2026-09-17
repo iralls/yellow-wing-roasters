@@ -10,6 +10,8 @@ descriptor: juicy and aromatic
 tasting_notes: citrus, stone fruit, spiced chocolate
 brewing_method: Pour-over, Drip, Espresso
 processing_method: Natural (Dry Process)
+origins:
+  - Ethiopia Natural
 mascot: baltimore-oriole
 mascot_file: audubon-baltimore-oriole-transparent.png
 rotating: true

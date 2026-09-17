@@ -10,6 +10,8 @@ descriptor: gentle and sweet
 tasting_notes: milk chocolate, rich aroma, sweet finish
 brewing_method: Drip, Pour-over, French Press
 processing_method: Washed
+origins:
+  - Bolivia Washed
 mascot: red-tailed-hawk
 mascot_file: audubon-red-tailed-hawk-transparent.png
 status: flown_south

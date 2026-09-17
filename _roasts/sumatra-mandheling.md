@@ -10,6 +10,8 @@ descriptor: earthy and smoky
 tasting_notes: earthy, smoky, hazelnut, cedar
 brewing_method: French Press, Moka Pot, Drip, Espresso
 processing_method: Wet-Hulled
+origins:
+  - Sumatra Wet-Hulled
 mascot: grey-catbird
 mascot_file: audubon-grey-catbird-transparent.png
 price:

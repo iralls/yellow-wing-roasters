@@ -10,6 +10,8 @@ descriptor: earthy and sweet
 tasting_notes: fig · prune · hazelnut
 brewing_method: Espresso, French Press, Drip
 processing_method: Natural
+origins:
+  - Brazil Natural
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
 status: flown_south

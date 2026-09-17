@@ -10,6 +10,8 @@ descriptor: bold and fruit-forward
 tasting_notes: blueberries, chocolate, pronounced fruit
 brewing_method: Pour-over, Drip
 processing_method: Natural
+origins:
+  - Ethiopia Natural
 mascot: rose-breasted-grosbeak
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
 rotating: true

@@ -178,7 +178,7 @@ layout: default
 
 {% unless is_orderable %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
 
-{% if page.origins %}
+{% if page.origins and page.category != 'single origin' %}
 <div class="roast-mv-divider"></div>
 <div class="roast-mv-center" style="margin-bottom:0.75rem;">
   <div class="roast-mv-meta-label">Component Origins</div>

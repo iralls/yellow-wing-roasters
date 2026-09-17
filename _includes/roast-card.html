@@ -12,19 +12,57 @@
 {% endif %}
 {% assign rp = r.price | default: r.prices %}
 {% assign price_12 = rp["12oz"] | default: rp %}
+{% assign card_beans = "" | split: "," %}
+{% assign card_origins = "" | split: "," %}
+{% assign card_processes = "" | split: "," %}
+
 {% if r.origins %}
-  {% assign origin_list = r.origins | join: "," %}
+  {% for o in r.origins %}
+    {% assign country = o | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
+    {% assign proc = "" %}
+    {% if o contains "Washed" %}
+      {% assign proc = "Washed" %}
+    {% elsif o contains "Natural" %}
+      {% assign proc = "Natural" %}
+    {% elsif o contains "Wet-Hulled" %}
+      {% assign proc = "Wet-Hulled" %}
+    {% elsif o contains "Honey" %}
+      {% assign proc = "Honey" %}
+    {% elsif r.processing_method %}
+      {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
+    {% endif %}
+    {% assign card_origins = card_origins | push: country %}
+    {% if proc != "" %}
+      {% assign card_processes = card_processes | push: proc %}
+      {% assign bean_str = country | append: ":" | append: proc %}
+      {% assign card_beans = card_beans | push: bean_str %}
+    {% else %}
+      {% assign bean_str = country | append: ":" %}
+      {% assign card_beans = card_beans | push: bean_str %}
+    {% endif %}
+  {% endfor %}
 {% elsif r.category == 'single origin' %}
-  {% assign origin_list = r.title | split: " " | first %}
-{% else %}
-  {% assign origin_list = "" %}
+  {% assign country = r.title | split: " " | first %}
+  {% assign card_origins = card_origins | push: country %}
+  {% if r.processing_method %}
+    {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
+    {% assign card_processes = card_processes | push: proc %}
+    {% assign bean_str = country | append: ":" | append: proc %}
+    {% assign card_beans = card_beans | push: bean_str %}
+  {% endif %}
 {% endif %}
+
+{% assign origin_list = card_origins | uniq | join: "," %}
+{% assign process_list = card_processes | uniq | join: "," %}
+{% assign bean_list = card_beans | uniq | join: "," %}
 
 <a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    href="{{ r.url | relative_url }}"
    data-category="{{ r.category }}"
    data-type="{{ r.category | slugify }}"
    data-origins="{{ origin_list }}"
+   data-process="{{ process_list }}"
+   data-beans="{{ bean_list }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
    data-roast="{{ r.slug }}">
@@ -50,13 +88,8 @@
           <span class="roasts-entry-overlay-specialty">{{ r_specialty }}</span>
         </div>
       {% endif %}
-      {% if r.origins %}
-        {% assign c_arr = "" | split: "," %}
-        {% for o in r.origins %}
-          {% assign c = o | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
-          {% assign c_arr = c_arr | push: c %}
-        {% endfor %}
-        <div class="roasts-entry-overlay-origins">{{ c_arr | uniq | join: " · " }}</div>
+      {% if r.category != 'single origin' and card_origins.size > 0 %}
+        <div class="roasts-entry-overlay-origins">{{ card_origins | uniq | join: " · " }}</div>
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
       {% endif %}

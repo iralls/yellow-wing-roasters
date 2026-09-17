@@ -11,6 +11,8 @@ descriptor: floral and delicate
 tasting_notes: florals, maple, citrus, spices
 brewing_method: Pour-over, Drip, Chemex, Espresso
 processing_method: Washed
+origins:
+  - Ethiopia Washed
 mascot: double-crested-cormorant
 mascot_file: double-crested-cormorant-transparent.png
 price:
