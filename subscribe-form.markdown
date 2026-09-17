@@ -111,9 +111,23 @@ permalink: /subscribe/
   var priceHiddenInput = document.getElementById('sub-price-hidden');
   var title = document.getElementById('sub-title');
 
+  {% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
+  {% assign default_sub_freqs = "Every 2 weeks,Monthly" | split: "," %}
   var subConfig = {
-    {% for entry in site.data.subscriptions %}
-    '{{ entry[0] }}': { sizes: {{ entry[1].sizes | jsonify }}, frequencies: {{ entry[1].frequencies | jsonify }}, prices: {{ entry[1].prices | default: "" | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {% for r in site.roasts %}
+      {% if r.subscription and r.subscription != false and r.subscription.available != false %}
+        {% assign r_sub = r.subscription %}
+        {% if r.sizes %}{% assign r_sizes = r.sizes %}{% else %}{% assign r_sizes = default_sub_sizes %}{% endif %}
+        {% assign r_freqs = r_sub.frequencies | default: default_sub_freqs %}
+        {% assign r_prices = r_sub.price | default: r_sub.prices | default: r.price %}
+        '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, frequencies: {{ r_freqs | jsonify }}, prices: {{ r_prices | jsonify }} },
+      {% endif %}
+    {% endfor %}
+    {% for s in site.subscriptions %}
+      {% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}
+      {% if s.frequencies %}{% assign s_freqs = s.frequencies %}{% else %}{% assign s_freqs = "Monthly" | split: "," %}{% endif %}
+      {% assign s_prices = s.price | default: s.prices %}
+      '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, frequencies: {{ s_freqs | jsonify }}, prices: {{ s_prices | jsonify }} }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   };
 
@@ -129,12 +143,9 @@ permalink: /subscribe/
     {% for r in site.roasts %}
     '{{ r.slug }}': '{{ "/images/" | append: r.mascot_file | relative_url }}',
     {% endfor %}
-    'migrator': '{{ "/images/audubon-arctic-tern-transparent.png" | relative_url }}',
-    'wingshot-collective': '{{ "/images/audubon-crosshair-transparent.png" | relative_url }}',
-    'fledglings': '{{ "/images/audubon-chicks-transparent.png" | relative_url }}',
-    'murmurations': '{{ "/images/flock-transparent.png" | relative_url }}',
-    'runts-rations': '{{ "/images/audubon-runt-transparent.png" | relative_url }}',
-    'rubber-duck-club': '{{ "/images/audubon-rubber-duck-transparent.png" | relative_url }}'
+    {% for s in site.subscriptions %}
+    '{{ s.slug }}': '{{ "/images/" | append: s.mascot_file | relative_url }}'{% unless forloop.last %},{% endunless %}
+    {% endfor %}
   };
 
   hiddenInput.value = roast;

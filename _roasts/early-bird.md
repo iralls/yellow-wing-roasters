@@ -12,6 +12,16 @@ brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
 mascot_file: audubon-robin-transparent.png
 status: mid_molt
+price:
+  12oz: 12
+  1lb: 14
+  2lb: 28
+  5lb: 70
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 temporary_price:
   12oz: 10
   1lb: 13

@@ -13,6 +13,16 @@ brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
 mascot: killdeer
 mascot_file: audubon-killdeer-transparent.png
+price:
+  12oz: 12
+  1lb: 16
+  2lb: 32
+  5lb: 80
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   Complex and layered with bittersweet chocolate tones and a smooth, elegant mouthfeel. High-elevation growing produces bright apple acidity and sweet notes of ripe berry and grape.
 ---

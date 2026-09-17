@@ -413,15 +413,28 @@ permalink: /gift/
   var hiddenPriceInput = document.getElementById('gift-price-hidden');
   var hiddenNotesInput = document.getElementById('gift-notes-hidden');
 
+  {% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
   var subConfig = {
-    {% for entry in site.data.subscriptions %}
-    '{{ entry[0] }}': { sizes: {{ entry[1].sizes | jsonify }}, prices: {{ entry[1].prices | default: "" | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {% for r in site.roasts %}
+      {% if r.subscription and r.subscription != false and r.subscription.available != false %}
+        {% assign r_sub = r.subscription %}
+        {% if r.sizes %}{% assign r_sizes = r.sizes %}{% else %}{% assign r_sizes = default_sub_sizes %}{% endif %}
+        {% assign r_prices = r_sub.price | default: r_sub.prices | default: r.price %}
+        '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, prices: {{ r_prices | jsonify }} },
+      {% endif %}
+    {% endfor %}
+    {% for s in site.subscriptions %}
+      {% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}
+      {% assign s_prices = s.price | default: s.prices %}
+      '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, prices: {{ s_prices | jsonify }} }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   };
 
-  var regularPricing = {
-    default: {{ site.data.pricing.default | jsonify }},
-    overrides: {{ site.data.pricing.overrides | jsonify }}
+  var roastPricing = {
+    {% for r in site.roasts %}
+      {% assign rp = r.price | default: r.prices %}
+      '{{ r.slug }}': {{ rp | jsonify }}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
   };
 
   function getUnitPrice(product, size) {
@@ -430,12 +443,11 @@ permalink: /gift/
       var config = subConfig[product];
       return (config && config.prices && config.prices[size]) ? config.prices[size] : null;
     } else {
-      var pricing = regularPricing;
-      var roastPrices = pricing.overrides[product];
+      var roastPrices = roastPricing[product];
       if (roastPrices && roastPrices[size]) {
         return roastPrices[size];
       }
-      return pricing.default[size] || null;
+      return null;
     }
   }
 

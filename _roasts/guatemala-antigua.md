@@ -13,6 +13,16 @@ brewing_method: Espresso, Moka Pot, French Press
 processing_method: Washed
 mascot: osprey
 mascot_file: audubon-osprey-transparent.png
+price:
+  12oz: 12
+  1lb: 14
+  2lb: 28
+  5lb: 70
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   A rich, comforting cup with a deep, velvety body. You'll get classic notes of dark chocolate and toasted spice, with a smooth, lingering sweetness.
 ---

@@ -12,6 +12,12 @@ brewing_method: Cold Brew
 mascot: heron
 mascot_file: audubon-heron-transparent.png
 status: flown_south
+price:
+  12oz: 12
+  1lb: 15
+  2lb: 30
+  5lb: 75
+
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled

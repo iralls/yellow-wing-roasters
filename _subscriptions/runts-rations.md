@@ -1,7 +1,17 @@
 ---
 layout: default
 title: Runt's Rations
+slug: runts-rations
+order: 5
 permalink: /subscriptions/runts-rations/
+mascot_file: audubon-runt-transparent.png
+descriptor: test roasts and experimental profiles that didn't quite make the cut
+sizes:
+  - 12oz
+frequencies:
+  - Monthly
+price:
+  12oz: 5
 ---
 
 <div class="roast-minimal-vertical">
@@ -25,7 +35,7 @@ Beans that didn't make the cut — test roasts, experimental profiles, and one-o
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=runts-rations' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["runts-rations"].prices["12oz"] }}/mo</a>
+  <a href="{{ '/subscribe/?roast=runts-rations' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
 </div>
 
 </div>

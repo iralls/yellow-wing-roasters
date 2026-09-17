@@ -14,6 +14,16 @@ mascot_file: audubon-barred-owl-transparent.png
 bg_pattern: /images/patterns/school-pattern.svg
 bg_pattern_size: 380px 380px
 status: just_hatched
+price:
+  12oz: 12
+  1lb: 15
+  2lb: 30
+  5lb: 75
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 origins:
   - Colombia Washed
   - Peru Washed

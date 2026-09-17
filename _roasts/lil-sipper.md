@@ -15,6 +15,16 @@ origins:
   - Colombia Washed
   - Ethiopia Washed
 status: mid_molt
+price:
+  12oz: 12
+  1lb: 15
+  2lb: 30
+  5lb: 75
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 temporary_price:
   12oz: 10
   1lb: 13

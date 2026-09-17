@@ -1,7 +1,10 @@
 ---
 layout: default
 title: The Aviary
+slug: the-aviary
+order: 1
 permalink: /flights/the-aviary/
+price: 38
 ---
 
 <div class="roast-minimal-vertical">
@@ -95,7 +98,7 @@ permalink: /flights/the-aviary/
 </div>
 
 <div class="roast-mv-center" id="add-to-cart-wrap" style="text-align:center;">
-  <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ site.data.flights["the-aviary"].price }}</button>
+  <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ page.price }}</button>
 </div>
 
 </div>
@@ -117,7 +120,7 @@ permalink: /flights/the-aviary/
       addBtn.textContent = 'Added!';
       addBtn.disabled = true;
       setTimeout(function () {
-        addBtn.textContent = 'Add to Order — ${{ site.data.flights["the-aviary"].price }}';
+        addBtn.textContent = 'Add to Order — ${{ page.price }}';
         addBtn.disabled = false;
       }, 1200);
     });

@@ -14,6 +14,9 @@ processing_method: Natural
 mascot: goldfinch
 mascot_file: audubon-goldfinch-transparent.png
 status: low_stock
+price:
+  12oz: 12
+
 sizes: [12oz]
 description: >-
   Sweet, viscous cup. Good component for an espresso.

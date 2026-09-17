@@ -14,6 +14,16 @@ processing_method: Natural
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
 status: flown_south
+price:
+  12oz: 12
+  1lb: 15
+  2lb: 30
+  5lb: 75
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.
 ---

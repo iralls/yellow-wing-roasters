@@ -1,7 +1,17 @@
 ---
 layout: default
 title: Rubber Duck Club
+slug: rubber-duck-club
+order: 6
 permalink: /subscriptions/rubber-duck-club/
+mascot_file: audubon-rubber-duck-transparent.png
+descriptor: help us debug brand-new beans and experimental test roasts before release
+sizes:
+  - 12oz
+frequencies:
+  - Monthly
+price:
+  12oz: 10
 ---
 
 <div class="roast-minimal-vertical">
@@ -25,7 +35,7 @@ Help us debug our roasts. Every month, we’ll send you our latest experimental 
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=rubber-duck-club' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["rubber-duck-club"].prices["12oz"] }}/mo</a>
+  <a href="{{ '/subscribe/?roast=rubber-duck-club' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
 </div>
 
 </div>

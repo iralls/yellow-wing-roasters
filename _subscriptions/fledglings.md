@@ -1,7 +1,17 @@
 ---
 layout: default
 title: Fledglings
+slug: fledglings
+order: 3
 permalink: /subscriptions/fledglings/
+mascot_file: audubon-chicks-transparent.png
+descriptor: an approachable monthly coffee paired with a simple brew guide
+sizes:
+  - 12oz
+frequencies:
+  - Monthly
+price:
+  12oz: 12
 ---
 
 <div class="roast-minimal-vertical">
@@ -25,7 +35,7 @@ Your guided entry into specialty coffee. Each month, you'll get a 12oz bag of on
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=fledglings' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["fledglings"].prices["12oz"] }}/mo</a>
+  <a href="{{ '/subscribe/?roast=fledglings' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
 </div>
 
 </div>

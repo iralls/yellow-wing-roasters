@@ -1,7 +1,17 @@
 ---
 layout: default
 title: Murmurations
+slug: murmurations
+order: 4
 permalink: /subscriptions/murmurations/
+mascot_file: flock-transparent.png
+descriptor: leftover beans from small-batch roasts — no two bags are the same
+sizes:
+  - 12oz
+frequencies:
+  - Monthly
+price:
+  12oz: 8
 ---
 
 <div class="roast-minimal-vertical">
@@ -25,7 +35,7 @@ The bits and pieces left over after mixing batches — not enough for a full run
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=murmurations' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["murmurations"].prices["12oz"] }}/mo</a>
+  <a href="{{ '/subscribe/?roast=murmurations' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
 </div>
 
 </div>

@@ -14,6 +14,16 @@ mascot_file: audubon-canary-transparent.png
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled
+price:
+  12oz: 12
+  1lb: 14
+  2lb: 28
+  5lb: 70
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.
 ---

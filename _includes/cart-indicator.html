@@ -15,16 +15,17 @@
   </div>
 </div>
 
-{% assign pricing = site.data.pricing %}
-{% assign flight_aviary = site.data.flights["the-aviary"].price | default: 38 %}
-{% assign flight_pyo = site.data.flights["peck-your-own"].price_per_bag | default: 10 %}
+{% assign flight_aviary_doc = site.flights | where: "slug", "the-aviary" | first %}
+{% assign flight_pyo_doc = site.flights | where: "slug", "peck-your-own" | first %}
+{% assign flight_aviary = flight_aviary_doc.price | default: 38 %}
+{% assign flight_pyo = flight_pyo_doc.price_per_bag | default: 10 %}
 {% assign roasts_url = '/roasts/' | relative_url %}
 {% assign order_url = '/order/' | relative_url %}
 {% assign images_base = '/images/' | relative_url %}
 
 <script>
   (function () {
-    var defaultPrices = {{ pricing.default | jsonify }};
+    var defaultPrices = { '12oz': 12, '1lb': 14, '2lb': 28, '5lb': 70 };
     var flightAviaryPrice = {{ flight_aviary }};
     var flightPyoPrice = {{ flight_pyo }};
     var ROASTS_URL = {{ roasts_url | jsonify }};
@@ -45,9 +46,9 @@
             {% endif %}
           },
           prices: {
-            {% assign rp = pricing.overrides[r.slug] %}
+            {% assign rp = r.price | default: r.prices %}
             {% for s in all_sizes %}
-              {% if r.temporary_price and r.temporary_price[s] %}{% assign up = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign up = rp[s] %}{% else %}{% assign up = pricing.default[s] %}{% endif %}
+              {% if r.temporary_price and r.temporary_price[s] %}{% assign up = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign up = rp[s] %}{% else %}{% assign up = 12 %}{% endif %}
               {{ s | jsonify }}: {{ up | default: 12 }}{% unless forloop.last %},{% endunless %}
             {% endfor %}
           }

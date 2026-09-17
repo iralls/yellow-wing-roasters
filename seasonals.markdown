@@ -28,8 +28,8 @@ permalink: /seasonals/
     {% assign r_layman = "" %}
     {% assign r_specialty = r.roast_level %}
   {% endif %}
-  {% assign rp = site.data.pricing.overrides[r.slug] %}
-  {% if rp and rp["12oz"] %}{% assign price_12 = rp["12oz"] %}{% else %}{% assign price_12 = site.data.pricing.default["12oz"] %}{% endif %}
+  {% assign rp = r.price | default: r.prices %}
+  {% assign price_12 = rp["12oz"] %}
   <a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}" data-roast="{{ r.slug }}" href="{{ r.url | relative_url }}">
     <div class="roasts-entry-visual">
       {% include roast-status-badge.html roast=r %}

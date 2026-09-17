@@ -14,6 +14,16 @@ processing_method: Natural
 mascot: rose-breasted-grosbeak
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
 rotating: true
+price:
+  12oz: 14
+  1lb: 18
+  2lb: 36
+  5lb: 90
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   A vibrant and complex coffee for those who love bold, fruity flavors. Expect a sweet mix of blueberry and chocolate, with a smooth finish of cherry and pecan. A must-try if you're a fan of intense natural roasts.
 ---

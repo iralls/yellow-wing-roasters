@@ -1,7 +1,17 @@
 ---
 layout: default
 title: Wingshot Collective
+slug: wingshot-collective
+order: 2
 permalink: /subscriptions/wingshot-collective/
+mascot_file: audubon-crosshair-transparent.png
+descriptor: a rotating roaster's choice espresso exploration pick each month
+sizes:
+  - 12oz
+frequencies:
+  - Monthly
+price:
+  12oz: 15
 ---
 
 <div class="roast-minimal-vertical">
@@ -25,7 +35,7 @@ Our espresso-focused monthly subscription. Each month, we pick a fresh 12oz bag 
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ site.data.subscriptions["wingshot-collective"].prices["12oz"] }}/mo</a>
+  <a href="{{ '/subscribe/?roast=wingshot-collective' | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
 </div>
 
 </div>

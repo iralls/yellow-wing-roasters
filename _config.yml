@@ -36,6 +36,12 @@ collections:
   roasts:
     output: true
     permalink: /roasts/:path/
+  subscriptions:
+    output: true
+    permalink: /subscriptions/:path/
+  flights:
+    output: true
+    permalink: /flights/:path/
 
 # Default layouts per collection
 defaults:
@@ -48,6 +54,16 @@ defaults:
       type: roasts
     values:
       layout: roast
+  - scope:
+      path: ""
+      type: subscriptions
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: flights
+    values:
+      layout: default
 
 category_order:
   - blend

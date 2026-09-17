@@ -15,6 +15,16 @@ mascot_file: turkey-transparent.png
 bg_pattern: /images/patterns/thanksgiving-pattern.svg
 bg_pattern_size: 380px 380px
 status: incubating
+price:
+  12oz: 12
+  1lb: 14
+  2lb: 28
+  5lb: 70
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 origins:
   - Ethiopia Washed
   - Brazil Natural

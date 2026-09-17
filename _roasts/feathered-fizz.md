@@ -15,6 +15,16 @@ mascot_file: audubon-woodpecker-transparent.png
 bg_pattern: /images/patterns/champagne-pattern.svg
 bg_pattern_size: 380px 380px
 status: incubating
+price:
+  12oz: 12
+  1lb: 14
+  2lb: 28
+  5lb: 70
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 origins:
   - Kenya Washed
   - Ethiopia Natural

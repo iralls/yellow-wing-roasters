@@ -14,6 +14,16 @@ brewing_method: Pour-over, Drip, Chemex, Espresso
 processing_method: Washed
 mascot: double-crested-cormorant
 mascot_file: double-crested-cormorant-transparent.png
+price:
+  12oz: 14
+  1lb: 18
+  2lb: 36
+  5lb: 90
+
+subscription:
+  frequencies:
+    - Every 2 weeks
+    - Monthly
 description: >-
   A classic washed Yirgacheffe with a smooth, full body. Expect floral aromas and sweet notes of maple and brown sugar, balanced by bright citrus and warm spices on the finish.
 ---

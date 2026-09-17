@@ -1,7 +1,11 @@
 ---
 layout: default
 title: Peck Your Own
+slug: peck-your-own
+order: 2
 permalink: /flights/peck-your-own/
+price_per_bag: 10
+min_bags: 4
 ---
 
 <div class="roast-minimal-vertical">
@@ -21,11 +25,11 @@ permalink: /flights/peck-your-own/
   <h1 class="roast-mv-title">Peck Your Own</h1>
 </div>
 
-<p class="roast-mv-tasting">Pick at least {{ site.data.flights["peck-your-own"].min_bags }} of our available roasts — each one comes as an 8oz bag.</p>
+<p class="roast-mv-tasting">Pick at least {{ page.min_bags }} of our available roasts — each one comes as an 8oz bag.</p>
 
 <div class="roast-mv-divider"></div>
 
-<p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ site.data.flights["peck-your-own"].min_bags }} roasts:</p>
+<p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ page.min_bags }} roasts:</p>
 
 <div class="roasts-grid" id="pyo-picker">
   {% assign roasts = site.roasts | sort: "order" %}
@@ -106,8 +110,8 @@ permalink: /flights/peck-your-own/
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  {% assign default_min = site.data.flights["peck-your-own"].min_bags %}
-  {% assign default_price = default_min | times: site.data.flights["peck-your-own"].price_per_bag %}
+  {% assign default_min = page.min_bags %}
+  {% assign default_price = default_min | times: page.price_per_bag %}
   <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select at least {{ default_min }} roasts — ${{ default_price }}</button>
 </div>
 
@@ -121,8 +125,8 @@ permalink: /flights/peck-your-own/
   var addBtn = document.getElementById('pyo-add');
   var countEl = document.getElementById('pyo-count');
 
-  var pricePerBag = {{ site.data.flights["peck-your-own"].price_per_bag | default: 10 }};
-  var minBags = {{ site.data.flights["peck-your-own"].min_bags | default: 4 }};
+  var pricePerBag = {{ page.price_per_bag | default: 10 }};
+  var minBags = {{ page.min_bags | default: 4 }};
 
   function update() {
     var count = selected.length;

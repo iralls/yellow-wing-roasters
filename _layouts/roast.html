@@ -3,8 +3,7 @@ layout: default
 ---
 
 {% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "12oz,1lb,2lb,5lb" | split: "," %}{% endif %}
-{% assign pricing = site.data.pricing %}
-{% assign roast_prices = pricing.overrides[page.slug] %}
+{% assign roast_prices = page.price | default: page.prices %}
 
 <div class="roast-minimal-vertical">
 
@@ -103,11 +102,11 @@ layout: default
   {% assign is_orderable = false %}
 {% endif %}
 
-{% assign sub_config = site.data.subscriptions[page.slug] %}
+{% assign sub_config = page.subscription %}
 {% assign sub_available = true %}
 {% if p_status_info and p_status_info.subscribable == false %}
   {% assign sub_available = false %}
-{% elsif sub_config == nil %}
+{% elsif sub_config == nil or sub_config == false or sub_config.available == false %}
   {% assign sub_available = false %}
 {% endif %}
 
@@ -156,7 +155,9 @@ layout: default
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
         <span class="roast-mv-meta-label" style="margin: 0; font-size: 0.7rem;">Frequency</span>
         <select id="sub-freq-select" class="subscribe-select" style="padding: 0.35rem 1.8rem 0.35rem 0.75rem; font-size: 0.8rem;">
-          {% for f in sub_config.frequencies %}
+          {% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
+          {% assign freqs = sub_config.frequencies | default: default_freqs %}
+          {% for f in freqs %}
             <option value="{{ f }}">{{ f }}</option>
           {% endfor %}
         </select>
@@ -217,15 +218,16 @@ layout: default
 
   var pricesOneTime = {
     {% for s in sizes %}
-      {% if roast_prices and roast_prices[s] %}{% assign price = roast_prices[s] %}{% else %}{% assign price = pricing.default[s] %}{% endif %}
+      {% assign price = roast_prices[s] %}
       {% if page.temporary_price and page.temporary_price[s] %}{% assign eff_price = page.temporary_price[s] %}{% else %}{% assign eff_price = price %}{% endif %}
       '{{ s }}': { price: {{ price | default: 0 }}, effective: {{ eff_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   };
 
   var pricesSub = {
-    {% if sub_config and sub_config.prices %}
-      {% for entry in sub_config.prices %}
+    {% assign sub_prices = sub_config.price | default: sub_config.prices | default: roast_prices %}
+    {% if sub_prices %}
+      {% for entry in sub_prices %}
         '{{ entry[0] }}': {{ entry[1] }}{% unless forloop.last %},{% endunless %}
       {% endfor %}
     {% endif %}
@@ -255,7 +257,7 @@ layout: default
       }
     }
 
-    var subP = (pricesSub && pricesSub[size]) ? pricesSub[size] : otInfo.effective;
+    var subP = (pricesSub && pricesSub[size]) ? pricesSub[size] : otInfo.price;
     if (priceSubEl) {
       priceSubEl.textContent = '$' + subP;
     }
@@ -276,7 +278,7 @@ layout: default
     }
 
     if (subLink) {
-      var freq = freqSelect ? freqSelect.value : '{{ sub_config.frequencies.first | default: "Monthly" }}';
+      var freq = freqSelect ? freqSelect.value : '{{ freqs.first | default: sub_config.frequencies.first | default: "Monthly" }}';
       var grind = grindSelect ? grindSelect.value : 'Whole Bean';
       subLink.href = '{{ "/subscribe/" | relative_url }}?roast={{ page.slug }}&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
     }
