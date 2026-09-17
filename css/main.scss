@@ -2023,21 +2023,21 @@ h1.roast-title {
 .roasts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.25rem;
+  gap: 1rem;
   margin: 0 0 3rem;
 }
 
 @media (max-width: 68rem) {
   .roasts-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.75rem;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 44rem) {
   .roasts-grid {
     grid-template-columns: 1fr;
-    gap: 1.75rem;
+    gap: 1rem;
   }
 }
 
@@ -2400,7 +2400,7 @@ h1.roast-title {
 .roasts-entry-title {
   font-family: $font-display;
   font-weight: 800;
-  font-size: 1.35rem;
+  font-size: 1rem;
   line-height: 1.25;
   color: #2c1e14;
   margin-bottom: 0;
@@ -2924,7 +2924,7 @@ h1.roast-title {
   }
 
   .roasts-entry-title {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .roasts-entry-subtitle {
@@ -3266,7 +3266,7 @@ h1.roast-title {
 .aviary-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  gap: 1rem;
   max-width: 58rem;
   margin: 1.75rem auto 2.25rem;
   text-align: left;
@@ -3276,7 +3276,7 @@ h1.roast-title {
   .aviary-grid {
     grid-template-columns: repeat(2, 1fr);
     max-width: 32rem;
-    gap: 1.15rem;
+    gap: 1rem;
   }
 }
 
@@ -3379,7 +3379,7 @@ h1.roast-title {
   }
 
   .roasts-entry-title {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .roasts-entry-subtitle {
