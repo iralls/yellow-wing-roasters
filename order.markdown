@@ -100,23 +100,26 @@ permalink: /order/
         {% assign r_level_key = r.roast_level | append: "" %}{% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}{% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots | default: 0 %}{% endif %}
         {% assign rp = r.price | default: r.prices %}
         {% if r.variants %}
-          {% assign default_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
-          {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
           {% for v in r.variants %}
-            {% for s in row_sizes %}
-              {% if rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = 12 %}{% endif %}
-              { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price | default: 0 }}, description: {{ r.description | default: "" | jsonify }} }{% unless forloop.last and forloop.parentloop.last %},{% endunless %}
+            {% for entry in rp %}
+              {% assign s = entry[0] %}
+              {% if r.sizes == nil or r.sizes contains s %}
+                {% assign unit_price = entry[1] %}
+                {% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% endif %}
+                { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price }}, description: {{ r.description | default: "" | jsonify }} },
+              {% endif %}
             {% endfor %}
           {% endfor %}
         {% else %}
-          {% assign default_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
-          {% if r.sizes %}{% assign row_sizes = r.sizes %}{% else %}{% assign row_sizes = default_sizes %}{% endif %}
-          {% for s in row_sizes %}
-            {% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign unit_price = rp[s] %}{% else %}{% assign unit_price = 12 %}{% endif %}
-            { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price | default: 0 }}, description: {{ r.description | default: "" | jsonify }} }{% unless forloop.last %},{% endunless %}
+          {% for entry in rp %}
+            {% assign s = entry[0] %}
+            {% if r.sizes == nil or r.sizes contains s %}
+              {% assign unit_price = entry[1] %}
+              {% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% endif %}
+              { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price }}, description: {{ r.description | default: "" | jsonify }} },
+            {% endif %}
           {% endfor %}
         {% endif %}
-        {% unless forloop.last %},{% endunless %}
       {% endfor %}
     ];
 

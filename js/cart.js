@@ -16,7 +16,6 @@
   return function initYWRCart(config) {
     if (!config) return;
 
-    var defaultPrices = config.defaultPrices || { '12oz': 12, '1lb': 14, '2lb': 28, '5lb': 70 };
     var flightAviaryPrice = config.flightAviaryPrice || 38;
     var flightPyoPrice = config.flightPyoPrice || 10;
     var ROASTS_URL = config.ROASTS_URL || '/roasts/';
@@ -81,12 +80,11 @@
         meta = (rSize ? rSize : '12oz') + (rGrind ? ' · ' + rGrind : '');
         mascot = r.mascot;
         var sizeKey = rSize || '12oz';
-        unitPrice = (r.prices && r.prices[sizeKey]) || defaultPrices[sizeKey] || 12;
+        unitPrice = (r.prices && typeof r.prices[sizeKey] === 'number') ? r.prices[sizeKey] : 0;
       } else {
         title = rSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
         meta = (rSize ? rSize : '') + (rGrind ? ' · ' + rGrind : '');
-        var sKey = rSize || '12oz';
-        unitPrice = defaultPrices[sKey] || 12;
+        unitPrice = 0;
       }
 
       return {

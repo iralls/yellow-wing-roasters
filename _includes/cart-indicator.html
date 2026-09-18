@@ -22,13 +22,11 @@
 {% assign roasts_url = '/roasts/' | relative_url %}
 {% assign order_url = '/order/' | relative_url %}
 {% assign images_base = '/images/' | relative_url %}
-{% assign all_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
 
 <script src="{{ '/js/cart.js' | relative_url }}"></script>
 <script>
   if (window.initYWRCart) {
     window.initYWRCart({
-      defaultPrices: { '12oz': 12, '1lb': 14, '2lb': 28, '5lb': 70 },
       flightAviaryPrice: {{ flight_aviary }},
       flightPyoPrice: {{ flight_pyo }},
       ROASTS_URL: {{ roasts_url | jsonify }},
@@ -48,9 +46,13 @@
             },
             prices: {
               {% assign rp = r.price | default: r.prices %}
-              {% for s in all_sizes %}
-                {% if r.temporary_price and r.temporary_price[s] %}{% assign up = r.temporary_price[s] %}{% elsif rp and rp[s] %}{% assign up = rp[s] %}{% else %}{% assign up = 12 %}{% endif %}
-                {{ s | jsonify }}: {{ up | default: 12 }}{% unless forloop.last %},{% endunless %}
+              {% for entry in rp %}
+                {% assign s = entry[0] %}
+                {% if r.sizes == nil or r.sizes contains s %}
+                  {% assign p = entry[1] %}
+                  {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
+                  {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
+                {% endif %}
               {% endfor %}
             }
           }{% unless forloop.last %},{% endunless %}
