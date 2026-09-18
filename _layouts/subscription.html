@@ -8,7 +8,7 @@ layout: default
 
 {% if page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 {% endif %}
 

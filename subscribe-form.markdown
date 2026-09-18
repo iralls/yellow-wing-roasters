@@ -102,9 +102,8 @@ permalink: /subscribe/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
-<script src="{{ '/js/subscribe-form.js' | relative_url }}"></script>
+<script src="{{ '/js/subscribe-form.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function () {
 (function () {
   var form = document.getElementById('subscribe-form');
   var params = new URLSearchParams(window.location.search);
@@ -167,13 +166,11 @@ permalink: /subscribe/
   };
 
 
-  if (window.initSubscribeForm) {
-    window.initSubscribeForm({
-      subConfig: subConfig,
-      mascotMap: mascotMap,
-      disabledSubRoasts: disabledSubRoasts,
-      thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
-    });
-  }
+  initSubscribeForm({
+    subConfig: subConfig,
+    mascotMap: mascotMap,
+    disabledSubRoasts: disabledSubRoasts,
+    thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+  });
 })();
 </script>

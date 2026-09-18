@@ -9,38 +9,38 @@ permalink: /roasts/
 <p class="category-intro">Explore our current selection of coffees.</p>
 
 <!-- Dynamic Filters Bar -->
-<div class="filters-bar" id="filters-bar" style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; align-items: center; justify-content: flex-start; padding: 0.5rem 0;">
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-    <label for="filter-category" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Type</label>
-    <select id="filter-category" class="subscribe-select" style="min-width: 140px;">
+<div class="filters-bar" id="filters-bar">
+  <div class="filter-group">
+    <label for="filter-category" class="roast-mv-meta-label">Type</label>
+    <select id="filter-category" class="subscribe-select">
       <option value="">All Types</option>
     </select>
   </div>
 
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-    <label for="filter-origin" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Origin</label>
-    <select id="filter-origin" class="subscribe-select" style="min-width: 140px;">
+  <div class="filter-group">
+    <label for="filter-origin" class="roast-mv-meta-label">Origin</label>
+    <select id="filter-origin" class="subscribe-select">
       <option value="">All Origins</option>
     </select>
   </div>
   
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-    <label for="filter-process" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Process</label>
-    <select id="filter-process" class="subscribe-select" style="min-width: 140px;">
+  <div class="filter-group">
+    <label for="filter-process" class="roast-mv-meta-label">Process</label>
+    <select id="filter-process" class="subscribe-select">
       <option value="">All Processes</option>
     </select>
   </div>
 
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-    <label for="filter-level" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Roast Level</label>
-    <select id="filter-level" class="subscribe-select" style="min-width: 140px;">
+  <div class="filter-group">
+    <label for="filter-level" class="roast-mv-meta-label">Roast Level</label>
+    <select id="filter-level" class="subscribe-select">
       <option value="">All Levels</option>
     </select>
   </div>
 
-  <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-    <label for="filter-brewing" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Brewing Method</label>
-    <select id="filter-brewing" class="subscribe-select" style="min-width: 160px;">
+  <div class="filter-group">
+    <label for="filter-brewing" class="roast-mv-meta-label">Brewing Method</label>
+    <select id="filter-brewing" class="subscribe-select">
       <option value="">All Methods</option>
     </select>
   </div>
@@ -84,238 +84,5 @@ permalink: /roasts/
 </div>
 
 <!-- JavaScript for Dynamic Filters -->
-<script>
-(function () {
-  var cards = document.querySelectorAll('#roasts-grid .roasts-entry');
-  var selectCategory = document.getElementById('filter-category');
-  var selectOrigin = document.getElementById('filter-origin');
-  var selectProcess = document.getElementById('filter-process');
-  var selectLevel = document.getElementById('filter-level');
-  var selectBrewing = document.getElementById('filter-brewing');
+<script src="{{ '/js/catalog-filters.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 
-  var types = {};
-  var origins = {};
-  var processes = {};
-  var levels = { 'Light': true, 'Medium': true, 'Dark': true };
-  var brewingMethods = {};
-
-  var METHOD_MAP = {
-    'pour-over': 'Pour-over',
-    'espresso': 'Espresso',
-    'drip': 'Drip',
-    'french press': 'French Press',
-    'moka pot': 'Moka Pot',
-    'aeropress': 'AeroPress',
-    'cold brew': 'Cold Brew'
-  };
-
-  function normalizeMethod(method) {
-    var clean = method.trim().toLowerCase();
-    if (METHOD_MAP[clean]) {
-      return METHOD_MAP[clean];
-    }
-    return clean.split(' ').map(function (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(' ');
-  }
-
-  // 1. Scan cards to extract unique filter values
-  cards.forEach(function (card) {
-    // Type (blend or single-origin)
-    var t = (card.getAttribute('data-type') || '').trim().toLowerCase();
-    if (t) {
-      types[t] = true;
-    }
-
-    // Origins (comma-separated list)
-    var originsAttr = card.getAttribute('data-origins') || '';
-    var cardOrigins = originsAttr.split(',').map(function (o) {
-      return o.trim();
-    }).filter(Boolean);
-    
-    // Store back normalized array to ease filtering later
-    card.setAttribute('data-origins-list', JSON.stringify(cardOrigins));
-
-    cardOrigins.forEach(function (origin) {
-      origins[origin] = true;
-    });
-
-    // Processes (comma-separated list)
-    var processAttr = card.getAttribute('data-process') || '';
-    var cardProcesses = processAttr.split(',').map(function (p) {
-      return p.trim();
-    }).filter(Boolean);
-    
-    card.setAttribute('data-process-list', JSON.stringify(cardProcesses));
-
-    cardProcesses.forEach(function (proc) {
-      processes[proc] = true;
-    });
-
-    // Beans (comma-separated list of Origin:Process)
-    var beansAttr = card.getAttribute('data-beans') || '';
-    var cardBeans = beansAttr.split(',').map(function (b) {
-      var parts = b.split(':');
-      return {
-        origin: parts[0] ? parts[0].trim() : '',
-        process: parts[1] ? parts[1].trim() : ''
-      };
-    }).filter(function (b) {
-      return b.origin || b.process;
-    });
-    
-    card.setAttribute('data-beans-list', JSON.stringify(cardBeans));
-
-    // Brewing methods
-    var brewingAttr = card.getAttribute('data-brewing') || '';
-    var methods = brewingAttr.replace(/\bor\b/gi, '').split(',').map(function (m) {
-      return normalizeMethod(m);
-    }).filter(function (m) {
-      return m.length > 0;
-    });
-    
-    card.setAttribute('data-brewing-list', JSON.stringify(methods));
-
-    methods.forEach(function (method) {
-      brewingMethods[method] = true;
-    });
-  });
-
-  // 2. Populate Dropdowns Dynamically
-  // Type (Blend, Seasonal, Single Origin, Subscriptions)
-  if (selectCategory) {
-    var typeOrder = ['blend', 'seasonal', 'single-origin', 'subscriptions'];
-    var typeLabels = {
-      'blend': 'Blend',
-      'seasonal': 'Seasonal',
-      'single-origin': 'Single Origin',
-      'single origin': 'Single Origin',
-      'subscriptions': 'Subscriptions',
-      'subscription': 'Subscriptions'
-    };
-    typeOrder.forEach(function (t) {
-      if (types[t]) {
-        var opt = document.createElement('option');
-        opt.value = t;
-        opt.textContent = typeLabels[t] || (t.charAt(0).toUpperCase() + t.slice(1));
-        selectCategory.appendChild(opt);
-      }
-    });
-  }
-
-  // Origins
-  Object.keys(origins).sort().forEach(function (origin) {
-    var opt = document.createElement('option');
-    opt.value = origin;
-    opt.textContent = origin;
-    selectOrigin.appendChild(opt);
-  });
-
-  // Processes
-  if (selectProcess) {
-    var processOrder = ['Washed', 'Natural', 'Wet-Hulled'];
-    processOrder.forEach(function (proc) {
-      if (processes[proc]) {
-        var opt = document.createElement('option');
-        opt.value = proc;
-        opt.textContent = proc;
-        selectProcess.appendChild(opt);
-      }
-    });
-    Object.keys(processes).sort().forEach(function (proc) {
-      if (processOrder.indexOf(proc) === -1) {
-        var opt = document.createElement('option');
-        opt.value = proc;
-        opt.textContent = proc;
-        selectProcess.appendChild(opt);
-      }
-    });
-  }
-
-  // Roast Levels
-  Object.keys(levels).forEach(function (level) {
-    var opt = document.createElement('option');
-    opt.value = level;
-    opt.textContent = level;
-    selectLevel.appendChild(opt);
-  });
-
-  // Brewing Methods
-  Object.keys(brewingMethods).sort().forEach(function (method) {
-    var opt = document.createElement('option');
-    opt.value = method;
-    opt.textContent = method;
-    selectBrewing.appendChild(opt);
-  });
-
-  // 3. Filter Application Logic
-  function applyFilters() {
-    var chosenType = selectCategory ? selectCategory.value : '';
-    var chosenOrigin = selectOrigin.value;
-    var chosenProcess = selectProcess ? selectProcess.value : '';
-    var chosenLevel = selectLevel.value;
-    var chosenBrewing = selectBrewing.value;
-
-    cards.forEach(function (card) {
-      // Check type match
-      var cardType = (card.getAttribute('data-type') || '').trim().toLowerCase();
-      var matchesType = !chosenType || cardType === chosenType.toLowerCase();
-
-      // Compound Origin & Process matching at the bean component level
-      var beansList = JSON.parse(card.getAttribute('data-beans-list') || '[]');
-      var matchesBean = true;
-      if (chosenOrigin || chosenProcess) {
-        matchesBean = beansList.some(function (bean) {
-          var matchOrigin = !chosenOrigin || bean.origin === chosenOrigin;
-          var matchProcess = !chosenProcess || bean.process === chosenProcess;
-          return matchOrigin && matchProcess;
-        });
-      }
-
-      // Map roast level category based on dots
-      var dotsAttr = card.getAttribute('data-roast-dots');
-      var matchesLevel = true;
-      if (chosenLevel) {
-        if (dotsAttr && dotsAttr.trim() !== '') {
-          var dots = parseInt(dotsAttr, 10);
-          var levelCat = "Medium";
-          if (dots <= 2) levelCat = "Light";
-          else if (dots >= 4) levelCat = "Dark";
-          matchesLevel = (levelCat === chosenLevel);
-        } else {
-          matchesLevel = false;
-        }
-      }
-
-      // Map brewing method
-      var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
-      var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
-
-      // Show/Hide Card: ALL filters strictly ANDed together
-      if (matchesType && matchesBean && matchesLevel && matchesBrewing) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    // Update section break visibility
-    var sectionBreaks = document.querySelectorAll('#roasts-grid .roasts-section-break');
-    sectionBreaks.forEach(function (breakEl) {
-      var sectionCat = (breakEl.getAttribute('data-category') || '').trim().toLowerCase();
-      var hasVisible = Array.prototype.some.call(cards, function (card) {
-        var cardCat = (card.getAttribute('data-category') || '').trim().toLowerCase();
-        return cardCat === sectionCat && card.style.display !== 'none';
-      });
-      breakEl.style.display = hasVisible ? '' : 'none';
-    });
-  }
-
-  // 4. Attach Event Listeners
-  if (selectCategory) selectCategory.addEventListener('change', applyFilters);
-  selectOrigin.addEventListener('change', applyFilters);
-  if (selectProcess) selectProcess.addEventListener('change', applyFilters);
-  selectLevel.addEventListener('change', applyFilters);
-  selectBrewing.addEventListener('change', applyFilters);
-})();
-</script>

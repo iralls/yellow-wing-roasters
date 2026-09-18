@@ -87,7 +87,7 @@ permalink: /order/
 {% assign flight_aviary = flight_aviary_doc.price | default: 38 %}
 {% assign flight_pyo = flight_pyo_doc.price_per_bag | default: 10 %}
 
-<script src="{{ '/js/order-checkout.js' | relative_url }}"></script>
+<script src="{{ '/js/order-checkout.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
   (function () {
     var STORAGE_KEY = 'ywr_cart';
@@ -124,14 +124,12 @@ permalink: /order/
     ];
 
 
-    if (window.initOrderCheckout) {
-      window.initOrderCheckout({
-        roastData: roastData,
-        flightAviaryPrice: {{ flight_aviary }},
-        flightPyoPrice: {{ flight_pyo }},
-        discountApiUrl: {{ site.discount_codes_api_url | jsonify }},
-        thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
-      });
-    }
+    initOrderCheckout({
+      roastData: roastData,
+      flightAviaryPrice: {{ flight_aviary }},
+      flightPyoPrice: {{ flight_pyo }},
+      discountApiUrl: {{ site.discount_codes_api_url | jsonify }},
+      thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+    });
   })();
 </script>

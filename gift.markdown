@@ -402,7 +402,7 @@ permalink: /gift/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
-<script src="{{ '/js/gift-order.js' | relative_url }}"></script>
+<script src="{{ '/js/gift-order.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
   var form = document.getElementById('gift-form');
@@ -465,15 +465,13 @@ permalink: /gift/
   };
 
 
-  if (window.initGiftOrder) {
-    window.initGiftOrder({
-      subConfig: subConfig,
-      roastPricing: roastPricing,
-      disabledSubRoasts: disabledSubRoasts,
-      digitalFormUrl: {{ site.digital_gift_form_url | jsonify }},
-      digitalFormEntries: {{ site.digital_gift_entries | jsonify }},
-      thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
-    });
-  }
+  initGiftOrder({
+    subConfig: subConfig,
+    roastPricing: roastPricing,
+    disabledSubRoasts: disabledSubRoasts,
+    digitalFormUrl: {{ site.digital_gift_form_url | jsonify }},
+    digitalFormEntries: {{ site.digital_gift_entries | jsonify }},
+    thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+  });
 })();
 </script>

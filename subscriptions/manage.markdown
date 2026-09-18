@@ -52,12 +52,10 @@ permalink: /subscriptions/manage/
 </div>
 </div>
 
-<script src="{{ '/js/manage-subscriptions.js' | relative_url }}"></script>
+<script src="{{ '/js/manage-subscriptions.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  if (window.initManageSubscriptions) {
-    window.initManageSubscriptions({
-      apiUrl: {{ site.subscription_api_url | jsonify }},
-      resubscribeUrl: {{ '/subscriptions/' | relative_url | jsonify }}
-    });
-  }
+  initManageSubscriptions({
+    apiUrl: {{ site.subscription_api_url | jsonify }},
+    resubscribeUrl: {{ '/subscriptions/' | relative_url | jsonify }}
+  });
 </script>

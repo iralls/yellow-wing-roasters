@@ -11,11 +11,11 @@ layout: default
 
 {% if page.mascot_grid %}
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <div class="mascot-grid mascot-grid-lg">{% for m in page.mascot_grid %}<img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">{% endfor %}</div>
+  <div class="mascot-grid mascot-grid-lg">{% for m in page.mascot_grid %}<img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">{% endfor %}</div>
 </div>
 {% elsif page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
   {% assign m_name = site.data.mascots[page.mascot] | default: page.mascot_name | default: page.mascot %}
   {% if m_name %}<div class="roast-mv-bird-label">{{ m_name }}</div>{% endif %}
 </div>
@@ -202,113 +202,26 @@ layout: default
 
 </div>
 
+<script src="{{ '/js/roast-detail.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function () {
-  var STORAGE_KEY = 'ywr_cart';
-  function loadCart() {
-    try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
-  }
-  function saveCart(c) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
-    window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
-  }
-  function cartKey(roast, variant, size, grind) {
-    return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
-  }
-
-  var pricesOneTime = {
-    {% for s in sizes %}
-      {% assign price = roast_prices[s] %}
-      {% if page.temporary_price and page.temporary_price[s] %}{% assign eff_price = page.temporary_price[s] %}{% else %}{% assign eff_price = price %}{% endif %}
-      '{{ s }}': { price: {{ price | default: 0 }}, effective: {{ eff_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  };
-
-  var pricesSub = {
-    {% assign sub_prices = sub_config.price | default: sub_config.prices | default: roast_prices %}
-    {% if sub_prices %}
-      {% for entry in sub_prices %}
-        '{{ entry[0] }}': {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+  initRoastDetail({
+    roastSlug: {{ page.slug | jsonify }},
+    subscribeBaseUrl: {{ '/subscribe/' | relative_url | jsonify }},
+    defaultFreq: {{ freqs.first | default: sub_config.frequencies.first | default: "Monthly" | jsonify }},
+    pricesOneTime: {
+      {% for s in sizes %}
+        {% assign price = roast_prices[s] %}
+        {% if page.temporary_price and page.temporary_price[s] %}{% assign eff_price = page.temporary_price[s] %}{% else %}{% assign eff_price = price %}{% endif %}
+        {{ s | jsonify }}: { price: {{ price | default: 0 }}, effective: {{ eff_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
       {% endfor %}
-    {% endif %}
-  };
-
-  var sizeSelect = document.getElementById('order-size-select');
-  var grindSelect = document.getElementById('order-grind-select');
-  var priceOneTimeEl = document.getElementById('price-display-onetime');
-  var priceSubEl = document.getElementById('price-display-sub');
-  var cardOneTime = document.getElementById('option-card-onetime');
-  var cardSub = document.getElementById('option-card-sub');
-  var radioOneTime = document.querySelector('input[name="purchase-type"][value="onetime"]');
-  var radioSub = document.querySelector('input[name="purchase-type"][value="subscribe"]');
-  var subPanel = document.getElementById('sub-details-panel');
-  var addBtn = document.getElementById('add-to-cart-btn');
-  var subLink = document.getElementById('sub-link');
-  var freqSelect = document.getElementById('sub-freq-select');
-
-  function updatePricesAndMode() {
-    var size = sizeSelect ? sizeSelect.value : '12oz';
-    var otInfo = pricesOneTime[size] || { price: 12, effective: 12 };
-    if (priceOneTimeEl) {
-      if (otInfo.effective < otInfo.price) {
-        priceOneTimeEl.innerHTML = '<s>$' + otInfo.price + '</s> <strong style="color:#d32f2f;">$' + otInfo.effective + '</strong>';
-      } else {
-        priceOneTimeEl.textContent = '$' + otInfo.effective;
-      }
+    },
+    pricesSub: {
+      {% assign sub_prices = sub_config.price | default: sub_config.prices | default: roast_prices %}
+      {% if sub_prices %}
+        {% for entry in sub_prices %}
+          {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      {% endif %}
     }
-
-    var subP = (pricesSub && pricesSub[size]) ? pricesSub[size] : otInfo.price;
-    if (priceSubEl) {
-      priceSubEl.textContent = '$' + subP;
-    }
-
-    var isSub = radioSub && radioSub.checked;
-    if (isSub) {
-      if (cardSub) { cardSub.style.borderColor = '#2c1e14'; cardSub.style.background = '#fff'; }
-      if (cardOneTime) { cardOneTime.style.borderColor = '#e0d8cf'; cardOneTime.style.background = '#faf8f5'; }
-      if (subPanel) subPanel.style.display = 'block';
-      if (addBtn) addBtn.style.display = 'none';
-      if (subLink) subLink.style.display = 'inline-block';
-    } else {
-      if (cardOneTime) { cardOneTime.style.borderColor = '#2c1e14'; cardOneTime.style.background = '#fff'; }
-      if (cardSub) { cardSub.style.borderColor = '#e0d8cf'; cardSub.style.background = '#faf8f5'; }
-      if (subPanel) subPanel.style.display = 'none';
-      if (addBtn) addBtn.style.display = 'inline-block';
-      if (subLink) subLink.style.display = 'none';
-    }
-
-    if (subLink) {
-      var freq = freqSelect ? freqSelect.value : '{{ freqs.first | default: sub_config.frequencies.first | default: "Monthly" }}';
-      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-      subLink.href = '{{ "/subscribe/" | relative_url }}?roast={{ page.slug }}&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
-    }
-  }
-
-  if (sizeSelect) sizeSelect.addEventListener('change', updatePricesAndMode);
-  if (grindSelect) grindSelect.addEventListener('change', updatePricesAndMode);
-  if (freqSelect) freqSelect.addEventListener('change', updatePricesAndMode);
-  if (radioOneTime) radioOneTime.addEventListener('change', updatePricesAndMode);
-  if (radioSub) radioSub.addEventListener('change', updatePricesAndMode);
-  if (cardOneTime) cardOneTime.addEventListener('click', function(e) { if (e.target !== radioOneTime) { radioOneTime.checked = true; updatePricesAndMode(); } });
-  if (cardSub) cardSub.addEventListener('click', function(e) { if (e.target !== radioSub && (!freqSelect || !freqSelect.contains(e.target))) { radioSub.checked = true; updatePricesAndMode(); } });
-
-  updatePricesAndMode();
-
-  if (addBtn) {
-    addBtn.addEventListener('click', function () {
-      var size = sizeSelect ? sizeSelect.value : '12oz';
-      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-      var k = cartKey('{{ page.slug }}', '', size, grind);
-      var cart = loadCart();
-      cart[k] = (cart[k] || 0) + 1;
-      saveCart(cart);
-      addBtn.textContent = 'Added!';
-      addBtn.disabled = true;
-      setTimeout(function () {
-        addBtn.textContent = 'Add to Cart';
-        addBtn.disabled = false;
-      }, 1200);
-    });
-  }
-})();
+  });
 </script>

@@ -258,10 +258,9 @@ permalink: /roasts/build-your-own-blend/
 </div>
 </div>
 
-<script src="{{ '/js/byob-mixer.js' | relative_url }}"></script>
+<script src="{{ '/js/byob-mixer.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
-  var rawBeans = [
   var rawBeans = [
     {% if site.data.custom_beans %}
       {% for b in site.data.custom_beans %}
@@ -303,13 +302,10 @@ permalink: /roasts/build-your-own-blend/
       {% endfor %}
     {% endif %}
   ];
-  ];
 
-  if (window.initBYOBMixer) {
-    window.initBYOBMixer({
-      rawBeans: rawBeans,
-      thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
-    });
-  }
+  initBYOBMixer({
+    rawBeans: rawBeans,
+    thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+  });
 })();
 </script>

@@ -23,41 +23,39 @@
 {% assign order_url = '/order/' | relative_url %}
 {% assign images_base = '/images/' | relative_url %}
 
-<script src="{{ '/js/cart.js' | relative_url }}"></script>
+<script src="{{ '/js/cart.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  if (window.initYWRCart) {
-    window.initYWRCart({
-      flightAviaryPrice: {{ flight_aviary }},
-      flightPyoPrice: {{ flight_pyo }},
-      ROASTS_URL: {{ roasts_url | jsonify }},
-      ORDER_URL: {{ order_url | jsonify }},
-      IMAGES_BASE: {{ images_base | jsonify }},
-      roastsData: {
-        {% for r in site.roasts %}
-          {{ r.slug | jsonify }}: {
-            title: {{ r.title | jsonify }},
-            mascot: {{ r.mascot_file | jsonify }},
-            variants: {
-              {% if r.variants %}
-                {% for v in r.variants %}
-                  {{ v.slug | jsonify }}: {{ v.name | jsonify }}{% unless forloop.last %},{% endunless %}
-                {% endfor %}
-              {% endif %}
-            },
-            prices: {
-              {% assign rp = r.price | default: r.prices %}
-              {% for entry in rp %}
-                {% assign s = entry[0] %}
-                {% if r.sizes == nil or r.sizes contains s %}
-                  {% assign p = entry[1] %}
-                  {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
-                  {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
-                {% endif %}
+  initYWRCart({
+    flightAviaryPrice: {{ flight_aviary }},
+    flightPyoPrice: {{ flight_pyo }},
+    ROASTS_URL: {{ roasts_url | jsonify }},
+    ORDER_URL: {{ order_url | jsonify }},
+    IMAGES_BASE: {{ images_base | jsonify }},
+    roastsData: {
+      {% for r in site.roasts %}
+        {{ r.slug | jsonify }}: {
+          title: {{ r.title | jsonify }},
+          mascot: {{ r.mascot_file | jsonify }},
+          variants: {
+            {% if r.variants %}
+              {% for v in r.variants %}
+                {{ v.slug | jsonify }}: {{ v.name | jsonify }}{% unless forloop.last %},{% endunless %}
               {% endfor %}
-            }
-          }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      }
-    });
-  }
+            {% endif %}
+          },
+          prices: {
+            {% assign rp = r.price | default: r.prices %}
+            {% for entry in rp %}
+              {% assign s = entry[0] %}
+              {% if r.sizes == nil or r.sizes contains s %}
+                {% assign p = entry[1] %}
+                {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
+                {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
+              {% endif %}
+            {% endfor %}
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    }
+  });
 </script>
