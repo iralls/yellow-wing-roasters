@@ -12,7 +12,7 @@ price: 38
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">
@@ -61,5 +61,25 @@ price: 38
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
   initAviaryFlight({ price: {{ page.price | default: 38 }} });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "The Aviary Flight",
+  "image": {{ '/images/audubon-cage-transparent.png' | absolute_url | jsonify }},
+  "description": "A sampler flight of four signature Yellow Wing Roasters blends, each individually packaged in an 8oz bag.",
+  "brand": {
+    "@type": "Brand",
+    "name": "Yellow Wing Roasters"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "{{ page.price | default: 38 }}",
+    "availability": "https://schema.org/InStock"
+  }
+}
 </script>
 

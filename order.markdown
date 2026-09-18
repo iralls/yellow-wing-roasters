@@ -81,7 +81,6 @@ permalink: /order/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
-{% assign roasts = site.roasts | sort: "order" %}
 {% assign flight_aviary_doc = site.flights | where: "slug", "the-aviary" | first %}
 {% assign flight_pyo_doc = site.flights | where: "slug", "peck-your-own" | first %}
 {% assign flight_aviary = flight_aviary_doc.price | default: 38 %}
@@ -90,42 +89,7 @@ permalink: /order/
 <script src="{{ '/js/order-checkout.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
   (function () {
-    var STORAGE_KEY = 'ywr_cart';
-    var form = document.getElementById('order-form');
-    var emptyEl = document.getElementById('order-cart-empty');
-    var itemsEl = document.getElementById('order-cart-items');
-
-    var roastData = [
-      {% for r in roasts %}
-        {% assign r_level_key = r.roast_level | append: "" %}{% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}{% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots | default: 0 %}{% endif %}
-        {% assign rp = r.price | default: r.prices %}
-        {% if r.variants %}
-          {% for v in r.variants %}
-            {% for entry in rp %}
-              {% assign s = entry[0] %}
-              {% if r.sizes == nil or r.sizes contains s %}
-                {% assign unit_price = entry[1] %}
-                {% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% endif %}
-                { roast: {{ r.slug | jsonify }}, variant: {{ v.slug | jsonify }}, size: {{ s | jsonify }}, label: {{ r.title | append: " — " | append: v.name | jsonify }}, formName: {{ r.title | append: " (" | append: v.name | append: ") " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price }}, description: {{ r.description | default: "" | jsonify }} },
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        {% else %}
-          {% for entry in rp %}
-            {% assign s = entry[0] %}
-            {% if r.sizes == nil or r.sizes contains s %}
-              {% assign unit_price = entry[1] %}
-              {% if r.temporary_price and r.temporary_price[s] %}{% assign unit_price = r.temporary_price[s] %}{% endif %}
-              { roast: {{ r.slug | jsonify }}, variant: "", size: {{ s | jsonify }}, label: {{ r.title | jsonify }}, formName: {{ r.title | append: " " | append: s | jsonify }}, mascot: {{ r.mascot_file | jsonify }}, dots: {{ r_dots }}, price: {{ unit_price }}, description: {{ r.description | default: "" | jsonify }} },
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      {% endfor %}
-    ];
-
-
     initOrderCheckout({
-      roastData: roastData,
       flightAviaryPrice: {{ flight_aviary }},
       flightPyoPrice: {{ flight_pyo }},
       discountApiUrl: {{ site.discount_codes_api_url | jsonify }},

@@ -60,6 +60,26 @@
           }
         }
 
+        if (!matchedData && typeof window !== 'undefined' && window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[rSlug]) {
+          var cat = window.YWR_ROASTS_DATA[rSlug];
+          var vName = (vSlug && cat.variants && cat.variants[vSlug]) ? cat.variants[vSlug] : '';
+          var fullLabel = cat.title + (vName ? ' — ' + vName : '');
+          var sizeStr = rSize || '12oz';
+          var formLabel = cat.title + (vName ? ' (' + vName + ') ' : ' ') + sizeStr;
+          var priceVal = (cat.prices && typeof cat.prices[sizeStr] === 'number') ? cat.prices[sizeStr] : 0;
+          matchedData = {
+            roast: rSlug,
+            variant: vSlug,
+            size: sizeStr,
+            label: fullLabel,
+            formName: formLabel,
+            mascot: cat.mascot,
+            dots: cat.dots || 0,
+            price: priceVal,
+            description: cat.description || ''
+          };
+        }
+
         if (matchedData) {
           items.push({ data: matchedData, key: ck, qty: cart[ck], grind: rGrind });
         } else {

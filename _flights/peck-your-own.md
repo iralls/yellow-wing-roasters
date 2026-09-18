@@ -14,10 +14,10 @@ min_bags: 4
 
 <div class="roast-mv-center roast-mv-bird-wrap">
   <div class="mascot-grid mascot-grid-lg">
-    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
-    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
-    <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
-    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true">
+    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
   </div>
 </div>
 
@@ -52,7 +52,7 @@ min_bags: 4
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
       <span class="gift-type-badge">&#10003; Selected</span>
-      {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+      {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
       <div class="roasts-entry-overlay">
         {% if r.tasting_notes %}<div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>{% endif %}
         {% if r_dots %}
@@ -125,3 +125,24 @@ min_bags: 4
   });
 </script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Peck Your Own Flight",
+  "image": {{ '/images/audubon-robin-transparent.png' | absolute_url | jsonify }},
+  "description": "Custom sampler flight: choose any four or more of our freshly roasted coffees in 8oz bags.",
+  "brand": {
+    "@type": "Brand",
+    "name": "Yellow Wing Roasters"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 }}",
+    "highPrice": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 | plus: 40 }}",
+    "price": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 }}",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>

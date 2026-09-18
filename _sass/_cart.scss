@@ -1,3 +1,63 @@
+/* ── Cart Indicator Pill & Fixed Trigger ── */
+
+.cart-indicator-wrap {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: $font-display;
+  font-weight: 500;
+}
+
+.cart-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  color: #222;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:hover {
+    border-color: #888;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.cart-count {
+  display: inline-block;
+  min-width: 1.1rem;
+  padding: 0.05rem 0.45rem;
+  background: #d97706;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.cart-indicator-empty .cart-count {
+  display: none;
+}
+
 /* ── Cart Dropdown ── */
 
 .cart-dropdown-pane {

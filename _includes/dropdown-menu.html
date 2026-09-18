@@ -1,10 +1,10 @@
 <div class="dropdown-menu" id="dropdown-menu">
   <button class="dropdown-toggle" id="dropdown-toggle" aria-label="Menu" aria-expanded="false">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <div class="dropdown-items" id="dropdown-items">
     <div class="dropdown-group">
-      <div class="dropdown-group-label" id="coffee-toggle">Coffee ▸</div>
+      <button type="button" class="dropdown-group-label" id="coffee-toggle" aria-expanded="false">Coffee ▸</button>
       <div class="dropdown-subitems" id="coffee-subitems" style="display:none;">
       <a href="{{ '/roasts/' | relative_url }}" class="dropdown-item dropdown-subitem">All</a>
       <a href="{{ '/blends/' | relative_url }}" class="dropdown-item dropdown-subitem">Blends</a>

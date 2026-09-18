@@ -21,6 +21,7 @@
         var open = coffeeItems.style.display === 'none';
         coffeeItems.style.display = open ? '' : 'none';
         coffeeToggle.textContent = open ? 'Coffee ▾' : 'Coffee ▸';
+        coffeeToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
     }
 
@@ -29,6 +30,16 @@
       if (menu && !menu.contains(e.target)) {
         items.classList.remove('dropdown-items--open');
         toggle.setAttribute('aria-expanded', 'false');
+        if (coffeeToggle) coffeeToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && items.classList.contains('dropdown-items--open')) {
+        items.classList.remove('dropdown-items--open');
+        toggle.setAttribute('aria-expanded', 'false');
+        if (coffeeToggle) coffeeToggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
       }
     });
   }
