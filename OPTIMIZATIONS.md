@@ -19,52 +19,51 @@ This document catalogs technical, architectural, and performance optimizations f
 
 ---
 
-## 2. Embedded Script & Style Extraction
+## 2. Embedded Script & Style Extraction (Completed)
 
-### Current State
-Large blocks of inline CSS and JavaScript are embedded inside Markdown content files:
-* [`roasts/build-your-own-blend.markdown`](roasts/build-your-own-blend.markdown): **322 lines of inline CSS** + **770 lines of inline JS** (blend ratio mixer, calculator, order dispatch).
-* [`subscriptions/manage.markdown`](subscriptions/manage.markdown): **160 lines of inline CSS** + **275 lines of inline JS** (customer lookup, subscription pause/resume/cancel).
-* [`order.markdown`](order.markdown): **470 lines of inline JS** (cart parsing, coupon/discount validation, Google Forms submission).
-* [`gift.markdown`](gift.markdown): **510 lines of inline JS** (gift card selector, dynamic custom image dropdown, pricing).
-* [`subscribe-form.markdown`](subscribe-form.markdown): **188 lines of inline JS** (frequency & size dynamic mapping).
-* [`_includes/cart-indicator.html`](_includes/cart-indicator.html): **170 lines of inline JS** (cart dropdown flyout, localStorage listener).
-
-### Solution
-* Extract JavaScript logic into dedicated assets in `js/` (e.g. `js/cart.js`, `js/byob-mixer.js`, `js/manage-subscriptions.js`, `js/gift-order.js`).
-* Extract page-specific CSS into separate SCSS partials in `_sass/`.
-* **Benefits**: Browser caching for repeat visits, smaller HTML transfer size, proper IDE syntax highlighting, linting, and clear separation of presentation from logic.
-
----
-
-## 3. SCSS Modularization (`_sass/` Partials)
-
-### Current State
-* [`css/main.scss`](css/main.scss) is a single monolithic file of 2,595 lines (down from 3,277 after dead code pruning).
-
-### Solution
-* Decompose `css/main.scss` into modular Sass partials under `_sass/`:
-  - `_sass/_variables.scss`: Font definitions, brand color palette (`#f0c838`, `#2c1e14`, `#faf8f5`).
-  - `_sass/_typography.scss`: Headings, base text styles.
-  - `_sass/_header.scss` & `_sass/_nav.scss`: Brand header and dropdown menu.
-  - `_sass/_cards.scss`: Roast card grid, hover overlays, status badges, optical sizing adjustments.
-  - `_sass/_roast-detail.scss`: Minimal vertical layout, status banners, tasting notes, roast level dots.
-  - `_sass/_cart.scss`: Floating cart indicator and dropdown flyout.
-  - `_sass/_forms.scss`: Shared order form fields, pill radios, delivery options.
-  - `_sass/_footer.scss`: Footer logo, est. 2026, newsletter input.
-* `css/main.scss` becomes a clean 20-line manifest of `@import` directives.
+### Status: Completed
+* **Extracted JavaScript Modules**:
+  - `js/cart.js`: Shared cart dropdown, floating badge counter, local storage listener, and quick-add handlers. Saved ~240 lines of duplicate script from every page.
+  - `js/byob-mixer.js`: Interactive blend ratio calculator, bean selector, recipe serializer, and order dispatching.
+  - `js/gift-order.js`: Custom product dropdown with image thumbnails, digital gift card code generator, and submission mapping.
+  - `js/manage-subscriptions.js`: Subscription lookup, mock cache fallback, pause, resume, and cancellation flows.
+  - `js/order-checkout.js`: Cart parsing, coupon/discount validation API caller, and checkout dispatch.
+  - `js/subscribe-form.js`: Dynamic size/frequency population, status notifications, and delivery method controls.
+* **Extracted CSS into `_sass/`**:
+  - Moved BYOB mixer workspace styles into `_sass/_byob.scss`.
+  - Moved Subscription lookup card styles into `_sass/_manage-subscriptions.scss`.
+* **Results**: Deleted **over 2,500 lines of inline code** from Markdown files. Content files are now clean, readable, and properly decoupled from presentation and logic.
 
 ---
 
-## 4. Liquid Template & Card Deduplication
+## 3. SCSS Modularization (`_sass/` Partials) (Completed)
 
-### Current State
-* [`_flights/the-aviary.md`](_flights/the-aviary.md) repeats ~50 lines of card markup (mascot, overlay, dots, status) for each of its 4 blends rather than leveraging `_includes/roast-card.html`.
-* Form submission dispatching across `order.markdown`, `roasts/byob.markdown`, `subscribe-form.markdown`, and `gift.markdown` duplicates Google Forms `fetch` POST logic and status message handling.
+### Status: Completed
+* Decomposed the monolithic 2,595-line `css/main.scss` into 14 focused Sass partials under `_sass/`:
+  - `_sass/_fonts.scss`: Self-hosted `@font-face` definitions (Lora & Montserrat variable fonts).
+  - `_sass/_variables.scss`: Typography variables and brand color palette (`$color-cream`, `$color-dark`, `$color-gold`).
+  - `_sass/_base.scss`: Base resets, container widths, headings, typography.
+  - `_sass/_nav.scss`: Site header, brand title, responsive dropdown menu.
+  - `_sass/_cards.scss`: Catalog grid, `.roasts-entry` cards, hover overlays, price layouts.
+  - `_sass/_badges.scss`: Unified roast status badges, featured flags, and tags.
+  - `_sass/_roast-detail.scss`: Minimal vertical layout (`.roast-minimal-vertical`), tasting note chips, origin pills, roast level dots.
+  - `_sass/_cart.scss`: Floating bag trigger, item count indicator, flyout drawer.
+  - `_sass/_hero.scss`: Index hero ("The Perch") banner and CTA.
+  - `_sass/_flights.scss`: The Aviary cards and Peck Your Own flight picker.
+  - `_sass/_gift.scss`: Gift cards, custom thumbnail selector, price displays.
+  - `_sass/_byob.scss`: Build-Your-Own-Blend mixer workspace and interactive sliders.
+  - `_sass/_manage-subscriptions.scss`: Subscription lookup card, status badges, cancellation modal.
+  - `_sass/_footer.scss`: Footer layout, est. 2026 seal, copyright text.
+* `css/main.scss` is now a clean 31-line manifest of `@import` directives.
+* Jekyll build time remains **under 0.9 seconds**.
 
-### Solution
-* Refactor `the-aviary.md` to reuse `{% include roast-card.html roast=r %}`.
-* Create a shared `_includes/form-handler.js` utility for Google Forms AJAX submissions.
+---
+
+## 4. Liquid Template & Card Deduplication (Completed)
+
+### Status: Completed
+* Enhanced `_includes/roast-card.html` with optional `card_class`, `hide_price`, and `hide_quick_add` controls, plus `loading="lazy"` and `decoding="async"` attributes.
+* Refactored `_flights/the-aviary.md` to reuse `_includes/roast-card.html`, deleting 47 lines of duplicate card markup while preserving exact styling and behavior.
 
 ---
 

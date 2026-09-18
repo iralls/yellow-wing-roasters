@@ -56,7 +56,7 @@
 {% assign process_list = card_processes | uniq | join: "," %}
 {% assign bean_list = card_beans | uniq | join: "," %}
 
-<a class="roasts-entry{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
+<a class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    href="{{ r.url | relative_url }}"
    data-category="{{ r.category }}"
    data-type="{{ r.category | slugify }}"
@@ -69,7 +69,7 @@
   <div class="roasts-entry-visual">
     {% include roast-status-badge.html roast=r %}
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
-    {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+    {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
     <div class="roasts-entry-overlay">
       {% if r.tasting_notes %}
         <div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>
@@ -96,7 +96,7 @@
       {% if r.category == 'subscriptions' %}
         <button type="button" class="roasts-entry-sub-btn" onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ '/subscribe/?roast=' | append: r.slug | relative_url }}';">Subscribe</button>
       {% else %}
-        {% unless r.status == 'incubating' or r.status == 'flown_south' %}
+        {% unless include.hide_quick_add or r.status == 'incubating' or r.status == 'flown_south' %}
           <button type="button" class="roasts-entry-quick-add" data-slug="{{ r.slug }}">Quick Add</button>
         {% endunless %}
       {% endif %}
@@ -110,13 +110,15 @@
         {% unless r.category == 'subscriptions' %}
           {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         {% endunless %}
-        <div class="roasts-entry-prices">
-          {% if r.temporary_price and r.temporary_price["12oz"] %}
-            <s>${{ price_12 }}</s> <span class="roasts-entry-temp-price">${{ r.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ price_12 }}
-          {% endif %}
-        </div>
+        {% unless include.hide_price %}
+          <div class="roasts-entry-prices">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ price_12 }}</s> <span class="roasts-entry-temp-price">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ price_12 }}
+            {% endif %}
+          </div>
+        {% endunless %}
       </div>
       <div class="roasts-entry-meta">
         {% if r.category == 'subscriptions' %}

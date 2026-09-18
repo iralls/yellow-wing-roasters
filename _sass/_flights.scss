@@ -1,0 +1,155 @@
+/* ── Peck Your Own Flight Picker ── */
+.pyo-option {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pyo-option.is-selected .roasts-entry-visual {
+  background: #fffdf5;
+  border-color: rgba(240, 200, 56, 0.55);
+  box-shadow:
+    0 10px 26px rgba(44, 30, 20, 0.06),
+    0 0 24px rgba(240, 200, 56, 0.35);
+  transform: translateY(-3px);
+}
+
+.pyo-option.is-selected:hover .roasts-entry-visual {
+  border-color: rgba(240, 200, 56, 0.7);
+  box-shadow:
+    0 14px 32px rgba(44, 30, 20, 0.08),
+    0 0 30px rgba(240, 200, 56, 0.45);
+  transform: translateY(-4px);
+}
+
+/* ── The Aviary: Included Roasts Cards ── */
+.aviary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 58rem;
+  margin: 1.75rem auto 2.25rem;
+  text-align: left;
+}
+
+@media (max-width: 54rem) {
+  .aviary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 32rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 32rem) {
+  .aviary-grid {
+    grid-template-columns: 1fr;
+    max-width: 18rem;
+    gap: 1rem;
+  }
+}
+
+.aviary-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: transform 0.25s ease;
+
+  .roasts-entry-visual {
+    height: 10.5rem;
+    padding: 0.9rem;
+    border-radius: 0.85rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  &:hover .roasts-entry-visual {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
+    transform: translateY(-3px);
+  }
+
+  .roasts-entry-mascot,
+  &[data-roast="early-bird"] .roasts-entry-mascot,
+  &[data-roast="lil-sipper"] .roasts-entry-mascot,
+  &[data-roast="feather-soot"] .roasts-entry-mascot,
+  &[data-roast="chimney-sweep"] .roasts-entry-mascot {
+    max-height: 6.25rem;
+    max-width: 78%;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .roasts-entry-mascot {
+    transform: scale(1.05);
+  }
+
+  .roasts-entry-badge {
+    top: 0.65rem;
+    left: 0.65rem;
+    font-size: 0.55rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .roasts-entry-seasonal-badge {
+    top: 0.65rem;
+    right: 0.65rem;
+    font-size: 0.55rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .roasts-entry-overlay {
+    padding: 0.85rem;
+  }
+
+  .roasts-entry-overlay-notes {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+
+  .roasts-entry-overlay-level {
+    padding: 0.25rem 0.6rem;
+    gap: 0.35rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .roasts-entry-overlay-specialty {
+    font-size: 0.68rem;
+  }
+
+  .roasts-entry-overlay-brewing {
+    font-size: 0.65rem;
+    line-height: 1.3;
+    margin-top: 0.25rem;
+  }
+
+  .roasts-entry-info {
+    padding: 0.65rem 0.25rem 0;
+    text-align: left;
+  }
+
+  .roasts-entry-title {
+    font-size: 1rem;
+  }
+
+  .roasts-entry-subtitle {
+    font-size: 0.65rem;
+  }
+
+  .roasts-entry-layman {
+    font-size: 0.72rem;
+  }
+
+  .roasts-entry-descriptor {
+    font-size: 0.8rem;
+  }
+}

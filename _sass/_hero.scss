@@ -1,0 +1,42 @@
+/* ── Index hero ("The Perch") ── */
+
+.index-hero {
+  background: #faf8f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.index-hero-tagline {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #2c1e14;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.index-hero-subtitle {
+  color: #8a7060;
+  font-size: 1.1rem;
+  font-style: italic;
+  max-width: 28rem;
+  margin: 0 auto 2.5rem;
+  line-height: 1.5;
+}
+
+.index-hero-birds {
+  display: flex;
+  gap: 1.5rem;
+  opacity: 0.18;
+}
+
+.index-hero-birds img {
+  height: 2.5rem;
+  width: auto;
+}

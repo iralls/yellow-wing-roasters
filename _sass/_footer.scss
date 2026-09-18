@@ -1,0 +1,70 @@
+/* ── Site footer ── */
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem 0 1.5rem;
+}
+
+.site-footer-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-footer-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-footer-logo-icon {
+  height: 2.8rem;
+  width: auto;
+  display: block;
+  margin: 0 auto 0.5rem;
+}
+
+.mailing-list-form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 24rem;
+  margin: 0.5rem auto;
+}
+
+.mailing-list-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-family: $font-body;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.mailing-list-btn {
+  padding: 0.5rem 1rem;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  background: #f0c838;
+  color: #302010;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.mailing-list-btn:hover {
+  background: #e0b828;
+}
+
+.site-footer-est {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #999;
+}

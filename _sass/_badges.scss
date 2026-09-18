@@ -1,0 +1,117 @@
+/* ── Unified Roast Card Badges ── */
+.roasts-entry-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 5;
+  pointer-events: auto;
+  cursor: default;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  &--incubating     { background: #ffd600; color: #111; }
+  &--just_hatched   { background: #2e7d32; color: #fff; }
+  &--mid_molt       { background: #ffe600; color: #111; }
+  &--migrating_soon { background: #c2410c; color: #fff; }
+  &--low_stock      { background: #e65100; color: #fff; }
+  &--flown_south    { background: #475569; color: #fff; font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.28rem 0.6rem; line-height: 1.2; }
+}
+
+.roasts-entry-seasonal-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  pointer-events: auto;
+  cursor: default;
+  background: #e8a0b4;
+  color: #fff;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.byob-suppliers {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.byob-suppliers li a {
+  display: inline-block;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #2c1e14;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid #d0c4b0;
+  border-radius: 999px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.byob-suppliers li a:hover {
+  background: #fff;
+  border-color: #8a7060;
+  text-decoration: none;
+}
+
+.order-form select,
+.subscribe-select {
+  padding: 0.45rem 2rem 0.45rem 1rem;
+  font-family: $font-display;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid #bbb;
+  border-radius: 999px;
+  box-sizing: border-box;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c1e14' d='M6 8.825L1.175 4 2.238 2.938 6 6.7 9.763 2.938 10.825 4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  color: #2c1e14;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.order-form select:hover,
+.subscribe-select:hover {
+  border-color: #2c1e14;
+}
+
+.order-form select:focus,
+.subscribe-select:focus {
+  outline: none;
+  border-color: #2c1e14;
+  box-shadow: 0 0 0 2px rgba(44, 30, 20, 0.15);
+}
+
+.order-form select optgroup {
+  color: #2c1e14;
+  font-weight: 700;
+  font-style: normal;
+  background: #fff;
+}
+
+.order-form select option,
+.subscribe-select option {
+  color: #2c1e14;
+  background: #fff;
+}
