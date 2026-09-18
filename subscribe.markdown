@@ -17,7 +17,7 @@ permalink: /subscriptions/
 {% for s in subs %}
   <a class="roasts-entry" href="{{ s.url | relative_url }}">
     <div class="roasts-entry-visual">
-      {% if s.mascot_file %}<img src="{{ '/images/' | append: s.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot">{% endif %}
+      {% if s.mascot_file %}<img src="{{ '/images/' | append: s.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
       <div class="roasts-entry-overlay">
         {% if s.descriptor %}<div class="roasts-entry-overlay-notes">{{ s.descriptor }}</div>{% endif %}
       </div>

@@ -8,11 +8,14 @@
 {% include head.html %}
 </head>
 <body{% if page.bg_pattern %} style="background-image: url('{{ page.bg_pattern | relative_url }}'); background-repeat: repeat; background-size: {{ page.bg_pattern_size | default: '380px 380px' }};"{% endif %}>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
   {% include cart-indicator.html %}
   {% include dropdown-menu.html %}
   <div class="container">
     {% include brand-header.html %}
-    {{ content }}
+    <main id="main-content" class="main-content">
+      {{ content }}
+    </main>
   </div>
   {% include footer.html %}
 </body>

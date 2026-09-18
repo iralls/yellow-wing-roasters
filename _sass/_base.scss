@@ -100,3 +100,25 @@ h6 {
     background: #fff;
   }
 }
+
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: #2c1e14;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 0 0 4px 4px;
+  z-index: 99999;
+  text-decoration: none;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
+    color: #fff;
+    outline: 2px solid #f0c838;
+  }
+}

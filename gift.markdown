@@ -7,7 +7,7 @@ permalink: /gift/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-raven-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true">
+  <img src="{{ '/images/audubon-raven-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">
@@ -41,7 +41,7 @@ permalink: /gift/
       <div class="gift-type-card is-selected" data-value="direct" role="radio" aria-checked="true" tabindex="0">
         <div class="roasts-entry-visual">
           <span class="gift-type-badge">&#10003; Selected</span>
-          <img src="{{ '/images/mailbox-transparent.png' | relative_url }}" alt="Subscription" class="roasts-entry-mascot">
+          <img src="{{ '/images/mailbox-transparent.png' | relative_url }}" alt="Subscription" class="roasts-entry-mascot" loading="lazy" decoding="async">
           <div class="roasts-entry-overlay">
             <div class="roasts-entry-overlay-notes">a recurring subscription or fresh single bag delivered directly to their door</div>
             <div class="roasts-entry-overlay-brewing">Physical Delivery</div>
@@ -65,7 +65,7 @@ permalink: /gift/
       <div class="gift-type-card" data-value="code" role="radio" aria-checked="false" tabindex="0">
         <div class="roasts-entry-visual">
           <span class="gift-type-badge">&#10003; Selected</span>
-          <img src="{{ '/images/qr-code2-full-transparent.png' | relative_url }}" alt="Digital Gift Card" class="roasts-entry-mascot">
+          <img src="{{ '/images/qr-code2-full-transparent.png' | relative_url }}" alt="Digital Gift Card" class="roasts-entry-mascot" loading="lazy" decoding="async">
           <div class="roasts-entry-overlay">
             <div class="roasts-entry-overlay-notes">an instant prepaid digital gift code sent via email for them to pick any roasts</div>
             <div class="roasts-entry-overlay-brewing">Email Delivery</div>
@@ -165,7 +165,7 @@ permalink: /gift/
                   <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.descriptor | default: roast.subtitle | default: 'Blend' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
                     <div class="gift-select-option-thumb">
                       {% if roast.mascot_file %}
-                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
                       {% else %}
                         <span class="gift-select-trigger-ph">&#9749;</span>
                       {% endif %}
@@ -191,7 +191,7 @@ permalink: /gift/
                   <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.region | default: roast.descriptor | default: 'Single Origin' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
                     <div class="gift-select-option-thumb">
                       {% if roast.mascot_file %}
-                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
                       {% else %}
                         <span class="gift-select-trigger-ph">&#9749;</span>
                       {% endif %}
@@ -217,7 +217,7 @@ permalink: /gift/
                   <div class="gift-select-option" data-value="{{ roast.slug }}" data-title="{{ roast.title }}" data-meta="{{ roast.descriptor | default: 'Seasonal Roast' }}" data-img="{{ '/images/' | append: roast.mascot_file | relative_url }}" role="option" tabindex="0">
                     <div class="gift-select-option-thumb">
                       {% if roast.mascot_file %}
-                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img">
+                        <img src="{{ '/images/' | append: roast.mascot_file | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
                       {% else %}
                         <span class="gift-select-trigger-ph">&#9749;</span>
                       {% endif %}
@@ -238,7 +238,7 @@ permalink: /gift/
             <div class="gift-select-group-header">Subscriptions</div>
             <div class="gift-select-option" data-value="migrator" data-title="Migrator" data-meta="Rotating roaster's choice single origin" data-img="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Migrator</div>
@@ -249,7 +249,7 @@ permalink: /gift/
 
             <div class="gift-select-option" data-value="wingshot-collective" data-title="Wingshot Collective" data-meta="Rotating espresso exploration pick" data-img="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Wingshot Collective</div>
@@ -260,7 +260,7 @@ permalink: /gift/
 
             <div class="gift-select-option" data-value="fledglings" data-title="Fledglings" data-meta="Approachable monthly coffee &amp; brew guide" data-img="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/audubon-chicks-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Fledglings</div>
@@ -271,7 +271,7 @@ permalink: /gift/
 
             <div class="gift-select-option" data-value="murmurations" data-title="Murmurations" data-meta="Small-batch roasts leftover beans blend" data-img="{{ '/images/flock-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/flock-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/flock-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Murmurations</div>
@@ -282,7 +282,7 @@ permalink: /gift/
 
             <div class="gift-select-option" data-value="runts-rations" data-title="Runt's Rations" data-meta="Test roasts &amp; experimental profiles" data-img="{{ '/images/audubon-runt-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/audubon-runt-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Runt's Rations</div>
@@ -293,7 +293,7 @@ permalink: /gift/
 
             <div class="gift-select-option" data-value="rubber-duck-club" data-title="Rubber Duck Club" data-meta="Debug brand-new experimental test roasts" data-img="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
-                <img src="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" alt="" class="gift-select-option-img">
+                <img src="{{ '/images/audubon-rubber-duck-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
                 <div class="gift-select-option-title">Rubber Duck Club</div>

@@ -21,7 +21,11 @@
     var ROASTS_URL = config.ROASTS_URL || '/roasts/';
     var ORDER_URL = config.ORDER_URL || '/order/';
     var IMAGES_BASE = config.IMAGES_BASE || '/images/';
-    var roastsData = config.roastsData || {};
+    var roastsData = config.roastsData || window.YWR_ROASTS_DATA || {};
+
+    function getRoastsData() {
+      return (config && config.roastsData) || window.YWR_ROASTS_DATA || roastsData || {};
+    }
 
     function escapeHtml(str) {
       if (!str) return '';
@@ -59,6 +63,7 @@
       var meta = '';
       var mascot = null;
       var unitPrice = 0;
+      var rData = getRoastsData();
 
       if (rSlug === 'the-aviary') {
         title = 'The Aviary Flight';
@@ -71,8 +76,8 @@
         meta = (count > 0 ? count + ' × 8oz bags' : 'Sampler flight') + (rGrind ? ' · ' + rGrind : '');
         mascot = 'audubon-cardinal-transparent.png';
         unitPrice = (count || 4) * flightPyoPrice;
-      } else if (roastsData[rSlug]) {
-        var r = roastsData[rSlug];
+      } else if (rData[rSlug]) {
+        var r = rData[rSlug];
         title = r.title;
         if (vSlug && r.variants && r.variants[vSlug]) {
           title += ' — ' + r.variants[vSlug];
@@ -177,8 +182,9 @@
     window.addEventListener('ywr-cart-changed', update);
     window.addEventListener('storage', update);
 
-    // Hover controller with grace period to prevent menu from prematurely closing during diagonal pointer moves
+    // Dropdown controller: handles hover grace period, click toggling, click-outside, and keyboard dismissal
     var wrap = document.getElementById('ywr-cart-wrap');
+    var indicator = document.getElementById('ywr-cart-indicator');
     var closeTimer = null;
 
     function openDropdown() {
@@ -186,14 +192,44 @@
         clearTimeout(closeTimer);
         closeTimer = null;
       }
-      if (wrap) wrap.classList.add('is-open');
+      if (wrap) {
+        wrap.classList.add('is-open');
+        if (indicator) indicator.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function closeDropdownImmediately() {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      if (wrap) {
+        wrap.classList.remove('is-open');
+        if (indicator) indicator.setAttribute('aria-expanded', 'false');
+      }
     }
 
     function scheduleClose() {
       if (closeTimer) clearTimeout(closeTimer);
       closeTimer = setTimeout(function () {
-        if (wrap) wrap.classList.remove('is-open');
+        if (wrap) {
+          wrap.classList.remove('is-open');
+          if (indicator) indicator.setAttribute('aria-expanded', 'false');
+        }
       }, 300);
+    }
+
+    if (indicator) {
+      indicator.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var willOpen = !wrap || !wrap.classList.contains('is-open');
+        if (willOpen) {
+          openDropdown();
+        } else {
+          closeDropdownImmediately();
+        }
+      });
     }
 
     if (wrap) {
@@ -206,6 +242,19 @@
         }
       });
     }
+
+    document.addEventListener('click', function (e) {
+      if (wrap && !wrap.contains(e.target)) {
+        closeDropdownImmediately();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && wrap && wrap.classList.contains('is-open')) {
+        closeDropdownImmediately();
+        if (indicator) indicator.focus();
+      }
+    });
 
     var dropdownEl = document.getElementById('ywr-cart-dropdown');
     if (dropdownEl) {

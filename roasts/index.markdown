@@ -84,5 +84,5 @@ permalink: /roasts/
 </div>
 
 <!-- JavaScript for Dynamic Filters -->
-<script src="{{ '/js/catalog-filters.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/catalog-filters.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 

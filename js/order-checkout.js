@@ -312,7 +312,7 @@
       discountStatus.textContent = 'Verifying...';
       discountStatus.style.color = '#666';
 
-      var apiUrl = '{{ site.discount_codes_api_url }}';
+      var apiUrl = config.discountApiUrl;
       if (!apiUrl || apiUrl.trim() === "") {
         discountStatus.textContent = 'Discount service unavailable.';
         discountStatus.style.color = '#d32f2f';
@@ -407,7 +407,7 @@
       document.getElementById('order-notes').value = finalNotes;
 
       // 2. Dynamic gift card redemption lookup/subtraction
-      var apiUrl = '{{ site.discount_codes_api_url }}';
+      var apiUrl = config.discountApiUrl;
       if (appliedDiscount && appliedDiscount.code.indexOf('GIFT-') === 0 && apiUrl && apiUrl.trim() !== "") {
         var redeemUrl = apiUrl + '?action=redeem&code=' + encodeURIComponent(appliedDiscount.code) + '&amount=' + encodeURIComponent(discountValue);
         
@@ -464,7 +464,5 @@
     });
     window.addEventListener('storage', render);
     window.addEventListener('ywr-cart-changed', render);
-  })();
-
   };
 });

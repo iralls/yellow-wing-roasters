@@ -8,9 +8,12 @@
 {% include head.html %}
 </head>
 <body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
   {% include cart-indicator.html %}
   {% include dropdown-menu.html %}
-  {{ content }}
+  <main id="main-content" class="main-content">
+    {{ content }}
+  </main>
   {% include footer.html %}
 </body>
 </html>

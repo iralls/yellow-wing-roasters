@@ -1,12 +1,12 @@
 <div class="cart-indicator-wrap" id="ywr-cart-wrap">
-  <a href="{{ '/order/' | relative_url }}" class="cart-indicator" id="ywr-cart-indicator" aria-label="View order">
+  <button type="button" class="cart-indicator" id="ywr-cart-indicator" aria-label="Shopping cart" aria-haspopup="dialog" aria-expanded="false">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
       <line x1="3" y1="6" x2="21" y2="6"/>
       <path d="M16 10a4 4 0 0 1-8 0"/>
     </svg>
     <span class="cart-count" id="ywr-cart-count" aria-live="polite">0</span>
-  </a>
+  </button>
 
   <div class="cart-dropdown-pane" id="ywr-cart-pane">
     <div class="cart-dropdown" id="ywr-cart-dropdown" role="region" aria-label="Shopping cart preview">
@@ -23,39 +23,21 @@
 {% assign order_url = '/order/' | relative_url %}
 {% assign images_base = '/images/' | relative_url %}
 
-<script src="{{ '/js/cart.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/js/cart.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  initYWRCart({
-    flightAviaryPrice: {{ flight_aviary }},
-    flightPyoPrice: {{ flight_pyo }},
-    ROASTS_URL: {{ roasts_url | jsonify }},
-    ORDER_URL: {{ order_url | jsonify }},
-    IMAGES_BASE: {{ images_base | jsonify }},
-    roastsData: {
-      {% for r in site.roasts %}
-        {{ r.slug | jsonify }}: {
-          title: {{ r.title | jsonify }},
-          mascot: {{ r.mascot_file | jsonify }},
-          variants: {
-            {% if r.variants %}
-              {% for v in r.variants %}
-                {{ v.slug | jsonify }}: {{ v.name | jsonify }}{% unless forloop.last %},{% endunless %}
-              {% endfor %}
-            {% endif %}
-          },
-          prices: {
-            {% assign rp = r.price | default: r.prices %}
-            {% for entry in rp %}
-              {% assign s = entry[0] %}
-              {% if r.sizes == nil or r.sizes contains s %}
-                {% assign p = entry[1] %}
-                {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
-                {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
-              {% endif %}
-            {% endfor %}
-          }
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    }
-  });
+  function runInitYWRCart() {
+    initYWRCart({
+      flightAviaryPrice: {{ flight_aviary }},
+      flightPyoPrice: {{ flight_pyo }},
+      ROASTS_URL: {{ roasts_url | jsonify }},
+      ORDER_URL: {{ order_url | jsonify }},
+      IMAGES_BASE: {{ images_base | jsonify }}
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInitYWRCart);
+  } else {
+    runInitYWRCart();
+  }
 </script>

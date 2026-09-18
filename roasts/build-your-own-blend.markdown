@@ -11,10 +11,10 @@ permalink: /roasts/build-your-own-blend/
 
   <div class="roast-mv-center roast-mv-bird-wrap">
     <div class="mascot-grid mascot-grid-lg">
-      <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));">
-      <img src="{{ '/images/audubon-bluejay-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));">
-      <img src="{{ '/images/audubon-barred-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15)); transform: scale(0.8) translateY(-22px);">
-      <img src="{{ '/images/audubon-red-winged-blackbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));">
+      <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));" fetchpriority="high" decoding="async">
+      <img src="{{ '/images/audubon-bluejay-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));" fetchpriority="high" decoding="async">
+      <img src="{{ '/images/audubon-barred-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15)); transform: scale(0.8) translateY(-22px);" fetchpriority="high" decoding="async">
+      <img src="{{ '/images/audubon-red-winged-blackbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" style="filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));" fetchpriority="high" decoding="async">
     </div>
   </div>
 
