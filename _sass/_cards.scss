@@ -443,22 +443,23 @@
 
 .roasts-entry-prices {
   font-family: $font-display;
-  font-size: 1.02rem;
-  font-weight: 800;
-  color: #2c1e14;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #385a48;
   margin-top: 0.35rem;
   text-align: left;
 }
 
 .roasts-entry-prices s {
-  color: #999;
+  color: #6b8878;
+  font-size: 0.82rem;
   font-weight: 500;
-  margin-right: 0.3rem;
+  margin-right: 0.35rem;
 }
 
 .roasts-entry-temp-price {
-  color: #d32f2f;
-  font-weight: 800;
+  color: #c0392b;
+  font-weight: 700;
 }
 
 .roasts-entry-sub-price {
