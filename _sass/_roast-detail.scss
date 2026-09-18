@@ -715,6 +715,7 @@
   &--migrating_soon { background: #fff3e0; border-color: #ffe0b2; color: #c2410c; }
   &--low_stock      { background: #fff3e0; border-color: #ffe0b2; color: #e65100; }
   &--flown_south    { background: #f1f5f9; border-color: #cbd5e1; color: #334155; }
+  &--not_subscribable { background: #fdf2f2; border-color: #f8d7da; color: #721c24; }
 }
 
 .roast-status-bar-badge {
@@ -733,6 +734,7 @@
   &--migrating_soon { background: #c2410c; color: #fff; }
   &--low_stock      { background: #e65100; color: #fff; }
   &--flown_south    { background: #475569; color: #fff; letter-spacing: 0.08em; }
+  &--not_subscribable { background: #c0392b; color: #fff; }
 }
 
 .roast-status-bar-text {

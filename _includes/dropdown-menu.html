@@ -22,28 +22,5 @@
     <a href="{{ '/feedback/' | relative_url }}" class="dropdown-item">Feedback</a>
   </div>
 </div>
-<script>
-(function () {
-  var toggle = document.getElementById('dropdown-toggle');
-  var items = document.getElementById('dropdown-items');
-  toggle.addEventListener('click', function () {
-    var open = items.classList.toggle('dropdown-items--open');
-    toggle.setAttribute('aria-expanded', open);
-  });
-  var coffeeToggle = document.getElementById('coffee-toggle');
-  var coffeeItems = document.getElementById('coffee-subitems');
-  coffeeToggle.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var open = coffeeItems.style.display === 'none';
-    coffeeItems.style.display = open ? '' : 'none';
-    coffeeToggle.textContent = open ? 'Coffee ▾' : 'Coffee ▸';
-  });
+<script src="{{ '/js/nav.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 
-  document.addEventListener('click', function (e) {
-    if (!document.getElementById('dropdown-menu').contains(e.target)) {
-      items.classList.remove('dropdown-items--open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-})();
-</script>

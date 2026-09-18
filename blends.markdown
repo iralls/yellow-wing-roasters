@@ -22,15 +22,15 @@ permalink: /blends/
   <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
     <div class="roasts-entry-visual">
       <div class="mascot-grid mascot-grid-3x3">
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-rose-breasted-grosbeak-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-grey-catbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-baltimore-oriole-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-red-tailed-hawk-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-killdeer-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-great-horned-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/double-crested-cormorant-transparent.png' | relative_url }}" alt="" class="mascot-grid-item"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-rose-breasted-grosbeak-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-grey-catbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-baltimore-oriole-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-red-tailed-hawk-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-killdeer-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-great-horned-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+        <div class="mascot-grid-cell"><img src="{{ '/images/double-crested-cormorant-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
       </div>
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">craft your own custom blend from our single origin roasts</div>

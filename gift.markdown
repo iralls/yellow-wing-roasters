@@ -455,12 +455,10 @@ permalink: /gift/
   // Disable multi-month gift subscriptions for roasts where subscribable is false
   var disabledSubRoasts = {
     {% for r in site.roasts %}
-    {% if r.status %}
       {% assign s_meta = site.data.statuses[r.status] %}
-      {% if s_meta.subscribable == false %}
+      {% if r.subscription == false or r.subscription == nil or s_meta.subscribable == false %}
     '{{ r.slug }}': true,
       {% endif %}
-    {% endif %}
     {% endfor %}
   };
 

@@ -58,27 +58,8 @@ price: 38
 
 </div>
 
+<script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function () {
-  var STORAGE_KEY = 'ywr_cart';
-  var addBtn = document.getElementById('aviary-add-btn');
-  if (addBtn) {
-    addBtn.addEventListener('click', function () {
-      var grindSelect = document.getElementById('aviary-grind-select');
-      var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-      var cart;
-      try { var raw = localStorage.getItem(STORAGE_KEY); cart = raw ? JSON.parse(raw) : {}; } catch (e) { cart = {}; }
-      var key = 'the-aviary|||' + grind;
-      cart[key] = (cart[key] || 0) + 1;
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
-      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
-      addBtn.textContent = 'Added!';
-      addBtn.disabled = true;
-      setTimeout(function () {
-        addBtn.textContent = 'Add to Order — ${{ page.price }}';
-        addBtn.disabled = false;
-      }, 1200);
-    });
-  }
-})();
+  initAviaryFlight({ price: {{ page.price | default: 38 }} });
 </script>
+

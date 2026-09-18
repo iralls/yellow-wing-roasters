@@ -130,48 +130,10 @@ permalink: /roasts/byob/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
+<script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function () {
-  var form = document.getElementById('byob-form');
-  var status = form.querySelector('.order-status');
-  var submitBtn = form.querySelector('.order-submit');
-
-  var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
-  var addressFields = document.getElementById('byob-shipping');
-  var deliveryNote = document.getElementById('byob-delivery-note');
-  for (var di = 0; di < deliveryRadios.length; di++) {
-    deliveryRadios[di].addEventListener('change', function () {
-      var v = this.value;
-      addressFields.style.display = (v === 'Pickup') ? 'none' : '';
-      deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
-    });
-  }
-
-  var iframe = document.createElement('iframe');
-  iframe.name = 'byob-submit-frame';
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
-  form.target = 'byob-submit-frame';
-
-  form.addEventListener('submit', function () {
-    var grindEl = document.getElementById('byob-grind');
-    var notesEl = document.getElementById('byob-notes');
-    if (grindEl && notesEl) {
-      var currentNotes = notesEl.value.trim();
-      var grindPrefix = '[Grind: ' + grindEl.value + ']';
-      notesEl.value = currentNotes ? grindPrefix + ' ' + currentNotes : grindPrefix;
-    }
-
-    if (status) {
-      status.textContent = 'Sending…';
-      status.className = 'order-status order-status-pending';
-    }
-    if (submitBtn) submitBtn.disabled = true;
-    iframe.onload = function () {
-      window.location.href = '{{ "/thanks/" | relative_url }}';
-    };
-  });
-})();
+  initBYOBForm({ thanksUrl: '{{ "/thanks/" | relative_url }}' });
 </script>
+
 
 </div>

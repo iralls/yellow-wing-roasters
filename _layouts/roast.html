@@ -164,7 +164,7 @@ layout: default
       </div>
     </div>
   </div>
-  {% elsif p_status_info and p_status_info.sub_footnote %}
+  {% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
     <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">{{ p_status_info.sub_footnote }}</p>
   {% endif %}
 </div>
@@ -225,3 +225,26 @@ layout: default
     }
   });
 </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ page.title | jsonify }},
+  "image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},
+  "description": {{ page.description | default: page.descriptor | jsonify }},
+  "brand": {
+    "@type": "Brand",
+    "name": "Yellow Wing Roasters"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "{{ roast_prices['12oz'] | default: roast_prices.first[1] | default: 12 }}",
+    "highPrice": "{{ roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz'] | default: roast_prices.first[1] | default: 12 }}",
+    "offerCount": "{{ sizes.size | default: 1 }}",
+    "availability": "{% if page.status == 'flown_south' or page.status == 'incubating' %}https://schema.org/OutOfStock{% else %}https://schema.org/InStock{% endif %}"
+  }
+}
+</script>
+

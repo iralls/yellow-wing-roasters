@@ -152,16 +152,20 @@ permalink: /subscribe/
 
   var disabledSubRoasts = {
     {% for r in site.roasts %}
-    {% if r.status %}
       {% assign s_meta = site.data.statuses[r.status] %}
-      {% if s_meta.subscribable == false %}
+      {% if s_meta and s_meta.subscribable == false %}
     '{{ r.slug }}': {
       status: '{{ r.status }}',
       badge: '{{ r.status_badge | default: s_meta.badge }}',
       footnote: '{{ s_meta.sub_footnote | default: s_meta.footnote }}'
     },
+      {% elsif r.subscription == nil or r.subscription == false %}
+    '{{ r.slug }}': {
+      status: 'not_subscribable',
+      badge: 'Unavailable',
+      footnote: 'Subscriptions are not available for this roast.'
+    },
       {% endif %}
-    {% endif %}
     {% endfor %}
   };
 

@@ -21,7 +21,7 @@ permalink: /single-origins/
   {% if r.status == 'flown_south' and byob_rendered == false %}
   <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/byob/' | relative_url }}">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
       </div>
@@ -46,7 +46,7 @@ permalink: /single-origins/
 {% if byob_rendered == false %}
   <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/byob/' | relative_url }}">
     <div class="roasts-entry-visual">
-      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roasts-entry-mascot">
+      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
       </div>

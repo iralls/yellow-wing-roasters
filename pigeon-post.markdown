@@ -33,28 +33,8 @@ permalink: /pigeon-post/
 
 </div>
 
+<script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-(function () {
-  var form = document.getElementById('pigeon-post-form');
-  var status = document.getElementById('pigeon-post-status');
-  var submitBtn = document.getElementById('pigeon-post-submit');
-
-  var iframe = document.createElement('iframe');
-  iframe.name = 'pigeon-post-submit-frame';
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
-  form.target = 'pigeon-post-submit-frame';
-
-  form.addEventListener('submit', function () {
-    if (status) {
-      status.textContent = 'Sending…';
-      status.className = 'order-status order-status-pending';
-    }
-    if (submitBtn) submitBtn.disabled = true;
-
-    iframe.onload = function () {
-      window.location.href = '{{ "/thanks/" | relative_url }}';
-    };
-  });
-})();
+  initPigeonPostForm({ thanksUrl: '{{ "/thanks/" | relative_url }}' });
 </script>
+

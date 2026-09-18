@@ -31,3 +31,24 @@ layout: default
 </div>
 
 </div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ page.title | jsonify }},
+  {% if page.mascot_file %}"image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},{% endif %}
+  "description": {{ page.subtitle | default: page.description | jsonify }},
+  "brand": {
+    "@type": "Brand",
+    "name": "Yellow Wing Roasters"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "{{ page.price['12oz'] | default: page.price }}",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+
