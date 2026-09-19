@@ -7,7 +7,7 @@ permalink: /quiz/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
+  <img src="{{ '/images/question-mark-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">

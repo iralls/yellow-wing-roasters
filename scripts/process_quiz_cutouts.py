@@ -31,6 +31,7 @@ TARGET_FILES = [
     "milk-with-sugar.jpg",
     "milk.jpg",
     "pour-over.jpg",
+    "question-mark.jpg",
     "sugar.jpg",
 ]
 
@@ -177,6 +178,41 @@ def process_image(filename):
         high_thresh = 38.0
         bg_for_unblend = bg_surface
 
+    elif filename == "question-mark.jpg":
+        # Fit background surface to clean surrounding parchment around the question mark
+        surround_mask = np.zeros((h, w), dtype=bool)
+        surround_mask[100:260, 1100:1800] = True
+        surround_mask[1180:1280, 1100:1800] = True
+        surround_mask[260:1200, 700:1150] = True
+        surround_mask[260:1200, 1750:2200] = True
+
+        surround_vals = arr[surround_mask]
+        y_coords, x_coords = np.mgrid[0:h, 0:w]
+        x_s = (x_coords[surround_mask] - 1420) / 400
+        y_s = (y_coords[surround_mask] - 700) / 400
+        A = np.column_stack([np.ones_like(x_s), x_s, y_s, x_s**2, y_s**2, x_s * y_s])
+
+        x_all = (x_coords - 1420) / 400
+        y_all = (y_coords - 700) / 400
+        all_A = np.column_stack([
+            np.ones(h * w),
+            x_all.ravel(),
+            y_all.ravel(),
+            (x_all**2).ravel(),
+            (y_all**2).ravel(),
+            (x_all * y_all).ravel(),
+        ])
+
+        bg_surface = np.zeros_like(arr)
+        for c in range(3):
+            coeffs, _, _, _ = np.linalg.lstsq(A, surround_vals[:, c], rcond=None)
+            bg_surface[:, :, c] = (all_A @ coeffs).reshape(h, w)
+
+        dist = np.sqrt(np.sum((arr - bg_surface) ** 2, axis=2))
+        low_thresh = 14.0
+        high_thresh = 38.0
+        bg_for_unblend = bg_surface
+
     else:
         # Parchment background with subtle radial vignette - fit 2D quadratic polynomial surface
         y_coords, x_coords = np.mgrid[0:h, 0:w]
@@ -221,13 +257,16 @@ def process_image(filename):
     elif filename == "pour-over.jpg":
         # Exclude empty right side
         s_bbox = (1100, 250, 1875, 1260)
+    elif filename == "question-mark.jpg":
+        # Exclude caption text below y=1170
+        s_bbox = (1175, 295, 1665, 1165)
     elif filename == "sugar.jpg":
         # Ensure the top of the sugar cubes is not cut off
         s_bbox = (895, 990, 1925, 1335)
     else:
         s_bbox = find_primary_subject_bbox(dist, high_thresh, w, h)
 
-    pad = 0 if filename == "cold-brew.jpg" else 25
+    pad = 0 if filename in {"cold-brew.jpg", "question-mark.jpg"} else 25
     x1 = max(0, s_bbox[0] - pad)
     y1 = max(0, s_bbox[1] - pad)
     x2 = min(w, s_bbox[2] + pad)
