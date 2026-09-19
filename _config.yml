@@ -89,5 +89,4 @@ exclude:
   - "preview-*.html"
   - social-preview-generator.html
   - roastmasters_beans.csv
-  - OPTIMIZATIONS.md
   - assets/source-plates
