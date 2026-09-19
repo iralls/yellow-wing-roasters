@@ -185,20 +185,51 @@
   justify-content: center;
   width: 100%;
   height: 21.6rem;
-  background: none;
+  background-color: $color-cat-blend;
   border: none;
   border-radius: 1rem;
   padding: 1.5rem;
   box-sizing: border-box;
   overflow: hidden;
   transition:
-    background 0.25s ease,
+    background-color 0.25s ease,
     box-shadow 0.25s ease,
     transform 0.25s ease;
 }
 
+// Category-based visual backgrounds
+.roasts-entry[data-category="blend"] .roasts-entry-visual,
+.roasts-entry[data-type="blend"] .roasts-entry-visual {
+  background-color: $color-cat-blend;
+}
+
+.roasts-entry[data-category="single origin"] .roasts-entry-visual,
+.roasts-entry[data-category="single-origin"] .roasts-entry-visual,
+.roasts-entry[data-type="single-origin"] .roasts-entry-visual {
+  background-color: $color-cat-single-origin;
+}
+
+.roasts-entry[data-category="seasonal"] .roasts-entry-visual,
+.roasts-entry[data-type="seasonal"] .roasts-entry-visual {
+  background-color: $color-cat-seasonal;
+}
+
+.roasts-entry[data-category="subscriptions"] .roasts-entry-visual,
+.roasts-entry[data-category="subscription"] .roasts-entry-visual,
+.roasts-entry[data-type="subscriptions"] .roasts-entry-visual,
+.roasts-entry[data-type="subscription"] .roasts-entry-visual {
+  background-color: $color-cat-subscription;
+}
+
+.roasts-entry[data-category="flight"] .roasts-entry-visual,
+.roasts-entry[data-category="flights"] .roasts-entry-visual,
+.roasts-entry[data-type="flight"] .roasts-entry-visual,
+.roasts-entry[data-type="flights"] .roasts-entry-visual {
+  background-color: $color-cat-flight;
+}
+
 .roasts-entry:hover .roasts-entry-visual {
-  background: none;
+  background-color: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   transform: translateY(-3px);
 }
@@ -209,10 +240,7 @@
   height: auto;
   max-height: 13.8rem;
   object-fit: contain;
-  filter:
-    drop-shadow(0 6px 14px rgba(44, 30, 20, 0.14))
-    drop-shadow(0 16px 32px rgba(44, 30, 20, 0.09));
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .roasts-entry:hover .roasts-entry-mascot {
@@ -296,7 +324,6 @@
   max-width: 88%;
   max-height: 88%;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(44, 30, 20, 0.14));
 }
 
 .roasts-entry:hover .mascot-grid {
@@ -307,7 +334,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(44, 30, 20, 0.14));
 }
 
 .mascot-grid-lg {

@@ -47,7 +47,7 @@ min_bags: 4
         {% assign r_layman = "" %}
         {% assign r_specialty = r.roast_level %}
       {% endif %}
-  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}">
+  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}" data-category="{{ r.category }}" data-type="{{ r.category | slugify }}">
     <div class="roasts-entry-visual">
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}

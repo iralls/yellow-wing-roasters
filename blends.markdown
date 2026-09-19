@@ -19,7 +19,7 @@ permalink: /blends/
 {% for r in cat_roasts %}
   {% include roast-card.html roast=r %}
 {% endfor %}
-  <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
+  <a class="roasts-entry" data-roast="byob" data-category="blend" data-type="blend" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
     <div class="roasts-entry-visual">
       <div class="mascot-grid mascot-grid-3x3">
         <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>

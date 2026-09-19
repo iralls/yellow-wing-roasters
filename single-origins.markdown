@@ -19,7 +19,7 @@ permalink: /single-origins/
 <div class="roasts-grid">
 {% for r in cat_roasts %}
   {% if r.status == 'flown_south' and byob_rendered == false %}
-  <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/byob/' | relative_url }}">
+  <a class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin" href="{{ '/roasts/byob/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">
@@ -44,7 +44,7 @@ permalink: /single-origins/
   {% include roast-card.html roast=r %}
 {% endfor %}
 {% if byob_rendered == false %}
-  <a class="roasts-entry" data-roast="byob" href="{{ '/roasts/byob/' | relative_url }}">
+  <a class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin" href="{{ '/roasts/byob/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">

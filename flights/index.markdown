@@ -12,7 +12,7 @@ permalink: /flights/
 {% assign pyo = site.flights | where: "slug", "peck-your-own" | first %}
 
 <div class="roasts-grid">
-  <a class="roasts-entry" href="{{ '/flights/the-aviary/' | relative_url }}">
+  <a class="roasts-entry" data-category="flight" data-type="flight" href="{{ '/flights/the-aviary/' | relative_url }}">
     <div class="roasts-entry-visual">
       <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="The Aviary cage" class="roasts-entry-mascot" loading="lazy" decoding="async">
     </div>
@@ -22,7 +22,7 @@ permalink: /flights/
       <div class="roasts-entry-prices">${{ aviary.price }}</div>
     </div>
   </a>
-  <a class="roasts-entry" data-roast="peck-your-own" href="{{ '/flights/peck-your-own/' | relative_url }}">
+  <a class="roasts-entry" data-roast="peck-your-own" data-category="flight" data-type="flight" href="{{ '/flights/peck-your-own/' | relative_url }}">
     <div class="roasts-entry-visual">
       <div class="mascot-grid mascot-grid-3x3">
         <div class="mascot-grid-cell"><img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
