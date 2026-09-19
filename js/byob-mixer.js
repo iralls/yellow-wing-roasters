@@ -32,48 +32,20 @@
 
   function getProfile(name) {
     var bean = getBeanData(name);
-    var text = (((bean.cup_characteristics || "") + " " + (bean.roasting_notes || ""))).toLowerCase();
+    var text = (((bean.cup_characteristics || "") + " " + (bean.roasting_notes || "") + " " + (bean.descriptor || ""))).toLowerCase();
     var nameLower = (name || "").toLowerCase();
 
-    var origin = "";
-    var origins = [
-      "Bolivia", "Brazil", "Burundi", "Colombia", "Costa Rica", "DR Congo",
-      "Ecuador", "El Salvador", "Ethiopia", "Guatemala", "Honduras", "Indonesia",
-      "Java", "Kenya", "Mexico", "Nicaragua", "Panama", "Papua New Guinea",
-      "Peru", "Rwanda", "Sumatra", "Tanzania", "Uganda", "Yemen"
-    ];
-    for (var i = 0; i < origins.length; i++) {
-      if (nameLower.indexOf(origins[i].toLowerCase()) >= 0) {
-        origin = origins[i];
-        break;
-      }
-    }
+    var origin = bean.origin || "";
     if (!origin && name) {
       origin = name.split(" ")[0];
     }
 
-    var process = "washed";
-    var processLabel = "Washed";
-
-    if (nameLower.indexOf("asd") >= 0 || nameLower.indexOf("anaerobic") >= 0 || /\b(?:anaerobic|carbonic|thermal shock)\b/i.test(text)) {
-      process = "anaerobic";
-      processLabel = "Anaerobic / ASD";
-    } else if (nameLower.indexOf("honey") >= 0 || /\b(?:honey process|pulped natural|semi-washed)\b/i.test(text)) {
-      process = "honey";
-      processLabel = "Honey";
-    } else if (nameLower.indexOf("natural") >= 0 || nameLower.indexOf("dry process") >= 0 || nameLower.indexOf("dry-process") >= 0 || /\b(?:natural process|natural method|dry process|dry-process|naturals as beans)\b/i.test(text) || /\bnaturals\b/i.test(text)) {
-      process = "natural";
-      processLabel = "Natural";
-    } else if (/\b(?:wet hulled|wet-hulled|giling basah)\b/i.test(text) || nameLower.indexOf("sumatra") >= 0) {
-      process = "wet-hulled";
-      processLabel = "Wet-Hulled";
-    } else if (nameLower.indexOf("washed") >= 0 || nameLower.indexOf("washing station") >= 0 || /\b(?:washed coffee|washed coffees|washed process|fully washed|washing station)\b/i.test(text)) {
-      process = "washed";
-      processLabel = "Washed";
-    }
+    var rawProc = (bean.process || "Washed").trim();
+    var processLabel = rawProc.charAt(0).toUpperCase() + rawProc.slice(1);
+    var process = rawProc.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     var acidity = 3;
-    if (text.indexOf("zesty") >= 0 || text.indexOf("bright") >= 0 || text.indexOf("piquant") >= 0 || text.indexOf("high acidity") >= 0 || text.indexOf("acetic") >= 0 || text.indexOf("tart") >= 0 || text.indexOf("citric") >= 0 || nameLower.indexOf("kenya") >= 0 || nameLower.indexOf("yirgacheffe") >= 0) {
+    if (text.indexOf("zesty") >= 0 || text.indexOf("bright") >= 0 || text.indexOf("piquant") >= 0 || text.indexOf("high acidity") >= 0 || text.indexOf("acetic") >= 0 || text.indexOf("tart") >= 0 || text.indexOf("citric") >= 0 || nameLower.indexOf("yirgacheffe") >= 0) {
       acidity = 4;
     } else if (text.indexOf("low acidity") >= 0 || text.indexOf("light acidity") >= 0 || text.indexOf("mild acidity") >= 0 || nameLower.indexOf("sumatra") >= 0 || nameLower.indexOf("brazil") >= 0) {
       acidity = 2;
@@ -87,20 +59,24 @@
     }
 
     var notes = [];
-    var possibleNotes = [
-      "Bittersweet Chocolate", "Dark Chocolate", "Milk Chocolate", "Baker's Chocolate", "Chocolate", "Cocoa",
-      "Plum", "Raisin", "Dates", "Red Apple", "Green Apple", "Meyer Lemon", "Lemon", "Lime", "Orange", "Tangerine",
-      "Blackberry", "Blueberry", "Blackcurrant", "Cherry", "Black Cherry", "Peach", "Nectarine", "Melon", "Papaya", "Fig", "Tamarind", "Pineapple", "Mango", "Kiwi", "Grape",
-      "Honey", "Maple Syrup", "Maple", "Butterscotch", "Brown Sugar", "Sugar", "Molasses",
-      "Jasmine", "Rosewater", "Lavender", "Magnolia", "Floral", "Bergamot", "Lemongrass",
-      "Hazelnut", "Toasted Almond", "Almond", "Chestnut", "Pecan", "Vanilla",
-      "Black Tea", "Cedar", "Earthy", "Smoky", "Tobacco", "Cola"
-    ];
-    possibleNotes.forEach(function (pn) {
-      if (text.indexOf(pn.toLowerCase()) >= 0 && notes.indexOf(pn) < 0) {
-        notes.push(pn);
-      }
-    });
+    if (Array.isArray(bean.tasting_notes) && bean.tasting_notes.length > 0) {
+      notes = bean.tasting_notes.map(function (n) {
+        var clean = (n || "").trim();
+        if (!clean) return '';
+        return clean.split(' ').map(function (w) {
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        }).join(' ');
+      }).filter(Boolean);
+    } else if (typeof bean.tasting_notes === 'string' && bean.tasting_notes.trim()) {
+      notes = bean.tasting_notes.split(/[,·]/).map(function (n) {
+        var clean = n.trim();
+        if (!clean) return '';
+        return clean.split(' ').map(function (w) {
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        }).join(' ');
+      }).filter(Boolean);
+    }
+
     if (notes.length === 0) {
       notes = ["Sweet", "Balanced"];
     }
@@ -152,13 +128,6 @@
   function populateOriginFilter() {
     var originSet = {};
     BEANS_DATA.forEach(function (b) {
-      var nameLower = b.name.toLowerCase();
-      if (nameLower.indexOf('decaf') >= 0 || 
-          nameLower.indexOf('espresso') >= 0 || 
-          nameLower.indexOf('villa sarchi') >= 0 || 
-          b.price > 12.00) {
-        return;
-      }
       var prof = getProfile(b.name);
       if (prof.origin) {
         originSet[prof.origin] = true;
@@ -182,28 +151,13 @@
     if (!filterProcess) return;
     var processMap = {};
     BEANS_DATA.forEach(function (b) {
-      var nameLower = b.name.toLowerCase();
-      if (nameLower.indexOf('decaf') >= 0 || 
-          nameLower.indexOf('espresso') >= 0 || 
-          nameLower.indexOf('villa sarchi') >= 0 || 
-          b.price > 12.00) {
-        return;
-      }
       var prof = getProfile(b.name);
       if (prof.process && prof.processLabel) {
         processMap[prof.process] = prof.processLabel;
       }
     });
 
-    var order = ["washed", "natural", "honey", "anaerobic", "wet-hulled"];
-    var availableKeys = Object.keys(processMap).sort(function(a, b) {
-      var idxA = order.indexOf(a);
-      var idxB = order.indexOf(b);
-      if (idxA >= 0 && idxB >= 0) return idxA - idxB;
-      if (idxA >= 0) return -1;
-      if (idxB >= 0) return 1;
-      return a.localeCompare(b);
-    });
+    var availableKeys = Object.keys(processMap).sort();
 
     var currentVal = filterProcess.value;
     filterProcess.innerHTML = '<option value="">All Processes</option>';
@@ -294,15 +248,6 @@
       // Exclude if already in blend
       if (selectedBeans.indexOf(b.name) >= 0) return;
 
-      // Exclude decafs, espresso blends, price over $12/lb, and specific excluded beans
-      var nameLower = b.name.toLowerCase();
-      if (nameLower.indexOf('decaf') >= 0 || 
-          nameLower.indexOf('espresso') >= 0 || 
-          nameLower.indexOf('villa sarchi') >= 0 || 
-          b.price > 12.00) {
-        return;
-      }
-
       var profile = getProfile(b.name);
 
       // Apply origin filter
@@ -314,14 +259,14 @@
       // Apply flavor profile keyword filter
       if (noteKeyword) {
         var hasMatch = false;
-        var characteristicsText = (b.cup_characteristics || "").toLowerCase();
+        var characteristicsText = (profile.notes.join(' ') + ' ' + (b.descriptor || '') + ' ' + (b.cup_characteristics || '')).toLowerCase();
         
         if (noteKeyword === 'chocolate' && (characteristicsText.indexOf('chocolate') >= 0 || characteristicsText.indexOf('cocoa') >= 0)) hasMatch = true;
-        else if (noteKeyword === 'fruit' && (characteristicsText.indexOf('plum') >= 0 || characteristicsText.indexOf('berry') >= 0 || characteristicsText.indexOf('cherry') >= 0 || characteristicsText.indexOf('fig') >= 0 || characteristicsText.indexOf('apple') >= 0 || characteristicsText.indexOf('grape') >= 0 || characteristicsText.indexOf('melon') >= 0 || characteristicsText.indexOf('date') >= 0)) hasMatch = true;
+        else if (noteKeyword === 'fruit' && (characteristicsText.indexOf('plum') >= 0 || characteristicsText.indexOf('berry') >= 0 || characteristicsText.indexOf('cherry') >= 0 || characteristicsText.indexOf('fig') >= 0 || characteristicsText.indexOf('apple') >= 0 || characteristicsText.indexOf('grape') >= 0 || characteristicsText.indexOf('melon') >= 0 || characteristicsText.indexOf('date') >= 0 || characteristicsText.indexOf('fruit') >= 0)) hasMatch = true;
         else if (noteKeyword === 'citrus' && (characteristicsText.indexOf('lemon') >= 0 || characteristicsText.indexOf('lime') >= 0 || characteristicsText.indexOf('orange') >= 0 || characteristicsText.indexOf('tangerine') >= 0 || characteristicsText.indexOf('citrus') >= 0)) hasMatch = true;
-        else if (noteKeyword === 'sweet' && (characteristicsText.indexOf('honey') >= 0 || characteristicsText.indexOf('maple') >= 0 || characteristicsText.indexOf('sugar') >= 0 || characteristicsText.indexOf('molasses') >= 0 || characteristicsText.indexOf('butterscotch') >= 0)) hasMatch = true;
-        else if (noteKeyword === 'floral' && (characteristicsText.indexOf('jasmine') >= 0 || characteristicsText.indexOf('floral') >= 0 || characteristicsText.indexOf('rosewater') >= 0 || characteristicsText.indexOf('lavender') >= 0)) hasMatch = true;
-        else if (noteKeyword === 'nutty' && (characteristicsText.indexOf('hazelnut') >= 0 || characteristicsText.indexOf('almond') >= 0 || characteristicsText.indexOf('chestnut') >= 0 || characteristicsText.indexOf('pecan') >= 0)) hasMatch = true;
+        else if (noteKeyword === 'sweet' && (characteristicsText.indexOf('honey') >= 0 || characteristicsText.indexOf('maple') >= 0 || characteristicsText.indexOf('sugar') >= 0 || characteristicsText.indexOf('molasses') >= 0 || characteristicsText.indexOf('butterscotch') >= 0 || characteristicsText.indexOf('sweet') >= 0 || characteristicsText.indexOf('caramel') >= 0)) hasMatch = true;
+        else if (noteKeyword === 'floral' && (characteristicsText.indexOf('jasmine') >= 0 || characteristicsText.indexOf('floral') >= 0 || characteristicsText.indexOf('florals') >= 0 || characteristicsText.indexOf('rosewater') >= 0 || characteristicsText.indexOf('lavender') >= 0)) hasMatch = true;
+        else if (noteKeyword === 'nutty' && (characteristicsText.indexOf('hazelnut') >= 0 || characteristicsText.indexOf('almond') >= 0 || characteristicsText.indexOf('chestnut') >= 0 || characteristicsText.indexOf('pecan') >= 0 || characteristicsText.indexOf('nut') >= 0)) hasMatch = true;
         else if (noteKeyword === 'earthy' && (characteristicsText.indexOf('earthy') >= 0 || characteristicsText.indexOf('smoky') >= 0 || characteristicsText.indexOf('tobacco') >= 0 || characteristicsText.indexOf('cedar') >= 0)) hasMatch = true;
 
         if (!hasMatch) return;
@@ -525,6 +470,7 @@
   // Helper to adjust tasting notes based on roast level
   function getAdjustedNotes(name, baseNotes, roastVal) {
     var notes = baseNotes.slice();
+    var nameLower = (name || '').toLowerCase();
     if (roastVal === 'Light') {
       notes = notes.filter(function (note) {
         var n = note.toLowerCase();
@@ -532,14 +478,11 @@
                n.indexOf('bittersweet') < 0 && 
                n.indexOf('smoky') < 0 && 
                n.indexOf('tobacco') < 0 && 
-               n.indexOf('earthy') < 0 &&
-               n.indexOf('molasses') < 0 &&
+               n.indexOf('earthy') < 0 && 
+               n.indexOf('molasses') < 0 && 
                n.indexOf('cedar') < 0;
       });
-      if (notes.indexOf('Bright Citrus') < 0 && name.toLowerCase().indexOf('kenya') >= 0) {
-        notes.push('Bright Citrus');
-      }
-      if (notes.indexOf('Floral Nuances') < 0 && (name.toLowerCase().indexOf('geisha') >= 0 || name.toLowerCase().indexOf('yirgacheffe') >= 0)) {
+      if (notes.indexOf('Floral Nuances') < 0 && nameLower.indexOf('yirgacheffe') >= 0) {
         notes.push('Floral Nuances');
       }
     } else if (roastVal === 'Dark') {
@@ -557,7 +500,7 @@
       if (notes.indexOf('Bittersweet Chocolate') < 0) {
         notes.push('Bittersweet Chocolate');
       }
-      if (notes.indexOf('Smoky / Roasty') < 0 && (name.toLowerCase().indexOf('sumatra') >= 0 || name.toLowerCase().indexOf('brazil') >= 0 || name.toLowerCase().indexOf('antigua') >= 0)) {
+      if (notes.indexOf('Smoky / Roasty') < 0 && (nameLower.indexOf('sumatra') >= 0 || nameLower.indexOf('brazil') >= 0 || nameLower.indexOf('antigua') >= 0)) {
         notes.push('Smoky / Roasty');
       }
     }

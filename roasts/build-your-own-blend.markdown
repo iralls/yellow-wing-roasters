@@ -27,6 +27,23 @@ permalink: /roasts/build-your-own-blend/
   <div class="roast-mv-divider"></div>
 
   <!-- Step 1: Bean Selection & Filters -->
+  {% assign single_origins = site.roasts | where: "category", "single origin" %}
+  {% assign active_origins = "" | split: "," %}
+  {% assign active_procs = "" | split: "," %}
+  {% for r in single_origins %}
+    {% assign s_meta = site.data.statuses[r.status] %}
+    {% if s_meta == nil or s_meta.orderable != false %}
+      {% assign o_first = r.origins.first %}
+      {% assign country = o_first | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
+      {% if country == nil or country == "" %}{% assign country = r.title | split: " " | first %}{% endif %}
+      {% assign active_origins = active_origins | push: country %}
+      {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
+      {% if proc and proc != "" %}{% assign active_procs = active_procs | push: proc %}{% endif %}
+    {% endif %}
+  {% endfor %}
+  {% assign uniq_origins = active_origins | uniq | sort %}
+  {% assign uniq_procs = active_procs | uniq | sort %}
+
   <div class="bean-selector-section">
     <h2 class="bean-selector-title">1. Choose Coffee Beans</h2>
     
@@ -36,17 +53,9 @@ permalink: /roasts/build-your-own-blend/
         <label for="filter-origin" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Origin</label>
         <select id="filter-origin" class="subscribe-select" style="min-width: 140px;">
           <option value="">All Origins</option>
-          <option value="Bolivia">Bolivia</option>
-          <option value="Brazil">Brazil</option>
-          <option value="Burundi">Burundi</option>
-          <option value="Colombia">Colombia</option>
-          <option value="Costa Rica">Costa Rica</option>
-          <option value="Ethiopia">Ethiopia</option>
-          <option value="Guatemala">Guatemala</option>
-          <option value="Kenya">Kenya</option>
-          <option value="Panama">Panama</option>
-          <option value="Peru">Peru</option>
-          <option value="Sumatra">Sumatra</option>
+          {% for o in uniq_origins %}
+            <option value="{{ o }}">{{ o }}</option>
+          {% endfor %}
         </select>
       </div>
 
@@ -54,6 +63,9 @@ permalink: /roasts/build-your-own-blend/
         <label for="filter-process" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Process</label>
         <select id="filter-process" class="subscribe-select" style="min-width: 140px;">
           <option value="">All Processes</option>
+          {% for p in uniq_procs %}
+            <option value="{{ p | downcase }}">{{ p }}</option>
+          {% endfor %}
         </select>
       </div>
       
@@ -98,6 +110,12 @@ permalink: /roasts/build-your-own-blend/
         <label for="bean-select-dropdown">Select a Coffee Bean</label>
         <select id="bean-select-dropdown" class="subscribe-select" style="width: 100%;">
           <option value="" disabled selected>Select from list...</option>
+          {% for r in single_origins %}
+            {% assign s_meta = site.data.statuses[r.status] %}
+            {% if s_meta == nil or s_meta.orderable != false %}
+              <option value="{{ r.title }}">{{ r.title }}</option>
+            {% endif %}
+          {% endfor %}
         </select>
         <button type="button" id="add-to-blend-btn" class="add-to-blend-button" disabled>+ Add to Blend</button>
       </div>
@@ -107,12 +125,12 @@ permalink: /roasts/build-your-own-blend/
           Choose a bean from the list to view its cup characteristics.
         </div>
         <div class="details-active" id="details-active" style="display: none;">
-          <h3 class="details-title" id="details-title">Burundi Kayave</h3>
-          <p class="details-characteristics" id="details-desc">Aromas of maple syrup...</p>
+          <h3 class="details-title" id="details-title"></h3>
+          <p class="details-characteristics" id="details-desc"></p>
           <div class="details-stats-row">
             <span class="details-stat-pill" id="details-process-pill">Process: Washed</span>
-            <span class="details-stat-pill" id="details-acidity-pill">Acidity: 4/5</span>
-            <span class="details-stat-pill" id="details-body-pill">Body: 4/5</span>
+            <span class="details-stat-pill" id="details-acidity-pill">Acidity: 3/5</span>
+            <span class="details-stat-pill" id="details-body-pill">Body: 3/5</span>
           </div>
         </div>
       </div>
@@ -262,45 +280,28 @@ permalink: /roasts/build-your-own-blend/
 <script>
 (function () {
   var rawBeans = [
-    {% if site.data.custom_beans %}
-      {% for b in site.data.custom_beans %}
-        {% if b.name and b.name != "" %}
+    {% for r in single_origins %}
+      {% assign s_meta = site.data.statuses[r.status] %}
+      {% if s_meta == nil or s_meta.orderable != false %}
+        {% assign rp = r.price | default: r.prices %}
+        {% assign p1 = rp["1lb"] | default: rp["12oz"] | default: 16 %}
+        {% assign o_first = r.origins.first %}
+        {% assign country = o_first | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
+        {% if country == nil or country == "" %}{% assign country = r.title | split: " " | first %}{% endif %}
+        {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
+        {% assign notes_raw = r.tasting_notes | replace: " · ", ", " | split: ", " %}
         {
-          name: {{ b.name | jsonify }},
-          url: {{ b.url | default: "" | jsonify }},
-          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
-          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
-          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
+          name: {{ r.title | jsonify }},
+          origin: {{ country | jsonify }},
+          process: {{ proc | jsonify }},
+          tasting_notes: {{ notes_raw | jsonify }},
+          descriptor: {{ r.descriptor | default: "" | jsonify }},
+          url: {{ r.url | relative_url | jsonify }},
+          price: {{ p1 }},
+          cup_characteristics: {{ r.description | default: "" | strip | jsonify }}
         },
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-    {% if site.data.other_beans %}
-      {% for b in site.data.other_beans %}
-        {% if b.name and b.name != "" %}
-        {
-          name: {{ b.name | jsonify }},
-          url: {{ b.url | default: "" | jsonify }},
-          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
-          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
-          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
-        },
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-    {% if site.data.roastmasters_beans %}
-      {% for b in site.data.roastmasters_beans %}
-        {% if b.name and b.name != "" %}
-        {
-          name: {{ b.name | jsonify }},
-          url: {{ b.url | default: "" | jsonify }},
-          price: parseFloat({{ b.price_1lb | jsonify }}) || 0,
-          cup_characteristics: {{ b.cup_characteristics | default: "" | jsonify }},
-          roasting_notes: {{ b.roasting_notes | default: "" | jsonify }}
-        },
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+    {% endfor %}
   ];
 
   initBYOBMixer({
