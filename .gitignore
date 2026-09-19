@@ -7,9 +7,12 @@ Gemfile.lock
 .DS_Store
 run.sh
 
-# Preview HTML files
+# Preview & playground HTML files
 *-preview.html
 preview-*.html
+*-playground.html
+playground-*.html
+*-generator.html
 *.swp
 IMPLEMENTATION_PLAN.md
 scratch/
