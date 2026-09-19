@@ -186,7 +186,7 @@ permalink: /quiz/
       <div class="quiz-results-summary-title">Your Flavor Profile</div>
       <div class="quiz-results-chips" id="quiz-summary-chips"></div>
       <div>
-        <button type="button" class="quiz-retake-btn" id="quiz-retake-btn">↺ Retake Quiz / Change Answers</button>
+        <button type="button" class="quiz-retake-btn" id="quiz-retake-btn">↺ Retake Quiz</button>
       </div>
     </div>
 
