@@ -50,7 +50,7 @@ permalink: /gift/
         <div class="roasts-entry-info">
           <div class="roasts-entry-header">
             <div class="roasts-entry-main">
-              <div class="roasts-entry-title">Subscription</div>
+              <div class="roasts-entry-title">Coffee/Subscription</div>
               <div class="roasts-entry-subtitle">Direct Delivery</div>
             </div>
             <div class="roasts-entry-meta">
