@@ -142,6 +142,41 @@ def process_image(filename):
         high_thresh = 35.0
         bg_for_unblend = bg_color
 
+    elif filename == "cold-brew.jpg":
+        # Fit background surface to clean surrounding parchment around the pitcher/glass
+        surround_mask = np.zeros((h, w), dtype=bool)
+        surround_mask[150:260, 900:2000] = True
+        surround_mask[260:1330, 800:990] = True
+        surround_mask[260:1330, 1920:2100] = True
+        surround_mask[1330:1450, 900:2000] = True
+
+        surround_vals = arr[surround_mask]
+        y_coords, x_coords = np.mgrid[0:h, 0:w]
+        x_s = (x_coords[surround_mask] - 1450) / 500
+        y_s = (y_coords[surround_mask] - 800) / 500
+        A = np.column_stack([np.ones_like(x_s), x_s, y_s, x_s**2, y_s**2, x_s * y_s])
+
+        x_all = (x_coords - 1450) / 500
+        y_all = (y_coords - 800) / 500
+        all_A = np.column_stack([
+            np.ones(h * w),
+            x_all.ravel(),
+            y_all.ravel(),
+            (x_all**2).ravel(),
+            (y_all**2).ravel(),
+            (x_all * y_all).ravel(),
+        ])
+
+        bg_surface = np.zeros_like(arr)
+        for c in range(3):
+            coeffs, _, _, _ = np.linalg.lstsq(A, surround_vals[:, c], rcond=None)
+            bg_surface[:, :, c] = (all_A @ coeffs).reshape(h, w)
+
+        dist = np.sqrt(np.sum((arr - bg_surface) ** 2, axis=2))
+        low_thresh = 12.0
+        high_thresh = 38.0
+        bg_for_unblend = bg_surface
+
     else:
         # Parchment background with subtle radial vignette - fit 2D quadratic polynomial surface
         y_coords, x_coords = np.mgrid[0:h, 0:w]
@@ -174,6 +209,9 @@ def process_image(filename):
     if filename in {"dark-roast-coffee.jpg", "light-roast-coffee.jpg", "medium-roast-coffee.jpg"}:
         # Exclude text below y=1140 so only the coffee beans are captured
         s_bbox = (650, 300, 2230, 1140)
+    elif filename == "cold-brew.jpg":
+        # Keep entire pitcher and spout intact
+        s_bbox = (1018, 275, 1900, 1324)
     elif filename == "drip.jpg":
         # Exclude empty right side and bottom text
         s_bbox = (970, 190, 1850, 1260)
@@ -189,7 +227,7 @@ def process_image(filename):
     else:
         s_bbox = find_primary_subject_bbox(dist, high_thresh, w, h)
 
-    pad = 25
+    pad = 0 if filename == "cold-brew.jpg" else 25
     x1 = max(0, s_bbox[0] - pad)
     y1 = max(0, s_bbox[1] - pad)
     x2 = min(w, s_bbox[2] + pad)
@@ -201,6 +239,10 @@ def process_image(filename):
     # Mask out everything outside padded subject bounding box to ensure zero background noise
     mask_outside = np.ones((h, w), dtype=bool)
     mask_outside[y1:y2, x1:x2] = False
+    if filename == "cold-brew.jpg":
+        # Mask empty parchment to the left of the pitcher above and below the spout
+        mask_outside[:330, :1085] = True
+        mask_outside[460:, :1085] = True
     alpha[mask_outside] = 0.0
 
     # 4. Color unblending to remove paper edge fringing
