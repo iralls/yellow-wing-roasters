@@ -12,7 +12,7 @@ sizes:
 frequencies:
   - Monthly
 price:
-  12oz: 12
+  12oz: 15
 ---
 
 Your guided entry into specialty coffee. Each month, you'll get a 12oz bag of one of our most approachable beans, paired with a simple brew guide to help you master your morning ritual.
