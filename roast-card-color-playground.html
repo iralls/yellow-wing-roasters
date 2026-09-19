@@ -149,18 +149,57 @@
 
   /* ── Card Grid Container ── */
   .grid-container {
-    max-width: 72rem;
+    max-width: 88rem;
     margin: 2rem auto;
     padding: 0 2rem;
   }
 
-  .roasts-grid {
+  .grid-headers {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 1100px) {
+    .grid-headers { display: none; }
+  }
+  .grid-header-label {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a7060;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(44, 30, 20, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .grid-header-label--nobg {
+    color: #9c6d12;
+    border-bottom-color: #9c6d12;
+  }
+  .grid-header-tag {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    background: rgba(44, 30, 20, 0.06);
+    color: #665;
+  }
+  .grid-header-label--nobg .grid-header-tag {
+    background: rgba(156, 109, 18, 0.15);
+    color: #7d5408;
   }
 
-  @media (max-width: 900px) {
+  .roasts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem 1.5rem;
+  }
+
+  @media (max-width: 1100px) {
     .roasts-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 600px) {
@@ -352,7 +391,7 @@
     font-family: var(--font-display);
     font-weight: 800;
     font-size: 0.95rem;
-    color: var(--text-dark);
+    color: #9c6d12;
     margin-top: 0.25rem;
   }
   .roasts-entry-meta {
@@ -447,8 +486,21 @@
     background-color: rgba(255, 255, 255, 0.6);
   }
 
+  /* Palette 6 & Column 4: No Background */
+  .roasts-entry[data-no-bg="true"] .roasts-entry-visual,
+  body[data-palette="no-bg"] .roasts-entry .roasts-entry-visual {
+    background-color: transparent !important;
+    background: transparent !important;
+  }
+
+  .roasts-entry[data-no-bg="true"]:hover .roasts-entry-visual,
+  body[data-palette="no-bg"] .roasts-entry:hover .roasts-entry-visual {
+    background-color: transparent !important;
+    background: transparent !important;
+  }
+
   /* Hover lift across all colored palettes */
-  body:not([data-palette="baseline"]) .roasts-entry:hover .roasts-entry-visual {
+  body:not([data-palette="baseline"]):not([data-palette="no-bg"]) .roasts-entry:not([data-no-bg="true"]):hover .roasts-entry-visual {
     background-color: #ffffff;
   }
 </style>
@@ -469,6 +521,7 @@
         <button type="button" class="palette-btn" data-target="plumage">3. Bird Plumage</button>
         <button type="button" class="palette-btn" data-target="uniform">4. Uniform Linen</button>
         <button type="button" class="palette-btn" data-target="baseline">5. Baseline (Current)</button>
+        <button type="button" class="palette-btn" data-target="no-bg">6. No Background</button>
       </div>
     </div>
 
@@ -484,8 +537,27 @@
     </div>
   </header>
 
-  <!-- 3x3 Card Grid -->
+  <!-- 4-Column Comparison Grid -->
   <main class="grid-container">
+    <div class="grid-headers">
+      <div class="grid-header-label">
+        <span>Col 1: Active Palette</span>
+        <span class="grid-header-tag">Tinted</span>
+      </div>
+      <div class="grid-header-label">
+        <span>Col 2: Active Palette</span>
+        <span class="grid-header-tag">Tinted</span>
+      </div>
+      <div class="grid-header-label">
+        <span>Col 3: Active Palette</span>
+        <span class="grid-header-tag">Tinted</span>
+      </div>
+      <div class="grid-header-label grid-header-label--nobg">
+        <span>Col 4: No Background</span>
+        <span class="grid-header-tag">Transparent</span>
+      </div>
+    </div>
+
     <div class="roasts-grid">
 
       <!-- Card 1: Early Bird (Blend, Medium, Robin) -->
@@ -578,6 +650,38 @@
             <div class="roasts-entry-meta">
               <div class="roasts-entry-layman">Light</div>
               <div class="roasts-entry-descriptor">floral and delicate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 [Col 4]: Early Bird (No Background Comparison) -->
+      <div class="roasts-entry" data-category="blend" data-roast-dots="3" data-mascot="robin" data-no-bg="true">
+        <div class="roasts-entry-visual">
+          <div class="roasts-entry-badge badge-mid_molt">Mid Molt</div>
+          <img src="images/audubon-robin-transparent.png" alt="Robin" class="roasts-entry-mascot">
+          <div class="roasts-entry-overlay">
+            <div class="roasts-entry-overlay-notes">rich, smooth, everyday balance</div>
+            <div class="roast-dots">
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+            </div>
+            <button type="button" class="roasts-entry-quick-add">Quick Add</button>
+          </div>
+        </div>
+        <div class="roasts-entry-info">
+          <div class="roasts-entry-header">
+            <div class="roasts-entry-main">
+              <div class="roasts-entry-title">Early Bird</div>
+              <div class="roasts-entry-subtitle">Nest Blend · No BG</div>
+              <div class="roasts-entry-prices">$16</div>
+            </div>
+            <div class="roasts-entry-meta">
+              <div class="roasts-entry-layman">Medium</div>
+              <div class="roasts-entry-descriptor">smooth and lively</div>
             </div>
           </div>
         </div>
@@ -679,6 +783,38 @@
         </div>
       </div>
 
+      <!-- Card 8 [Col 4]: Lil' Sipper (No Background Comparison) -->
+      <div class="roasts-entry" data-category="blend" data-roast-dots="4" data-mascot="canary" data-no-bg="true">
+        <div class="roasts-entry-visual">
+          <div class="roasts-entry-badge badge-mid_molt">Mid Molt</div>
+          <img src="images/audubon-canary-transparent.png" alt="Canary" class="roasts-entry-mascot">
+          <div class="roasts-entry-overlay">
+            <div class="roasts-entry-overlay-notes">bold · caramel crema · thick body</div>
+            <div class="roast-dots">
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot"></span>
+            </div>
+            <button type="button" class="roasts-entry-quick-add">Quick Add</button>
+          </div>
+        </div>
+        <div class="roasts-entry-info">
+          <div class="roasts-entry-header">
+            <div class="roasts-entry-main">
+              <div class="roasts-entry-title">Lil' Sipper</div>
+              <div class="roasts-entry-subtitle">Espresso Blend · No BG</div>
+              <div class="roasts-entry-prices">$16</div>
+            </div>
+            <div class="roasts-entry-meta">
+              <div class="roasts-entry-layman">Dark</div>
+              <div class="roasts-entry-descriptor">velvety and syrupy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card 7: Feather Soot (Blend, Dark, Woodcock) -->
       <div class="roasts-entry" data-category="blend" data-roast-dots="5" data-mascot="woodcock">
         <div class="roasts-entry-visual">
@@ -766,6 +902,38 @@
         </div>
       </div>
 
+      <!-- Card 12 [Col 4]: Morning Meep (No Background Comparison) -->
+      <div class="roasts-entry" data-category="blend" data-roast-dots="2" data-mascot="bluebird" data-no-bg="true">
+        <div class="roasts-entry-visual">
+          <div class="roasts-entry-badge badge-just_hatched">Just Hatched</div>
+          <img src="images/audubon-bluebird-transparent.png" alt="Bluebird" class="roasts-entry-mascot">
+          <div class="roasts-entry-overlay">
+            <div class="roasts-entry-overlay-notes">crisp apple · jasmine · light caramel</div>
+            <div class="roast-dots">
+              <span class="roast-dot active"></span>
+              <span class="roast-dot active"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+              <span class="roast-dot"></span>
+            </div>
+            <button type="button" class="roasts-entry-quick-add">Quick Add</button>
+          </div>
+        </div>
+        <div class="roasts-entry-info">
+          <div class="roasts-entry-header">
+            <div class="roasts-entry-main">
+              <div class="roasts-entry-title">Morning Meep</div>
+              <div class="roasts-entry-subtitle">Breakfast Blend · No BG</div>
+              <div class="roasts-entry-prices">$16</div>
+            </div>
+            <div class="roasts-entry-meta">
+              <div class="roasts-entry-layman">Light</div>
+              <div class="roasts-entry-descriptor">clean and bright</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -816,6 +984,13 @@
         desc: "The current semi-transparent white box overlaying the page cream background.",
         swatches: [
           { name: "Current State", hex: "rgba(255,255,255,0.6)", label: "Semi-Transparent White" }
+        ]
+      },
+      "no-bg": {
+        title: "6. No Background (Transparent)",
+        desc: "Removes all background color fills from the card visual containers. Mascots sit directly on the page background.",
+        swatches: [
+          { name: "Visual Area", hex: "transparent", label: "None / Transparent" }
         ]
       }
     };

@@ -59,7 +59,7 @@
     height: 10.5rem;
     padding: 0.9rem;
     border-radius: 0.85rem;
-    background: rgba(255, 255, 255, 0.6);
+    background: none;
     border: none;
     box-sizing: border-box;
     overflow: hidden;
@@ -71,7 +71,7 @@
   }
 
   &:hover .roasts-entry-visual {
-    background: #fff;
+    background: none;
     box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
     transform: translateY(-3px);
   }
