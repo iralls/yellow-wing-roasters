@@ -18,6 +18,8 @@
     'Step 4 of 4: Tasting Notes'
   ];
 
+  var autoAdvanceTimer = null;
+
   var state = {
     currentStep: 1,
     answers: {
@@ -36,13 +38,11 @@
     if (!quizContainer) return;
 
     bindOptionSelection();
-    bindNotesSelection();
     bindNavigationButtons();
     updateStepUI();
   }
 
   function bindOptionSelection() {
-    // Single select steps: 1, 2, 3
     var optionCards = document.querySelectorAll('.quiz-option-card');
     optionCards.forEach(function(card) {
       card.addEventListener('click', function() {
@@ -50,73 +50,125 @@
         var value = card.getAttribute('data-value');
         var label = card.getAttribute('data-label') || value;
 
-        // Clear sibling selections
-        var siblings = card.parentElement.querySelectorAll('.quiz-option-card');
-        siblings.forEach(function(s) {
-          s.classList.remove('is-selected');
-          s.setAttribute('aria-checked', 'false');
-        });
+        if (stepNum < 4) {
+          // Single-select steps 1, 2, 3
+          var siblings = card.parentElement.querySelectorAll('.quiz-option-card');
+          siblings.forEach(function(s) {
+            s.classList.remove('is-selected');
+            s.setAttribute('aria-checked', 'false');
+          });
 
-        // Select this one
-        card.classList.add('is-selected');
-        card.setAttribute('aria-checked', 'true');
+          card.classList.add('is-selected');
+          card.setAttribute('aria-checked', 'true');
 
-        if (stepNum === 1) {
-          state.answers.brewing = value;
-          state.answers.brewingLabel = label;
-        } else if (stepNum === 2) {
-          state.answers.preparation = value;
-          state.answers.preparationLabel = label;
-        } else if (stepNum === 3) {
-          state.answers.roast = value;
-          state.answers.roastLabel = label;
-        }
-
-        updateStepUI();
-      });
-    });
-  }
-
-  function bindNotesSelection() {
-    var noteChips = document.querySelectorAll('.quiz-note-chip');
-    noteChips.forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        var value = chip.getAttribute('data-value');
-        var idx = state.answers.notes.indexOf(value);
-
-        if (idx > -1) {
-          // Deselect
-          state.answers.notes.splice(idx, 1);
-          chip.classList.remove('is-selected');
-        } else {
-          // Select if under max 3
-          if (state.answers.notes.length < 3) {
-            state.answers.notes.push(value);
-            chip.classList.add('is-selected');
+          if (stepNum === 1) {
+            state.answers.brewing = value;
+            state.answers.brewingLabel = label;
+          } else if (stepNum === 2) {
+            state.answers.preparation = value;
+            state.answers.preparationLabel = label;
+          } else if (stepNum === 3) {
+            state.answers.roast = value;
+            state.answers.roastLabel = label;
           }
-        }
 
-        updateNotesCounter();
+          updateStepUI();
+
+          if (autoAdvanceTimer) {
+            clearTimeout(autoAdvanceTimer);
+            autoAdvanceTimer = null;
+          }
+
+          // Auto-advance to the next question immediately after brief tactile feedback (60ms)
+          autoAdvanceTimer = setTimeout(function() {
+            state.currentStep = stepNum + 1;
+            updateStepUI();
+            scrollToQuizTop();
+          }, 60);
+
+        } else if (stepNum === 4) {
+          // Multi-select step 4 (up to 3 tasting notes, or "any")
+          var step4Cards = card.parentElement.querySelectorAll('.quiz-option-card');
+          var notes = state.answers.notes;
+
+          if (value === 'any') {
+            var anyIdx = notes.indexOf('any');
+            if (anyIdx > -1) {
+              notes.splice(anyIdx, 1);
+              card.classList.remove('is-selected');
+              card.setAttribute('aria-checked', 'false');
+            } else {
+              notes.length = 0;
+              notes.push('any');
+              step4Cards.forEach(function(c) {
+                c.classList.remove('is-selected');
+                c.setAttribute('aria-checked', 'false');
+              });
+              card.classList.add('is-selected');
+              card.setAttribute('aria-checked', 'true');
+            }
+          } else {
+            var anyPos = notes.indexOf('any');
+            if (anyPos > -1) {
+              notes.splice(anyPos, 1);
+              var anyCard = card.parentElement.querySelector('.quiz-option-card[data-value="any"]');
+              if (anyCard) {
+                anyCard.classList.remove('is-selected');
+                anyCard.setAttribute('aria-checked', 'false');
+              }
+            }
+
+            var noteIdx = notes.indexOf(value);
+            if (noteIdx > -1) {
+              notes.splice(noteIdx, 1);
+              card.classList.remove('is-selected');
+              card.setAttribute('aria-checked', 'false');
+            } else {
+              if (notes.length < 3) {
+                notes.push(value);
+                card.classList.add('is-selected');
+                card.setAttribute('aria-checked', 'true');
+              }
+            }
+          }
+
+          updateNotesCounter();
+        }
+      });
+
+      // Keyboard accessibility (Enter / Space)
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
       });
     });
   }
 
   function updateNotesCounter() {
     var counterEl = document.getElementById('quiz-notes-counter');
-    var count = state.answers.notes.length;
+    var notes = state.answers.notes;
+    var count = notes.length;
+    var hasAny = notes.indexOf('any') > -1;
+
     if (counterEl) {
-      counterEl.textContent = count + ' of 3 selected' + (count === 3 ? ' (Maximum reached)' : '');
+      if (hasAny) {
+        counterEl.textContent = 'All flavors selected';
+      } else {
+        counterEl.textContent = 'Select up to 3 flavors (' + count + ' of 3 selected)' + (count === 3 ? ' — Maximum reached' : '');
+      }
     }
 
-    // Disable unselected chips if 3 are selected
-    var noteChips = document.querySelectorAll('.quiz-note-chip');
-    noteChips.forEach(function(chip) {
-      var val = chip.getAttribute('data-value');
-      var isSel = state.answers.notes.indexOf(val) > -1;
-      if (!isSel && count >= 3) {
-        chip.classList.add('is-disabled');
+    // Disable unselected cards if 3 are selected
+    var step4Cards = document.querySelectorAll('#quiz-step-4 .quiz-option-card');
+    step4Cards.forEach(function(c) {
+      var val = c.getAttribute('data-value');
+      var isSel = notes.indexOf(val) > -1;
+      if (!isSel && count >= 3 && !hasAny) {
+        c.classList.add('is-disabled');
       } else {
-        chip.classList.remove('is-disabled');
+        c.classList.remove('is-disabled');
       }
     });
   }
@@ -128,6 +180,10 @@
 
     if (prevBtn) {
       prevBtn.addEventListener('click', function() {
+        if (autoAdvanceTimer) {
+          clearTimeout(autoAdvanceTimer);
+          autoAdvanceTimer = null;
+        }
         if (state.currentStep > 1) {
           state.currentStep--;
           updateStepUI();
@@ -138,11 +194,7 @@
 
     if (nextBtn) {
       nextBtn.addEventListener('click', function() {
-        if (state.currentStep < 4) {
-          state.currentStep++;
-          updateStepUI();
-          scrollToQuizTop();
-        } else if (state.currentStep === 4) {
+        if (state.currentStep === 4) {
           showResults();
         }
       });
@@ -158,7 +210,10 @@
   function scrollToQuizTop() {
     var container = document.getElementById('coffee-quiz-app');
     if (container) {
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var rect = container.getBoundingClientRect();
+      if (rect.top < 0) {
+        container.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
     }
   }
 
@@ -195,21 +250,16 @@
       prevBtn.style.visibility = step > 1 ? 'visible' : 'hidden';
     }
 
-    // Validate Next Button
-    var canProceed = false;
-    if (step === 1) {
-      canProceed = !!state.answers.brewing;
-    } else if (step === 2) {
-      canProceed = !!state.answers.preparation;
-    } else if (step === 3) {
-      canProceed = !!state.answers.roast;
-    } else if (step === 4) {
-      canProceed = true; // 0 to 3 notes allowed
-    }
-
+    // Navigation button handling:
+    // On Steps 1–3, hide nextBtn since clicking an option auto-advances.
+    // On Step 4, show nextBtn with "Find My Coffees →".
     if (nextBtn) {
-      nextBtn.disabled = !canProceed;
-      nextBtn.textContent = step === 4 ? 'Find My Coffees →' : 'Next Step →';
+      if (step < 4) {
+        nextBtn.style.display = 'none';
+      } else {
+        nextBtn.style.display = 'inline-flex';
+        nextBtn.textContent = 'Find My Coffees →';
+      }
     }
   }
 
@@ -316,11 +366,10 @@
 
     // 4. Tasting Notes (20 points)
     var chosenNotes = state.answers.notes;
-    if (chosenNotes.length === 0) {
-      score += 20; // neutral bonus if no specific notes selected
+    if (chosenNotes.length === 0 || chosenNotes.indexOf('any') > -1) {
+      score += 20; // neutral bonus if "Any Flavor" or none selected
     } else {
       var ptsPerNote = 20 / chosenNotes.length;
-      var matchesCount = 0;
       chosenNotes.forEach(function(noteCategory) {
         var kws = NOTE_KEYWORDS[noteCategory] || [];
         var matched = false;
@@ -331,7 +380,6 @@
           }
         }
         if (matched) {
-          matchesCount++;
           score += ptsPerNote;
         }
       });
@@ -363,7 +411,7 @@
         state.answers.preparationLabel || state.answers.preparation,
         state.answers.roastLabel || state.answers.roast
       ];
-      if (state.answers.notes.length > 0) {
+      if (state.answers.notes.length > 0 && state.answers.notes.indexOf('any') === -1) {
         var capitalizedNotes = state.answers.notes.map(function(n) {
           return n.charAt(0).toUpperCase() + n.slice(1);
         }).join(', ');
@@ -423,6 +471,11 @@
   }
 
   function resetQuiz() {
+    if (autoAdvanceTimer) {
+      clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = null;
+    }
+
     state.currentStep = 1;
     state.answers = {
       brewing: null,
@@ -437,15 +490,10 @@
     // Unselect cards
     var optionCards = document.querySelectorAll('.quiz-option-card');
     optionCards.forEach(function(c) {
-      c.classList.remove('is-selected');
+      c.classList.remove('is-selected', 'is-disabled');
       c.setAttribute('aria-checked', 'false');
     });
 
-    // Unselect note chips
-    var noteChips = document.querySelectorAll('.quiz-note-chip');
-    noteChips.forEach(function(chip) {
-      chip.classList.remove('is-selected', 'is-disabled');
-    });
     updateNotesCounter();
 
     var wizard = document.getElementById('quiz-wizard');
