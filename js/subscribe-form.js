@@ -33,7 +33,7 @@
     if (hiddenInput) hiddenInput.value = roast;
     if (roast && title) {
       title.textContent = 'Subscribe — ' + roast.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-      var mascotSrc = mascotMap[roast];
+      var mascotSrc = mascotMap[roast] || (window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[roast] && window.YWR_ROASTS_DATA[roast].mascot ? ('/images/' + window.YWR_ROASTS_DATA[roast].mascot) : '');
       if (mascotSrc && imageEl && imageWrap) {
         imageEl.src = mascotSrc;
         imageWrap.style.display = 'block';

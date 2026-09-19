@@ -24,7 +24,7 @@ permalink: /pigeon-post/
   <p style="text-align: center; margin-bottom: 2rem;">Sign up to hear about new roasts, seasonal blends, and restocks.</p>
 
   <form action="https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse" method="POST" class="mailing-list-form" id="pigeon-post-form" style="margin: 0 auto; max-width: 480px;">
-    <input type="email" name="entry.1049864914" placeholder="your@email.com" required class="mailing-list-input">
+    <input id="pigeon-post-email" type="email" name="entry.1049864914" placeholder="your@email.com" aria-label="Email address" autocomplete="email" required class="mailing-list-input">
     <button type="submit" class="mailing-list-btn" id="pigeon-post-submit">Sign Me Up</button>
   </form>
 

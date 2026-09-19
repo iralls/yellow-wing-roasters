@@ -41,7 +41,7 @@ price: 38
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center" style="margin-bottom:1rem;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <label for="aviary-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
   <select id="aviary-grind-select" class="subscribe-select" style="min-width: 12rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
     <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>

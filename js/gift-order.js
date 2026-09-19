@@ -34,7 +34,8 @@
         var c = subConfig[product];
         return (c && c.prices && c.prices[size]) ? c.prices[size] : null;
       } else {
-        var roastPrices = roastPricing[product];
+        var catalogPrices = (window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[product] && window.YWR_ROASTS_DATA[product].prices);
+        var roastPrices = roastPricing[product] || catalogPrices;
         if (roastPrices && roastPrices[size]) {
           return roastPrices[size];
         }

@@ -72,19 +72,44 @@ This document catalogs technical, architectural, and performance optimizations f
 ### Current Status of Items
 1. **Disable preview bags from showing**: **Completed** (excluded in `_config.yml` under `preview-*.html` and `*-preview.html`).
 2. **The Aviary ready to order**: **Completed** (cart integration, $38 price, and grind selector active).
-3. **Subscription Gifting Eligibility**: **Actionable Improvement**.
-   - In `gift.markdown`, coffees that do not support recurring subscriptions (e.g. `ethiopia-wush-wush` or roasts marked `mid_molt` / `flown_south`) should not appear in the subscription gift selection.
-   - Filter dropdown by `r.subscription != false` and `site.data.statuses[r.status].subscribable != false`.
+3. **Subscription Gifting Eligibility**: **Completed** (multi-month duration selection disabled with fallback to "One-time" gifting and informational notice for non-subscribable roasts).
 4. **Roasts Dropdown Filter**: **Completed** (`/roasts/` features Type, Origin, Roast Level, and Brewing Method filters).
 5. **Single Price Display on Cards**: **Completed** (Cards show clean single price; size breakdown is reserved for detail pages).
 
 ---
 
-## 6. SEO & Performance Fine-Tuning
+## 6. SEO & Performance Fine-Tuning (Completed)
 
 1. **Cache-Busting Asset Versioning**:
-   - Append `?v={{ site.time | date: '%s' }}` to `main.css` link tags to prevent stale CSS caching across browser sessions.
+   - Appended `?v={{ site.time | date: '%s' }}` to `main.css` and JavaScript module tags to prevent stale resource caching across browser sessions.
 2. **Structured Data (Schema.org)**:
-   - Enhance JSON-LD structured data on detail pages to include `Product` and `Offer` schemas with accurate price, currency, and availability (`InStock` vs `OutOfStock` derived from `page.status`).
-3. **Responsive Image Loading**:
-   - Add `loading="lazy"` to below-the-fold catalog card images and decoding="async".
+   - Added JSON-LD structured data on detail pages (`Product` and `Offer`), flight pages (`The Aviary` and `Peck Your Own`), and the homepage (`Organization` / `Store`).
+3. **Responsive Image Loading & CWV**:
+   - Added `loading="lazy"` and `decoding="async"` to below-the-fold catalog card images.
+   - Added `fetchpriority="high"` and `decoding="async"` to hero banners on flight and landing pages to optimize Largest Contentful Paint (LCP).
+
+---
+
+## 7. Order Payload Reduction & Catalog Unification (Completed)
+
+### Status: Completed
+* **Centralized Roast Catalog (`js/cart-data.js`)**:
+  - Centralized roast metadata (slug, title, pricing, roast level dots, mascot filenames, tasting notes, descriptions) in sitewide cached script `js/cart-data.js` (`window.YWR_ROASTS_DATA`).
+  - Pruned over 720 lines of duplicate serialized JSON from `order.markdown`, shrinking `_site/order/index.html` from **47.6 KB to 9.7 KB (-79.6% payload reduction)**.
+* **Subscribe & Gift Payload Pruning (Packages A & B)**:
+  - Pruned redundant 26-roast pricing dictionary from `gift.markdown`, resolving roast prices directly from `window.YWR_ROASTS_DATA` in `js/gift-order.js`.
+  - Pruned dead code, unused inline variable declarations, and the unused 26-roast description loop from `subscribe-form.markdown`, delegating mascot resolution to `window.YWR_ROASTS_DATA` in `js/subscribe-form.js`.
+
+---
+
+## 8. WCAG 2.1 AA Accessibility & Modal UX (Completed)
+
+### Status: Completed
+* **Accessible Cart Toggle & Flyout UX**:
+  - Replaced `<div>` cart indicator with an accessible native `<button>` featuring `aria-label="Shopping cart"`, `aria-expanded` toggling, click-outside dismissal, and Escape key listeners.
+  - Consolidated cart indicator and flyout drawer styles cleanly into `_sass/_cart.scss`.
+* **Form & Frame Accessibility (Package C)**:
+  - Added explicit `<label>` tags with matching `for` attributes for all form dropdowns across roast detail pages (`order-grind-select`, `order-size-select`, `sub-freq-select`) and flight builders (`aviary-grind-select`, `pyo-grind-select`).
+  - Added `aria-label="Email address"` and `autocomplete="email"` to the Pigeon Post mailing list form input in `pigeon-post.markdown`.
+  - Added accessible `title="Customer Feedback Form"` to the embedded Google Forms iframe in `feedback.markdown`.
+

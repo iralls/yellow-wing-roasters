@@ -98,7 +98,7 @@ min_bags: 4
 </div>
 
 <div class="roast-mv-center" style="margin-top:1.5rem; margin-bottom:0.5rem;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <label for="pyo-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
   <select id="pyo-grind-select" class="subscribe-select" style="min-width: 12rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
     <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>

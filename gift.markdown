@@ -405,15 +405,6 @@ permalink: /gift/
 <script src="{{ '/js/gift-order.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
-  var form = document.getElementById('gift-form');
-  var params = new URLSearchParams(window.location.search);
-  var productSelect = document.getElementById('gift-product');
-  var pageTitle = document.getElementById('gift-page-title');
-
-  var hiddenRoastInput = document.getElementById('gift-roast-hidden');
-  var hiddenPriceInput = document.getElementById('gift-price-hidden');
-  var hiddenNotesInput = document.getElementById('gift-notes-hidden');
-
   {% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
   var subConfig = {
     {% for r in site.roasts %}
@@ -431,27 +422,6 @@ permalink: /gift/
     {% endfor %}
   };
 
-  var roastPricing = {
-    {% for r in site.roasts %}
-      {% assign rp = r.price | default: r.prices %}
-      '{{ r.slug }}': {{ rp | jsonify }}{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  };
-
-  function getUnitPrice(product, size) {
-    var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
-    if (isSubscriptionOnly) {
-      var config = subConfig[product];
-      return (config && config.prices && config.prices[size]) ? config.prices[size] : null;
-    } else {
-      var roastPrices = roastPricing[product];
-      if (roastPrices && roastPrices[size]) {
-        return roastPrices[size];
-      }
-      return null;
-    }
-  }
-
   // Disable multi-month gift subscriptions for roasts where subscribable is false
   var disabledSubRoasts = {
     {% for r in site.roasts %}
@@ -462,10 +432,8 @@ permalink: /gift/
     {% endfor %}
   };
 
-
   initGiftOrder({
     subConfig: subConfig,
-    roastPricing: roastPricing,
     disabledSubRoasts: disabledSubRoasts,
     digitalFormUrl: {{ site.digital_gift_form_url | jsonify }},
     digitalFormEntries: {{ site.digital_gift_entries | jsonify }},

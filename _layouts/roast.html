@@ -111,7 +111,7 @@ layout: default
 {% endif %}
 
 <div class="roast-mv-center" style="margin-top:0.75rem;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Grind</div>
+  <label for="order-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
   <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
     <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
@@ -123,7 +123,7 @@ layout: default
 </div>
 
 <div class="roast-mv-center" style="margin-top:0.75rem;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.35rem;">Roast Amount</div>
+  <label for="order-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Roast Amount</label>
   <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
     {% for s in sizes %}
       <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
@@ -153,7 +153,7 @@ layout: default
     </label>
     <div id="sub-details-panel" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #e0d8cf;">
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-        <span class="roast-mv-meta-label" style="margin: 0; font-size: 0.7rem;">Frequency</span>
+        <label for="sub-freq-select" class="roast-mv-meta-label" style="margin: 0; font-size: 0.7rem;">Frequency</label>
         <select id="sub-freq-select" class="subscribe-select" style="padding: 0.35rem 1.8rem 0.35rem 0.75rem; font-size: 0.8rem;">
           {% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
           {% assign freqs = sub_config.frequencies | default: default_freqs %}

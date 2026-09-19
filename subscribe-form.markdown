@@ -105,13 +105,6 @@ permalink: /subscribe/
 <script src="{{ '/js/subscribe-form.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
-  var form = document.getElementById('subscribe-form');
-  var params = new URLSearchParams(window.location.search);
-  var roast = params.get('roast') || '';
-  var hiddenInput = document.getElementById('sub-roast-hidden');
-  var priceHiddenInput = document.getElementById('sub-price-hidden');
-  var title = document.getElementById('sub-title');
-
   {% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
   {% assign default_sub_freqs = "Every 2 weeks,Monthly" | split: "," %}
   var subConfig = {
@@ -132,18 +125,7 @@ permalink: /subscribe/
     {% endfor %}
   };
 
-  var roastDescriptions = {
-    {% for r in site.roasts %}
-    '{{ r.slug }}': {{ r.description | default: "" | jsonify }}{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  };
-
-  var imageWrap = document.getElementById('sub-image-wrap');
-  var imageEl = document.getElementById('sub-image');
   var mascotMap = {
-    {% for r in site.roasts %}
-    '{{ r.slug }}': '{{ "/images/" | append: r.mascot_file | relative_url }}',
-    {% endfor %}
     {% for s in site.subscriptions %}
     '{{ s.slug }}': '{{ "/images/" | append: s.mascot_file | relative_url }}'{% unless forloop.last %},{% endunless %}
     {% endfor %}
