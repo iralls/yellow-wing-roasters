@@ -65,6 +65,10 @@
    data-beans="{{ bean_list }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
+   data-roast-level="{{ r.roast_level }}"
+   data-tasting-notes="{{ r.tasting_notes | escape }}"
+   data-descriptor="{{ r.descriptor | escape }}"
+   data-status="{{ r.status }}"
    data-roast="{{ r.slug }}">
   <div class="roasts-entry-visual">
     {% include roast-status-badge.html roast=r %}

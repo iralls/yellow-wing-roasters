@@ -4,9 +4,17 @@ title: Roasts
 permalink: /roasts/
 ---
 
-# Roasts
-
-<p class="category-intro">Explore our current selection of coffees.</p>
+<div class="roasts-header-row">
+  <div class="roasts-header-main">
+    <h1 class="roasts-page-title">Roasts</h1>
+    <p class="category-intro">Explore our current selection of coffees.</p>
+  </div>
+  <a href="{{ '/quiz/' | relative_url }}" class="roasts-quiz-cta" title="Find your perfect roast with our interactive quiz">
+    <span class="roasts-quiz-cta-icon" aria-hidden="true">✨</span>
+    <span>Take the Coffee Quiz</span>
+    <span class="roasts-quiz-cta-arrow" aria-hidden="true">→</span>
+  </a>
+</div>
 
 <!-- Dynamic Filters Bar -->
 <div class="filters-bar" id="filters-bar">
