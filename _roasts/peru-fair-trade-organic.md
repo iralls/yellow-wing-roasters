@@ -16,9 +16,9 @@ mascot: killdeer
 mascot_file: audubon-killdeer-transparent.png
 price:
   12oz: 12
-  1lb: 16
-  2lb: 32
-  5lb: 80
+  1lb: 15
+  2lb: 30
+  5lb: 75
 
 subscription:
   frequencies:

@@ -15,10 +15,10 @@ origins:
 mascot: grey-catbird
 mascot_file: audubon-grey-catbird-transparent.png
 price:
-  12oz: 13
-  1lb: 16
-  2lb: 32
-  5lb: 80
+  12oz: 12
+  1lb: 15
+  2lb: 30
+  5lb: 75
 
 subscription:
   frequencies:

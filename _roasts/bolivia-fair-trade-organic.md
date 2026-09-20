@@ -17,9 +17,9 @@ mascot_file: audubon-red-tailed-hawk-transparent.png
 status: flown_south
 price:
   12oz: 12
-  1lb: 16
-  2lb: 32
-  5lb: 80
+  1lb: 15
+  2lb: 30
+  5lb: 75
 
 subscription:
   frequencies:
