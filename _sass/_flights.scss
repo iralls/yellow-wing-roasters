@@ -50,10 +50,7 @@
 .aviary-card {
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  color: inherit;
   position: relative;
-  transition: transform 0.25s ease;
 
   .roasts-entry-visual {
     height: 10.5rem;
@@ -63,13 +60,17 @@
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
     transition:
       background-color 0.25s ease,
       box-shadow 0.25s ease,
       transform 0.25s ease;
   }
 
-  &:hover .roasts-entry-visual {
+  .roasts-entry-visual:hover,
+  .roasts-entry-visual:focus {
     background-color: #ffffff;
     box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
     transform: translateY(-3px);
@@ -85,7 +86,8 @@
     transition: transform 0.3s ease;
   }
 
-  &:hover .roasts-entry-mascot {
+  .roasts-entry-visual:hover .roasts-entry-mascot,
+  .roasts-entry-visual:focus .roasts-entry-mascot {
     transform: scale(1.05);
   }
 

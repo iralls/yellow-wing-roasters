@@ -166,15 +166,7 @@
 .roasts-entry {
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  color: inherit;
   position: relative;
-  transition: transform 0.25s ease;
-}
-
-.roasts-entry:hover {
-  text-decoration: none;
-  color: inherit;
 }
 
 .roasts-entry-visual {
@@ -191,6 +183,9 @@
   padding: 1.5rem;
   box-sizing: border-box;
   overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   transition:
     background-color 0.25s ease,
     box-shadow 0.25s ease,
@@ -228,10 +223,13 @@
   background-color: $color-cat-flight;
 }
 
-.roasts-entry:hover .roasts-entry-visual {
+.roasts-entry-visual:hover,
+.roasts-entry-visual:focus {
   background-color: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   transform: translateY(-3px);
+  text-decoration: none;
+  color: inherit;
 }
 
 .roasts-entry-mascot {
@@ -243,7 +241,8 @@
   transition: transform 0.3s ease;
 }
 
-.roasts-entry:hover .roasts-entry-mascot {
+.roasts-entry-visual:hover .roasts-entry-mascot,
+.roasts-entry-visual:focus .roasts-entry-mascot {
   transform: scale(1.04);
 }
 
@@ -326,7 +325,8 @@
   object-fit: contain;
 }
 
-.roasts-entry:hover .mascot-grid {
+.roasts-entry-visual:hover .mascot-grid,
+.roasts-entry-visual:focus .mascot-grid {
   transform: scale(1.04);
 }
 
@@ -362,8 +362,9 @@
   z-index: 4;
 }
 
-.roasts-entry:hover .roasts-entry-overlay,
-.roasts-entry:focus-within .roasts-entry-overlay {
+.roasts-entry-visual:hover .roasts-entry-overlay,
+.roasts-entry-visual:focus .roasts-entry-overlay,
+.roasts-entry-visual:focus-within .roasts-entry-overlay {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);

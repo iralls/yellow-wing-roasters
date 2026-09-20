@@ -19,8 +19,8 @@ permalink: /blends/
 {% for r in cat_roasts %}
   {% include roast-card.html roast=r %}
 {% endfor %}
-  <a class="roasts-entry" data-roast="byob" data-category="blend" data-type="blend" href="{{ '/roasts/build-your-own-blend/' | relative_url }}">
-    <div class="roasts-entry-visual">
+  <div class="roasts-entry" data-roast="byob" data-category="blend" data-type="blend">
+    <a class="roasts-entry-visual" href="{{ '/roasts/build-your-own-blend/' | relative_url }}" aria-label="BYOB - Build Your Own Blend">
       <div class="mascot-grid mascot-grid-3x3">
         <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
         <div class="mascot-grid-cell"><img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
@@ -35,7 +35,7 @@ permalink: /blends/
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">craft your own custom blend from our single origin roasts</div>
       </div>
-    </div>
+    </a>
     <div class="roasts-entry-info">
       <div class="roasts-entry-header">
         <div class="roasts-entry-main">
@@ -49,5 +49,5 @@ permalink: /blends/
         </div>
       </div>
     </div>
-  </a>
+  </div>
 </div>

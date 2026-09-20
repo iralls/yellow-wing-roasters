@@ -15,17 +15,17 @@ permalink: /subscriptions/
 <div class="roasts-grid">
 {% assign subs = site.subscriptions | sort: "order" %}
 {% for s in subs %}
-  <a class="roasts-entry" data-category="subscriptions" data-type="subscriptions" href="{{ s.url | relative_url }}">
-    <div class="roasts-entry-visual">
+  <div class="roasts-entry" data-category="subscriptions" data-type="subscriptions">
+    <a class="roasts-entry-visual" href="{{ s.url | relative_url }}" aria-label="{{ s.title | escape }}">
       {% if s.mascot_file %}<img src="{{ '/images/' | append: s.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
       <div class="roasts-entry-overlay">
         {% if s.descriptor %}<div class="roasts-entry-overlay-notes">{{ s.descriptor }}</div>{% endif %}
       </div>
-    </div>
+    </a>
     <div class="roasts-entry-info">
       <div class="roasts-entry-title">{{ s.title }}</div>
       <div class="roasts-entry-prices">${{ s.price["12oz"] | default: s.price }}</div>
     </div>
-  </a>
+  </div>
 {% endfor %}
 </div>

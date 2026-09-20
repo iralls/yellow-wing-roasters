@@ -56,8 +56,7 @@
 {% assign process_list = card_processes | uniq | join: "," %}
 {% assign bean_list = card_beans | uniq | join: "," %}
 
-<a class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
-   href="{{ r.url | relative_url }}"
+<div class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    data-category="{{ r.category }}"
    data-type="{{ r.category | slugify }}"
    data-origins="{{ origin_list }}"
@@ -70,7 +69,7 @@
    data-descriptor="{{ r.descriptor | escape }}"
    data-status="{{ r.status }}"
    data-roast="{{ r.slug }}">
-  <div class="roasts-entry-visual">
+  <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{{ r.title | escape }}">
     {% include roast-status-badge.html roast=r %}
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
@@ -106,7 +105,7 @@
       {% endif %}
       {% include roast-overlay-status.html roast=r %}
     </div>
-  </div>
+  </a>
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
@@ -134,4 +133,4 @@
       </div>
     </div>
   </div>
-</a>
+</div>
