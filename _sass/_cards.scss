@@ -442,6 +442,65 @@
   &--rotating       { background: #e8a0b4; color: #fff; }
 }
 
+/* ── Overlay Price Breakdown ── */
+.roasts-entry-overlay-prices {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 0.65rem;
+  padding: 0.35rem 0.5rem;
+  background: rgba(44, 30, 20, 0.05);
+  border: 1px solid rgba(44, 30, 20, 0.08);
+  border-radius: 0.5rem;
+  max-width: 15rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.roasts-entry-overlay-price-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.15;
+  padding: 0 0.25rem;
+
+  &:not(:last-child) {
+    border-right: 1px solid rgba(44, 30, 20, 0.1);
+  }
+
+  .price-size {
+    font-family: $font-display;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a7060;
+    margin-bottom: 0.15rem;
+  }
+
+  .price-val {
+    font-family: $font-display;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #9c6d12;
+    white-space: nowrap;
+
+    s {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: #bfa15c;
+      margin-right: 0.15rem;
+    }
+
+    .temp-val {
+      color: #c0392b;
+    }
+  }
+}
+
 .roasts-entry-quick-add,
 .roasts-entry-sub-btn {
   margin-top: 0.75rem;

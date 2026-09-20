@@ -12,6 +12,9 @@
 {% endif %}
 {% assign rp = r.price | default: r.prices %}
 {% assign price_12 = rp["12oz"] | default: rp %}
+{% assign price_1lb = rp["1lb"] %}
+{% assign price_2lb = rp["2lb"] %}
+{% assign price_5lb = rp["5lb"] %}
 {% assign card_beans = "" | split: "," %}
 {% assign card_origins = "" | split: "," %}
 {% assign card_processes = "" | split: "," %}
@@ -96,6 +99,60 @@
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
       {% endif %}
+      {% unless r.category == 'subscriptions' or r.category == 'flight' or r.category == 'flights' %}
+        {% if price_12 or price_1lb or price_2lb or price_5lb %}
+          <div class="roasts-entry-overlay-prices" aria-label="Prices by bag size">
+            {% if price_12 %}
+              <div class="roasts-entry-overlay-price-item">
+                <span class="price-size">12oz</span>
+                <span class="price-val">
+                  {% if r.temporary_price and r.temporary_price["12oz"] %}
+                    <s>${{ price_12 }}</s> <span class="temp-val">${{ r.temporary_price["12oz"] }}</span>
+                  {% else %}
+                    ${{ price_12 }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+            {% if price_1lb %}
+              <div class="roasts-entry-overlay-price-item">
+                <span class="price-size">1lb</span>
+                <span class="price-val">
+                  {% if r.temporary_price and r.temporary_price["1lb"] %}
+                    <s>${{ price_1lb }}</s> <span class="temp-val">${{ r.temporary_price["1lb"] }}</span>
+                  {% else %}
+                    ${{ price_1lb }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+            {% if price_2lb %}
+              <div class="roasts-entry-overlay-price-item">
+                <span class="price-size">2lb</span>
+                <span class="price-val">
+                  {% if r.temporary_price and r.temporary_price["2lb"] %}
+                    <s>${{ price_2lb }}</s> <span class="temp-val">${{ r.temporary_price["2lb"] }}</span>
+                  {% else %}
+                    ${{ price_2lb }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+            {% if price_5lb %}
+              <div class="roasts-entry-overlay-price-item">
+                <span class="price-size">5lb</span>
+                <span class="price-val">
+                  {% if r.temporary_price and r.temporary_price["5lb"] %}
+                    <s>${{ price_5lb }}</s> <span class="temp-val">${{ r.temporary_price["5lb"] }}</span>
+                  {% else %}
+                    ${{ price_5lb }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endunless %}
       {% if r.category == 'subscriptions' %}
         <button type="button" class="roasts-entry-sub-btn" onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ '/subscribe/?roast=' | append: r.slug | relative_url }}';">Subscribe</button>
       {% else %}
