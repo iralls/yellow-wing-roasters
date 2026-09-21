@@ -23,7 +23,8 @@ permalink: /about/
   <p style="margin-bottom: 1.5rem;">Reach out to us at <a href="mailto:chirp@yellowwingroasters.com">chirp@yellowwingroasters.com</a>, or <a href="{{ '/feedback/' | relative_url }}">share your feedback</a>.</p>
 
   <h2 style="margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.5rem;">Stay in the Loop</h2>
-  <p>Sign up for the <a href="{{ '/pigeon-post/' | relative_url }}">Pigeon Post</a> to hear about new roasts, seasonal blends, and restocks.</p>
+  <p style="margin-bottom: 1rem;">Sign up for the <a href="{{ '/pigeon-post/' | relative_url }}">Pigeon Post</a> to hear about new roasts, seasonal blends, and restocks.</p>
+  <p>Follow along on Instagram <a href="https://www.instagram.com/yellowwingroasters/" target="_blank" rel="noopener noreferrer">@yellowwingroasters</a>.</p>
 </div>
 
 </div>
