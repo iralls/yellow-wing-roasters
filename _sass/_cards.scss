@@ -535,12 +535,14 @@
     transform: translateY(0);
   }
 
-  &.is-added {
-    background: #3a6b46;
-    color: #fff;
-    cursor: default;
+  &.is-added,
+  &:disabled {
+    background: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
     transform: none;
     border-color: transparent;
+    box-shadow: none;
   }
 }
 
