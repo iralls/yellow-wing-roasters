@@ -278,15 +278,20 @@
     }
 
     document.addEventListener('click', function (e) {
-      var btn = e.target.closest('.roasts-entry-quick-add');
+      var priceBtn = e.target.closest('.roasts-entry-overlay-price-btn');
+      var quickAddBtn = e.target.closest('.roasts-entry-quick-add');
+      var btn = priceBtn || quickAddBtn;
       if (!btn) return;
       e.preventDefault();
       e.stopPropagation();
 
+      if (btn.disabled || btn.classList.contains('is-added')) return;
+
       var slug = btn.getAttribute('data-slug');
       if (!slug) return;
 
-      var key = slug + '||12oz|Whole Bean';
+      var size = btn.getAttribute('data-size') || '12oz';
+      var key = slug + '||' + size + '|Whole Bean';
       var cart;
       try {
         var raw = localStorage.getItem('ywr_cart');
@@ -300,15 +305,68 @@
       } catch (err) {}
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
 
-      btn.classList.add('is-added');
-      btn.textContent = 'Added!';
-      btn.disabled = true;
+      var card = btn.closest('.roasts-entry');
+      var cardQuickAdd = card ? card.querySelector('.roasts-entry-quick-add') : null;
 
-      setTimeout(function () {
-        btn.classList.remove('is-added');
-        btn.textContent = 'Quick Add';
-        btn.disabled = false;
-      }, 1200);
+      if (priceBtn) {
+        var valEl = priceBtn.querySelector('.price-val');
+        var origHtml = valEl ? valEl.innerHTML : null;
+
+        priceBtn.classList.add('is-added');
+        priceBtn.disabled = true;
+        if (valEl) {
+          valEl.textContent = 'Added!';
+        }
+
+        if (cardQuickAdd) {
+          cardQuickAdd.classList.add('is-added');
+          cardQuickAdd.textContent = 'Added ' + size + '!';
+          cardQuickAdd.disabled = true;
+        }
+
+        setTimeout(function () {
+          priceBtn.classList.remove('is-added');
+          priceBtn.disabled = false;
+          if (valEl && origHtml !== null) {
+            valEl.innerHTML = origHtml;
+          }
+
+          if (cardQuickAdd) {
+            cardQuickAdd.classList.remove('is-added');
+            cardQuickAdd.textContent = 'Quick Add';
+            cardQuickAdd.disabled = false;
+          }
+        }, 1200);
+      } else {
+        quickAddBtn.classList.add('is-added');
+        quickAddBtn.textContent = 'Added!';
+        quickAddBtn.disabled = true;
+
+        var matchingPriceBtn = card ? card.querySelector('.roasts-entry-overlay-price-btn[data-size="' + size + '"]') : null;
+        var matchValEl = matchingPriceBtn ? matchingPriceBtn.querySelector('.price-val') : null;
+        var origMatchHtml = matchValEl ? matchValEl.innerHTML : null;
+        if (matchingPriceBtn) {
+          matchingPriceBtn.classList.add('is-added');
+          matchingPriceBtn.disabled = true;
+          if (matchValEl) {
+            matchValEl.textContent = 'Added!';
+          }
+        }
+
+        setTimeout(function () {
+          quickAddBtn.classList.remove('is-added');
+          quickAddBtn.textContent = 'Quick Add';
+          quickAddBtn.disabled = false;
+
+          if (matchingPriceBtn) {
+            matchingPriceBtn.classList.remove('is-added');
+            matchingPriceBtn.disabled = false;
+            if (matchValEl && origMatchHtml !== null) {
+              matchValEl.innerHTML = origMatchHtml;
+            }
+          }
+        }, 1200);
+      }
     }, true);
   };
 });

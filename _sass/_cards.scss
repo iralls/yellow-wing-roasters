@@ -445,27 +445,44 @@
 /* ── Overlay Price Breakdown ── */
 .roasts-entry-overlay-prices {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 0;
-  margin-top: 0.65rem;
-  padding: 0.35rem 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.3rem 0.4rem;
   background: rgba(44, 30, 20, 0.05);
   border: 1px solid rgba(44, 30, 20, 0.08);
-  border-radius: 0.5rem;
-  max-width: 15rem;
+  border-radius: 0.55rem;
+  max-width: 15.5rem;
   width: 100%;
   box-sizing: border-box;
 }
 
 .roasts-entry-overlay-price-item {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  line-height: 1.15;
-  padding: 0 0.25rem;
+  line-height: 1.2;
+  padding: 0.35rem 0.25rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0.35rem;
+  font: inherit;
+  color: inherit;
+  cursor: default;
+  box-sizing: border-box;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:not(:last-child) {
     border-right: 1px solid rgba(44, 30, 20, 0.1);
@@ -473,30 +490,85 @@
 
   .price-size {
     font-family: $font-display;
-    font-size: 0.58rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #8a7060;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.18rem;
+    transition: color 0.15s ease;
   }
 
   .price-val {
     font-family: $font-display;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 800;
     color: #9c6d12;
     white-space: nowrap;
+    transition: color 0.15s ease;
 
     s {
       font-size: 0.68rem;
       font-weight: 500;
       color: #bfa15c;
       margin-right: 0.15rem;
+      transition: color 0.15s ease;
     }
 
     .temp-val {
       color: #c0392b;
+      transition: color 0.15s ease;
+    }
+  }
+
+  &.roasts-entry-overlay-price-btn {
+    cursor: pointer;
+
+    &:hover {
+      background: #2c1e14;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(44, 30, 20, 0.18);
+      z-index: 1;
+
+      .price-size {
+        color: #e0d8cf;
+      }
+
+      .price-val {
+        color: #f0c838;
+
+        s {
+          color: #a89f91;
+        }
+
+        .temp-val {
+          color: #ffb4a9;
+        }
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 2px solid #2c1e14;
+      outline-offset: -2px;
+    }
+
+    &.is-added,
+    &:disabled {
+      background: #ddd;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+
+      .price-size,
+      .price-val,
+      .price-val s,
+      .price-val .temp-val {
+        color: #aaa;
+      }
     }
   }
 }
