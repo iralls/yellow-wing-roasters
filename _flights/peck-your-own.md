@@ -13,11 +13,22 @@ min_bags: 4
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <div class="mascot-grid mascot-grid-lg">
-    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
+  <div class="hero-susan-wrap">
+    <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+    </div>
+    <div class="susan-birds susan-birds--hero">
+      <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
+      <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-center" aria-hidden="true" fetchpriority="high" decoding="async">
+      <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
+    </div>
+    <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+    </div>
   </div>
 </div>
 

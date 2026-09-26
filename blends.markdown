@@ -21,16 +21,24 @@ permalink: /blends/
 {% endfor %}
   <div class="roasts-entry" data-roast="byob" data-category="blend" data-type="blend">
     <a class="roasts-entry-visual" href="{{ '/roasts/build-your-own-blend/' | relative_url }}" aria-label="BYOB - Build Your Own Blend">
-      <div class="mascot-grid mascot-grid-3x3">
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-rose-breasted-grosbeak-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-grey-catbird-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-baltimore-oriole-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-red-tailed-hawk-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-killdeer-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/audubon-great-horned-owl-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
-        <div class="mascot-grid-cell"><img src="{{ '/images/double-crested-cormorant-transparent.png' | relative_url }}" alt="" class="mascot-grid-item" loading="lazy" decoding="async"></div>
+      <div class="lazy-susan-container">
+        <div class="lazy-susan-track">
+          <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+          <div class="susan-birds susan-birds--depth">
+            <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+          </div>
+          <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+        </div>
       </div>
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">craft your own custom blend from our single origin roasts</div>
