@@ -4,12 +4,16 @@ title: Subscribe
 permalink: /subscribe/
 ---
 
+<div class="roast-minimal-vertical">
+
 <div class="roast-mv-divider"></div>
 
-<h1 id="sub-title">Subscribe</h1>
+<div id="sub-image-wrap" class="roast-mv-center roast-mv-bird-wrap" style="display: none;">
+  <img id="sub-image" src="" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
+</div>
 
-<div id="sub-image-wrap" style="display: none; margin-bottom: 2rem;">
-  <img id="sub-image" src="" alt="" style="max-height: 8rem; width: auto;">
+<div class="roast-mv-center">
+  <h1 id="sub-title" class="roast-mv-title">Subscribe</h1>
 </div>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
@@ -17,6 +21,21 @@ permalink: /subscribe/
   <input type="hidden" name="entry.903789519" id="sub-price-hidden" value="">
   <input type="hidden" name="entry.1261348961" value="Active">
   <input type="hidden" name="entry.1336119512" value="">
+
+  <div class="order-field" id="sub-roast-field" style="display: none;">
+    <label for="sub-roast-select">Coffee</label>
+    <select id="sub-roast-select" class="subscribe-select" style="width: 100%;">
+      {% for s in site.subscriptions %}
+        <option value="{{ s.slug }}">{{ s.title }} (Subscription)</option>
+      {% endfor %}
+      {% for r in site.roasts %}
+        {% assign s_meta = site.data.statuses[r.status] %}
+        {% if r.subscription and r.subscription != false and r.subscription.available != false and s_meta.subscribable != false %}
+          <option value="{{ r.slug }}">{{ r.title }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
 
   <div class="order-field">
     <label for="sub-name">Name</label>
@@ -102,6 +121,8 @@ permalink: /subscribe/
   <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
+</div>
+
 <script src="{{ '/js/subscribe-form.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
@@ -125,12 +146,33 @@ permalink: /subscribe/
     {% endfor %}
   };
 
-  var mascotMap = {
+  var titleMap = {
+    {% for r in site.roasts %}
+    '{{ r.slug }}': {{ r.title | jsonify }},
+    {% endfor %}
     {% for s in site.subscriptions %}
-    '{{ s.slug }}': '{{ "/images/" | append: s.mascot_file | relative_url }}'{% unless forloop.last %},{% endunless %}
+    '{{ s.slug }}': {{ s.title | jsonify }},
+      {% if s.slug == 'migrator' %}
+    'the-migrator': {{ s.title | jsonify }},
+      {% endif %}
     {% endfor %}
   };
 
+  var mascotMap = {
+    {% for r in site.roasts %}
+      {% if r.mascot_file %}
+    '{{ r.slug }}': '{{ "/images/" | append: r.mascot_file | relative_url }}',
+      {% endif %}
+    {% endfor %}
+    {% for s in site.subscriptions %}
+      {% if s.mascot_file %}
+    '{{ s.slug }}': '{{ "/images/" | append: s.mascot_file | relative_url }}',
+        {% if s.slug == 'migrator' %}
+    'the-migrator': '{{ "/images/" | append: s.mascot_file | relative_url }}',
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  };
 
   var disabledSubRoasts = {
     {% for r in site.roasts %}
@@ -151,9 +193,9 @@ permalink: /subscribe/
     {% endfor %}
   };
 
-
   initSubscribeForm({
     subConfig: subConfig,
+    titleMap: titleMap,
     mascotMap: mascotMap,
     disabledSubRoasts: disabledSubRoasts,
     thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
