@@ -24,6 +24,10 @@ origins:
   - Kenya Washed
   - Ethiopia Natural
   - Peru Washed
+beans:
+  - Kenya Washed
+  - Ethiopia Natural
+  - Peru Fair Trade Organic
 description: >-
   A vibrant New Year's blend crafted to celebrate the countdown. Effervescent notes of bergamot and black tea layer over ripe blackberry and a smooth bittersweet chocolate finish.
 ---

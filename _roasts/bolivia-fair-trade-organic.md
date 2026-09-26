@@ -12,6 +12,9 @@ brewing_method: Drip, Pour-over, French Press
 processing_method: Washed
 origins:
   - Bolivia Washed
+beans:
+  - Bolivia Fair Trade Organic
+fair_trade_organic: true
 mascot: red-tailed-hawk
 mascot_file: audubon-red-tailed-hawk-transparent.png
 status: flown_south

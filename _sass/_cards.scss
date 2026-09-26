@@ -90,6 +90,43 @@
   #filter-brewing {
     min-width: 160px;
   }
+
+  #filter-fto {
+    min-width: 160px;
+  }
+}
+
+/* ── FTO Blends Disclaimer Notice ── */
+
+.filters-disclaimer-wrap {
+  margin-top: -1.5rem;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1.15rem;
+  background: #fdfaf3;
+  border-left: 3px solid $color-ochre;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.filter-disclaimer-text {
+  font-family: $font-display;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #5c4434;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  strong {
+    font-weight: 700;
+    color: #2c1e14;
+  }
+}
+
+.filter-disclaimer-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 
 /* ── Roasts grid ── */
@@ -608,6 +645,35 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #3a2a1d;
+}
+
+.roasts-entry-overlay-fto-note {
+  font-family: $font-display;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #6a5328;
+  background: rgba(240, 200, 56, 0.2);
+  border: 1px solid rgba(156, 109, 18, 0.25);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  margin-top: 0.45rem;
+  line-height: 1.2;
+}
+
+.roasts-entry-overlay-fto-badge {
+  font-family: $font-display;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #276235;
+  background: rgba(46, 125, 50, 0.12);
+  border: 1px solid rgba(46, 125, 50, 0.25);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  margin-top: 0.45rem;
+  line-height: 1.2;
 }
 
 .roasts-entry-overlay-status {

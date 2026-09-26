@@ -23,6 +23,9 @@ price:
 origins:
   - Ethiopia Natural
   - Bolivia Washed
+beans:
+  - Ethiopia 'Wush Wush'
+  - Bolivia Fair Trade Organic
 description: >-
   A romantic Valentine's Day blend roasted to a balanced Full City profile. Combines fruit-forward Ethiopia Wush Wush Natural with creamy Bolivia Fair Trade Washed for rich layers of sweet blueberry, dark cherry, and smooth milk chocolate.
 ---

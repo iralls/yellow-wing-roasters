@@ -22,6 +22,9 @@ price:
 origins:
   - Colombia Washed
   - Peru Washed
+beans:
+  - Colombia Supremo
+  - Peru Fair Trade Organic
 description: >-
   A comforting Back to School blend combining smooth beans roasted to a balanced Full City profile. Delivers rich cocoa warmth and caramel sweetness for a focused, easy-drinking morning cup.
 ---

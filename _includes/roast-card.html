@@ -59,12 +59,55 @@
 {% assign process_list = card_processes | uniq | join: "," %}
 {% assign bean_list = card_beans | uniq | join: "," %}
 
+{% assign card_bean_names = "" | split: "," %}
+{% if r.beans %}
+  {% for b in r.beans %}
+    {% assign card_bean_names = card_bean_names | push: b %}
+  {% endfor %}
+{% elsif r.category == 'single origin' %}
+  {% assign card_bean_names = card_bean_names | push: r.title %}
+{% elsif r.origins %}
+  {% for o in r.origins %}
+    {% assign matched_title = "" %}
+    {% for so in site.roasts %}
+      {% if so.category == 'single origin' and so.origins contains o %}
+        {% assign matched_title = so.title %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    {% if matched_title != "" %}
+      {% assign card_bean_names = card_bean_names | push: matched_title %}
+    {% else %}
+      {% assign card_bean_names = card_bean_names | push: o %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign has_fto_bean = false %}
+{% assign is_pure_fto = false %}
+{% if r.fair_trade_organic or r.fto or r.organic %}
+  {% assign has_fto_bean = true %}
+{% endif %}
+{% for b in card_bean_names %}
+  {% assign b_lower = b | downcase %}
+  {% if b_lower contains "fair trade organic" %}
+    {% assign has_fto_bean = true %}
+  {% endif %}
+{% endfor %}
+{% if has_fto_bean and r.category == 'single origin' %}
+  {% assign is_pure_fto = true %}
+{% endif %}
+{% assign bean_names_json = card_bean_names | uniq | jsonify %}
+
 <div class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    data-category="{{ r.category }}"
    data-type="{{ r.category | slugify }}"
    data-origins="{{ origin_list }}"
    data-process="{{ process_list }}"
    data-beans="{{ bean_list }}"
+   data-bean-names="{{ bean_names_json | escape }}"
+   data-has-fto="{{ has_fto_bean }}"
+   data-pure-fto="{{ is_pure_fto }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
    data-roast-level="{{ r.roast_level }}"
@@ -98,6 +141,11 @@
         <div class="roasts-entry-overlay-origins">{{ card_origins | uniq | join: " · " }}</div>
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
+      {% endif %}
+      {% if has_fto_bean and r.category != 'single origin' %}
+        <div class="roasts-entry-overlay-fto-note" title="Blends that consist of FTO beans are comprised of other beans that might not be organic">Includes Fair Trade Organic beans*</div>
+      {% elsif is_pure_fto %}
+        <div class="roasts-entry-overlay-fto-badge">Fair Trade Organic</div>
       {% endif %}
       {% unless r.category == 'subscriptions' or r.category == 'flight' or r.category == 'flights' %}
         {% if price_12 or price_1lb or price_2lb or price_5lb %}

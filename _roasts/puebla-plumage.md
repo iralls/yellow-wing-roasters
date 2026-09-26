@@ -24,6 +24,10 @@ origins:
   - Guatemala Washed
   - Bolivia Washed
   - Brazil Natural
+beans:
+  - Guatemala Antigua
+  - Bolivia Fair Trade Organic
+  - Brazil Estavam Mario
 description: >-
   A celebratory Cinco de Mayo blend roasted to a balanced Full City profile. Combines Guatemala Antigua Washed, Bolivia Fair Trade Washed, and Brazil Estavam Mário Natural for a rich, smooth cup with notes of bittersweet chocolate, sweet fig, and toasted hazelnut.
 ---

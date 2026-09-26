@@ -83,6 +83,12 @@ layout: default
     <div class="roast-mv-meta-value">{{ page.brewing_method }}</div>
   </div>
   {% endif %}
+  {% if page.fair_trade_organic or page.fto or page.title contains "Fair Trade Organic" %}
+  <div class="roast-mv-meta-item">
+    <div class="roast-mv-meta-label">Certification</div>
+    <div class="roast-mv-meta-value">Fair Trade Organic</div>
+  </div>
+  {% endif %}
   {% if page.roast_profile %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Profile</div>

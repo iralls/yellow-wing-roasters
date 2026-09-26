@@ -12,6 +12,9 @@ brewing_method: French Press, Moka Pot, Drip, Espresso
 processing_method: Wet-Hulled
 origins:
   - Sumatra Wet-Hulled
+beans:
+  - Sumatra Mandheling Fair Trade Organic
+fair_trade_organic: true
 mascot: grey-catbird
 mascot_file: audubon-grey-catbird-transparent.png
 price:

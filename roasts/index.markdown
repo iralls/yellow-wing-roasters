@@ -52,6 +52,22 @@ permalink: /roasts/
       <option value="">All Methods</option>
     </select>
   </div>
+
+  <div class="filter-group">
+    <label for="filter-fto" class="roast-mv-meta-label">Fair Trade Organic</label>
+    <select id="filter-fto" class="subscribe-select" title="Filter by Fair Trade Organic certification">
+      <option value="">All</option>
+      <option value="fto">Fair Trade Organic</option>
+    </select>
+  </div>
+</div>
+
+<!-- FTO Blends Disclaimer Notice -->
+<div class="filters-disclaimer-wrap" id="filter-fto-disclaimer" style="display: none;">
+  <p class="filter-disclaimer-text">
+    <span class="filter-disclaimer-icon" aria-hidden="true">ℹ️</span>
+    <span><strong>Please note:</strong> Blends that consist of Fair Trade Organic (FTO) beans are comprised of other beans that might not be organic.</span>
+  </p>
 </div>
 
 <!-- Roasts Grid -->

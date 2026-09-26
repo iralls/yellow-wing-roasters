@@ -13,6 +13,9 @@ mascot_file: audubon-canary-transparent.png
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled
+beans:
+  - Bolivia Fair Trade Organic
+  - Sumatra Mandheling Fair Trade Organic
 price:
   12oz: 12
   1lb: 15
