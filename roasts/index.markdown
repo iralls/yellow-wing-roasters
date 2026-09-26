@@ -89,6 +89,13 @@ permalink: /roasts/
     {% endif %}
     {% include roast-card.html roast=r %}
   {% endfor %}
+
+  <div class="roasts-section-break" data-category="flight">
+    <div class="roasts-section-break-line"></div>
+    <span class="roasts-section-break-title">Flights</span>
+    <div class="roasts-section-break-line"></div>
+  </div>
+  {% include flight-cards.html %}
 </div>
 
 <!-- JavaScript for Dynamic Filters -->
