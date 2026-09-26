@@ -651,6 +651,134 @@
   color: #222;
 }
 
+/* ── Roast Detail Per-Size Selector Bar ── */
+.roast-size-selector-bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  max-width: 22rem;
+  width: 100%;
+  margin: 0.35rem auto 0;
+  padding: 0.3rem 0.35rem;
+  background: rgba(44, 30, 20, 0.04);
+  border: 1px solid rgba(44, 30, 20, 0.12);
+  border-radius: 0.65rem;
+  box-sizing: border-box;
+}
+
+.roast-size-btn {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  padding: 0.45rem 0.35rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0.45rem;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease;
+
+  &:not(:last-child) {
+    border-right: 1px solid rgba(44, 30, 20, 0.1);
+  }
+
+  .roast-size-btn-size {
+    font-family: $font-display;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a7060;
+    margin-bottom: 0.2rem;
+    transition: color 0.18s ease;
+  }
+
+  .roast-size-btn-price {
+    font-family: $font-display;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #9c6d12;
+    white-space: nowrap;
+    transition: color 0.18s ease;
+
+    s {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #bfa15c;
+      margin-right: 0.2rem;
+      transition: color 0.18s ease;
+    }
+
+    .temp-val {
+      color: #c0392b;
+      transition: color 0.18s ease;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    background: rgba(44, 30, 20, 0.08);
+    transform: translateY(-1px);
+
+    .roast-size-btn-size {
+      color: #2c1e14;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #2c1e14;
+    outline-offset: 2px;
+  }
+
+  &.is-active {
+    background: #2c1e14;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(44, 30, 20, 0.22);
+    z-index: 1;
+
+    .roast-size-btn-size {
+      color: #e0d8cf;
+    }
+
+    .roast-size-btn-price {
+      color: #f0c838;
+
+      s {
+        color: #a89f91;
+      }
+
+      .temp-val {
+        color: #ffb4a9;
+      }
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 .add-to-order-wrap {
   display: flex;
   flex-wrap: wrap;

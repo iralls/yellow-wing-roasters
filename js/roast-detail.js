@@ -43,6 +43,8 @@
     }
 
     var sizeSelect = document.getElementById('order-size-select');
+    var sizeBtns = document.querySelectorAll('.roast-size-btn');
+    var sizeBar = document.querySelector('.roast-size-selector-bar');
     var grindSelect = document.getElementById('order-grind-select');
     var priceOneTimeEl = document.getElementById('price-display-onetime');
     var priceSubEl = document.getElementById('price-display-sub');
@@ -72,6 +74,26 @@
       }
 
       var isSub = radioSub && radioSub.checked;
+
+      // Update per-size button prices to reflect One-time vs Subscription pricing
+      Array.prototype.forEach.call(sizeBtns, function (btn) {
+        var s = btn.getAttribute('data-size');
+        var priceEl = btn.querySelector('.roast-size-btn-price');
+        if (!priceEl || !s) return;
+
+        if (isSub) {
+          var sp = (pricesSub && typeof pricesSub[s] === 'number') ? pricesSub[s] : (pricesOneTime[s] ? pricesOneTime[s].price : 0);
+          priceEl.textContent = '$' + sp;
+        } else {
+          var ot = pricesOneTime[s] || { price: 0, effective: 0 };
+          if (ot.effective < ot.price) {
+            priceEl.innerHTML = '<s>$' + ot.price + '</s> <span class="temp-val">$' + ot.effective + '</span>';
+          } else {
+            priceEl.textContent = '$' + ot.effective;
+          }
+        }
+      });
+
       if (isSub) {
         if (cardSub) { cardSub.style.borderColor = '#2c1e14'; cardSub.style.background = '#fff'; }
         if (cardOneTime) { cardOneTime.style.borderColor = '#e0d8cf'; cardOneTime.style.background = '#faf8f5'; }
@@ -91,6 +113,50 @@
         var grind = grindSelect ? grindSelect.value : 'Whole Bean';
         subLink.href = subscribeBaseUrl + '?roast=' + encodeURIComponent(roastSlug) + '&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
       }
+    }
+
+    Array.prototype.forEach.call(sizeBtns, function (btn) {
+      btn.addEventListener('click', function () {
+        var s = btn.getAttribute('data-size');
+        if (!s) return;
+
+        if (sizeSelect) {
+          sizeSelect.value = s;
+        }
+
+        Array.prototype.forEach.call(sizeBtns, function (b) {
+          var isActive = (b === btn);
+          b.classList.toggle('is-active', isActive);
+          b.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+
+        updatePricesAndMode();
+      });
+    });
+
+    if (sizeBar) {
+      sizeBar.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          var btns = Array.prototype.slice.call(sizeBtns);
+          var currentIdx = -1;
+          for (var i = 0; i < btns.length; i++) {
+            if (btns[i].classList.contains('is-active')) {
+              currentIdx = i;
+              break;
+            }
+          }
+          if (currentIdx === -1) currentIdx = 0;
+          var nextIdx = currentIdx;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            nextIdx = (currentIdx + 1) % btns.length;
+          } else {
+            nextIdx = (currentIdx - 1 + btns.length) % btns.length;
+          }
+          btns[nextIdx].click();
+          btns[nextIdx].focus();
+        }
+      });
     }
 
     if (sizeSelect) sizeSelect.addEventListener('change', updatePricesAndMode);

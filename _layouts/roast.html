@@ -122,13 +122,34 @@ layout: default
   </select>
 </div>
 
-<div class="roast-mv-center" style="margin-top:0.75rem;">
-  <label for="order-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Roast Amount</label>
-  <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
+<div class="roast-mv-center" style="margin-top:1rem;">
+  <div class="roast-mv-meta-label" style="margin-bottom:0.45rem;">Roast Amount</div>
+  <input type="hidden" id="order-size-select" value="{{ sizes.first }}">
+  <div class="roast-size-selector-bar" role="radiogroup" aria-label="Roast Amount">
     {% for s in sizes %}
-      <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
+      {% assign price = roast_prices[s] %}
+      {% assign eff_price = price %}
+      {% if page.temporary_price and page.temporary_price[s] %}
+        {% assign eff_price = page.temporary_price[s] %}
+      {% endif %}
+      <button type="button"
+              role="radio"
+              aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
+              class="roast-size-btn{% if forloop.first %} is-active{% endif %}"
+              data-size="{{ s }}"
+              aria-label="{{ s }} — ${{ eff_price | default: price }}"
+              {% unless is_orderable %} disabled{% endunless %}>
+        <span class="roast-size-btn-size">{{ s }}</span>
+        <span class="roast-size-btn-price">
+          {% if eff_price and eff_price < price %}
+            <s>${{ price }}</s> <span class="temp-val">${{ eff_price }}</span>
+          {% elsif price %}
+            ${{ price }}
+          {% endif %}
+        </span>
+      </button>
     {% endfor %}
-  </select>
+  </div>
 </div>
 
 <div class="purchase-options-container" style="max-width: 22rem; margin: 1.5rem auto 1rem; text-align: left;">
