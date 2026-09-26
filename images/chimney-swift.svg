@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 90" width="100%" height="100%">
+  <!-- Far Wing (arching high and swept back in flight) -->
+  <path d="M46,36
+           C50,20 64,6 86,1
+           C90,0 93,1 92,4
+           C86,15 74,31 60,40
+           C55,44 50,42 46,36 Z"
+        fill="#241F1C"/>
+  <path d="M52,32 C64,18 76,9 86,4" stroke="#171412" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+
+  <!-- Spiny Tail (classic Chaetura short spine-tipped tail) -->
+  <path d="M64,57
+           L84,67
+           L87,71
+           L85,73
+           L89,76
+           L85,78
+           L88,81
+           L82,83
+           L62,69 Z"
+        fill="#1F1A18"/>
+
+  <!-- Streamlined "Flying Cigar" Body & Head -->
+  <path d="M62,57
+           C48,53 36,47 26,41
+           C16,35 12,34 9,35
+           C7,36 7,39 10,42
+           C17,49 28,57 42,63
+           C54,68 62,65 64,61
+           C65,59 64,58 62,57 Z"
+        fill="#3A342F"/>
+
+  <!-- Pale Sooty Gray Throat Bib -->
+  <path d="M9,35
+           C13,35 21,39 26,41
+           C26,46 22,50 15,46
+           C12,44 9,40 9,35 Z"
+        fill="#9E968D"/>
+
+  <!-- Short aerial beak -->
+  <path d="M9,34.5 L4,33 L8,37.5 Z" fill="#141110"/>
+
+  <!-- Eye with catchlight -->
+  <circle cx="15" cy="38" r="1.8" fill="#141110"/>
+  <circle cx="14.5" cy="37.5" r="0.6" fill="#FFFFFF"/>
+
+  <!-- Near Wing (sweeping crescent arching back) -->
+  <path d="M32,41
+           C38,33 54,23 78,17
+           C96,13 110,12 113,14
+           C113,16 106,21 94,30
+           C76,43 56,53 40,53
+           C32,53 30,47 32,41 Z"
+        fill="#2C2622"/>
+
+  <!-- Primary feather vanes tucked inside near wing -->
+  <path d="M42,41 C60,33 80,26 98,20" stroke="#181513" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+  <path d="M46,47 C64,40 82,33 96,28" stroke="#181513" stroke-width="1.1" stroke-linecap="round" fill="none"/>
+</svg>
