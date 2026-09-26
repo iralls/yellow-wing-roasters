@@ -110,9 +110,21 @@ layout: default
   {% assign sub_available = false %}
 {% endif %}
 
+{% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
+{% assign freqs = sub_config.frequencies | default: default_freqs %}
+
+<div class="roast-mv-center" style="margin-top:0.75rem;">
+  <label for="order-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Roast Amount</label>
+  <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 14rem;">
+    {% for s in sizes %}
+      <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+</div>
+
 <div class="roast-mv-center" style="margin-top:0.75rem;">
   <label for="order-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
-  <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 12rem;">
+  <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 14rem;">
     <option value="Whole Bean" selected>Whole Bean</option>
     <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
     <option value="Coarser — French Press">Coarser — French Press</option>
@@ -122,75 +134,43 @@ layout: default
   </select>
 </div>
 
-<div class="roast-mv-center" style="margin-top:1rem;">
-  <div class="roast-mv-meta-label" style="margin-bottom:0.45rem;">Roast Amount</div>
-  <input type="hidden" id="order-size-select" value="{{ sizes.first }}">
-  <div class="roast-size-selector-bar" role="radiogroup" aria-label="Roast Amount">
-    {% for s in sizes %}
-      {% assign price = roast_prices[s] %}
-      {% assign eff_price = price %}
-      {% if page.temporary_price and page.temporary_price[s] %}
-        {% assign eff_price = page.temporary_price[s] %}
-      {% endif %}
-      <button type="button"
-              role="radio"
-              aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
-              class="roast-size-btn{% if forloop.first %} is-active{% endif %}"
-              data-size="{{ s }}"
-              aria-label="{{ s }} — ${{ eff_price | default: price }}"
-              {% unless is_orderable %} disabled{% endunless %}>
-        <span class="roast-size-btn-size">{{ s }}</span>
-        <span class="roast-size-btn-price">
-          {% if eff_price and eff_price < price %}
-            <s>${{ price }}</s> <span class="temp-val">${{ eff_price }}</span>
-          {% elsif price %}
-            ${{ price }}
-          {% endif %}
-        </span>
-      </button>
+{% if sub_available %}
+<div class="roast-mv-center" style="margin-top:0.85rem;">
+  <label class="roast-mv-meta-label" style="display:block; margin-bottom:0.4rem;">Purchase Option</label>
+  <div class="roast-purchase-toggle" role="radiogroup" aria-label="Purchase Option">
+    <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %}>One-Time Purchase</button>
+    <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %}>Subscribe</button>
+  </div>
+</div>
+{% endif %}
+
+{% if sub_available %}
+<div id="sub-details-panel" class="roast-mv-center" style="display: none; margin-top:0.85rem;">
+  <label for="sub-freq-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Frequency</label>
+  <select id="sub-freq-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 14rem;">
+    {% for f in freqs %}
+      <option value="{{ f }}">{{ f }}</option>
     {% endfor %}
-  </div>
+  </select>
 </div>
+{% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
+  <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">{{ p_status_info.sub_footnote }}</p>
+{% endif %}
 
-<div class="purchase-options-container" style="max-width: 22rem; margin: 1.5rem auto 1rem; text-align: left;">
-  <div class="purchase-option-card" id="option-card-onetime" style="border: 1.5px solid #2c1e14; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: #fff; cursor: pointer; transition: border-color 0.15s, background-color 0.15s;">
-    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; margin: 0;">
-      <span style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #2c1e14; font-size: 0.9rem;">
-        <input type="radio" name="purchase-type" value="onetime" checked style="accent-color: #2c1e14; margin: 0;"{% unless is_orderable %} disabled{% endunless %}>
-        One-time purchase
-      </span>
-      <span id="price-display-onetime" style="font-weight: 700; color: #2c1e14; font-size: 0.95rem;"></span>
-    </label>
-  </div>
-
-  {% if sub_available %}
-  <div class="purchase-option-card" id="option-card-sub" style="border: 1.5px solid #e0d8cf; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: #faf8f5; cursor: pointer; transition: border-color 0.15s, background-color 0.15s;">
-    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; margin: 0;">
-      <span style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #2c1e14; font-size: 0.9rem;">
-        <input type="radio" name="purchase-type" value="subscribe" style="accent-color: #2c1e14; margin: 0;">
-        Subscribe
-      </span>
-      <span id="price-display-sub" style="font-weight: 700; color: #2c1e14; font-size: 0.95rem;"></span>
-    </label>
-    <div id="sub-details-panel" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #e0d8cf;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-        <label for="sub-freq-select" class="roast-mv-meta-label" style="margin: 0; font-size: 0.7rem;">Frequency</label>
-        <select id="sub-freq-select" class="subscribe-select" style="padding: 0.35rem 1.8rem 0.35rem 0.75rem; font-size: 0.8rem;">
-          {% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
-          {% assign freqs = sub_config.frequencies | default: default_freqs %}
-          {% for f in freqs %}
-            <option value="{{ f }}">{{ f }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-  </div>
-  {% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
-    <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">{{ p_status_info.sub_footnote }}</p>
+<div class="roast-mv-center" style="margin-top: 1.25rem;">
+  {% assign first_size = sizes.first %}
+  {% assign first_price = roast_prices[first_size] %}
+  {% assign first_eff = first_price %}
+  {% if page.temporary_price and page.temporary_price[first_size] %}
+    {% assign first_eff = page.temporary_price[first_size] %}
   {% endif %}
-</div>
-
-<div class="roast-mv-center" style="margin-top: 1rem;">
+  <div class="roast-detail-price-line" id="roast-detail-price">
+    {% if first_eff and first_eff < first_price %}
+      <s>${{ first_price }}</s> <span class="temp-val">${{ first_eff }}</span>
+    {% else %}
+      ${{ first_eff | default: first_price }}
+    {% endif %}
+  </div>
   <button class="add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>Add to Cart</button>
   {% if sub_available %}
   <a href="#" id="sub-link" class="add-to-order-btn{% unless is_orderable %} add-to-order-btn--disabled{% endunless %}" style="display: none;"{% unless is_orderable %} aria-disabled="true"{% endunless %}>Subscribe</a>

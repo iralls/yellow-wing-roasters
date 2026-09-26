@@ -652,133 +652,6 @@
   color: #222;
 }
 
-/* ── Roast Detail Per-Size Selector Bar ── */
-.roast-size-selector-bar {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: 0;
-  max-width: 22rem;
-  width: 100%;
-  margin: 0.35rem auto 0;
-  padding: 0.3rem 0.35rem;
-  background: rgba(44, 30, 20, 0.04);
-  border: 1px solid rgba(44, 30, 20, 0.12);
-  border-radius: 0.65rem;
-  box-sizing: border-box;
-}
-
-.roast-size-btn {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1.2;
-  padding: 0.45rem 0.35rem;
-  background: transparent;
-  border: 0;
-  border-radius: 0.45rem;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  box-sizing: border-box;
-  text-decoration: none;
-  -webkit-appearance: none;
-  appearance: none;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    transform 0.15s ease,
-    box-shadow 0.18s ease;
-
-  &:not(:last-child) {
-    border-right: 1px solid rgba(44, 30, 20, 0.1);
-  }
-
-  .roast-size-btn-size {
-    font-family: $font-display;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #8a7060;
-    margin-bottom: 0.2rem;
-    transition: color 0.18s ease;
-  }
-
-  .roast-size-btn-price {
-    font-family: $font-display;
-    font-size: 0.88rem;
-    font-weight: 800;
-    color: #9c6d12;
-    white-space: nowrap;
-    transition: color 0.18s ease;
-
-    s {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: #bfa15c;
-      margin-right: 0.2rem;
-      transition: color 0.18s ease;
-    }
-
-    .temp-val {
-      color: #c0392b;
-      transition: color 0.18s ease;
-    }
-  }
-
-  &:hover:not(:disabled) {
-    background: rgba(44, 30, 20, 0.08);
-    transform: translateY(-1px);
-
-    .roast-size-btn-size {
-      color: #2c1e14;
-    }
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  &:focus-visible {
-    outline: 2px solid #2c1e14;
-    outline-offset: 2px;
-  }
-
-  &.is-active {
-    background: #2c1e14;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(44, 30, 20, 0.22);
-    z-index: 1;
-
-    .roast-size-btn-size {
-      color: #e0d8cf;
-    }
-
-    .roast-size-btn-price {
-      color: #f0c838;
-
-      s {
-        color: #a89f91;
-      }
-
-      .temp-val {
-        color: #ffb4a9;
-      }
-    }
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-    pointer-events: none;
-    transform: none;
-    box-shadow: none;
-  }
-}
 
 .add-to-order-wrap {
   display: flex;
@@ -823,6 +696,71 @@
   cursor: not-allowed;
   pointer-events: none;
   transform: none;
+}
+
+/* ── Roast Detail Purchase Option Pill Toggle & Price Line ── */
+.roast-purchase-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 999px;
+  padding: 0.2rem;
+  box-sizing: border-box;
+  max-width: 22rem;
+}
+
+.roast-purchase-toggle-btn {
+  padding: 0.45rem 1.15rem;
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #6a5647;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+
+  &:hover:not(.is-active):not(:disabled) {
+    color: #2c1e14;
+    background: rgba(255, 255, 255, 0.65);
+  }
+
+  &.is-active {
+    background: #2c1e14;
+    color: #faf8f5;
+    box-shadow: 0 2px 6px rgba(44, 30, 20, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.roast-detail-price-line {
+  font-family: $font-display;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2c1e14;
+  margin-bottom: 0.85rem;
+  line-height: 1.2;
+
+  s {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #8a7060;
+    margin-right: 0.4rem;
+  }
+
+  .temp-val {
+    color: #c0392b;
+  }
 }
 
 /* ── Unified Roast Detail Status Banners ── */
