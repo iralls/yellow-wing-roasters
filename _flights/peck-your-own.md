@@ -62,6 +62,7 @@ min_bags: 4
     <div class="roasts-entry-visual">
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      {% if r.fair_trade_organic %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
       <span class="gift-type-badge">&#10003; Selected</span>
       {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
       <div class="roasts-entry-overlay">

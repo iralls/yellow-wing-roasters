@@ -118,6 +118,7 @@
   <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{{ r.title | escape }}">
     {% include roast-status-badge.html roast=r %}
     {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+    {% if is_pure_fto or r.fair_trade_organic %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
     <div class="roasts-entry-overlay">
       {% if r.tasting_notes %}
@@ -141,11 +142,6 @@
         <div class="roasts-entry-overlay-origins">{{ card_origins | uniq | join: " · " }}</div>
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
-      {% endif %}
-      {% if has_fto_bean and r.category != 'single origin' %}
-        <div class="roasts-entry-overlay-fto-note" title="Blends that consist of FTO beans are comprised of other beans that might not be organic">Includes Fair Trade Organic beans*</div>
-      {% elsif is_pure_fto %}
-        <div class="roasts-entry-overlay-fto-badge">Fair Trade Organic</div>
       {% endif %}
       {% unless r.category == 'subscriptions' or r.category == 'flight' or r.category == 'flights' %}
         {% if price_12 or price_1lb or price_2lb or price_5lb %}

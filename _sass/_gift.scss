@@ -112,7 +112,8 @@
   display: inline-block;
 }
 
-.pyo-option.is-selected .roasts-entry-seasonal-badge {
+.pyo-option.is-selected .roasts-entry-seasonal-badge,
+.pyo-option.is-selected .roasts-entry-fto-badge {
   display: none;
 }
 
