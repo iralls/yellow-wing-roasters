@@ -132,9 +132,16 @@ permalink: /subscribe/
     {% for r in site.roasts %}
       {% if r.subscription and r.subscription != false and r.subscription.available != false %}
         {% assign r_sub = r.subscription %}
-        {% if r.sizes %}{% assign r_sizes = r.sizes %}{% else %}{% assign r_sizes = default_sub_sizes %}{% endif %}
-        {% assign r_freqs = r_sub.frequencies | default: default_sub_freqs %}
         {% assign r_prices = r_sub.price | default: r_sub.prices | default: r.price %}
+        {% if r.sizes %}
+          {% assign r_sizes = r.sizes %}
+        {% elsif r_prices %}
+          {% assign r_sizes = "" | split: "," %}
+          {% for entry in r_prices %}
+            {% assign r_sizes = r_sizes | push: entry[0] %}
+          {% endfor %}
+        {% endif %}
+        {% assign r_freqs = r_sub.frequencies | default: default_sub_freqs %}
         '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, frequencies: {{ r_freqs | jsonify }}, prices: {{ r_prices | jsonify }} },
       {% endif %}
     {% endfor %}

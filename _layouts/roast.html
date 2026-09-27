@@ -2,8 +2,15 @@
 layout: default
 ---
 
-{% if page.sizes %}{% assign sizes = page.sizes %}{% else %}{% assign sizes = "12oz,1lb,2lb,5lb" | split: "," %}{% endif %}
 {% assign roast_prices = page.price | default: page.prices %}
+{% if page.sizes %}
+  {% assign sizes = page.sizes %}
+{% elsif roast_prices %}
+  {% assign sizes = "" | split: "," %}
+  {% for entry in roast_prices %}
+    {% assign sizes = sizes | push: entry[0] %}
+  {% endfor %}
+{% endif %}
 
 <div class="roast-minimal-vertical">
 

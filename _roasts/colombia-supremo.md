@@ -18,8 +18,6 @@ status: low_stock
 price:
   12oz: 12
   1lb: 14
-  2lb: 28
-  5lb: 70
 
 subscription:
   frequencies:

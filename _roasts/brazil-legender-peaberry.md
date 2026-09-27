@@ -19,7 +19,6 @@ price:
   12oz: 12
   1lb: 14
   2lb: 28
-  5lb: 70
 
 description: >-
   Sweet, viscous cup. Good component for an espresso.
