@@ -4,7 +4,7 @@ subtitle: Halloween Blend
 slug: boo-boo-patoo
 category: seasonal
 order: 10
-roast_level: 3
+roast_level: 4
 descriptor: sweet and indulgent
 tasting_notes: rich chocolate, toasted nuts
 brewing_method: Pour-over, Espresso, Drip, French Press
