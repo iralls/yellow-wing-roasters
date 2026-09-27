@@ -7,7 +7,7 @@ order: 5
 roast_level: 2
 descriptor: cozy and comforting
 tasting_notes: smooth cocoa, toasted nut, caramel sweetness
-brewing_method: Pour-over, Espresso, Drip, French Press
+brewing_method: French Press, Pour-over, Espresso, Drip
 mascot: barred-owl
 mascot_file: audubon-barred-owl-transparent.png
 bg_pattern: /images/patterns/school-pattern.svg
