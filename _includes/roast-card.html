@@ -18,7 +18,6 @@
 {% assign card_beans = "" | split: "," %}
 {% assign card_origins = "" | split: "," %}
 {% assign card_processes = "" | split: "," %}
-
 {% if r.origins %}
   {% for o in r.origins %}
     {% assign country = o | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
@@ -59,9 +58,32 @@
 {% assign process_list = card_processes | uniq | join: "," %}
 {% assign bean_list = card_beans | uniq | join: "," %}
 
-{% assign is_fto = false %}
+{% assign is_100_fto = false %}
 {% if r.fair_trade_organic or r.fto or r.organic %}
-  {% assign is_fto = true %}
+  {% assign is_100_fto = true %}
+{% elsif r.history %}
+  {% assign cur_recipe = r.history.first %}
+  {% assign total_comps = cur_recipe.components.size %}
+  {% assign fto_comps = 0 %}
+  {% for c in cur_recipe.components %}
+    {% assign comp_is_fto = false %}
+    {% if c.fair_trade_organic %}
+      {% assign comp_is_fto = true %}
+    {% elsif c.slug %}
+      {% for so in site.roasts %}
+        {% if so.slug == c.slug and so.fair_trade_organic %}
+          {% assign comp_is_fto = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if comp_is_fto %}
+      {% assign fto_comps = fto_comps | plus: 1 %}
+    {% endif %}
+  {% endfor %}
+  {% if total_comps > 0 and fto_comps == total_comps %}
+    {% assign is_100_fto = true %}
+  {% endif %}
 {% endif %}
 
 <div class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
@@ -70,8 +92,7 @@
    data-origins="{{ origin_list }}"
    data-process="{{ process_list }}"
    data-beans="{{ bean_list }}"
-   data-has-fto="{{ is_fto }}"
-   data-pure-fto="{{ is_fto }}"
+   data-has-fto="{{ is_100_fto }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
    data-roast-level="{{ r.roast_level }}"
@@ -83,7 +104,7 @@
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
-      {% if is_fto %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
+      {% if is_100_fto %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
     {% endunless %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
     {% unless include.hide_overlay %}

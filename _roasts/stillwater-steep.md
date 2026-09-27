@@ -20,9 +20,15 @@ price:
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled
-beans:
-  - Bolivia Fair Trade Organic
-  - Sumatra Mandheling Fair Trade Organic
+history:
+  - date: "2026-08"
+    components:
+      - name: Sumatra Mandheling Fair Trade Organic
+        slug: sumatra-mandheling
+        ratio: 50%
+      - name: Bolivia Fair Trade Organic
+        slug: bolivia-fair-trade-organic
+        ratio: 50%
 description: >-
   Made specifically for cold brewing. We roast this to bring out a deep, fudge-like sweetness that stays smooth even when poured over a full glass of ice. It's naturally sweet, rich, and your best bet for a great iced coffee.
 ---

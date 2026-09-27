@@ -13,9 +13,23 @@ mascot_file: audubon-canary-transparent.png
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled
-beans:
-  - Bolivia Fair Trade Organic
-  - Sumatra Mandheling Fair Trade Organic
+history:
+  - date: "2026-09"
+    components:
+      - name: Sumatra Mandheling Fair Trade Organic
+        slug: sumatra-mandheling
+        ratio: 50%
+      - name: Bolivia Organic de Apolo
+        slug: bolivia-organic-de-apolo
+        ratio: 50%
+  - date: "2026-08"
+    components:
+      - name: Sumatra Mandheling Fair Trade Organic
+        slug: sumatra-mandheling
+        ratio: 50%
+      - name: Bolivia Fair Trade Organic
+        slug: bolivia-fair-trade-organic
+        ratio: 50%
 price:
   12oz: 12
   1lb: 15

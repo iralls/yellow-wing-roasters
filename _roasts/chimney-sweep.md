@@ -14,6 +14,18 @@ origins:
   - Brazil Natural
   - Guatemala Washed
   - Ethiopia Natural
+history:
+  - date: "2026-06"
+    components:
+      - name: Brazil Estavam Mario
+        slug: brazil-estavam-mario
+        ratio: 60%
+      - name: Guatemala Antigua
+        slug: guatemala-antigua
+        ratio: 20%
+      - name: Ethiopia Guji
+        slug: ethiopia-guji
+        ratio: 20%
 price:
   12oz: 12
   1lb: 14

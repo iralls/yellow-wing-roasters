@@ -19,6 +19,15 @@ price:
 origins:
   - Ethiopia Washed
   - Guatemala Washed
+history:
+  - date: "2026-09"
+    components:
+      - name: Guatemala Antigua
+        slug: guatemala-antigua
+        ratio: 50%
+      - name: Ethiopia Yirgacheffe
+        slug: ethiopia-yirgacheffe
+        ratio: 50%
 description: >-
   A clean, smooth blend crafted from two washed coffees with warm, subdued spices and rich cocoa. While it performs exceptionally as an espresso—and shines best in milk-based drinks—it also brews wonderfully as drip coffee or in a French press.
 ---

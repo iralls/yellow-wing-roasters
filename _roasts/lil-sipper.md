@@ -11,8 +11,16 @@ brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Colombia Washed
+  - Costa Rica Washed
   - Ethiopia Washed
+history:
+  - date: "2026-06"
+    components:
+      - name: Costa Rica Tarrazu Villa Sarchi
+        ratio: 50%
+      - name: Ethiopia Yirgacheffe
+        slug: ethiopia-yirgacheffe
+        ratio: 50%
 status: mid_molt
 price:
   12oz: 12

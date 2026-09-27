@@ -19,6 +19,15 @@ price:
 origins:
   - Guatemala Washed
   - Ethiopia Natural
+history:
+  - date: "2026-09"
+    components:
+      - name: Guatemala Antigua
+        slug: guatemala-antigua
+        ratio: 50%
+      - name: Ethiopia Guji
+        slug: ethiopia-guji
+        ratio: 50%
 description: |
   Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of dark fruit and jammy sweetness.
 

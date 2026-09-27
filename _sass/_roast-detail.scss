@@ -186,15 +186,101 @@
   color: #ccc;
 }
 
-.roast-mv-comp-list a {
+.roast-mv-comp-list a.roast-comp-link {
+  color: #8a5020;
+  font-weight: 600;
+  font-size: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(138, 80, 32, 0.4);
+  transition: color 0.15s, border-bottom-color 0.15s;
+
+  &:hover {
+    color: #5c3515;
+    border-bottom-color: #5c3515;
+    text-decoration: none;
+  }
+}
+
+.roast-mv-comp-list .roast-comp-ratio {
+  font-weight: 500;
+  color: #6a5328;
+  font-size: 0.8rem;
+}
+
+.roast-mv-comp-list .roast-comp-level {
+  font-weight: 400;
+  color: #7a6050;
+  font-size: 0.78rem;
+}
+
+.roast-mv-comp-list a.roast-profile-link {
   color: #8a5020;
   text-decoration: none;
   font-weight: 400;
   font-size: 0.78rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-.roast-mv-comp-list a:hover {
-  text-decoration: underline;
+.roast-mv-history {
+  margin-top: 0.85rem;
+  text-align: center;
+
+  summary {
+    cursor: pointer;
+    font-family: $font-display;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8a5020;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: "▾";
+      font-size: 0.65rem;
+      transition: transform 0.2s ease;
+    }
+  }
+
+  &[open] summary::after {
+    transform: rotate(180deg);
+  }
+}
+
+.roast-mv-history-content {
+  margin-top: 0.6rem;
+  padding: 0.6rem 1rem;
+  background: rgba(253, 250, 243, 0.7);
+  border: 1px solid rgba(230, 220, 205, 0.8);
+  border-radius: 0.4rem;
+  display: inline-block;
+  text-align: center;
+}
+
+.roast-mv-history-item + .roast-mv-history-item {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(200, 185, 170, 0.4);
+}
+
+.roast-mv-history-date {
+  font-family: $font-display;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #7a6050;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
 }
 
 /* ── Roast level dots (gradient) ── */
