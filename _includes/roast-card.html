@@ -59,45 +59,10 @@
 {% assign process_list = card_processes | uniq | join: "," %}
 {% assign bean_list = card_beans | uniq | join: "," %}
 
-{% assign card_bean_names = "" | split: "," %}
-{% if r.beans %}
-  {% for b in r.beans %}
-    {% assign card_bean_names = card_bean_names | push: b %}
-  {% endfor %}
-{% elsif r.category == 'single origin' %}
-  {% assign card_bean_names = card_bean_names | push: r.title %}
-{% elsif r.origins %}
-  {% for o in r.origins %}
-    {% assign matched_title = "" %}
-    {% for so in site.roasts %}
-      {% if so.category == 'single origin' and so.origins contains o %}
-        {% assign matched_title = so.title %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-    {% if matched_title != "" %}
-      {% assign card_bean_names = card_bean_names | push: matched_title %}
-    {% else %}
-      {% assign card_bean_names = card_bean_names | push: o %}
-    {% endif %}
-  {% endfor %}
-{% endif %}
-
-{% assign has_fto_bean = false %}
-{% assign is_pure_fto = false %}
+{% assign is_fto = false %}
 {% if r.fair_trade_organic or r.fto or r.organic %}
-  {% assign has_fto_bean = true %}
+  {% assign is_fto = true %}
 {% endif %}
-{% for b in card_bean_names %}
-  {% assign b_lower = b | downcase %}
-  {% if b_lower contains "fair trade organic" %}
-    {% assign has_fto_bean = true %}
-  {% endif %}
-{% endfor %}
-{% if has_fto_bean and r.category == 'single origin' %}
-  {% assign is_pure_fto = true %}
-{% endif %}
-{% assign bean_names_json = card_bean_names | uniq | jsonify %}
 
 <div class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    data-category="{{ r.category }}"
@@ -105,9 +70,8 @@
    data-origins="{{ origin_list }}"
    data-process="{{ process_list }}"
    data-beans="{{ bean_list }}"
-   data-bean-names="{{ bean_names_json | escape }}"
-   data-has-fto="{{ has_fto_bean }}"
-   data-pure-fto="{{ is_pure_fto }}"
+   data-has-fto="{{ is_fto }}"
+   data-pure-fto="{{ is_fto }}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
    data-roast-level="{{ r.roast_level }}"
@@ -119,7 +83,7 @@
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
-      {% if is_pure_fto or r.fair_trade_organic %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
+      {% if is_fto %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
     {% endunless %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
     {% unless include.hide_overlay %}

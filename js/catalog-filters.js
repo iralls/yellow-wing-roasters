@@ -13,7 +13,6 @@
     var selectLevel = document.getElementById('filter-level');
     var selectBrewing = document.getElementById('filter-brewing');
     var selectFto = document.getElementById('filter-fto');
-    var ftoDisclaimer = document.getElementById('filter-fto-disclaimer');
 
     if (!cards.length || !selectOrigin || !selectLevel || !selectBrewing) return;
 
@@ -88,15 +87,6 @@
       });
 
       card.setAttribute('data-beans-list', JSON.stringify(cardBeans));
-      // Bean names (list of strings representing individual bean components)
-      var beanNamesAttr = card.getAttribute('data-bean-names') || '[]';
-      var cardBeanNames = [];
-      try {
-        cardBeanNames = JSON.parse(beanNamesAttr);
-      } catch (e) {
-        cardBeanNames = [];
-      }
-      card.setAttribute('data-bean-names-list', JSON.stringify(cardBeanNames));
 
       // Brewing methods
       var brewingAttr = card.getAttribute('data-brewing') || '';
@@ -190,10 +180,6 @@
       var chosenBrewing = selectBrewing.value;
       var chosenFto = selectFto ? selectFto.value : '';
 
-      // Update FTO disclaimer visibility
-      if (ftoDisclaimer) {
-        ftoDisclaimer.style.display = (chosenFto === 'fto') ? '' : 'none';
-      }
 
       cards.forEach(function (card) {
         // Check type match
@@ -230,15 +216,10 @@
         var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
         var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
 
-        // Fair Trade Organic filter: relies on YAML key (data-has-fto / data-fto) or bean name containing "fair trade organic"
+        // Fair Trade Organic filter: relies strictly on explicit YAML flag (data-has-fto / data-fto)
         var matchesFto = true;
         if (chosenFto === 'fto') {
-          var isFto = card.getAttribute('data-has-fto') === 'true' || card.getAttribute('data-fto') === 'true';
-          var beanNames = JSON.parse(card.getAttribute('data-bean-names-list') || card.getAttribute('data-bean-names') || '[]');
-          var hasFtoName = beanNames.some(function (name) {
-            return typeof name === 'string' && name.toLowerCase().indexOf('fair trade organic') !== -1;
-          });
-          matchesFto = isFto || hasFtoName;
+          matchesFto = card.getAttribute('data-has-fto') === 'true' || card.getAttribute('data-fto') === 'true';
         }
 
         // Show/Hide Card: ALL filters strictly ANDed together

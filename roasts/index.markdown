@@ -62,14 +62,6 @@ permalink: /roasts/
   </div>
 </div>
 
-<!-- FTO Blends Disclaimer Notice -->
-<div class="filters-disclaimer-wrap" id="filter-fto-disclaimer" style="display: none;">
-  <p class="filter-disclaimer-text">
-    <span class="filter-disclaimer-icon" aria-hidden="true">ℹ️</span>
-    <span><strong>Please note:</strong> Blends that consist of Fair Trade Organic (FTO) beans are comprised of other beans that might not be organic.</span>
-  </p>
-</div>
-
 <!-- Roasts Grid -->
 <div class="roasts-grid" id="roasts-grid">
   {% assign blends = site.roasts | where: "category", "blend" | sort: "order" %}
