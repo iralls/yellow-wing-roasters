@@ -31,7 +31,7 @@ price: 38
   {% for slug in aviary_slugs %}
     {% assign r = site.roasts | where: "slug", slug | first %}
     {% if r %}
-      {% include roast-card.html roast=r card_class="aviary-card" hide_price=true hide_quick_add=true %}
+      {% include roast-card.html roast=r card_class="aviary-card" hide_price=true hide_quick_add=true hide_overlay=true hide_badges=true %}
     {% endif %}
   {% endfor %}
 </div>

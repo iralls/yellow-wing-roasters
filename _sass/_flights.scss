@@ -51,6 +51,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  cursor: pointer;
 
   .roasts-entry-visual {
     height: 10.5rem;
@@ -69,6 +70,7 @@
       transform 0.25s ease;
   }
 
+  &:hover .roasts-entry-visual,
   .roasts-entry-visual:hover,
   .roasts-entry-visual:focus {
     background-color: #ffffff;
@@ -86,60 +88,20 @@
     transition: transform 0.3s ease;
   }
 
+  &:hover .roasts-entry-mascot,
   .roasts-entry-visual:hover .roasts-entry-mascot,
   .roasts-entry-visual:focus .roasts-entry-mascot {
     transform: scale(1.05);
   }
 
-  .roasts-entry-badge {
-    top: 0.65rem;
-    left: 0.65rem;
-    font-size: 0.55rem;
-    padding: 0.2rem 0.55rem;
-  }
-
-  .roasts-entry-seasonal-badge {
-    top: 0.65rem;
-    right: 0.65rem;
-    font-size: 0.55rem;
-    padding: 0.2rem 0.55rem;
-  }
-
+  .roasts-entry-badge,
+  .roasts-entry-seasonal-badge,
   .roasts-entry-fto-badge {
-    top: 0.65rem;
-    right: 0.65rem;
-    font-size: 0.55rem;
-    padding: 0.2rem 0.55rem;
-  }
-
-  .roasts-entry-seasonal-badge ~ .roasts-entry-fto-badge {
-    top: 1.85rem;
+    display: none !important;
   }
 
   .roasts-entry-overlay {
-    padding: 0.85rem;
-  }
-
-  .roasts-entry-overlay-notes {
-    font-size: 0.8rem;
-    line-height: 1.35;
-    margin-bottom: 0.4rem;
-  }
-
-  .roasts-entry-overlay-level {
-    padding: 0.25rem 0.6rem;
-    gap: 0.35rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .roasts-entry-overlay-specialty {
-    font-size: 0.68rem;
-  }
-
-  .roasts-entry-overlay-brewing {
-    font-size: 0.65rem;
-    line-height: 1.3;
-    margin-top: 0.25rem;
+    display: none !important;
   }
 
   .roasts-entry-info {

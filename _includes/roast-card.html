@@ -116,10 +116,13 @@
    data-status="{{ r.status }}"
    data-roast="{{ r.slug }}">
   <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{{ r.title | escape }}">
-    {% include roast-status-badge.html roast=r %}
-    {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
-    {% if is_pure_fto or r.fair_trade_organic %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
+    {% unless include.hide_badges %}
+      {% include roast-status-badge.html roast=r %}
+      {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      {% if is_pure_fto or r.fair_trade_organic %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
+    {% endunless %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
+    {% unless include.hide_overlay %}
     <div class="roasts-entry-overlay">
       {% if r.tasting_notes %}
         <div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>
@@ -202,6 +205,7 @@
       {% endif %}
       {% include roast-overlay-status.html roast=r %}
     </div>
+    {% endunless %}
   </a>
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">

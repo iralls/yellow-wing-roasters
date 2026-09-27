@@ -42,6 +42,18 @@
         addBtn.disabled = false;
       }, 1200);
     });
+
+    var cards = document.querySelectorAll('.aviary-card');
+    cards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (!e.target.closest('a')) {
+          var link = card.querySelector('a.roasts-entry-visual');
+          if (link && link.href) {
+            window.location.href = link.href;
+          }
+        }
+      });
+    });
   };
 
   window.initPYOFlight = function (options) {
