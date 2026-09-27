@@ -16,10 +16,10 @@ origins:
 mascot: double-crested-cormorant
 mascot_file: double-crested-cormorant-transparent.png
 price:
-  12oz: 14
-  1lb: 18
-  2lb: 36
-  5lb: 90
+  12oz: 12
+  1lb: 16
+  2lb: 32
+  5lb: 80
 
 subscription:
   frequencies:
