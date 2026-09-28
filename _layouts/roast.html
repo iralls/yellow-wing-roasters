@@ -90,77 +90,12 @@ layout: default
     <div class="roast-mv-meta-value">{{ page.brewing_method }}</div>
   </div>
   {% endif %}
-  {% assign is_page_fto = false %}
-  {% assign is_page_organic = false %}
-  {% if page.fair_trade_organic or page.fto or page.certification == "fair_trade_organic" or page.title contains "Fair Trade Organic" %}
-    {% assign is_page_fto = true %}
-    {% assign is_page_organic = true %}
-  {% elsif page.organic or page.certification == "organic" or page.title contains "Organic" %}
-    {% assign is_page_organic = true %}
-  {% elsif page.history %}
-    {% assign cur_recipe = page.history.first %}
-    {% assign total_comps = cur_recipe.components.size %}
-    {% assign fto_comps = 0 %}
-    {% assign organic_comps = 0 %}
-    {% for c in cur_recipe.components %}
-      {% assign comp_is_fto = false %}
-      {% assign comp_is_organic = false %}
-      {% if c.fair_trade_organic or c.fto or c.certification == "fair_trade_organic" %}
-        {% assign comp_is_fto = true %}
-        {% assign comp_is_organic = true %}
-      {% elsif c.organic or c.certification == "organic" %}
-        {% assign comp_is_organic = true %}
-      {% elsif c.slug %}
-        {% for so in site.roasts %}
-          {% if so.slug == c.slug %}
-            {% if so.fair_trade_organic or so.fto or so.certification == "fair_trade_organic" %}
-              {% assign comp_is_fto = true %}
-              {% assign comp_is_organic = true %}
-            {% elsif so.organic or so.certification == "organic" %}
-              {% assign comp_is_organic = true %}
-            {% elsif so.history %}
-              {% assign so_recipe = so.history.first %}
-              {% assign so_all_fto = true %}
-              {% assign so_all_org = true %}
-              {% for sc in so_recipe.components %}
-                {% unless sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
-                  {% assign so_all_fto = false %}
-                {% endunless %}
-                {% unless sc.organic or sc.certification == "organic" or sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
-                  {% assign so_all_org = false %}
-                {% endunless %}
-              {% endfor %}
-              {% if so_all_fto %}
-                {% assign comp_is_fto = true %}
-                {% assign comp_is_organic = true %}
-              {% elsif so_all_org %}
-                {% assign comp_is_organic = true %}
-              {% endif %}
-            {% endif %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-      {% if comp_is_fto %}
-        {% assign fto_comps = fto_comps | plus: 1 %}
-      {% endif %}
-      {% if comp_is_organic %}
-        {% assign organic_comps = organic_comps | plus: 1 %}
-      {% endif %}
-    {% endfor %}
-    {% if total_comps > 0 and fto_comps == total_comps %}
-      {% assign is_page_fto = true %}
-      {% assign is_page_organic = true %}
-    {% elsif total_comps > 0 and organic_comps == total_comps %}
-      {% assign is_page_organic = true %}
-    {% endif %}
-  {% endif %}
-  {% if is_page_fto %}
+  {% if page.certification == "fair_trade_organic" %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Certification</div>
     <div class="roast-mv-meta-value">Fair Trade Organic</div>
   </div>
-  {% elsif is_page_organic %}
+  {% elsif page.certification == "organic" %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Certification</div>
     <div class="roast-mv-meta-value">Organic</div>

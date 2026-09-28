@@ -60,70 +60,13 @@ min_bags: 4
       {% endif %}
       {% assign is_100_fto = false %}
       {% assign is_100_organic = false %}
-      {% if r.fair_trade_organic or r.fto or r.certification == "fair_trade_organic" %}
+      {% if r.certification == "fair_trade_organic" %}
         {% assign is_100_fto = true %}
         {% assign is_100_organic = true %}
-      {% elsif r.organic or r.certification == "organic" %}
+      {% elsif r.certification == "organic" %}
         {% assign is_100_organic = true %}
-      {% elsif r.history %}
-        {% assign cur_recipe = r.history.first %}
-        {% assign total_comps = cur_recipe.components.size %}
-        {% assign fto_comps = 0 %}
-        {% assign organic_comps = 0 %}
-        {% for c in cur_recipe.components %}
-          {% assign comp_is_fto = false %}
-          {% assign comp_is_organic = false %}
-          {% if c.fair_trade_organic or c.fto or c.certification == "fair_trade_organic" %}
-            {% assign comp_is_fto = true %}
-            {% assign comp_is_organic = true %}
-          {% elsif c.organic or c.certification == "organic" %}
-            {% assign comp_is_organic = true %}
-          {% elsif c.slug %}
-            {% for so in site.roasts %}
-              {% if so.slug == c.slug %}
-                {% if so.fair_trade_organic or so.fto or so.certification == "fair_trade_organic" %}
-                  {% assign comp_is_fto = true %}
-                  {% assign comp_is_organic = true %}
-                {% elsif so.organic or so.certification == "organic" %}
-                  {% assign comp_is_organic = true %}
-                {% elsif so.history %}
-                  {% assign so_recipe = so.history.first %}
-                  {% assign so_all_fto = true %}
-                  {% assign so_all_org = true %}
-                  {% for sc in so_recipe.components %}
-                    {% unless sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
-                      {% assign so_all_fto = false %}
-                    {% endunless %}
-                    {% unless sc.organic or sc.certification == "organic" or sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
-                      {% assign so_all_org = false %}
-                    {% endunless %}
-                  {% endfor %}
-                  {% if so_all_fto %}
-                    {% assign comp_is_fto = true %}
-                    {% assign comp_is_organic = true %}
-                  {% elsif so_all_org %}
-                    {% assign comp_is_organic = true %}
-                  {% endif %}
-                {% endif %}
-                {% break %}
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-          {% if comp_is_fto %}
-            {% assign fto_comps = fto_comps | plus: 1 %}
-          {% endif %}
-          {% if comp_is_organic %}
-            {% assign organic_comps = organic_comps | plus: 1 %}
-          {% endif %}
-        {% endfor %}
-        {% if total_comps > 0 and fto_comps == total_comps %}
-          {% assign is_100_fto = true %}
-          {% assign is_100_organic = true %}
-        {% elsif total_comps > 0 and organic_comps == total_comps %}
-          {% assign is_100_organic = true %}
-        {% endif %}
       {% endif %}
-  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}" data-category="{{ r.category }}" data-type="{{ r.category | slugify }}" data-has-fto="{{ is_100_fto }}" data-has-organic="{{ is_100_organic }}" data-certification="{% if is_100_fto %}fto{% elsif is_100_organic %}organic{% endif %}">
+  <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}" data-category="{{ r.category }}" data-type="{{ r.category | slugify }}" data-has-fto="{{ is_100_fto }}" data-has-organic="{{ is_100_organic }}" data-certification="{{ r.certification }}">
     <div class="roasts-entry-visual">
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}

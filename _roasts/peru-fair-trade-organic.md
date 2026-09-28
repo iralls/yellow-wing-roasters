@@ -12,7 +12,7 @@ brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
 origins:
   - Peru Washed
-fair_trade_organic: true
+certification: fair_trade_organic
 mascot: killdeer
 mascot_file: audubon-killdeer-transparent.png
 price:

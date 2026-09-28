@@ -58,7 +58,7 @@ permalink: /roasts/
     <select id="filter-certification" class="subscribe-select" title="Filter by certification">
       <option value="">All</option>
       <option value="organic">Organic</option>
-      <option value="fto">Fair Trade Organic</option>
+      <option value="fair_trade_organic">Fair Trade Organic</option>
     </select>
   </div>
 </div>

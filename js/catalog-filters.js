@@ -216,12 +216,12 @@
         var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
         var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
 
-        // Certification filter: supports 'organic' and 'fto' (fair trade organic)
+        // Certification filter: supports 'organic' and 'fair_trade_organic'
         var matchesCert = true;
-        if (chosenCert === 'fto' || chosenCert === 'fair-trade-organic') {
-          matchesCert = card.getAttribute('data-has-fto') === 'true' || card.getAttribute('data-fto') === 'true';
+        if (chosenCert === 'fair_trade_organic' || chosenCert === 'fto') {
+          matchesCert = card.getAttribute('data-has-fto') === 'true';
         } else if (chosenCert === 'organic') {
-          matchesCert = card.getAttribute('data-has-organic') === 'true' || card.getAttribute('data-has-fto') === 'true';
+          matchesCert = card.getAttribute('data-has-organic') === 'true';
         }
 
         // Show/Hide Card: ALL filters strictly ANDed together
@@ -258,8 +258,8 @@
       if (urlParams.get('organic') === 'true' || urlParams.get('certification') === 'organic') {
         selectCertification.value = 'organic';
         applyFilters();
-      } else if (urlParams.get('fto') || urlParams.get('fair-trade-organic') || urlParams.get('certification') === 'fto') {
-        selectCertification.value = 'fto';
+      } else if (urlParams.get('fto') || urlParams.get('fair-trade-organic') || urlParams.get('certification') === 'fair_trade_organic' || urlParams.get('certification') === 'fto') {
+        selectCertification.value = 'fair_trade_organic';
         applyFilters();
       }
     }
