@@ -393,7 +393,7 @@
       document.getElementById('gift-purchaser-name').name = 'entry.1153405702';
       document.getElementById('gift-purchaser-email').name = 'entry.65766604';
 
-      // Map Shipping Address
+      // Map Delivery Address
       document.getElementById('gift-address').name = 'entry.148046999';
       document.getElementById('gift-city').name = 'entry.1534670804';
       document.getElementById('gift-state').name = 'entry.414179858';

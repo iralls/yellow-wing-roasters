@@ -55,7 +55,7 @@ permalink: /gift/
             </div>
             <div class="roasts-entry-meta">
               <div class="roasts-entry-layman">Physical</div>
-              <div class="roasts-entry-descriptor">ships to their door</div>
+              <div class="roasts-entry-descriptor">delivered to their door</div>
             </div>
           </div>
         </div>

@@ -657,18 +657,28 @@
     }
   }
 
+  function updateDeliveryNote(isPickup) {
+    if (!deliveryNote) return;
+    deliveryNote.textContent = isPickup
+      ? 'Please specify in the notes how you want to coordinate pickup.'
+      : 'Available in Guilford, (North) Branford, Madison, and Durham.';
+    deliveryNote.style.display = '';
+  }
+
   for (var di = 0; di < deliveryRadios.length; di++) {
     deliveryRadios[di].addEventListener('change', function () {
       var v = this.value;
       var isPickup = (v === 'Pickup');
       if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
-      if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+      updateDeliveryNote(isPickup);
       setAddressFieldsState(isPickup);
     });
   }
 
   var initialDelivery = form.querySelector('input[name="entry.577333073"]:checked');
-  setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
+  var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
+  setAddressFieldsState(isInitialPickup);
+  updateDeliveryNote(isInitialPickup);
 
   var iframe = document.createElement('iframe');
   iframe.name = 'byob-submit-frame';

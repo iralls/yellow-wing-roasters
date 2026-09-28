@@ -7,7 +7,7 @@ sitemap: false
 
 # Order received
 
-Thanks for your order. We'll email you back shortly to confirm pricing, payment, and pickup or shipping.
+Thanks for your order. We'll email you back shortly to confirm pricing, payment, and pickup or delivery.
 
 <div id="gift-card-container" style="display: none; max-width: 480px; margin: 2.5rem auto; padding: 2rem; border: 2px dashed #d0c0b0; border-radius: 1rem; background-color: #faf8f5; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
   <div style="font-size: 1.5rem; font-weight: 700; color: #2c1e14; margin-bottom: 0.5rem;">Your Gift Card is Ready!</div>

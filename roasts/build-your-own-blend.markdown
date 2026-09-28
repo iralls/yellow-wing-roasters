@@ -244,10 +244,8 @@ permalink: /roasts/build-your-own-blend/
         <div class="pill-radios">
           <label class="order-radio"><input type="radio" name="entry.577333073" value="Pickup" checked> Pickup</label>
           <label class="order-radio"><input type="radio" name="entry.577333073" value="Hand delivery"> Hand delivery</label>
-          <label class="order-radio order-radio--disabled"><input type="radio" name="entry.577333073" value="Ship to me" disabled> Ship to me</label>
         </div>
-        <p id="byob-delivery-note" class="order-delivery-note" style="display:none;">Available in Guilford, (North) Branford, Madison, and Durham.</p>
-        <p class="order-delivery-note">Shipping coming soon.</p>
+        <p id="byob-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
       </fieldset>
 
       <div id="byob-shipping" class="order-shipping" style="display:none;">

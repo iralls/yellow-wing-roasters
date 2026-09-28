@@ -254,9 +254,7 @@
         }
       }
 
-      var delivery = document.querySelector('input[name="entry.1896226742"]:checked');
-      var shippingCost = (delivery && delivery.value === 'Ship to me' && subtotal < 40) ? 5 : 0;
-      var grandTotal = Math.max(0, subtotal - discountValue) + shippingCost;
+      var grandTotal = Math.max(0, subtotal - discountValue);
 
       if (discountValue > 0) {
         var discountRow = document.createElement('div');
@@ -266,13 +264,6 @@
         discountRow.style.color = '#5746e3';
         discountRow.innerHTML = '<span class="order-cart-total-label">Discount (' + appliedDiscount.code + ' &mdash; $' + appliedDiscount.value.toFixed(2) + ' available)</span><span class="order-cart-total-value">-$' + discountValue.toFixed(2) + '</span>';
         itemsEl.appendChild(discountRow);
-      }
-
-      if (shippingCost > 0) {
-        var shippingRow = document.createElement('div');
-        shippingRow.className = 'order-cart-shipping';
-        shippingRow.innerHTML = '<span class="order-cart-total-label">Shipping</span><span class="order-cart-total-value">$' + shippingCost + '</span>';
-        itemsEl.appendChild(shippingRow);
       }
 
       var totalRow = document.createElement('div');
@@ -314,19 +305,29 @@
       }
     }
 
+    function updateDeliveryNote(isPickup) {
+      if (!deliveryNote) return;
+      deliveryNote.textContent = isPickup
+        ? 'Please specify in the notes how you want to coordinate pickup.'
+        : 'Available in Guilford, (North) Branford, Madison, and Durham.';
+      deliveryNote.style.display = '';
+    }
+
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
         var isPickup = (v === 'Pickup');
         if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
-        if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        updateDeliveryNote(isPickup);
         setAddressFieldsState(isPickup);
         render();
       });
     }
 
     var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
-    setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
+    var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
+    setAddressFieldsState(isInitialPickup);
+    updateDeliveryNote(isInitialPickup);
 
     // Apply Discount Button Click Handler
     var applyBtn = document.getElementById('apply-discount-btn');
@@ -497,7 +498,9 @@
         status.className = 'order-status';
       }
       var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
-      setAddressFieldsState(!delivery || delivery.value === 'Pickup');
+      var isPickup = (!delivery || delivery.value === 'Pickup');
+      setAddressFieldsState(isPickup);
+      updateDeliveryNote(isPickup);
       render();
     });
     window.addEventListener('storage', render);
