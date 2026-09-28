@@ -54,9 +54,10 @@ permalink: /roasts/
   </div>
 
   <div class="filter-group">
-    <label for="filter-fto" class="roast-mv-meta-label">Fair Trade Organic</label>
-    <select id="filter-fto" class="subscribe-select" title="Filter by Fair Trade Organic certification">
+    <label for="filter-certification" class="roast-mv-meta-label">Certification</label>
+    <select id="filter-certification" class="subscribe-select" title="Filter by certification">
       <option value="">All</option>
+      <option value="organic">Organic</option>
       <option value="fto">Fair Trade Organic</option>
     </select>
   </div>

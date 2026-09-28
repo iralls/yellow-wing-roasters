@@ -12,7 +12,7 @@ brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
 origins:
   - Bolivia Washed
-fair_trade_organic: true
+organic: true
 mascot: kingfisher
 mascot_file: audubon-kingfisher-transparent.png
 status: just_hatched

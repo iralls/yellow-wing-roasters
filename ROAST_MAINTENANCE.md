@@ -148,7 +148,11 @@ Use integer numbers `1` through `5` (defined in `_data/roast_levels.yml`):
 * `brewing_method`: Recommended methods (e.g., `Pour-over, Drip, AeroPress`).
 
 ### Certifications
-* `fair_trade_organic: true` (or `fto: true`): Adds the **FTO** badge to the card and detail page.
+Two certification levels are supported:
+* `organic: true` (or `certification: organic`): Adds the **Organic** badge to the card and lists "Organic" on the detail page.
+* `fair_trade_organic: true` (or `fto: true` or `certification: fair_trade_organic`): Adds the **FTO** badge to the card and lists "Fair Trade Organic" on the detail page.
+* Blends dynamically calculate certification: if 100% of components are Fair Trade Organic, the blend earns the **FTO** badge; if 100% of components are Organic (or a mix of Organic and FTO), the blend earns the **Organic** badge.
+* Rotating single origins (`rotating: true` with `history:`): When rotating to an organic lot (e.g. Kayon Mountain for Ethiopia Guji), update the top-level `organic: true` to reflect the active lot, and set `organic: true` on the component entry in `history:`.
 
 ---
 
@@ -201,6 +205,7 @@ mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 status: just_hatched
 rotating: false
+organic: false
 fair_trade_organic: false
 
 price:

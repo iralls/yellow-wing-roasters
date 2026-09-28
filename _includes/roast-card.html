@@ -57,20 +57,52 @@
 {% assign bean_list = card_beans | uniq | join: "," %}
 
 {% assign is_100_fto = false %}
-{% if r.fair_trade_organic or r.fto or r.organic %}
+{% assign is_100_organic = false %}
+{% if r.fair_trade_organic or r.fto or r.certification == "fair_trade_organic" %}
   {% assign is_100_fto = true %}
+  {% assign is_100_organic = true %}
+{% elsif r.organic or r.certification == "organic" %}
+  {% assign is_100_organic = true %}
 {% elsif r.history %}
   {% assign cur_recipe = r.history.first %}
   {% assign total_comps = cur_recipe.components.size %}
   {% assign fto_comps = 0 %}
+  {% assign organic_comps = 0 %}
   {% for c in cur_recipe.components %}
     {% assign comp_is_fto = false %}
-    {% if c.fair_trade_organic %}
+    {% assign comp_is_organic = false %}
+    {% if c.fair_trade_organic or c.fto or c.certification == "fair_trade_organic" %}
       {% assign comp_is_fto = true %}
+      {% assign comp_is_organic = true %}
+    {% elsif c.organic or c.certification == "organic" %}
+      {% assign comp_is_organic = true %}
     {% elsif c.slug %}
       {% for so in site.roasts %}
-        {% if so.slug == c.slug and so.fair_trade_organic %}
-          {% assign comp_is_fto = true %}
+        {% if so.slug == c.slug %}
+          {% if so.fair_trade_organic or so.fto or so.certification == "fair_trade_organic" %}
+            {% assign comp_is_fto = true %}
+            {% assign comp_is_organic = true %}
+          {% elsif so.organic or so.certification == "organic" %}
+            {% assign comp_is_organic = true %}
+          {% elsif so.history %}
+            {% assign so_recipe = so.history.first %}
+            {% assign so_all_fto = true %}
+            {% assign so_all_org = true %}
+            {% for sc in so_recipe.components %}
+              {% unless sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
+                {% assign so_all_fto = false %}
+              {% endunless %}
+              {% unless sc.organic or sc.certification == "organic" or sc.fair_trade_organic or sc.fto or sc.certification == "fair_trade_organic" %}
+                {% assign so_all_org = false %}
+              {% endunless %}
+            {% endfor %}
+            {% if so_all_fto %}
+              {% assign comp_is_fto = true %}
+              {% assign comp_is_organic = true %}
+            {% elsif so_all_org %}
+              {% assign comp_is_organic = true %}
+            {% endif %}
+          {% endif %}
           {% break %}
         {% endif %}
       {% endfor %}
@@ -78,9 +110,15 @@
     {% if comp_is_fto %}
       {% assign fto_comps = fto_comps | plus: 1 %}
     {% endif %}
+    {% if comp_is_organic %}
+      {% assign organic_comps = organic_comps | plus: 1 %}
+    {% endif %}
   {% endfor %}
   {% if total_comps > 0 and fto_comps == total_comps %}
     {% assign is_100_fto = true %}
+    {% assign is_100_organic = true %}
+  {% elsif total_comps > 0 and organic_comps == total_comps %}
+    {% assign is_100_organic = true %}
   {% endif %}
 {% endif %}
 
@@ -91,6 +129,8 @@
    data-process="{{ process_list }}"
    data-beans="{{ bean_list }}"
    data-has-fto="{{ is_100_fto }}"
+   data-has-organic="{{ is_100_organic }}"
+   data-certification="{% if is_100_fto %}fto{% elsif is_100_organic %}organic{% endif %}"
    data-roast-dots="{{ r_dots }}"
    data-brewing="{{ r.brewing_method }}"
    data-roast-level="{{ r.roast_level }}"
@@ -102,7 +142,11 @@
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
       {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
-      {% if is_100_fto %}<div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>{% endif %}
+      {% if is_100_fto %}
+        <div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>
+      {% elsif is_100_organic %}
+        <div class="roasts-entry-organic-badge" title="Organic">Organic</div>
+      {% endif %}
     {% endunless %}
     {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
     {% unless include.hide_overlay %}

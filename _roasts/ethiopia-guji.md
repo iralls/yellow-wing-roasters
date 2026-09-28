@@ -12,9 +12,9 @@ brewing_method: Pour-over, Drip, Espresso
 processing_method: Natural (Dry Process)
 origins:
   - Ethiopia Natural
+organic: true
 mascot: baltimore-oriole
 mascot_file: audubon-baltimore-oriole-transparent.png
-rotating: true
 price:
   12oz: 14
   1lb: 16
@@ -30,6 +30,7 @@ history:
   - date: "2026-09"
     components:
       - name: Ethiopian Guji Natural Org. Gr. 1 - Kayon Mountain Shakiso
+        organic: true
         ratio: 100%
     description: >-
       Clean, bright, and sweet with diverse notes of darker fruit, citrus, floral highlights, and spiced chocolate with a jammy body. Organic Grade 1 natural from Ismael Hassen Aredo and family at Kayon Mountain Farm in Shakiso, Guji.
