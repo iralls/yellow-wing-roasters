@@ -84,7 +84,7 @@
   <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{{ r.title | escape }}">
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
-      {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      {% if r.featured %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
       {% if is_100_fto %}
         <div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>
       {% elsif is_100_organic %}

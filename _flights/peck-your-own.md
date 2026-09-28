@@ -69,7 +69,7 @@ min_bags: 4
   <div class="roasts-entry pyo-option" data-slug="{{ r.slug }}" data-title="{{ r.title }}" data-roast="{{ r.slug }}" data-category="{{ r.category }}" data-type="{{ r.category | slugify }}" data-has-fto="{{ is_100_fto }}" data-has-organic="{{ is_100_organic }}" data-certification="{{ r.certification }}">
     <div class="roasts-entry-visual">
       {% include roast-status-badge.html roast=r %}
-      {% if r.rotating %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      {% if r.featured %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
       {% if is_100_fto %}
         <div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>
       {% elsif is_100_organic %}

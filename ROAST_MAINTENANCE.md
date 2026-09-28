@@ -8,7 +8,7 @@ All roasts live as markdown files with YAML frontmatter in the `_roasts/` direct
 
 ## Table of Contents
 1. [Status & Lifecycle (`status`)](#1-status--lifecycle-status)
-2. [Featured Roasts (`rotating`)](#2-featured-roasts-rotating)
+2. [Featured Roasts (`featured`) & Rotating Selections (`rotating`)](#2-featured-roasts-featured--rotating-selections-rotating)
 3. [Pricing & Available Bag Sizes (`price`)](#3-pricing--available-bag-sizes-price)
 4. [Blend Recipes & Recipe History (`history`)](#4-blend-recipes--recipe-history-history)
 5. [Roast Level & Flavor Profile](#5-roast-level--flavor-profile)
@@ -39,15 +39,27 @@ status: low_stock
 
 ---
 
-## 2. Featured Roasts (`rotating`)
+## 2. Featured Roasts (`featured`) & Rotating Selections (`rotating`)
+
+### Featured Roasts (`featured`)
 
 To highlight a roast on the catalog with a **Featured** badge:
+
+```yaml
+featured: true
+```
+
+Set to `false` or omit the line when the roast is no longer featured.
+
+### Rotating Selections (`rotating`)
+
+For single-origin coffees where the general regional profile is maintained but specific lots or producers rotate throughout the year (e.g., Ethiopia Guji):
 
 ```yaml
 rotating: true
 ```
 
-Set to `false` or omit the line when the roast is no longer highlighted.
+This renders a **"Rotating selection throughout the year"** banner across the roast card's hover/focus overlay. When rotating to an organic lot, remember to also set `certification: organic` in frontmatter. Set to `false` or omit for static single origins.
 
 ---
 
@@ -204,7 +216,8 @@ origins:
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 status: just_hatched
-rotating: false
+# featured: true # Optional: highlight with "Featured" badge
+# rotating: true # Optional: for regional offerings that rotate lots/producers
 # certification: organic # Optional: "organic" or "fair_trade_organic"
 
 price:
@@ -238,7 +251,7 @@ brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
 status: just_hatched
-rotating: true
+# featured: true # Optional: highlight with "Featured" badge
 
 origins:
   - Brazil Natural

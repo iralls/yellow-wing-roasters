@@ -14,7 +14,7 @@ origins:
   - Ethiopia Natural
 mascot: rose-breasted-grosbeak
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
-rotating: true
+featured: true
 price:
   12oz: 14
   1lb: 18
