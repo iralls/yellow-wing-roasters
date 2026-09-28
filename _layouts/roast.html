@@ -202,27 +202,6 @@ layout: default
   <li>{{ o }}</li>
   {% endfor %}
 </ul>
-{% if page.history and page.history.size > 0 %}
-<div class="roast-mv-center">
-  <details class="roast-mv-history">
-    <summary>Recipe History</summary>
-    <div class="roast-mv-history-content">
-      {% for recipe in page.history %}
-      <div class="roast-mv-history-item">
-        <div class="roast-mv-history-date">{{ recipe.date | default: recipe.version | default: recipe.season }}{% if forloop.first %} (Current){% endif %}</div>
-        <ul class="roast-mv-comp-list">
-          {% for c in recipe.components %}
-          <li>
-            {% if c.slug %}<a href="{{ '/roasts/' | append: c.slug | append: '/' | relative_url }}" class="roast-comp-link">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ratio %} <span class="roast-comp-ratio">{{ c.ratio }}</span>{% endif %}{% if c.roast_level %} <span class="roast-comp-level">({{ c.roast_level }})</span>{% endif %}{% if c.profile %} <a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>(.alog)</a>{% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
-    </div>
-  </details>
-</div>
-{% endif %}
 {% elsif page.components %}
 <div class="roast-mv-divider"></div>
 <div class="roast-mv-center" style="margin-bottom:0.75rem;">
@@ -233,6 +212,33 @@ layout: default
   <li>{{ c.name }}{% if c.profile %} <a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>(.alog)</a>{% endif %}</li>
   {% endfor %}
 </ul>
+{% endif %}
+
+{% if page.history and page.history.size > 0 %}
+<div class="roast-mv-center">
+  <details class="roast-mv-history">
+    <summary>{% if page.category == 'single origin' %}Lot History{% else %}Recipe History{% endif %}</summary>
+    <div class="roast-mv-history-content">
+      {% for recipe in page.history %}
+      <div class="roast-mv-history-item">
+        <div class="roast-mv-history-date">{{ recipe.date | default: recipe.version | default: recipe.season }}{% if forloop.first %} (Current){% endif %}</div>
+        {% if recipe.components %}
+        <ul class="roast-mv-comp-list">
+          {% for c in recipe.components %}
+          <li>
+            {% if c.slug %}<a href="{{ '/roasts/' | append: c.slug | append: '/' | relative_url }}" class="roast-comp-link">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ratio %} <span class="roast-comp-ratio">{{ c.ratio }}</span>{% endif %}{% if c.roast_level %} <span class="roast-comp-level">({{ c.roast_level }})</span>{% endif %}{% if c.profile %} <a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>(.alog)</a>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if recipe.description %}
+        <p class="roast-mv-history-desc">{{ recipe.description }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </details>
+</div>
 {% endif %}
 
 </div>
