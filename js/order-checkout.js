@@ -306,14 +306,27 @@
     var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
     var addressFields = document.getElementById('order-address-fields');
     var deliveryNote = document.getElementById('order-delivery-note');
+    function setAddressFieldsState(isPickup) {
+      if (!addressFields) return;
+      var inputs = addressFields.querySelectorAll('input, select, textarea');
+      for (var k = 0; k < inputs.length; k++) {
+        inputs[k].disabled = isPickup;
+      }
+    }
+
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
-        addressFields.style.display = (v === 'Pickup') ? 'none' : '';
-        deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        var isPickup = (v === 'Pickup');
+        if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
+        if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        setAddressFieldsState(isPickup);
         render();
       });
     }
+
+    var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
+    setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
 
     // Apply Discount Button Click Handler
     var applyBtn = document.getElementById('apply-discount-btn');
@@ -463,6 +476,9 @@
       iframe.onload = finish;
       setTimeout(finish, 5000);
 
+      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      setAddressFieldsState(!delivery || delivery.value === 'Pickup');
+
       form.submit();
     }
 
@@ -480,6 +496,8 @@
         status.textContent = '';
         status.className = 'order-status';
       }
+      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      setAddressFieldsState(!delivery || delivery.value === 'Pickup');
       render();
     });
     window.addEventListener('storage', render);

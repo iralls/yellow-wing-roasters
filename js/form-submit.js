@@ -23,13 +23,26 @@
     var addressFields = document.getElementById('byob-shipping');
     var deliveryNote = document.getElementById('byob-delivery-note');
 
+    function setAddressFieldsState(isPickup) {
+      if (!addressFields) return;
+      var inputs = addressFields.querySelectorAll('input, select, textarea');
+      for (var k = 0; k < inputs.length; k++) {
+        inputs[k].disabled = isPickup;
+      }
+    }
+
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
-        if (addressFields) addressFields.style.display = (v === 'Pickup') ? 'none' : '';
+        var isPickup = (v === 'Pickup');
+        if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
         if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        setAddressFieldsState(isPickup);
       });
     }
+
+    var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
+    setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
 
     var iframe = createSubmitIframe('byob-submit-frame');
     form.target = 'byob-submit-frame';
@@ -42,6 +55,9 @@
         var grindPrefix = '[Grind: ' + grindEl.value + ']';
         notesEl.value = currentNotes ? grindPrefix + ' ' + currentNotes : grindPrefix;
       }
+
+      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      setAddressFieldsState(!delivery || delivery.value === 'Pickup');
 
       if (status) {
         status.textContent = 'Sending…';

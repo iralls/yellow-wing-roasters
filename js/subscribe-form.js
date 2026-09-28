@@ -166,13 +166,27 @@
     var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
     var addressFields = document.getElementById('sub-address-fields');
     var deliveryNote = document.getElementById('sub-delivery-note');
+
+    function setAddressFieldsState(isPickup) {
+      if (!addressFields) return;
+      var inputs = addressFields.querySelectorAll('input, select, textarea');
+      for (var k = 0; k < inputs.length; k++) {
+        inputs[k].disabled = isPickup;
+      }
+    }
+
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
-        addressFields.style.display = (v === 'Pickup') ? 'none' : '';
-        deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        var isPickup = (v === 'Pickup');
+        if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
+        if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+        setAddressFieldsState(isPickup);
       });
     }
+
+    var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
+    setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
 
     var iframe = document.createElement('iframe');
     iframe.name = 'sub-submit-frame';
@@ -186,7 +200,7 @@
     form.addEventListener('submit', function () {
       var grindSelect = document.getElementById('sub-grind-select');
       var grindVal = grindSelect ? grindSelect.value : 'Whole Bean';
-      if (hiddenInput.value && hiddenInput.value.indexOf('Grind:') < 0) {
+      if (hiddenInput && hiddenInput.value && hiddenInput.value.indexOf('Grind:') < 0) {
         hiddenInput.value = hiddenInput.value + ' (Grind: ' + grindVal + ')';
       }
 
@@ -198,6 +212,9 @@
           priceHiddenInput.value = '$' + currentSubConfig.prices[selectedSize.value];
         }
       }
+
+      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      setAddressFieldsState(!delivery || delivery.value === 'Pickup');
 
       if (status) {
         status.textContent = 'Sending…';

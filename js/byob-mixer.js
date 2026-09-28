@@ -644,23 +644,31 @@
   var addressFields = document.getElementById('byob-shipping');
   var deliveryNote = document.getElementById('byob-delivery-note');
   
+  function setAddressFieldsState(isPickup) {
+    if (!addressFields) return;
+    var inputs = addressFields.querySelectorAll('input, select, textarea');
+    for (var k = 0; k < inputs.length; k++) {
+      inputs[k].disabled = isPickup;
+      if (isPickup) {
+        inputs[k].removeAttribute('required');
+      } else {
+        inputs[k].setAttribute('required', 'true');
+      }
+    }
+  }
+
   for (var di = 0; di < deliveryRadios.length; di++) {
     deliveryRadios[di].addEventListener('change', function () {
       var v = this.value;
-      addressFields.style.display = (v === 'Pickup') ? 'none' : '';
-      deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
-
-      // Toggle required attribute for address inputs
-      var inputs = addressFields.querySelectorAll('input');
-      inputs.forEach(function (inp) {
-        if (v === 'Pickup') {
-          inp.removeAttribute('required');
-        } else {
-          inp.setAttribute('required', 'true');
-        }
-      });
+      var isPickup = (v === 'Pickup');
+      if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
+      if (deliveryNote) deliveryNote.style.display = (v === 'Hand delivery') ? '' : 'none';
+      setAddressFieldsState(isPickup);
     });
   }
+
+  var initialDelivery = form.querySelector('input[name="entry.577333073"]:checked');
+  setAddressFieldsState(!initialDelivery || initialDelivery.value === 'Pickup');
 
   var iframe = document.createElement('iframe');
   iframe.name = 'byob-submit-frame';
@@ -671,6 +679,9 @@
   form.addEventListener('submit', function (e) {
     // Populate hidden field with the recipe
     hiddenRecipe.value = getRecipeString();
+
+    var delivery = form.querySelector('input[name="entry.577333073"]:checked');
+    setAddressFieldsState(!delivery || delivery.value === 'Pickup');
 
     if (status) {
       status.textContent = 'Sending…';
