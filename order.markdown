@@ -24,7 +24,12 @@ permalink: /order/
 
   <div class="order-field">
     <label for="order-email">Email</label>
-    <input id="order-email" type="email" name="entry.40149380" autocomplete="email">
+    <input id="order-email" type="email" name="entry.40149380" required autocomplete="email">
+  </div>
+
+  <div class="order-field">
+    <label for="order-phone">Phone number (optional)</label>
+    <input id="order-phone" type="tel" name="entry.1852073865" autocomplete="tel" placeholder="123-456-7890" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Please enter a 10-digit phone number (e.g. 123-456-7890)">
   </div>
 
   <fieldset class="order-delivery">

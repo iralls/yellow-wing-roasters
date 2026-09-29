@@ -329,6 +329,82 @@
     setAddressFieldsState(isInitialPickup);
     updateDeliveryNote(isInitialPickup);
 
+    // Auto-format and validate optional phone number
+    var phoneInput = document.getElementById('order-phone');
+    if (phoneInput) {
+      function formatPhoneNumber(val) {
+        if (!val) return '';
+        var digits = val.replace(/\D/g, '');
+        if (digits.length > 10 && digits[0] === '1') {
+          digits = digits.slice(1);
+        }
+        digits = digits.slice(0, 10);
+        if (digits.length <= 3) return digits;
+        if (digits.length <= 6) return digits.slice(0, 3) + '-' + digits.slice(3);
+        return digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6);
+      }
+
+      function updatePhoneFormat(input) {
+        var raw = input.value;
+        var selStart = input.selectionStart || 0;
+        var digitsBeforeCursor = 0;
+        for (var i = 0; i < selStart; i++) {
+          if (/\d/.test(raw[i])) digitsBeforeCursor++;
+        }
+
+        var formatted = formatPhoneNumber(raw);
+        input.value = formatted;
+
+        var newPos = 0;
+        var count = 0;
+        for (var j = 0; j < formatted.length; j++) {
+          if (/\d/.test(formatted[j])) count++;
+          if (count === digitsBeforeCursor) {
+            newPos = j + 1;
+            break;
+          }
+        }
+        if (digitsBeforeCursor === 0) newPos = 0;
+        if (typeof input.setSelectionRange === 'function') {
+          input.setSelectionRange(newPos, newPos);
+        }
+
+        var digits = formatted.replace(/\D/g, '');
+        if (formatted.trim() === '' || digits.length === 10) {
+          input.setCustomValidity('');
+        }
+      }
+
+      phoneInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' || e.keyCode === 8) {
+          var pos = this.selectionStart;
+          if (pos === this.selectionEnd && (pos === 4 || pos === 8)) {
+            e.preventDefault();
+            var val = this.value;
+            this.value = val.slice(0, pos - 2) + val.slice(pos - 1);
+            var nextPos = pos - 2;
+            if (typeof this.setSelectionRange === 'function') {
+              this.setSelectionRange(nextPos, nextPos);
+            }
+            updatePhoneFormat(this);
+          }
+        }
+      });
+
+      phoneInput.addEventListener('input', function () {
+        updatePhoneFormat(this);
+      });
+
+      phoneInput.addEventListener('blur', function () {
+        var digits = this.value.replace(/\D/g, '');
+        if (this.value.trim() !== '' && digits.length !== 10) {
+          this.setCustomValidity('Please enter a 10-digit phone number (e.g. 123-456-7890).');
+        } else {
+          this.setCustomValidity('');
+        }
+      });
+    }
+
     // Apply Discount Button Click Handler
     var applyBtn = document.getElementById('apply-discount-btn');
     var discountInput = document.getElementById('discount-code-input');
@@ -394,6 +470,19 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      if (phoneInput && phoneInput.value.trim()) {
+        var phoneDigits = phoneInput.value.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+          phoneInput.setCustomValidity('Please enter a 10-digit phone number (e.g. 123-456-7890).');
+          if (typeof phoneInput.reportValidity === 'function') {
+            phoneInput.reportValidity();
+          }
+          return;
+        } else {
+          phoneInput.setCustomValidity('');
+        }
+      }
 
       if (status) {
         status.textContent = 'Sending…';
