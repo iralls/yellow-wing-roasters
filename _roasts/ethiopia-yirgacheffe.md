@@ -1,6 +1,5 @@
 ---
 title: "Ethiopia Yirgacheffe"
-subtitle: "Grade 1"
 slug: ethiopia-yirgacheffe
 category: single origin
 order: 10
