@@ -9,14 +9,15 @@ permalink: /roasts/byob/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
+  <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">
   <h1 class="roast-mv-title">BYOB</h1>
 </div>
+<div class="roast-mv-subtitle">Bring Your Own Beans</div>
 
-<p class="roast-mv-tasting"><em>Bring Your Own Beans</em><br>Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest.</p>
+<p class="roast-mv-tasting">Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest.</p>
 
 <div class="roast-mv-divider"></div>
 

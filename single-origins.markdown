@@ -21,7 +21,7 @@ permalink: /single-origins/
   {% if r.status == 'flown_south' and byob_rendered == false %}
   <div class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin">
     <a class="roasts-entry-visual" href="{{ '/roasts/byob/' | relative_url }}" aria-label="BYOB - Bring your own beans">
-      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring your own beans mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
       </div>
@@ -66,7 +66,7 @@ permalink: /single-origins/
 {% if byob_rendered == false %}
   <div class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin">
     <a class="roasts-entry-visual" href="{{ '/roasts/byob/' | relative_url }}" aria-label="BYOB - Bring your own beans">
-      <img src="{{ '/images/audubon-byob-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring your own beans mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
       <div class="roasts-entry-overlay">
         <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
       </div>
