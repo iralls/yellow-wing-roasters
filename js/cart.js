@@ -76,19 +76,36 @@
         meta = (count > 0 ? count + ' × 8oz bags' : 'Sampler flight') + (rGrind ? ' · ' + rGrind : '');
         mascot = 'audubon-cardinal-transparent.png';
         unitPrice = (count || 4) * flightPyoPrice;
+      } else if (rSlug === 'byob-burner') {
+        var originSlug = vSlug;
+        var rRoastLevel = parts[4] || '';
+        var origData = rData[originSlug];
+        if (origData) {
+          title = 'BYOB: ' + origData.title;
+          mascot = 'bird-on-spit-transparent.png';
+          var sizeKey = rSize || '12oz';
+          unitPrice = (origData.prices && typeof origData.prices[sizeKey] === 'number') ? origData.prices[sizeKey] : 12;
+        } else {
+          title = 'BYOB: ' + (originSlug ? originSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); }) : 'Custom Roast');
+          mascot = 'bird-on-spit-transparent.png';
+          unitPrice = 12;
+        }
+        meta = (rSize ? rSize : '12oz') + (rRoastLevel ? ' · ' + rRoastLevel : '') + (rGrind ? ' · ' + rGrind : '');
       } else if (rData[rSlug]) {
         var r = rData[rSlug];
         title = r.title;
         if (vSlug && r.variants && r.variants[vSlug]) {
           title += ' — ' + r.variants[vSlug];
         }
-        meta = (rSize ? rSize : '12oz') + (rGrind ? ' · ' + rGrind : '');
+        var extraRoast = parts[4] || '';
+        meta = (rSize ? rSize : '12oz') + (extraRoast ? ' · ' + extraRoast : '') + (rGrind ? ' · ' + rGrind : '');
         mascot = r.mascot;
         var sizeKey = rSize || '12oz';
         unitPrice = (r.prices && typeof r.prices[sizeKey] === 'number') ? r.prices[sizeKey] : 0;
       } else {
         title = rSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
-        meta = (rSize ? rSize : '') + (rGrind ? ' · ' + rGrind : '');
+        var extraRoast = parts[4] || '';
+        meta = (rSize ? rSize : '') + (extraRoast ? ' · ' + extraRoast : '') + (rGrind ? ' · ' + rGrind : '');
         unitPrice = 0;
       }
 

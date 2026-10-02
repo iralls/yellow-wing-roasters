@@ -9,9 +9,13 @@ window.YWR_ROASTS_DATA = {
   {% for r in site.roasts %}
     {% assign r_level_key = r.roast_level | append: "" %}
     {% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}
+    {% assign r_specialty = level_info.specialty | default: level_info.name | default: r.roast_level %}
     {% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots | default: 0 %}{% endif %}
     {{ r.slug | jsonify }}: {
       title: {{ r.title | jsonify }},
+      category: {{ r.category | jsonify }},
+      roast_level: {{ r.roast_level | jsonify }},
+      roast_level_name: {{ r_specialty | jsonify }},
       mascot: {{ r.mascot_file | jsonify }},
       dots: {{ r_dots }},
       description: {{ r.description | default: "" | jsonify }},
@@ -33,6 +37,20 @@ window.YWR_ROASTS_DATA = {
           {% endif %}
         {% endfor %}
       }
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+};
+
+window.YWR_ROAST_LEVELS = {
+  {% for lvl_num in (1..5) %}
+    {% assign lvl_num_str = lvl_num | append: "" %}
+    {% assign lvl_data = site.data.roast_levels[lvl_num] | default: site.data.roast_levels[lvl_num_str] %}
+    {{ lvl_num | jsonify }}: {
+      name: {{ lvl_data.specialty | default: lvl_data.name | jsonify }},
+      full_name: {{ lvl_data.name | jsonify }},
+      dots: {{ lvl_data.dots }},
+      layman: {{ lvl_data.layman | jsonify }},
+      specialty: {{ lvl_data.specialty | jsonify }}
     }{% unless forloop.last %},{% endunless %}
   {% endfor %}
 };

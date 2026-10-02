@@ -39,6 +39,26 @@ permalink: /single-origins/
       </div>
     </div>
   </div>
+  <div class="roasts-entry" data-roast="byob-burner" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-burner/' | relative_url }}" aria-label="BYOB - Bring your own burner">
+      <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">pick any single origin and customize your roast level</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own burner</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast level</div>
+        </div>
+      </div>
+    </div>
+  </div>
   {% assign byob_rendered = true %}
   {% endif %}
   {% include roast-card.html roast=r %}
@@ -60,6 +80,26 @@ permalink: /single-origins/
         <div class="roasts-entry-meta">
           <div class="roasts-entry-layman">Custom</div>
           <div class="roasts-entry-descriptor">custom roast</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="roasts-entry" data-roast="byob-burner" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-burner/' | relative_url }}" aria-label="BYOB - Bring your own burner">
+      <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">pick any single origin and customize your roast level</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own burner</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast level</div>
         </div>
       </div>
     </div>

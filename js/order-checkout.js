@@ -33,11 +33,12 @@
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 
-    function cartKey(roast, variant, size, grind) {
-      return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
+    function cartKey(roast, variant, size, grind, roastLevel) {
+      return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean') + (roastLevel ? '|' + roastLevel : '');
     }
 
     var appliedDiscount = null;
+    var currentRenderedItems = [];
 
     function render() {
       var cart = loadCart();
@@ -50,38 +51,63 @@
         var vSlug = parts[1] || '';
         var rSize = parts[2] || '';
         var rGrind = parts[3] || 'Whole Bean';
+        var rRoastLevel = parts[4] || '';
 
         var matchedData = null;
-        for (var i = 0; i < roastData.length; i++) {
-          var d = roastData[i];
-          if (d.roast === rSlug && d.variant === vSlug && d.size === rSize) {
-            matchedData = d;
-            break;
-          }
-        }
-
-        if (!matchedData && typeof window !== 'undefined' && window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[rSlug]) {
-          var cat = window.YWR_ROASTS_DATA[rSlug];
-          var vName = (vSlug && cat.variants && cat.variants[vSlug]) ? cat.variants[vSlug] : '';
-          var fullLabel = cat.title + (vName ? ' — ' + vName : '');
+        if (rSlug === 'byob-burner') {
+          var originSlug = vSlug;
+          var origData = (typeof window !== 'undefined' && window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[originSlug]) ? window.YWR_ROASTS_DATA[originSlug] : null;
+          var originTitle = origData ? origData.title : (originSlug ? originSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); }) : 'Custom Roast');
+          var fullLabel = 'BYOB: ' + originTitle;
           var sizeStr = rSize || '12oz';
-          var formLabel = cat.title + (vName ? ' (' + vName + ') ' : ' ') + sizeStr;
-          var priceVal = (cat.prices && typeof cat.prices[sizeStr] === 'number') ? cat.prices[sizeStr] : 0;
+          var priceVal = (origData && origData.prices && typeof origData.prices[sizeStr] === 'number') ? origData.prices[sizeStr] : 12;
+          var roastLevelName = rRoastLevel || (origData ? origData.roast_level_name : 'City+');
+          var dotsMap = { 'City': 1, 'City+': 2, 'Full City': 3, 'Full City+': 4, 'Vienna': 5 };
+          var dotsCount = dotsMap[roastLevelName] || (origData ? origData.dots : 2);
+
           matchedData = {
             roast: rSlug,
             variant: vSlug,
             size: sizeStr,
             label: fullLabel,
-            formName: formLabel,
-            mascot: cat.mascot,
-            dots: cat.dots || 0,
+            formName: fullLabel + ' ' + sizeStr,
+            mascot: 'bird-on-spit-transparent.png',
+            dots: dotsCount,
             price: priceVal,
-            description: cat.description || ''
+            description: ''
           };
+        } else {
+          for (var i = 0; i < roastData.length; i++) {
+            var d = roastData[i];
+            if (d.roast === rSlug && d.variant === vSlug && d.size === rSize) {
+              matchedData = d;
+              break;
+            }
+          }
+
+          if (!matchedData && typeof window !== 'undefined' && window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[rSlug]) {
+            var cat = window.YWR_ROASTS_DATA[rSlug];
+            var vName = (vSlug && cat.variants && cat.variants[vSlug]) ? cat.variants[vSlug] : '';
+            var fullLabel = cat.title + (vName ? ' — ' + vName : '');
+            var sizeStr = rSize || '12oz';
+            var formLabel = cat.title + (vName ? ' (' + vName + ') ' : ' ') + sizeStr;
+            var priceVal = (cat.prices && typeof cat.prices[sizeStr] === 'number') ? cat.prices[sizeStr] : 0;
+            matchedData = {
+              roast: rSlug,
+              variant: vSlug,
+              size: sizeStr,
+              label: fullLabel,
+              formName: formLabel,
+              mascot: cat.mascot,
+              dots: cat.dots || 0,
+              price: priceVal,
+              description: cat.description || ''
+            };
+          }
         }
 
         if (matchedData) {
-          items.push({ data: matchedData, key: ck, qty: cart[ck], grind: rGrind });
+          items.push({ data: matchedData, key: ck, qty: cart[ck], grind: rGrind, roastLevel: rRoastLevel });
         } else {
           var itemPrice = 0;
           var itemLabel = rSlug;
@@ -160,7 +186,10 @@
 
         var sizeEl = document.createElement('span');
         sizeEl.className = 'order-cart-item-size';
-        sizeEl.textContent = item.data.size + (item.grind ? ' · ' + item.grind : '');
+        var metaParts = [item.data.size];
+        if (item.roastLevel) metaParts.push(item.roastLevel);
+        if (item.grind) metaParts.push(item.grind);
+        sizeEl.textContent = metaParts.join(' · ');
 
         var qtyWrap = document.createElement('div');
         qtyWrap.className = 'order-cart-qty-wrap';
@@ -271,8 +300,14 @@
       totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
       itemsEl.appendChild(totalRow);
 
+      currentRenderedItems = items;
+
       var itemLines = items.map(function (item) {
-        return item.qty + 'x ' + item.data.label + ' ' + item.data.size + (item.grind ? ' (' + item.grind + ')' : '');
+        var details = [];
+        if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
+        if (item.grind) details.push('Grind: ' + item.grind);
+        var detailsStr = details.length > 0 ? ' (' + details.join(', ') + ')' : '';
+        return item.qty + 'x ' + item.data.label + ' ' + item.data.size + detailsStr;
       }).join(', ');
       document.getElementById('order-items-hidden').value = itemLines;
       document.getElementById('order-total-hidden').value = '$' + grandTotal.toFixed(2);
@@ -497,24 +532,8 @@
       var discountValue = 0;
       if (appliedDiscount) {
         var subtotal = 0;
-        var cart = loadCart();
-        for (var i = 0; i < roastData.length; i++) {
-          var d = roastData[i];
-          var k = cartKey(d.roast, d.variant, d.size);
-          var qty = cart[k];
-          if (qty && qty > 0) {
-            subtotal += (d.price || 0) * qty;
-          }
-        }
-        for (var ck in cart) {
-          var parts = ck.split('|');
-          if (parts[0] === 'peck-your-own' && cart[ck] > 0) {
-            var choicesCount = parts[2].split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
-            var pyoPricePerBag = (config.flightPyoPrice || 10);
-            subtotal += choicesCount * pyoPricePerBag * cart[ck];
-          } else if (parts[0] === 'the-aviary' && cart[ck] > 0) {
-            subtotal += (config.flightAviaryPrice || 38) * cart[ck];
-          }
+        for (var t = 0; t < currentRenderedItems.length; t++) {
+          subtotal += (currentRenderedItems[t].data.price || 0) * currentRenderedItems[t].qty;
         }
 
         if (appliedDiscount.type === 'percent') {

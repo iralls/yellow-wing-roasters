@@ -154,6 +154,12 @@ Use integer numbers `1` through `5` (defined in `_data/roast_levels.yml`):
 * `4`: Full City+ (Medium-Dark)
 * `5`: Vienna (Dark)
 
+### Custom Roast Levels (BYOB — Bring Your Own Burner)
+Standard single-origin offerings showcase our prescribed roast recommendation. For customers who want to customize the roast level on a single-origin coffee:
+* Customers visit **BYOB — Bring Your Own Burner** (`/roasts/bring-your-own-burner/`), accessible via the custom card on the Single Origins catalog (`/single-origins/`).
+* Customers can select any in-stock single-origin bean, alter the roast level (City through Vienna), choose bag size and grind, and add it directly to their order.
+* Orders appear in the cart and Google Forms intake as `1x BYOB: [Origin Title] [Size] (Roast: [Level], Grind: [Grind])`.
+
 ### Descriptors & Tasting Notes
 * `descriptor`: Short punchy phrase (e.g., `bright and classic`, `dense and chocolatey`).
 * `tasting_notes`: Comma-separated list (e.g., `caramel, brown sugar, sweet finish`). Rendered with bullet separators (` · `) on the site.
