@@ -2,26 +2,8 @@
 {% for item in custom_items %}
 <div class="roasts-entry" data-roast="{{ item.data_roast | default: item.slug }}" data-category="custom" data-type="custom">
   <a class="roasts-entry-visual" href="{{ item.url | default: item.permalink | relative_url }}" aria-label="{{ item.card_title | default: item.title | escape }}{% if item.subtitle %} - {{ item.subtitle | escape }}{% endif %}">
-    {% if item.visual_type == "lazy_susan" or item.slug == "build-your-own-blend" or item.data_roast == "byob-blend" %}
-      <div class="lazy-susan-container">
-        <div class="lazy-susan-track">
-          <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
-            <span class="susan-dot"></span>
-            <span class="susan-dot"></span>
-            <span class="susan-dot"></span>
-          </div>
-          <div class="susan-birds susan-birds--depth">
-            <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-            <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
-            <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-          </div>
-          <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
-            <span class="susan-dot"></span>
-            <span class="susan-dot"></span>
-            <span class="susan-dot"></span>
-          </div>
-        </div>
-      </div>
+    {% if item.visual_type == "lazy_susan" %}
+      {% include lazy-susan.html %}
     {% elsif item.mascot_file %}
       <img src="{{ '/images/' | append: item.mascot_file | relative_url }}" alt="{{ item.mascot_alt | default: item.title | escape }}" class="roasts-entry-mascot" loading="lazy" decoding="async">
     {% endif %}

@@ -1,0 +1,39 @@
+{%- if include.hero -%}
+<div class="hero-susan-wrap{% if include.class %} {{ include.class }}{% endif %}">
+  <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+    <span class="susan-dot"></span>
+    <span class="susan-dot"></span>
+    <span class="susan-dot"></span>
+  </div>
+  <div class="susan-birds susan-birds--hero">
+    <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-center" aria-hidden="true" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
+  </div>
+  <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+    <span class="susan-dot"></span>
+    <span class="susan-dot"></span>
+    <span class="susan-dot"></span>
+  </div>
+</div>
+{%- else -%}
+<div class="lazy-susan-container{% if include.class %} {{ include.class }}{% endif %}">
+  <div class="lazy-susan-track">
+    <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+    </div>
+    <div class="susan-birds susan-birds--depth">
+      <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+      <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
+      <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+    </div>
+    <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+      <span class="susan-dot"></span>
+    </div>
+  </div>
+</div>
+{%- endif -%}

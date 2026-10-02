@@ -20,23 +20,7 @@ visual_type: lazy_susan
   <div class="roast-mv-divider"></div>
 
   <div class="roast-mv-center roast-mv-bird-wrap">
-    <div class="hero-susan-wrap">
-      <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
-        <span class="susan-dot"></span>
-        <span class="susan-dot"></span>
-        <span class="susan-dot"></span>
-      </div>
-      <div class="susan-birds susan-birds--hero">
-        <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
-        <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-center" aria-hidden="true" fetchpriority="high" decoding="async">
-        <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-hero-bird susan-hero-bird-side" aria-hidden="true" fetchpriority="high" decoding="async">
-      </div>
-      <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
-        <span class="susan-dot"></span>
-        <span class="susan-dot"></span>
-        <span class="susan-dot"></span>
-      </div>
-    </div>
+    {% include lazy-susan.html hero=true %}
   </div>
 
   <div class="roast-mv-center">

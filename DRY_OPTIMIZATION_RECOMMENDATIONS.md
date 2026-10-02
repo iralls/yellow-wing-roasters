@@ -27,8 +27,15 @@ This document outlines architectural and code-level optimization opportunities a
 5. [JavaScript Modularization](#5-javascript-modularization)
    - [5.1 Shared Cart Parsing & Storage (`parseCartItem`)](#51-shared-cart-parsing--storage-parsecartitem)
    - [5.2 Unified Google Form Iframe Submissions](#52-unified-google-form-iframe-submissions)
-6. [Repository Hygiene & File Organization](#6-repository-hygiene--file-organization)
-7. [Prioritized Implementation Matrix](#7-prioritized-implementation-matrix)
+6. [Defensive Coding & Silent Fallback Elimination](#6-defensive-coding--silent-fallback-elimination)
+   - [6.1 Ghost Property Fallbacks (`prices`, `status_badge`, `process`)](#61-ghost-property-fallbacks-prices-status_badge-process)
+   - [6.2 Redundant Defaults for Local Frontmatter Constants](#62-redundant-defaults-for-local-frontmatter-constants)
+   - [6.3 Hidden Data Bugs Masked by Fallbacks (Case Study: Mascots)](#63-hidden-data-bugs-masked-by-fallbacks-case-study-mascots)
+   - [6.4 Schema.org JSON-LD 6-Level Fallback Ladders](#64-schemaorg-json-ld-6-level-fallback-ladders)
+   - [6.5 Hardcoded JavaScript Duplicate Maps](#65-hardcoded-javascript-duplicate-maps)
+   - [6.6 Triple-Check Aliasing in Card Iterations](#66-triple-check-aliasing-in-card-iterations)
+7. [Repository Hygiene & File Organization](#7-repository-hygiene--file-organization)
+8. [Prioritized Implementation Matrix](#8-prioritized-implementation-matrix)
 
 ---
 
@@ -155,30 +162,9 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ---
 
 ### 2.6 Lazy Susan Animation Component
-* **Current State**: The 25-line nested HTML structure for the rotating Audubon trio (cardinal, goldfinch, bluebird) with graduated perspective dots is copy-pasted in 4 places:
-  * [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html#L5-L21)
-  * [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html#L5-L21)
-  * [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md#L13-L29)
-  * [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md#L16-L32)
-* **DRY Solution**: Extract to `_includes/lazy-susan.html`:
-  ```liquid
-  {% assign variant = include.variant | default: "card" %}
-  <div class="{% if variant == 'hero' %}hero-susan-wrap{% else %}lazy-susan-container{% endif %}">
-    <div class="{% if variant == 'hero' %}susan-track--hero{% else %}lazy-susan-track{% endif %}">
-      <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
-        <span class="susan-dot"></span><span class="susan-dot"></span><span class="susan-dot"></span>
-      </div>
-      <div class="susan-birds {% if variant == 'hero' %}susan-birds--hero{% else %}susan-birds--depth{% endif %}">
-        <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-        <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
-        <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-      </div>
-      <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
-        <span class="susan-dot"></span><span class="susan-dot"></span><span class="susan-dot"></span>
-      </div>
-    </div>
-  </div>
-  ```
+* **Status**: ✅ **Implemented**
+* **Solution**: Created `_includes/lazy-susan.html` supporting both card and hero header variants (`hero=true`). Replaced the duplicate 20-line DOM structures across [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html), [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html), [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md), and [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md).
+
 
 ---
 
@@ -369,7 +355,96 @@ Centralizing these IDs in `_config.yml` (mirroring `digital_gift_entries:`) or `
 
 ---
 
-## 6. Repository Hygiene & File Organization
+## 6. Defensive Coding & Silent Fallback Elimination
+
+Excessive defensive fallback chains (`default: ... | default: ...`) and checks for non-existent properties are spread across the codebase. Rather than protecting the site, silent defaults actually **hide data errors and bugs** at build time (e.g. typos in frontmatter or missing lookups silently render empty values rather than alerting developers).
+
+### 6.1 Ghost Property Fallbacks (`prices`, `status_badge`, `status_text`, `process`)
+* **`price` vs `prices`**:
+  * Every roast and subscription file declares `price:` (singular map or value). Zero files declare `prices:`.
+  * Yet `{% assign rp = r.price | default: r.prices %}` and `r_sub.price | default: r_sub.prices | default: r.price` appear in 7 files: [_includes/roast-card.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-card.html), [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html), [gift.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/gift.markdown), [subscribe-form.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/subscribe-form.markdown), and [js/cart-data.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart-data.js).
+  * **Solution**: Standardize on `r.price` across all templates.
+* **`status_badge` and `status_text`**:
+  * Status badges and text are defined centrally in `_data/statuses.yml`. Not a single roast defines custom `status_badge` or `status_text`.
+  * Yet [_includes/roast-status-badge.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-status-badge.html), [_includes/roast-overlay-status.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-overlay-status.html), [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html), and [subscribe-form.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/subscribe-form.markdown) check `r.status_badge | default: s_info.badge` and `r.status_text | default: s_info.overlay_text | default: s_info.banner_text`.
+  * **Solution**: Query `site.data.statuses[r.status]` directly for `badge`, `banner_text`, and `overlay_text`.
+* **`processing_method` vs `process`**:
+  * In [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L75-L79): `{% if page.processing_method or page.process %}{{ page.processing_method | default: page.process }}{% endif %}`.
+  * Every roast uses `processing_method:`. Zero roasts use `process:`.
+  * **Solution**: Cleanly reference `page.processing_method`.
+* **`item.url` vs `item.permalink`**:
+  * In [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html) and [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html): `href="{{ item.url | default: item.permalink | relative_url }}"`.
+  * Jekyll collections automatically populate `.url` on every item at build time; fallback to `.permalink` is dead code.
+
+---
+
+### 6.2 Redundant Defaults for Local Frontmatter Constants
+In [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md) and [_flights/the-aviary.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/the-aviary.md), frontmatter defines the exact prices and bag limits at the top of the file:
+```yaml
+price_per_bag: 10
+min_bags: 4
+```
+Yet in the body of the exact same file, values are repeatedly defaulted:
+* `pricePerBag: {{ page.price_per_bag | default: 10 }}`
+* `minBags: {{ page.min_bags | default: 4 }}`
+* `"lowPrice": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 }}"`
+* In `the-aviary.md`: `{{ page.price | default: 38 }}`
+* In `_includes/cart-indicator.html` & `order.markdown`: `{% assign flight_aviary = flight_aviary_doc.price | default: 38 %}` and `{% assign flight_pyo = flight_pyo_doc.price_per_bag | default: 10 %}`.
+
+* **Impact**: If a price or bag limit changes in frontmatter, these hardcoded defaults mean any template lookup bug silently falls back to stale numbers rather than alerting the developer.
+
+---
+
+### 6.3 Hidden Data Bugs Masked by Fallbacks (Case Study: Mascots)
+* **The Code**:
+  In [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L26):
+  ```liquid
+  {% assign m_name = site.data.mascots[page.mascot] | default: page.mascot_name | default: page.mascot %}
+  ```
+* **The Bug Discovered**:
+  `_roasts/ethiopia-yirgacheffe.md` has `mascot: double-crested-cormorant`. But `double-crested-cormorant` was missing from `_data/mascots.yml`.
+  Because the template silently fell back to `default: page.mascot`, the live page rendered `"double-crested-cormorant"` (raw slug with hyphens) instead of failing or alerting that the mascot name was missing.
+* **Solution**: Add `double-crested-cormorant: Double-crested Cormorant` to `_data/mascots.yml`, remove `page.mascot_name`, and do a direct lookup.
+
+---
+
+### 6.4 Schema.org JSON-LD 6-Level Fallback Ladders
+* In [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L278-L279):
+  ```liquid
+  "highPrice": "{{ roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz'] | default: roast_prices.first[1] | default: 12 }}"
+  ```
+  A 6-level fallback ladder to compute `highPrice`.
+* In [_layouts/subscription.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/subscription.html#L49):
+  ```liquid
+  "price": "{{ page.price['12oz'] | default: page.price }}"
+  ```
+  `page.price` is a hash (`12oz: 15`), not a number. If `page.price['12oz']` was absent, `page.price` would serialize as a Ruby hash string into JSON-LD, producing invalid metadata.
+
+---
+
+### 6.5 Hardcoded JavaScript Duplicate Maps
+* In [js/byob-burner.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/byob-burner.js#L36-L50) and [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L65):
+  ```javascript
+  var dotsMap = { 'City': 1, 'City+': 2, 'Full City': 3, 'Full City+': 4, 'Vienna': 5 };
+  ```
+  Both files duplicate this mapping in JavaScript, even though [js/cart-data.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart-data.js#L43-L55) already builds `window.YWR_ROAST_LEVELS` from `_data/roast_levels.yml` at build time.
+
+---
+
+### 6.6 Triple-Check Aliasing in Card Iterations
+* In [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html#L5):
+  ```liquid
+  {% if item.visual_type == "lazy_susan" or item.slug == "build-your-own-blend" or item.data_roast == "byob-blend" %}
+  ```
+* In [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html#L5):
+  ```liquid
+  {% if f.visual_type == "lazy_susan" or f.slug == "peck-your-own" %}
+  ```
+* **Solution**: Cleanly rely on `visual_type: lazy_susan` as the canonical schema property.
+
+---
+
+## 7. Repository Hygiene & File Organization
 
 The project root currently contains **9 standalone preview/scratch HTML files**:
 * `preview-pricing.html`
@@ -386,15 +461,17 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 
 ---
 
-## 7. Prioritized Implementation Matrix
+## 8. Prioritized Implementation Matrix
 
 | Phase | Recommendation | Effort | Impact | Lines Saved / Reduction |
 |---|---|---|---|---|
 | **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | ✅ Completed (unified 6 catalog listings) |
 | **Phase 1** | **Grind Selector Include** (`_data/grind_levels.yml` + `grind-options.html`) | Low | High | ✅ Completed (unified 7 forms) |
 | **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | ✅ Completed (unified cards and detail pages) |
+| **Phase 1** | **Roast Level Direct Lookups** (Eliminated defensive defaults) | Low | High | ✅ Completed (eliminated 40+ lines of fallback ladders) |
+| **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (Section 6) | Low | High | Eliminates ~60 lines of dead code & fixes hidden mascot bug |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
-| **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | Eliminates ~80 lines of duplicated complex DOM across 4 files |
+| **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | ✅ Completed (unified 4 templates) |
 | **Phase 3** | **Shared Cart Core** (`window.YWR_CART.parseItem`) | Medium | High | Eliminates ~90 lines of duplicate logic between `cart.js` & `order-checkout.js` |
 | **Phase 3** | **Address & Delivery Form Partials** | Medium | Medium | Consolidates checkout fields and Google Form IDs |
 | **Phase 4** | **Inline Style Cleanup** (Removing 790+ `style="..."` tags) | High | Medium | Dramatically cleaner markup; better caching and maintainability |
