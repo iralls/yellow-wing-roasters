@@ -1,7 +1,17 @@
 ---
 layout: default
 title: "BYOB — Build Your Own Blend"
+card_title: "BYOB"
+subtitle: "Build Your Own Blend"
+slug: build-your-own-blend
+data_roast: byob-blend
+order: 1
 permalink: /roasts/build-your-own-blend/
+price: 32
+layman: Custom
+descriptor: custom blend
+overlay_notes: "craft your own custom blend from our single origin roasts"
+visual_type: lazy_susan
 ---
 
 <div class="roast-minimal-vertical">

@@ -6,6 +6,7 @@ order: 2
 permalink: /flights/peck-your-own/
 price_per_bag: 10
 min_bags: 4
+visual_type: lazy_susan
 ---
 
 <div class="roast-minimal-vertical">

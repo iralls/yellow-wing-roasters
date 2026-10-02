@@ -42,6 +42,9 @@ collections:
   flights:
     output: true
     permalink: /flights/:path/
+  custom:
+    output: true
+    permalink: /roasts/:path/
 
 # Default layouts per collection
 defaults:
@@ -65,11 +68,18 @@ defaults:
       type: flights
     values:
       layout: default
+  - scope:
+      path: ""
+      type: custom
+    values:
+      layout: default
+      category: custom
 
 category_order:
   - blend
   - seasonal
   - single origin
+  - custom
   - subscriptions
   - flight
 

@@ -1,41 +1,43 @@
-{% assign aviary = site.flights | where: "slug", "the-aviary" | first %}
-{% assign pyo = site.flights | where: "slug", "peck-your-own" | first %}
-
-<div class="roasts-entry" data-category="flight" data-type="flight" data-roast="the-aviary">
-  <a class="roasts-entry-visual" href="{{ '/flights/the-aviary/' | relative_url }}" aria-label="The Aviary">
-    <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="The Aviary cage" class="roasts-entry-mascot" loading="lazy" decoding="async">
-  </a>
-  <div class="roasts-entry-info">
-    <div class="roasts-entry-title">The Aviary</div>
-    <div class="roasts-entry-notes">Four blends, one box</div>
-    <div class="roasts-entry-prices">${{ aviary.price }}</div>
-  </div>
-</div>
-<div class="roasts-entry" data-roast="peck-your-own" data-category="flight" data-type="flight">
-  <a class="roasts-entry-visual" href="{{ '/flights/peck-your-own/' | relative_url }}" aria-label="Peck Your Own">
-    <div class="lazy-susan-container">
-      <div class="lazy-susan-track">
-        <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-        </div>
-        <div class="susan-birds susan-birds--depth">
-          <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-          <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
-          <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-        </div>
-        <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
+{% assign flights = site.flights | sort: "order" %}
+{% for f in flights %}
+<div class="roasts-entry" data-category="flight" data-type="flight" data-roast="{{ f.slug }}">
+  <a class="roasts-entry-visual" href="{{ f.url | default: f.permalink | relative_url }}" aria-label="{{ f.title | escape }}">
+    {% if f.visual_type == "lazy_susan" or f.slug == "peck-your-own" %}
+      <div class="lazy-susan-container">
+        <div class="lazy-susan-track">
+          <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+          <div class="susan-birds susan-birds--depth">
+            <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+          </div>
+          <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
         </div>
       </div>
-    </div>
+    {% elsif f.mascot_file %}
+      <img src="{{ '/images/' | append: f.mascot_file | relative_url }}" alt="{{ f.mascot_alt | default: f.title | escape }}" class="roasts-entry-mascot" loading="lazy" decoding="async">
+    {% endif %}
   </a>
   <div class="roasts-entry-info">
-    <div class="roasts-entry-title">Peck Your Own</div>
-    <div class="roasts-entry-notes">Choose at least {{ pyo.min_bags }} 8oz bags</div>
-    <div class="roasts-entry-prices">${{ pyo.price_per_bag }} per bag (${{ pyo.min_bags | times: pyo.price_per_bag }} min)</div>
+    <div class="roasts-entry-title">{{ f.title }}</div>
+    {% if f.notes %}
+      <div class="roasts-entry-notes">{{ f.notes }}</div>
+    {% elsif f.min_bags %}
+      <div class="roasts-entry-notes">Choose at least {{ f.min_bags }} 8oz bags</div>
+    {% endif %}
+    {% if f.price %}
+      <div class="roasts-entry-prices">${{ f.price }}</div>
+    {% elsif f.price_per_bag and f.min_bags %}
+      <div class="roasts-entry-prices">${{ f.price_per_bag }} per bag (${{ f.min_bags | times: f.price_per_bag }} min)</div>
+    {% endif %}
   </div>
 </div>
+{% endfor %}

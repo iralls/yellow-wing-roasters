@@ -5,6 +5,9 @@ slug: the-aviary
 order: 1
 permalink: /flights/the-aviary/
 price: 38
+mascot_file: audubon-cage-transparent.png
+mascot_alt: "The Aviary cage"
+notes: "Four blends, one box"
 ---
 
 <div class="roast-minimal-vertical">

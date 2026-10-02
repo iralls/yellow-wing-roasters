@@ -15,6 +15,7 @@ All roasts live as markdown files with YAML frontmatter in the `_roasts/` direct
 6. [Mascot & Artwork](#6-mascot--artwork)
 7. [Subscriptions Configuration](#7-subscriptions-configuration)
 8. [Frontmatter Templates](#8-frontmatter-templates)
+9. [Flights & Custom Collections Ordering (`order`)](#9-flights--custom-collections-ordering-order)
 
 ---
 
@@ -292,3 +293,23 @@ description: >-
   Our everyday espresso—smooth, rich, and balanced with a milk chocolate base.
 ---
 ```
+
+---
+
+## 9. Flights & Custom Collections Ordering (`order`)
+
+Like subscriptions and roasts, items in the `_flights` and `_custom` collections honor the integer `order:` frontmatter key.
+
+### Flights (`_flights/`)
+* Items: `_flights/the-aviary.md` (`order: 1`), `_flights/peck-your-own.md` (`order: 2`).
+* Template: `_includes/flight-cards.html` iterates over `site.flights | sort: "order"`.
+* Changing `order:` in frontmatter will immediately update display order on `/flights/` and in the Flights section of `/roasts/`.
+
+### Custom Offerings (`_custom/`)
+* Items:
+  * `_custom/build-your-own-blend.md` (`order: 1`)
+  * `_custom/bring-your-own-beans.md` (`order: 2`)
+  * `_custom/bring-your-own-burner.md` (`order: 3`)
+* Template: `_includes/custom-cards.html` iterates over `site.custom | sort: "order"`.
+* Changing `order:` in frontmatter will immediately update display order on `/custom/` and in the Custom section of `/roasts/`.
+

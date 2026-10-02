@@ -1,79 +1,48 @@
-<div class="roasts-entry" data-roast="byob-blend" data-category="custom" data-type="custom">
-  <a class="roasts-entry-visual" href="{{ '/roasts/build-your-own-blend/' | relative_url }}" aria-label="BYOB - Build Your Own Blend">
-    <div class="lazy-susan-container">
-      <div class="lazy-susan-track">
-        <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-        </div>
-        <div class="susan-birds susan-birds--depth">
-          <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-          <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
-          <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
-        </div>
-        <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
-          <span class="susan-dot"></span>
+{% assign custom_items = site.custom | sort: "order" %}
+{% for item in custom_items %}
+<div class="roasts-entry" data-roast="{{ item.data_roast | default: item.slug }}" data-category="custom" data-type="custom">
+  <a class="roasts-entry-visual" href="{{ item.url | default: item.permalink | relative_url }}" aria-label="{{ item.card_title | default: item.title | escape }}{% if item.subtitle %} - {{ item.subtitle | escape }}{% endif %}">
+    {% if item.visual_type == "lazy_susan" or item.slug == "build-your-own-blend" or item.data_roast == "byob-blend" %}
+      <div class="lazy-susan-container">
+        <div class="lazy-susan-track">
+          <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+          <div class="susan-birds susan-birds--depth">
+            <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+          </div>
+          <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
         </div>
       </div>
-    </div>
+    {% elsif item.mascot_file %}
+      <img src="{{ '/images/' | append: item.mascot_file | relative_url }}" alt="{{ item.mascot_alt | default: item.title | escape }}" class="roasts-entry-mascot" loading="lazy" decoding="async">
+    {% endif %}
+    {% if item.overlay_notes %}
     <div class="roasts-entry-overlay">
-      <div class="roasts-entry-overlay-notes">craft your own custom blend from our single origin roasts</div>
+      <div class="roasts-entry-overlay-notes">{{ item.overlay_notes }}</div>
     </div>
+    {% endif %}
   </a>
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
-        <div class="roasts-entry-title">BYOB</div>
-        <div class="roasts-entry-subtitle">Build Your Own Blend</div>
-        <div class="roasts-entry-prices">$32</div>
+        <div class="roasts-entry-title">{{ item.card_title | default: item.title }}</div>
+        {% if item.subtitle %}<div class="roasts-entry-subtitle">{{ item.subtitle }}</div>{% endif %}
+        {% if item.price %}<div class="roasts-entry-prices">${{ item.price }}</div>{% endif %}
       </div>
       <div class="roasts-entry-meta">
-        <div class="roasts-entry-layman">Custom</div>
-        <div class="roasts-entry-descriptor">custom blend</div>
+        {% if item.layman %}<div class="roasts-entry-layman">{{ item.layman }}</div>{% endif %}
+        {% if item.descriptor %}<div class="roasts-entry-descriptor">{{ item.descriptor }}</div>{% endif %}
       </div>
     </div>
   </div>
 </div>
-<div class="roasts-entry" data-roast="byob" data-category="custom" data-type="custom">
-  <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" aria-label="BYOB - Bring your own beans">
-    <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring your own beans mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
-    <div class="roasts-entry-overlay">
-      <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
-    </div>
-  </a>
-  <div class="roasts-entry-info">
-    <div class="roasts-entry-header">
-      <div class="roasts-entry-main">
-        <div class="roasts-entry-title">BYOB</div>
-        <div class="roasts-entry-subtitle">Bring your own beans</div>
-      </div>
-      <div class="roasts-entry-meta">
-        <div class="roasts-entry-layman">Custom</div>
-        <div class="roasts-entry-descriptor">custom roast</div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="roasts-entry" data-roast="byob-burner" data-category="custom" data-type="custom">
-  <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-burner/' | relative_url }}" aria-label="BYOB - Bring your own burner">
-    <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
-    <div class="roasts-entry-overlay">
-      <div class="roasts-entry-overlay-notes">pick any single origin and customize your roast level</div>
-    </div>
-  </a>
-  <div class="roasts-entry-info">
-    <div class="roasts-entry-header">
-      <div class="roasts-entry-main">
-        <div class="roasts-entry-title">BYOB</div>
-        <div class="roasts-entry-subtitle">Bring your own burner</div>
-      </div>
-      <div class="roasts-entry-meta">
-        <div class="roasts-entry-layman">Custom</div>
-        <div class="roasts-entry-descriptor">custom roast level</div>
-      </div>
-    </div>
-  </div>
-</div>
+{% endfor %}
