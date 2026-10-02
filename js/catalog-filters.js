@@ -105,12 +105,13 @@
 
     // 2. Populate Dropdowns Dynamically
     if (selectCategory) {
-      var typeOrder = ['blend', 'seasonal', 'single-origin', 'subscriptions', 'flight'];
+      var typeOrder = ['blend', 'seasonal', 'single-origin', 'custom', 'subscriptions', 'flight'];
       var typeLabels = {
         'blend': 'Blend',
         'seasonal': 'Seasonal',
         'single-origin': 'Single Origin',
         'single origin': 'Single Origin',
+        'custom': 'Custom',
         'subscriptions': 'Subscriptions',
         'subscription': 'Subscriptions',
         'flight': 'Flights',

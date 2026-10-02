@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "BYOB — Bring Your Own Beans"
-permalink: /roasts/byob/
+permalink: /roasts/bring-your-own-beans/
 ---
 
 <div class="roast-minimal-vertical">

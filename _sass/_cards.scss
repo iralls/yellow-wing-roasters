@@ -214,6 +214,11 @@
   background-color: $color-cat-seasonal;
 }
 
+.roasts-entry[data-category="custom"] .roasts-entry-visual,
+.roasts-entry[data-type="custom"] .roasts-entry-visual {
+  background-color: $color-cat-custom;
+}
+
 .roasts-entry[data-category="subscriptions"] .roasts-entry-visual,
 .roasts-entry[data-category="subscription"] .roasts-entry-visual,
 .roasts-entry[data-type="subscriptions"] .roasts-entry-visual,

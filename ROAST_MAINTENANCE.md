@@ -156,7 +156,7 @@ Use integer numbers `1` through `5` (defined in `_data/roast_levels.yml`):
 
 ### Custom Roast Levels (BYOB — Bring Your Own Burner)
 Standard single-origin offerings showcase our prescribed roast recommendation. For customers who want to customize the roast level on a single-origin coffee:
-* Customers visit **BYOB — Bring Your Own Burner** (`/roasts/bring-your-own-burner/`), accessible via the custom card on the Single Origins catalog (`/single-origins/`).
+* Customers visit **BYOB — Bring Your Own Burner** (`/roasts/bring-your-own-burner/`), accessible via the Custom catalog (`/custom/`) and the Custom section of the main catalog (`/roasts/`).
 * Customers can select any in-stock single-origin bean, alter the roast level (City through Vienna), choose bag size and grind, and add it directly to their order.
 * Orders appear in the cart and Google Forms intake as `1x BYOB: [Origin Title] [Size] (Roast: [Level], Grind: [Grind])`.
 
