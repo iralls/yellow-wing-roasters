@@ -84,18 +84,169 @@ permalink: /roasts/
   {% assign single_origins = single_origins_active | concat: single_origins_incubating | concat: single_origins_flown %}
 
   {% assign subscriptions = site.subscriptions | sort: "order" %}
-  {% assign sorted_roasts = blends | concat: seasonals | concat: single_origins | concat: subscriptions %}
-  {% assign current_category = "" %}
-  {% for r in sorted_roasts %}
-    {% assign cat = r.category %}
-    {% if cat != current_category %}
-      {% assign current_category = cat %}
-      <div class="roasts-section-break" data-category="{{ current_category }}">
-        <div class="roasts-section-break-line"></div>
-        <span class="roasts-section-break-title">{% if current_category == 'blend' %}Blends{% elsif current_category == 'seasonal' %}Seasonals{% elsif current_category == 'single origin' %}Single Origins{% elsif current_category == 'subscriptions' %}Subscriptions{% else %}{{ current_category | capitalize }}{% endif %}</span>
-        <div class="roasts-section-break-line"></div>
+
+  <!-- Blends -->
+  <div class="roasts-section-break" data-category="blend">
+    <div class="roasts-section-break-line"></div>
+    <span class="roasts-section-break-title">Blends</span>
+    <div class="roasts-section-break-line"></div>
+  </div>
+  {% for r in blends %}
+    {% include roast-card.html roast=r %}
+  {% endfor %}
+  <div class="roasts-entry" data-roast="byob" data-category="blend" data-type="blend">
+    <a class="roasts-entry-visual" href="{{ '/roasts/build-your-own-blend/' | relative_url }}" aria-label="BYOB - Build Your Own Blend">
+      <div class="lazy-susan-container">
+        <div class="lazy-susan-track">
+          <div class="susan-dots susan-dots--grad-left" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+          <div class="susan-birds susan-birds--depth">
+            <img src="{{ '/images/audubon-cardinal-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-goldfinch-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-center" loading="lazy" decoding="async">
+            <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="" class="susan-bird susan-bird-side" loading="lazy" decoding="async">
+          </div>
+          <div class="susan-dots susan-dots--grad-right" aria-hidden="true">
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+            <span class="susan-dot"></span>
+          </div>
+        </div>
       </div>
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">craft your own custom blend from our single origin roasts</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Build Your Own Blend</div>
+          <div class="roasts-entry-prices">$32</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom blend</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seasonals -->
+  <div class="roasts-section-break" data-category="seasonal">
+    <div class="roasts-section-break-line"></div>
+    <span class="roasts-section-break-title">Seasonals</span>
+    <div class="roasts-section-break-line"></div>
+  </div>
+  {% for r in seasonals %}
+    {% include roast-card.html roast=r %}
+  {% endfor %}
+
+  <!-- Single Origins -->
+  <div class="roasts-section-break" data-category="single origin">
+    <div class="roasts-section-break-line"></div>
+    <span class="roasts-section-break-title">Single Origins</span>
+    <div class="roasts-section-break-line"></div>
+  </div>
+  {% assign so_byob_rendered = false %}
+  {% for r in single_origins %}
+    {% if r.status == 'flown_south' and so_byob_rendered == false %}
+  <div class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/byob/' | relative_url }}" aria-label="BYOB - Bring your own beans">
+      <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring your own beans mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own beans</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="roasts-entry" data-roast="byob-burner" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-burner/' | relative_url }}" aria-label="BYOB - Bring your own burner">
+      <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">pick any single origin and customize your roast level</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own burner</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast level</div>
+        </div>
+      </div>
+    </div>
+  </div>
+      {% assign so_byob_rendered = true %}
     {% endif %}
+    {% include roast-card.html roast=r %}
+  {% endfor %}
+  {% if so_byob_rendered == false %}
+  <div class="roasts-entry" data-roast="byob" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/byob/' | relative_url }}" aria-label="BYOB - Bring your own beans">
+      <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring your own beans mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">send us your green beans and we'll roast them to perfection</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own beans</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="roasts-entry" data-roast="byob-burner" data-category="single origin" data-type="single-origin">
+    <a class="roasts-entry-visual" href="{{ '/roasts/bring-your-own-burner/' | relative_url }}" aria-label="BYOB - Bring your own burner">
+      <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB mascot" class="roasts-entry-mascot" loading="lazy" decoding="async">
+      <div class="roasts-entry-overlay">
+        <div class="roasts-entry-overlay-notes">pick any single origin and customize your roast level</div>
+      </div>
+    </a>
+    <div class="roasts-entry-info">
+      <div class="roasts-entry-header">
+        <div class="roasts-entry-main">
+          <div class="roasts-entry-title">BYOB</div>
+          <div class="roasts-entry-subtitle">Bring your own burner</div>
+        </div>
+        <div class="roasts-entry-meta">
+          <div class="roasts-entry-layman">Custom</div>
+          <div class="roasts-entry-descriptor">custom roast level</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Subscriptions -->
+  <div class="roasts-section-break" data-category="subscriptions">
+    <div class="roasts-section-break-line"></div>
+    <span class="roasts-section-break-title">Subscriptions</span>
+    <div class="roasts-section-break-line"></div>
+  </div>
+  {% for r in subscriptions %}
     {% include roast-card.html roast=r %}
   {% endfor %}
 
