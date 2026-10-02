@@ -110,30 +110,8 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ---
 
 ### 2.3 Roast Level & Dots Component
-* **Current State**: The 5-dot visual level indicator and roast level label lookup logic is repeated in:
-  1. [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L51-L66)
-  2. [_includes/roast-card.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-card.html#L2-L12) & [lines 102–113](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-card.html#L102-L113)
-  3. [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md#L50-L60) & [lines 83–93](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md#L83-L93)
-  4. [_custom/bring-your-own-burner.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-burner.md#L50-L56)
-* **DRY Solution**: Create `_includes/roast-dots.html`:
-  ```liquid
-  {% assign lvl_key = include.level | append: "" %}
-  {% assign info = site.data.roast_levels[include.level] | default: site.data.roast_levels[lvl_key] %}
-  {% assign dots = info.dots | default: include.dots | default: 0 %}
-  {% assign label = info.specialty | default: info.name %}
-
-  <div class="roast-dots-wrap{% if include.class %} {{ include.class }}{% endif %}">
-    <span class="roast-dots">
-      {% for i in (1..5) %}
-        <span class="roast-dot{% if dots >= i %} roast-dot-{{ i }}{% endif %}"></span>
-      {% endfor %}
-    </span>
-    {% if include.show_label and label %}
-      <span class="roast-dots-label">{{ label }}</span>
-    {% endif %}
-  </div>
-  ```
-  Notice that `{% for i in (1..5) %}` also replaces 5 manually written `<span class="roast-dot...">` elements with a 3-line loop.
+* **Status**: ✅ **Implemented**
+* **Solution**: Created `_includes/roast-dots.html` supporting `dots`, `level`, and `roast` parameters. Replaced the hardcoded 5-dot spans in [_includes/roast-card.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/roast-card.html), [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html), and [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md).
 
 ---
 
@@ -414,7 +392,7 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 |---|---|---|---|---|
 | **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | ✅ Completed (unified 6 catalog listings) |
 | **Phase 1** | **Grind Selector Include** (`_data/grind_levels.yml` + `grind-options.html`) | Low | High | ✅ Completed (unified 7 forms) |
-| **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | Eliminates 4 redundant 5-dot spans and level lookups |
+| **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | ✅ Completed (unified cards and detail pages) |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
 | **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | Eliminates ~80 lines of duplicated complex DOM across 4 files |
 | **Phase 3** | **Shared Cart Core** (`window.YWR_CART.parseItem`) | Medium | High | Eliminates ~90 lines of duplicate logic between `cart.js` & `order-checkout.js` |

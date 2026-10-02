@@ -67,10 +67,8 @@ overlay_notes: "pick any single origin and customize your roast level"
 
     <select id="byob-roast-select" class="subscribe-select" style="min-width: 16rem; width: 100%;">
       {% for lvl_num in (1..5) %}
-        {% assign lvl_num_str = lvl_num | append: "" %}
-        {% assign lvl_data = site.data.roast_levels[lvl_num] | default: site.data.roast_levels[lvl_num_str] %}
-        {% assign lvl_name = lvl_data.specialty | default: lvl_data.name %}
-        <option value="{{ lvl_name }}" data-dots="{{ lvl_data.dots }}" data-num="{{ lvl_num }}">{{ lvl_name }}</option>
+        {% assign lvl_data = site.data.roast_levels[lvl_num] %}
+        <option value="{{ lvl_data.specialty }}" data-dots="{{ lvl_data.dots }}" data-num="{{ lvl_num }}">{{ lvl_data.specialty }}</option>
       {% endfor %}
     </select>
     
@@ -112,10 +110,9 @@ overlay_notes: "pick any single origin and customize your roast level"
 (function () {
   var originsData = {
     {% for r in active_so %}
-      {% assign r_level_key = r.roast_level | append: "" %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}
-      {% assign r_specialty = level_info.specialty | default: level_info.name | default: r.roast_level %}
-      {% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots | default: 0 %}{% endif %}
+      {% assign level_info = site.data.roast_levels[r.roast_level] %}
+      {% assign r_specialty = level_info.specialty %}
+      {% assign r_dots = level_info.dots %}
       {% assign rp = r.price | default: r.prices %}
       {{ r.slug | jsonify }}: {
         title: {{ r.title | jsonify }},

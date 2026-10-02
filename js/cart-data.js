@@ -7,10 +7,9 @@ permalink: /js/cart-data.js
  */
 window.YWR_ROASTS_DATA = {
   {% for r in site.roasts %}
-    {% assign r_level_key = r.roast_level | append: "" %}
-    {% assign level_info = site.data.roast_levels[r.roast_level] | default: site.data.roast_levels[r_level_key] %}
-    {% assign r_specialty = level_info.specialty | default: level_info.name | default: r.roast_level %}
-    {% if level_info %}{% assign r_dots = level_info.dots %}{% else %}{% assign r_dots = r.roast_dots | default: 0 %}{% endif %}
+    {% assign level_info = site.data.roast_levels[r.roast_level] %}
+    {% assign r_specialty = level_info.specialty %}
+    {% assign r_dots = level_info.dots %}
     {{ r.slug | jsonify }}: {
       title: {{ r.title | jsonify }},
       category: {{ r.category | jsonify }},

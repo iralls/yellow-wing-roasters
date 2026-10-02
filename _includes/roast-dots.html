@@ -1,0 +1,12 @@
+{%- assign dots = include.dots -%}
+{%- if dots == nil and include.level -%}
+  {%- assign dots = site.data.roast_levels[include.level].dots -%}
+{%- elsif dots == nil and include.roast -%}
+  {%- assign dots = site.data.roast_levels[include.roast.roast_level].dots -%}
+{%- endif -%}
+{%- assign dots = dots | plus: 0 -%}
+<span class="roast-dots{% if include.class %} {{ include.class }}{% endif %}">
+  {%- for i in (1..5) %}
+  <span class="roast-dot{% if dots >= i %} roast-dot-{{ i }}{% endif %}"></span>
+  {%- endfor %}
+</span>
