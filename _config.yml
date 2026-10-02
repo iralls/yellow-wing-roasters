@@ -86,6 +86,7 @@ category_order:
 exclude:
   - README.md
   - ROAST_MAINTENANCE.md
+  - DRY_OPTIMIZATION_RECOMMENDATIONS.md
   - Gemfile
   - Gemfile.lock
   - AGENTS.md

@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+{% if page.intro %}
+<p class="category-intro">{{ page.intro }}</p>
+{% endif %}
+
+{{ content }}
+
+<div class="roasts-grid">
+  {% if page.cards_include == "custom-cards.html" or page.category == "custom" %}
+    {% include custom-cards.html %}
+  {% elsif page.cards_include == "flight-cards.html" or page.category == "flight" or page.category == "flights" %}
+    {% include flight-cards.html %}
+  {% elsif page.cards_include == "subscription-cards.html" or page.category == "subscriptions" or page.category == "subscription" %}
+    {% include subscription-cards.html %}
+  {% elsif page.cards_include %}
+    {% include page.cards_include %}
+  {% elsif page.category %}
+    {% assign all_roasts = site.roasts | sort: "order" %}
+    {% assign cat_roasts = all_roasts | where: "category", page.category %}
+    {% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+    {% assign cat_incubating = cat_roasts | where_exp: "item", "item.status == 'incubating'" %}
+    {% assign cat_flown = cat_roasts | where_exp: "item", "item.status == 'flown_south'" %}
+    {% assign roasts_to_render = cat_active | concat: cat_incubating | concat: cat_flown %}
+    {% for r in roasts_to_render %}
+      {% include roast-card.html roast=r %}
+    {% endfor %}
+  {% endif %}
+</div>

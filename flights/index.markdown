@@ -1,13 +1,7 @@
 ---
-layout: default
+layout: category
 title: Flights
 permalink: /flights/
+category: flight
+intro: "Curated multi-roast samplers and customizable tasting flights to explore our full lineup."
 ---
-
-# Flights
-
-<p class="category-intro">Curated multi-roast samplers and customizable tasting flights to explore our full lineup.</p>
-
-<div class="roasts-grid">
-  {% include flight-cards.html %}
-</div>

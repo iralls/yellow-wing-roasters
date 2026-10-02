@@ -129,9 +129,7 @@ permalink: /roasts/
     <span class="roasts-section-break-title">Subscriptions</span>
     <div class="roasts-section-break-line"></div>
   </div>
-  {% for r in subscriptions %}
-    {% include roast-card.html roast=r %}
-  {% endfor %}
+  {% include subscription-cards.html %}
 
   <div class="roasts-section-break" data-category="flight">
     <div class="roasts-section-break-line"></div>

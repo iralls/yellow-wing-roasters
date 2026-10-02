@@ -1,0 +1,4 @@
+{% assign subscriptions = site.subscriptions | sort: "order" %}
+{% for r in subscriptions %}
+  {% include roast-card.html roast=r %}
+{% endfor %}
