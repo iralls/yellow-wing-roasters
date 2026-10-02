@@ -22,29 +22,29 @@ permalink: /subscriptions/manage/
   <div class="roast-mv-divider"></div>
 
   <!-- Phase 1: Lookup Form -->
-  <div id="lookup-section" class="lookup-container">
-    <form id="lookup-form" class="order-form" style="margin: 0;">
+  <div id="lookup-section" class="lookup-container" style="max-width: 26rem; margin: 2rem auto;">
+    <form id="lookup-form" class="order-form" style="margin: 0 auto; text-align: left;">
       <div class="order-field">
-        <label for="lookup-email">Email Address</label>
+        <label for="lookup-email" class="roast-mv-meta-label">Email Address</label>
         <input id="lookup-email" type="email" required placeholder="Enter the email address you subscribed with..." autocomplete="email">
       </div>
-      <div class="order-actions" style="margin-top: 1.5rem;">
+      <div class="order-actions" style="margin-top: 1.5rem; justify-content: center;">
         <button type="submit" id="lookup-btn" class="order-submit">Look Up Subscription</button>
       </div>
-      <p id="lookup-status" class="order-status" role="status" aria-live="polite" style="margin-top: 1.25rem; min-height: 1.5rem;"></p>
+      <p id="lookup-status" class="order-status" role="status" aria-live="polite" style="margin-top: 1.25rem; min-height: 1.5rem; text-align: center;"></p>
     </form>
   </div>
 
   <!-- Phase 2 & 3: Results & Status Management -->
-  <div id="results-section" class="lookup-container" style="display: none;">
+  <div id="results-section" class="lookup-container" style="display: none; max-width: 36rem; margin: 2rem auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
       <h2 class="roasts-category" style="margin: 0;">Your Subscriptions <span id="mock-indicator" class="mock-badge" style="display: none;">MOCK MODE</span></h2>
-      <span id="results-email-display" style="font-weight: 700; color: #8a7060;"></span>
+      <span id="results-email-display" style="font-weight: 700; color: #8a7060; font-family: 'Montserrat', sans-serif; font-size: 0.85rem;"></span>
     </div>
     
     <div id="subscriptions-list"></div>
 
-    <div class="order-actions" style="margin-top: 2rem; border-top: 1px solid #e8e0d5; padding-top: 1.5rem;">
+    <div class="order-actions" style="margin-top: 2rem; border-top: 1px solid #e8e0d5; padding-top: 1.5rem; justify-content: center;">
       <button id="back-search-btn" class="action-pill-btn btn-secondary-pill">Search Different Email</button>
     </div>
   </div>

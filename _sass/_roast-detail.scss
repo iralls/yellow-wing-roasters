@@ -128,6 +128,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-align: center;
   color: #aaa;
   margin-bottom: 0.2rem;
 }
@@ -362,6 +363,15 @@
 .order-delivery legend {
   font-weight: 600;
   padding: 0 0.4rem;
+
+  &.roast-mv-meta-label {
+    font-family: $font-display;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
 }
 
 .order-radio {
@@ -461,23 +471,6 @@
   flex: 1;
 }
 
-.order-form label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.35rem;
-}
-
-.order-form input[type="text"],
-.order-form input[type="email"],
-.order-form input[type="tel"],
-.order-form textarea {
-  width: 100%;
-  padding: 0.55rem 0.7rem;
-  font: inherit;
-  border: 1px solid #bbb;
-  border-radius: 0.35rem;
-  box-sizing: border-box;
-}
 
 .order-form .order-gotcha {
   position: absolute;

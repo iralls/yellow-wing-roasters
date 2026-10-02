@@ -4,6 +4,8 @@ title: Gift Coffee
 permalink: /gift/
 ---
 
+<div class="roast-minimal-vertical">
+
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
@@ -13,10 +15,11 @@ permalink: /gift/
 <div class="roast-mv-center">
   <h1 class="roast-mv-title" id="gift-page-title">Corvid care packages</h1>
 </div>
+<div class="roast-mv-subtitle">Care Packages &amp; Gift Cards</div>
 
-<p class="category-intro" style="text-align: center; margin-top: -0.25rem; margin-bottom: 2.25rem;">Send freshly roasted coffees, recurring gift subscriptions, or digital gift cards directly to their door.</p>
+<p class="roast-mv-tasting">Send freshly roasted coffees, recurring gift subscriptions, or digital gift cards directly to their door.</p>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="gift-form">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="gift-form" style="max-width: 38rem; margin: 2rem auto; text-align: left;">
   <!-- Dynamic Name Hidden Inputs -->
   <input type="hidden" id="gift-roast-hidden" value="">
   <input type="hidden" id="gift-price-hidden" value="">
@@ -29,7 +32,7 @@ permalink: /gift/
   <input type="hidden" id="gift-code-hidden" value="">
 
   <div class="order-field" style="margin-bottom: 2rem;">
-    <label style="text-align: center; margin-bottom: 0.85rem; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8a7060; font-weight: 700;">Choose Gift Type</label>
+    <label class="roast-mv-meta-label" style="text-align: center; margin-bottom: 0.85rem;">Choose Gift Type</label>
 
     <div style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
       <input type="radio" name="gift-type" id="gift-type-direct" value="direct" checked>
@@ -90,7 +93,7 @@ permalink: /gift/
   <!-- Direct Gifting Fields -->
   <div id="direct-gift-fields">
     <div class="order-field">
-      <label for="gift-select-trigger">Select Coffee / Subscription</label>
+      <label for="gift-select-trigger" class="roast-mv-meta-label">Select Coffee / Subscription</label>
 
       <!-- Hidden native select for form submission & data mapping -->
       <select id="gift-product" class="subscribe-select" style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;" tabindex="-1" aria-hidden="true">
@@ -304,25 +307,25 @@ permalink: /gift/
           </div>
         </div>
       </div>
-      <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; margin-bottom: 0;">* All physical gifts are packaged in our standard 12 oz bag size.</p>
+      <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; margin-bottom: 0; text-align: center;">* All physical gifts are packaged in our standard 12 oz bag size.</p>
     </div>
 
     <div class="order-field">
-      <label>Gift Duration</label>
-      <div class="pill-radios">
+      <label class="roast-mv-meta-label" style="text-align: center;">Gift Duration</label>
+      <div class="pill-radios" style="justify-content: center;">
         <label class="order-radio"><input type="radio" name="gift-duration" value="One-time" checked> One-time</label>
         <label class="order-radio"><input type="radio" name="gift-duration" value="3 months"> 3 months</label>
         <label class="order-radio"><input type="radio" name="gift-duration" value="6 months"> 6 months</label>
       </div>
-      <p id="gift-duration-note" style="font-size: 0.85rem; color: #666; margin-top: 0.35rem; display: none;">* Multi-month subscriptions are not available for this coffee.</p>
+      <p id="gift-duration-note" style="font-size: 0.85rem; color: #666; margin-top: 0.35rem; display: none; text-align: center;">* Multi-month subscriptions are not available for this coffee.</p>
     </div>
   </div>
 
   <!-- Digital Gift Card Fields -->
   <div id="digital-gift-fields" style="display: none;">
     <div class="order-field">
-      <label>Gift Card Value</label>
-      <div class="pill-radios">
+      <label class="roast-mv-meta-label" style="text-align: center;">Gift Card Value</label>
+      <div class="pill-radios" style="justify-content: center;">
         <label class="order-radio"><input type="radio" name="gift-card-amount" value="15"> $15</label>
         <label class="order-radio"><input type="radio" name="gift-card-amount" value="30"> $30</label>
         <label class="order-radio"><input type="radio" name="gift-card-amount" value="45" checked> $45</label>
@@ -332,54 +335,54 @@ permalink: /gift/
     </div>
   </div>
 
-  <div style="border: 1px solid #e0d0c0; border-radius: 0.5rem; padding: 1.25rem; margin: 2rem 0; background-color: #faf8f5;">
-    <h3 style="margin-top: 0; margin-bottom: 1.25rem; font-size: 1.15rem; color: #2c1e14; border-bottom: 1px solid #e0d0c0; padding-bottom: 0.5rem;">Gift Details</h3>
+  <div style="border: 1px solid #e0d0c0; border-radius: 0.5rem; padding: 1.5rem; margin: 2rem 0; background-color: #faf8f5;">
+    <h2 class="roasts-category" style="margin-top: 0; margin-bottom: 1.25rem; text-align: center;">Gift Details</h2>
     
     <div class="order-field">
-      <label for="gift-purchaser-name">Your Name (Purchaser)</label>
+      <label for="gift-purchaser-name" class="roast-mv-meta-label">Your Name (Purchaser)</label>
       <input id="gift-purchaser-name" type="text" required autocomplete="name">
     </div>
 
     <div class="order-field">
-      <label for="gift-purchaser-email">Your Email</label>
+      <label for="gift-purchaser-email" class="roast-mv-meta-label">Your Email</label>
       <input id="gift-purchaser-email" type="email" required autocomplete="email">
     </div>
 
     <div class="order-field">
-      <label for="gift-recipient-name">Recipient's Name</label>
+      <label for="gift-recipient-name" class="roast-mv-meta-label">Recipient's Name</label>
       <input id="gift-recipient-name" type="text" required autocomplete="off">
     </div>
 
     <div class="order-field">
-      <label id="gift-recipient-email-label" for="gift-recipient-email">Recipient's Email (optional)</label>
+      <label id="gift-recipient-email-label" for="gift-recipient-email" class="roast-mv-meta-label">Recipient's Email (optional)</label>
       <input id="gift-recipient-email" type="email" autocomplete="off">
     </div>
 
     <div class="order-field" style="margin-bottom: 0;">
-      <label for="gift-message">Gift Message (optional)</label>
+      <label for="gift-message" class="roast-mv-meta-label">Gift Message (optional)</label>
       <textarea id="gift-message" rows="3" placeholder="Write a note to the recipient..."></textarea>
     </div>
   </div>
 
   <!-- Direct Address Fields Container -->
   <div id="direct-address-container">
-    <h3 style="font-size: 1.15rem; color: #2c1e14; margin-top: 2rem; margin-bottom: 1rem;">Recipient Delivery Address</h3>
+    <h2 class="roasts-category" style="margin-top: 2rem; margin-bottom: 1rem; text-align: center;">Recipient Delivery Address</h2>
     <div id="gift-address-fields" class="order-shipping">
       <div class="order-field">
-        <label for="gift-address">Street address</label>
+        <label for="gift-address" class="roast-mv-meta-label">Street address</label>
         <input id="gift-address" type="text" required autocomplete="street-address">
       </div>
       <div class="order-field">
-        <label for="gift-city">City</label>
+        <label for="gift-city" class="roast-mv-meta-label">City</label>
         <input id="gift-city" type="text" required autocomplete="address-level2">
       </div>
       <div class="order-field-row">
         <div class="order-field">
-          <label for="gift-state">State</label>
+          <label for="gift-state" class="roast-mv-meta-label">State</label>
           <input id="gift-state" type="text" required autocomplete="address-level1">
         </div>
         <div class="order-field">
-          <label for="gift-zip">ZIP</label>
+          <label for="gift-zip" class="roast-mv-meta-label">ZIP</label>
           <input id="gift-zip" type="text" required autocomplete="postal-code">
         </div>
       </div>
@@ -387,20 +390,22 @@ permalink: /gift/
   </div>
 
   <div class="order-field" style="margin-top: 1.5rem;">
-    <label for="gift-notes">Additional Delivery Notes (optional)</label>
+    <label for="gift-notes" class="roast-mv-meta-label">Additional Delivery Notes (optional)</label>
     <textarea id="gift-notes" rows="3" placeholder="Any delivery instructions..."></textarea>
   </div>
 
-  <div id="gift-price-summary" style="font-size: 1.25rem; font-weight: 700; color: #2c1e14; margin: 1.5rem 0; padding: 1rem; background-color: #faf8f5; border: 1px solid #e0d0c0; border-radius: 0.5rem; text-align: center;">
+  <div id="gift-price-summary" class="roast-detail-price-line" style="text-align: center; margin: 1.5rem 0; padding: 1rem; background-color: #faf8f5; border: 1px solid #e0d0c0; border-radius: 0.5rem;">
     Total: <span id="gift-price-display">$0</span>
   </div>
 
-  <div class="order-actions" style="margin-top: 2rem;">
+  <div class="order-actions" style="margin-top: 2rem; justify-content: center;">
     <button type="submit" class="order-submit">Order Corvid care packages</button>
   </div>
 
-  <p class="order-status" role="status" aria-live="polite"></p>
+  <p class="order-status" role="status" aria-live="polite" style="text-align: center;"></p>
 </form>
+
+</div>
 
 <script src="{{ '/js/gift-order.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>

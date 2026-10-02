@@ -39,26 +39,26 @@ permalink: /roasts/byob/
 
 <h2 class="roasts-category">Place a BYOB Order</h2>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form" style="text-align: left; margin: 2rem auto; max-width: 40rem;">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form" style="max-width: 26rem; margin: 2rem auto; text-align: left;">
 
   <div class="order-field">
-    <label for="byob-name">Name</label>
+    <label for="byob-name" class="roast-mv-meta-label">Name</label>
     <input id="byob-name" type="text" name="entry.1153405702" required autocomplete="name">
   </div>
 
   <div class="order-field">
-    <label for="byob-email">Email</label>
+    <label for="byob-email" class="roast-mv-meta-label">Email</label>
     <input id="byob-email" type="email" name="entry.40149380" required autocomplete="email">
   </div>
 
   <div class="order-field">
-    <label for="byob-link">Link to green beans</label>
+    <label for="byob-link" class="roast-mv-meta-label">Link to green beans</label>
     <input id="byob-link" type="url" name="entry.1935997805" required placeholder="https://burmancoffee.com/...">
   </div>
 
   <div class="order-field">
-    <label for="byob-roast">Roast level</label>
-    <select id="byob-roast" name="entry.1076774005" class="subscribe-select" required>
+    <label for="byob-roast" class="roast-mv-meta-label">Roast level</label>
+    <select id="byob-roast" name="entry.1076774005" class="subscribe-select" style="min-width: 14rem; width: 100%;" required>
       <option value="" disabled selected>Choose a roast level</option>
       <option value="City (light)">City (light)</option>
       <option value="City+ (medium-light)">City+ (medium-light)</option>
@@ -70,8 +70,8 @@ permalink: /roasts/byob/
   </div>
 
   <div class="order-field">
-    <label for="byob-grind">Grind level</label>
-    <select id="byob-grind" class="subscribe-select">
+    <label for="byob-grind" class="roast-mv-meta-label">Grind level</label>
+    <select id="byob-grind" class="subscribe-select" style="min-width: 14rem; width: 100%;">
       <option value="Whole Bean" selected>Whole Bean</option>
       <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
       <option value="Coarser — French Press">Coarser — French Press</option>
@@ -82,51 +82,51 @@ permalink: /roasts/byob/
   </div>
 
   <div class="order-field">
-    <label for="byob-qty">Quantity (lbs of green beans to order)</label>
-    <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required>
+    <label for="byob-qty" class="roast-mv-meta-label">lbs</label>
+    <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required style="width: 5rem; display: block;">
     <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
   </div>
 
-  <fieldset class="order-delivery">
-    <legend>Delivery method</legend>
-    <div class="pill-radios">
+  <fieldset class="order-delivery" style="text-align: center;">
+    <legend class="roast-mv-meta-label" style="margin: 0 auto; padding: 0 0.4rem;">Delivery method</legend>
+    <div class="pill-radios" style="justify-content: center;">
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     </div>
-    <p id="byob-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
+    <p id="byob-delivery-note" class="order-delivery-note" style="text-align: center;">Please specify in the notes how you want to coordinate pickup.</p>
   </fieldset>
 
-  <div id="byob-shipping" class="order-shipping" style="display:none;">
+  <div id="byob-shipping" class="order-shipping" style="display:none; text-align: left;">
     <div class="order-field">
-      <label for="byob-address">Street address</label>
+      <label for="byob-address" class="roast-mv-meta-label">Street address</label>
       <input id="byob-address" type="text" name="entry.148046999" autocomplete="street-address">
     </div>
     <div class="order-field">
-      <label for="byob-city">City</label>
+      <label for="byob-city" class="roast-mv-meta-label">City</label>
       <input id="byob-city" type="text" name="entry.1534670804" autocomplete="address-level2">
     </div>
     <div class="order-field-row">
       <div class="order-field">
-        <label for="byob-state">State</label>
+        <label for="byob-state" class="roast-mv-meta-label">State</label>
         <input id="byob-state" type="text" name="entry.414179858" autocomplete="address-level1">
       </div>
       <div class="order-field">
-        <label for="byob-zip">ZIP</label>
+        <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>
         <input id="byob-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
       </div>
     </div>
   </div>
 
   <div class="order-field">
-    <label for="byob-notes">Notes (optional)</label>
+    <label for="byob-notes" class="roast-mv-meta-label">Notes (optional)</label>
     <textarea id="byob-notes" name="entry.1381358427" rows="3" placeholder="Any preferences — first crack, second crack, specific development time, etc."></textarea>
   </div>
 
-  <div class="order-actions">
+  <div class="order-actions" style="justify-content: center;">
     <button type="submit" class="order-submit">Submit BYOB order</button>
   </div>
 
-  <p class="order-status" role="status" aria-live="polite"></p>
+  <p class="order-status" role="status" aria-live="polite" style="text-align: center;"></p>
 </form>
 
 <script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

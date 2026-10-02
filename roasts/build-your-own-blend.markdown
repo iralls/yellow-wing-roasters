@@ -32,8 +32,9 @@ permalink: /roasts/build-your-own-blend/
   <div class="roast-mv-center">
     <h1 class="roast-mv-title">BYOB</h1>
   </div>
+  <div class="roast-mv-subtitle">Build Your Own Blend</div>
 
-  <p class="roast-mv-tasting"><em>Build Your Own Blend</em><br>Combine up to three varieties of green beans, select individual roast levels, and design a custom coffee profile exactly to your taste.</p>
+  <p class="roast-mv-tasting">Combine up to three varieties of green beans, select individual roast levels, and design a custom coffee profile exactly to your taste.</p>
 
   <div class="roast-mv-divider"></div>
 
@@ -56,7 +57,7 @@ permalink: /roasts/build-your-own-blend/
   {% assign uniq_procs = active_procs | uniq | sort %}
 
   <div class="bean-selector-section">
-    <h2 class="bean-selector-title">1. Choose Coffee Beans</h2>
+    <h2 class="roasts-category">1. Choose Coffee Beans</h2>
     
     <!-- Filters Row -->
     <div class="filters-row" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
@@ -118,7 +119,7 @@ permalink: /roasts/build-your-own-blend/
     <!-- Workspace: Dropdown on left, Details on right -->
     <div class="selection-workspace">
       <div class="selection-left">
-        <label for="bean-select-dropdown">Select a Coffee Bean</label>
+        <label for="bean-select-dropdown" class="roast-mv-meta-label">Select a Coffee Bean</label>
         <select id="bean-select-dropdown" class="subscribe-select" style="width: 100%;">
           <option value="" disabled selected>Select from list...</option>
           {% for r in single_origins %}
@@ -154,7 +155,7 @@ permalink: /roasts/build-your-own-blend/
     
     <!-- Mixer Panel -->
     <div class="mixer-panel">
-      <h2 class="panel-title">2. Adjust Composition & Roasts</h2>
+      <h2 class="roasts-category" style="margin-top: 0; padding-bottom: 0.5rem; border-bottom: 1px solid #eaeaea;">2. Adjust Composition & Roasts</h2>
       <div class="mixer-empty-note" id="mixer-empty-note">
         No beans added. Use the selector above to build your recipe.
       </div>
@@ -163,7 +164,7 @@ permalink: /roasts/build-your-own-blend/
 
     <!-- Preview Panel -->
     <div class="preview-panel">
-      <h2 class="panel-title">3. Predicted Taste Profile</h2>
+      <h2 class="roasts-category" style="margin-top: 0; padding-bottom: 0.5rem; border-bottom: 1px solid #eaeaea;">3. Predicted Taste Profile</h2>
       <div id="preview-content" style="display: none;">
         
         <div class="preview-stat">
@@ -205,31 +206,31 @@ permalink: /roasts/build-your-own-blend/
 
   <!-- Step 4: Checkout Form -->
   <div class="order-section" id="order-section">
-    <h2 class="bean-selector-title" style="margin-top: 0;">4. Place Your Custom Blend Order</h2>
+    <h2 class="roasts-category" style="margin-top: 0; text-align: center;">4. Place Your Custom Blend Order</h2>
     
-    <div class="price-box">
-      Price: $32 for one 12oz bag
+    <div class="roast-detail-price-line" style="text-align: center; margin-bottom: 1.5rem;">
+      $32 <span style="font-size: 0.95rem; font-weight: 600; color: #8a7060;">(one 12oz bag)</span>
     </div>
 
-    <form action="https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse" method="POST" class="order-form" id="byob-form">
+    <form action="https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse" method="POST" class="order-form" id="byob-form" style="max-width: 26rem; margin: 0 auto; text-align: left;">
       
       <!-- Recipe details and total price are dynamically injected here on submission -->
       <input type="hidden" name="entry.52896454" id="hidden-recipe" value="">
       <input type="hidden" name="entry.260019949" id="hidden-total" value="$32">
 
       <div class="order-field">
-        <label for="byob-name">Name</label>
+        <label for="byob-name" class="roast-mv-meta-label">Name</label>
         <input id="byob-name" type="text" name="entry.1582897284" required autocomplete="name">
       </div>
 
       <div class="order-field">
-        <label for="byob-email">Email</label>
+        <label for="byob-email" class="roast-mv-meta-label">Email</label>
         <input id="byob-email" type="email" name="entry.1584009735" required autocomplete="email">
       </div>
 
       <div class="order-field">
-        <label for="byob-blend-grind-select">Grind level</label>
-        <select id="byob-blend-grind-select" class="subscribe-select" style="width: 100%;">
+        <label for="byob-blend-grind-select" class="roast-mv-meta-label">Grind level</label>
+        <select id="byob-blend-grind-select" class="subscribe-select" style="min-width: 14rem; width: 100%;">
           <option value="Whole Bean" selected>Whole Bean</option>
           <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
           <option value="Coarser — French Press">Coarser — French Press</option>
@@ -239,46 +240,46 @@ permalink: /roasts/build-your-own-blend/
         </select>
       </div>
 
-      <fieldset class="order-delivery">
-        <legend>Delivery method</legend>
-        <div class="pill-radios">
+      <fieldset class="order-delivery" style="text-align: center;">
+        <legend class="roast-mv-meta-label" style="margin: 0 auto; padding: 0 0.4rem;">Delivery method</legend>
+        <div class="pill-radios" style="justify-content: center;">
           <label class="order-radio"><input type="radio" name="entry.577333073" value="Pickup" checked> Pickup</label>
           <label class="order-radio"><input type="radio" name="entry.577333073" value="Hand delivery"> Hand delivery</label>
         </div>
-        <p id="byob-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
+        <p id="byob-delivery-note" class="order-delivery-note" style="text-align: center;">Please specify in the notes how you want to coordinate pickup.</p>
       </fieldset>
 
-      <div id="byob-shipping" class="order-shipping" style="display:none;">
+      <div id="byob-shipping" class="order-shipping" style="display:none; text-align: left;">
         <div class="order-field">
-          <label for="byob-address">Street address</label>
+          <label for="byob-address" class="roast-mv-meta-label">Street address</label>
           <input id="byob-address" type="text" name="entry.1996760403" autocomplete="street-address">
         </div>
         <div class="order-field">
-          <label for="byob-city">City</label>
+          <label for="byob-city" class="roast-mv-meta-label">City</label>
           <input id="byob-city" type="text" name="entry.571087983" autocomplete="address-level2">
         </div>
         <div class="order-field-row">
           <div class="order-field">
-            <label for="byob-state">State</label>
+            <label for="byob-state" class="roast-mv-meta-label">State</label>
             <input id="byob-state" type="text" name="entry.821511879" autocomplete="address-level1">
           </div>
           <div class="order-field">
-            <label for="byob-zip">ZIP</label>
+            <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>
             <input id="byob-zip" type="text" name="entry.445360762" autocomplete="postal-code">
           </div>
         </div>
       </div>
 
       <div class="order-field">
-        <label for="byob-notes">Notes (optional)</label>
+        <label for="byob-notes" class="roast-mv-meta-label">Notes (optional)</label>
         <textarea id="byob-notes" name="entry.2042833038" rows="3" placeholder="Any preferences, notes, or roast instructions..."></textarea>
       </div>
 
-      <div class="order-actions">
+      <div class="order-actions" style="justify-content: center;">
         <button type="submit" class="order-submit" id="byob-submit-btn" disabled>Submit Blend Order</button>
       </div>
 
-      <p class="order-status" role="status" aria-live="polite"></p>
+      <p class="order-status" role="status" aria-live="polite" style="text-align: center;"></p>
     </form>
   </div>
 
