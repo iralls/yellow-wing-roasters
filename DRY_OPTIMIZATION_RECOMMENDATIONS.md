@@ -356,6 +356,7 @@ Centralizing these IDs in `_config.yml` (mirroring `digital_gift_entries:`) or `
 ---
 
 ## 6. Defensive Coding & Silent Fallback Elimination
+* **Status**: ✅ **Implemented**
 
 Excessive defensive fallback chains (`default: ... | default: ...`) and checks for non-existent properties are spread across the codebase. Rather than protecting the site, silent defaults actually **hide data errors and bugs** at build time (e.g. typos in frontmatter or missing lookups silently render empty values rather than alerting developers).
 
@@ -468,8 +469,7 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 | **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | ✅ Completed (unified 6 catalog listings) |
 | **Phase 1** | **Grind Selector Include** (`_data/grind_levels.yml` + `grind-options.html`) | Low | High | ✅ Completed (unified 7 forms) |
 | **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | ✅ Completed (unified cards and detail pages) |
-| **Phase 1** | **Roast Level Direct Lookups** (Eliminated defensive defaults) | Low | High | ✅ Completed (eliminated 40+ lines of fallback ladders) |
-| **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (Section 6) | Low | High | Eliminates ~60 lines of dead code & fixes hidden mascot bug |
+| **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (Section 6) | Low | High | ✅ Completed (eliminated dead fallbacks & fixed cormorant mascot) |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
 | **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | ✅ Completed (unified 4 templates) |
 | **Phase 3** | **Shared Cart Core** (`window.YWR_CART.parseItem`) | Medium | High | Eliminates ~90 lines of duplicate logic between `cart.js` & `order-checkout.js` |

@@ -125,7 +125,7 @@ permalink: /subscribe/
     {% for r in site.roasts %}
       {% if r.subscription and r.subscription != false and r.subscription.available != false %}
         {% assign r_sub = r.subscription %}
-        {% assign r_prices = r_sub.price | default: r_sub.prices | default: r.price %}
+        {% assign r_prices = r_sub.price | default: r.price %}
         {% if r.sizes %}
           {% assign r_sizes = r.sizes %}
         {% elsif r_prices %}
@@ -141,8 +141,11 @@ permalink: /subscribe/
     {% for s in site.subscriptions %}
       {% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}
       {% if s.frequencies %}{% assign s_freqs = s.frequencies %}{% else %}{% assign s_freqs = "Monthly" | split: "," %}{% endif %}
-      {% assign s_prices = s.price | default: s.prices %}
-      '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, frequencies: {{ s_freqs | jsonify }}, prices: {{ s_prices | jsonify }} }{% unless forloop.last %},{% endunless %}
+      {% assign s_prices = s.price %}
+      '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, frequencies: {{ s_freqs | jsonify }}, prices: {{ s_prices | jsonify }} },
+      {% if s.slug == 'migrator' %}
+      'the-migrator': { sizes: {{ s_sizes | jsonify }}, frequencies: {{ s_freqs | jsonify }}, prices: {{ s_prices | jsonify }} },
+      {% endif %}
     {% endfor %}
   };
 
@@ -180,7 +183,7 @@ permalink: /subscribe/
       {% if s_meta and s_meta.subscribable == false %}
     '{{ r.slug }}': {
       status: '{{ r.status }}',
-      badge: '{{ r.status_badge | default: s_meta.badge }}',
+      badge: '{{ s_meta.badge }}',
       footnote: '{{ s_meta.sub_footnote | default: s_meta.footnote }}'
     },
       {% elsif r.subscription == nil or r.subscription == false %}

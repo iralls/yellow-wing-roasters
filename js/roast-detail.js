@@ -93,6 +93,8 @@
       if (subLink) {
         var freq = freqSelect ? freqSelect.value : defaultFreq;
         var grind = grindSelect ? grindSelect.value : 'Whole Bean';
+        var freqSuffix = (freq === 'Monthly') ? '/mo' : (freq === 'Every 2 weeks' ? ' / 2 wks' : '');
+        subLink.textContent = isSub ? ('Subscribe — $' + subP + freqSuffix) : 'Subscribe';
         subLink.href = subscribeBaseUrl + '?roast=' + encodeURIComponent(roastSlug) + '&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
       }
     }

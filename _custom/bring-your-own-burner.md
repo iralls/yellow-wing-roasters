@@ -113,7 +113,7 @@ overlay_notes: "pick any single origin and customize your roast level"
       {% assign level_info = site.data.roast_levels[r.roast_level] %}
       {% assign r_specialty = level_info.specialty %}
       {% assign r_dots = level_info.dots %}
-      {% assign rp = r.price | default: r.prices %}
+      {% assign rp = r.price %}
       {{ r.slug | jsonify }}: {
         title: {{ r.title | jsonify }},
         mascot: {{ r.mascot_file | jsonify }},

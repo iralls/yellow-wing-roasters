@@ -1,7 +1,7 @@
 {% assign custom_items = site.custom | sort: "order" %}
 {% for item in custom_items %}
 <div class="roasts-entry" data-roast="{{ item.data_roast | default: item.slug }}" data-category="custom" data-type="custom">
-  <a class="roasts-entry-visual" href="{{ item.url | default: item.permalink | relative_url }}" aria-label="{{ item.card_title | default: item.title | escape }}{% if item.subtitle %} - {{ item.subtitle | escape }}{% endif %}">
+  <a class="roasts-entry-visual" href="{{ item.url | relative_url }}" aria-label="{{ item.card_title | default: item.title | escape }}{% if item.subtitle %} - {{ item.subtitle | escape }}{% endif %}">
     {% if item.visual_type == "lazy_susan" %}
       {% include lazy-susan.html %}
     {% elsif item.mascot_file %}

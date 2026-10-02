@@ -2,7 +2,7 @@
 layout: default
 ---
 
-{% assign roast_prices = page.price | default: page.prices %}
+{% assign roast_prices = page.price %}
 {% if page.sizes %}
   {% assign sizes = page.sizes %}
 {% elsif roast_prices %}
@@ -23,7 +23,7 @@ layout: default
 {% elsif page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-  {% assign m_name = site.data.mascots[page.mascot] | default: page.mascot_name | default: page.mascot %}
+  {% assign m_name = site.data.mascots[page.mascot] %}
   {% if m_name %}<div class="roast-mv-bird-label">{{ m_name }}</div>{% endif %}
 </div>
 {% endif %}
@@ -35,8 +35,8 @@ layout: default
 
 {% if page.status %}
   {% assign p_status_info = site.data.statuses[page.status] %}
-  {% assign p_status_badge = page.status_badge | default: p_status_info.badge %}
-  {% assign p_status_text = page.status_text | default: p_status_info.banner_text %}
+  {% assign p_status_badge = p_status_info.badge %}
+  {% assign p_status_text = p_status_info.banner_text %}
 {% endif %}
 
 {% if p_status_info %}
@@ -72,10 +72,10 @@ layout: default
     <div class="roast-mv-meta-value">{{ page.elevation }}</div>
   </div>
   {% endif %}
-  {% if page.processing_method or page.process %}
+  {% if page.processing_method %}
   <div class="roast-mv-meta-item">
     <div class="roast-mv-meta-label">Processing Method</div>
-    <div class="roast-mv-meta-value">{{ page.processing_method | default: page.process }}</div>
+    <div class="roast-mv-meta-value">{{ page.processing_method }}</div>
   </div>
   {% endif %}
   {% if page.brewing_method %}
@@ -251,7 +251,7 @@ layout: default
       {% endfor %}
     },
     pricesSub: {
-      {% assign sub_prices = sub_config.price | default: sub_config.prices | default: roast_prices %}
+      {% assign sub_prices = sub_config.price | default: roast_prices %}
       {% if sub_prices %}
         {% for entry in sub_prices %}
           {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
@@ -275,8 +275,8 @@ layout: default
   "offers": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "{{ roast_prices['12oz'] | default: roast_prices.first[1] | default: 12 }}",
-    "highPrice": "{{ roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz'] | default: roast_prices.first[1] | default: 12 }}",
+    "lowPrice": "{{ roast_prices['12oz'] | default: roast_prices.first[1] }}",
+    "highPrice": "{{ roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz'] | default: roast_prices.first[1] }}",
     "offerCount": "{{ sizes.size | default: 1 }}",
     "availability": "{% if page.status == 'flown_south' or page.status == 'incubating' %}https://schema.org/OutOfStock{% else %}https://schema.org/InStock{% endif %}"
   }

@@ -58,7 +58,7 @@ notes: "Four blends, one box"
 
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  initAviaryFlight({ price: {{ page.price | default: 38 }} });
+  initAviaryFlight({ price: {{ page.price }} });
 </script>
 
 <script type="application/ld+json">
@@ -75,7 +75,7 @@ notes: "Four blends, one box"
   "offers": {
     "@type": "Offer",
     "priceCurrency": "USD",
-    "price": "{{ page.price | default: 38 }}",
+    "price": "{{ page.price }}",
     "availability": "https://schema.org/InStock"
   }
 }

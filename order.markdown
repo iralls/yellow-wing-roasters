@@ -97,8 +97,8 @@ permalink: /order/
 
 {% assign flight_aviary_doc = site.flights | where: "slug", "the-aviary" | first %}
 {% assign flight_pyo_doc = site.flights | where: "slug", "peck-your-own" | first %}
-{% assign flight_aviary = flight_aviary_doc.price | default: 38 %}
-{% assign flight_pyo = flight_pyo_doc.price_per_bag | default: 10 %}
+{% assign flight_aviary = flight_aviary_doc.price %}
+{% assign flight_pyo = flight_pyo_doc.price_per_bag %}
 
 <script src="{{ '/js/order-checkout.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>

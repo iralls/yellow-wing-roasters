@@ -46,6 +46,7 @@
     }
 
     function applyRoast(r, isExplicitQuery) {
+      activeRoast = r;
       if (hiddenInput) hiddenInput.value = r;
 
       var existingNotice = document.querySelector('.roast-status-bar');
@@ -103,7 +104,10 @@
             var sizeVal = currentSubConfig.sizes[si];
             var opt = document.createElement('option');
             opt.value = sizeVal;
-            opt.textContent = sizeVal;
+            var optPrice = (currentSubConfig.prices && currentSubConfig.prices[sizeVal] !== undefined)
+              ? ' — $' + currentSubConfig.prices[sizeVal]
+              : '';
+            opt.textContent = sizeVal + optPrice;
             sizeSelect.appendChild(opt);
             if (targetSize && targetSize === sizeVal) {
               selectedSizeIdx = si;
@@ -111,6 +115,7 @@
           }
           if (sizeSelect.options.length > 0) {
             sizeSelect.selectedIndex = selectedSizeIdx;
+            sizeSelect.value = currentSubConfig.sizes[selectedSizeIdx];
           }
         }
 
@@ -133,6 +138,7 @@
           }
           if (freqSelect.options.length > 0) {
             freqSelect.selectedIndex = selectedFreqIdx;
+            freqSelect.value = currentSubConfig.frequencies[selectedFreqIdx];
           }
         }
 
@@ -150,6 +156,41 @@
           }
         }
       }
+
+      updatePrice();
+    }
+
+    function updatePrice() {
+      var currentSubConfig = subConfig[activeRoast];
+      var sizeSelect = document.getElementById('sub-size-select');
+      var freqSelect = document.getElementById('sub-freq-select');
+      var submitBtn = form.querySelector('.order-submit');
+      if (!submitBtn) return;
+
+      if (currentSubConfig && currentSubConfig.prices && sizeSelect) {
+        var sVal = sizeSelect.value || (sizeSelect.options && sizeSelect.options[sizeSelect.selectedIndex] ? sizeSelect.options[sizeSelect.selectedIndex].value : (sizeSelect.options && sizeSelect.options[0] ? sizeSelect.options[0].value : ''));
+        var p = currentSubConfig.prices[sVal];
+        if (p !== undefined && p !== null) {
+          var fVal = freqSelect ? (freqSelect.value || (freqSelect.options && freqSelect.options[freqSelect.selectedIndex] ? freqSelect.options[freqSelect.selectedIndex].value : '')) : '';
+          var isMonthly = (fVal === 'Monthly');
+          var freqSuffix = isMonthly ? '/mo' : (fVal === 'Every 2 weeks' ? ' / 2 wks' : '');
+          submitBtn.textContent = 'Subscribe — $' + p + freqSuffix;
+          if (priceHiddenInput) {
+            priceHiddenInput.value = '$' + p;
+          }
+          return;
+        }
+      }
+      submitBtn.textContent = 'Subscribe';
+    }
+
+    var sizeSelectEl = document.getElementById('sub-size-select');
+    if (sizeSelectEl) {
+      sizeSelectEl.addEventListener('change', updatePrice);
+    }
+    var freqSelectEl = document.getElementById('sub-freq-select');
+    if (freqSelectEl) {
+      freqSelectEl.addEventListener('change', updatePrice);
     }
 
     if (roastSelect) {

@@ -111,8 +111,8 @@ visual_type: lazy_susan
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
   initPYOFlight({
-    pricePerBag: {{ page.price_per_bag | default: 10 }},
-    minBags: {{ page.min_bags | default: 4 }}
+    pricePerBag: {{ page.price_per_bag }},
+    minBags: {{ page.min_bags }}
   });
 </script>
 
@@ -130,9 +130,9 @@ visual_type: lazy_susan
   "offers": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 }}",
-    "highPrice": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 | plus: 40 }}",
-    "price": "{{ page.min_bags | default: 4 | times: page.price_per_bag | default: 10 }}",
+    "lowPrice": "{{ page.min_bags | times: page.price_per_bag }}",
+    "highPrice": "{{ page.min_bags | times: page.price_per_bag | plus: 40 }}",
+    "price": "{{ page.min_bags | times: page.price_per_bag }}",
     "availability": "https://schema.org/InStock"
   }
 }

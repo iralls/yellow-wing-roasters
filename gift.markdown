@@ -416,13 +416,13 @@ permalink: /gift/
       {% if r.subscription and r.subscription != false and r.subscription.available != false %}
         {% assign r_sub = r.subscription %}
         {% if r.sizes %}{% assign r_sizes = r.sizes %}{% else %}{% assign r_sizes = default_sub_sizes %}{% endif %}
-        {% assign r_prices = r_sub.price | default: r_sub.prices | default: r.price %}
+        {% assign r_prices = r_sub.price | default: r.price %}
         '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, prices: {{ r_prices | jsonify }} },
       {% endif %}
     {% endfor %}
     {% for s in site.subscriptions %}
       {% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}
-      {% assign s_prices = s.price | default: s.prices %}
+      {% assign s_prices = s.price %}
       '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, prices: {{ s_prices | jsonify }} }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   };

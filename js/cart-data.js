@@ -26,7 +26,7 @@ window.YWR_ROASTS_DATA = {
         {% endif %}
       },
       prices: {
-        {% assign rp = r.price | default: r.prices %}
+        {% assign rp = r.price %}
         {% for entry in rp %}
           {% assign s = entry[0] %}
           {% if r.sizes == nil or r.sizes contains s %}

@@ -283,7 +283,7 @@ mascot_alt: "Build Your Own Blend mascot"
     {% for r in single_origins %}
       {% assign s_meta = site.data.statuses[r.status] %}
       {% if s_meta == nil or s_meta.orderable != false %}
-        {% assign rp = r.price | default: r.prices %}
+        {% assign rp = r.price %}
         {% assign p1 = rp["1lb"] | default: rp["12oz"] | default: 16 %}
         {% assign o_first = r.origins.first %}
         {% assign country = o_first | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}

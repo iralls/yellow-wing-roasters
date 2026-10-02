@@ -3,7 +3,7 @@
 {% assign r_dots = level_info.dots %}
 {% assign r_layman = level_info.layman %}
 {% assign r_specialty = level_info.specialty %}
-{% assign rp = r.price | default: r.prices %}
+{% assign rp = r.price %}
 {% assign first_price_entry = rp.first %}
 {% assign card_display_price = rp["12oz"] | default: first_price_entry[1] %}
 {% assign card_beans = "" | split: "," %}

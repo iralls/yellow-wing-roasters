@@ -17,8 +17,8 @@
 
 {% assign flight_aviary_doc = site.flights | where: "slug", "the-aviary" | first %}
 {% assign flight_pyo_doc = site.flights | where: "slug", "peck-your-own" | first %}
-{% assign flight_aviary = flight_aviary_doc.price | default: 38 %}
-{% assign flight_pyo = flight_pyo_doc.price_per_bag | default: 10 %}
+{% assign flight_aviary = flight_aviary_doc.price %}
+{% assign flight_pyo = flight_pyo_doc.price_per_bag %}
 {% assign roasts_url = '/roasts/' | relative_url %}
 {% assign order_url = '/order/' | relative_url %}
 {% assign images_base = '/images/' | relative_url %}

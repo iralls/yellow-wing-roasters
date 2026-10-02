@@ -1,7 +1,7 @@
 {% assign flights = site.flights | sort: "order" %}
 {% for f in flights %}
 <div class="roasts-entry" data-category="flight" data-type="flight" data-roast="{{ f.slug }}">
-  <a class="roasts-entry-visual" href="{{ f.url | default: f.permalink | relative_url }}" aria-label="{{ f.title | escape }}">
+  <a class="roasts-entry-visual" href="{{ f.url | relative_url }}" aria-label="{{ f.title | escape }}">
     {% if f.visual_type == "lazy_susan" %}
       {% include lazy-susan.html %}
     {% elsif f.mascot_file %}

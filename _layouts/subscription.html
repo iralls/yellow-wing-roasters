@@ -27,7 +27,7 @@ layout: default
 </div>
 
 <div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=' | append: page.slug | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] | default: page.price }}/mo</a>
+  <a href="{{ '/subscribe/?roast=' | append: page.slug | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] }}/mo</a>
 </div>
 
 </div>
@@ -46,7 +46,7 @@ layout: default
   "offers": {
     "@type": "Offer",
     "priceCurrency": "USD",
-    "price": "{{ page.price['12oz'] | default: page.price }}",
+    "price": "{{ page.price['12oz'] }}",
     "availability": "https://schema.org/InStock"
   }
 }
