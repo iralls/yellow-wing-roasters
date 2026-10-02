@@ -74,7 +74,9 @@
 .roast-mv-tasting {
   font-style: italic;
   color: #8a7060;
-  margin-bottom: 1.5rem;
+  max-width: 32rem;
+  margin: 0 auto 1.5rem;
+  line-height: 1.55;
   text-align: center;
   backdrop-filter: blur(3.5px);
   -webkit-backdrop-filter: blur(3.5px);
