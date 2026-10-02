@@ -82,12 +82,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
   <div class="order-field">
     <label for="byob-grind" class="roast-mv-meta-label">Grind level</label>
     <select id="byob-grind" class="subscribe-select" style="min-width: 14rem; width: 100%;">
-      <option value="Whole Bean" selected>Whole Bean</option>
-      <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
-      <option value="Coarser — French Press">Coarser — French Press</option>
-      <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
-      <option value="Finer — Pour Over">Finer — Pour Over</option>
-      <option value="Finest — Espresso">Finest — Espresso</option>
+      {% include grind-options.html %}
     </select>
   </div>
 

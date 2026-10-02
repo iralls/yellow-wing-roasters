@@ -1,0 +1,10 @@
+{%- assign selected_grind = include.selected -%}
+{%- for grind in site.data.grind_levels -%}
+  {%- assign is_selected = false -%}
+  {%- if selected_grind -%}
+    {%- if grind.value == selected_grind -%}{%- assign is_selected = true -%}{%- endif -%}
+  {%- elsif grind.default -%}
+    {%- assign is_selected = true -%}
+  {%- endif %}
+  <option value="{{ grind.value }}"{% if is_selected %} selected{% endif %}>{{ grind.label | default: grind.value }}</option>
+{%- endfor -%}

@@ -143,12 +143,7 @@ layout: default
 <div class="roast-mv-center" style="margin-top:0.75rem;">
   <label for="order-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
   <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %} style="min-width: 14rem;">
-    <option value="Whole Bean" selected>Whole Bean</option>
-    <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
-    <option value="Coarser — French Press">Coarser — French Press</option>
-    <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
-    <option value="Finer — Pour Over">Finer — Pour Over</option>
-    <option value="Finest — Espresso">Finest — Espresso</option>
+    {% include grind-options.html %}
   </select>
 </div>
 

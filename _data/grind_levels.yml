@@ -1,0 +1,13 @@
+- value: "Whole Bean"
+  label: "Whole Bean"
+  default: true
+- value: "Coarsest — Cold Brew"
+  label: "Coarsest — Cold Brew"
+- value: "Coarser — French Press"
+  label: "Coarser — French Press"
+- value: "Medium — Drip / Filter"
+  label: "Medium — Drip / Filter"
+- value: "Finer — Pour Over"
+  label: "Finer — Pour Over"
+- value: "Finest — Espresso"
+  label: "Finest — Espresso"

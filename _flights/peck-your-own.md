@@ -125,12 +125,7 @@ visual_type: lazy_susan
 <div class="roast-mv-center" style="margin-top:1.5rem; margin-bottom:0.5rem;">
   <label for="pyo-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
   <select id="pyo-grind-select" class="subscribe-select" style="min-width: 12rem;">
-    <option value="Whole Bean" selected>Whole Bean</option>
-    <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
-    <option value="Coarser — French Press">Coarser — French Press</option>
-    <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
-    <option value="Finer — Pour Over">Finer — Pour Over</option>
-    <option value="Finest — Espresso">Finest — Espresso</option>
+    {% include grind-options.html %}
   </select>
 </div>
 

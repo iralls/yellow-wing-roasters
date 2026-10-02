@@ -138,30 +138,9 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ---
 
 ### 2.4 Grind Selector Dropdown
-* **Current State**: This identical `<select>` options block is copy-pasted in **7 files**:
-  * [_flights/the-aviary.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/the-aviary.md#L46-L52)
-  * [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md#L127-L133)
-  * [_custom/bring-your-own-beans.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-beans.md#L75-L81)
-  * [_custom/bring-your-own-burner.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-burner.md#L86-L92)
-  * [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md#L248-L254)
-  * [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html)
-  * [order.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/order.markdown)
-  ```html
-  <option value="Whole Bean" selected>Whole Bean</option>
-  <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
-  <option value="Coarser — French Press">Coarser — French Press</option>
-  <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
-  <option value="Finer — Pour Over">Finer — Pour Over</option>
-  <option value="Finest — Espresso">Finest — Espresso</option>
-  ```
-* **DRY Solution**: Define grind options once in `_data/grinds.yml` and render via `_includes/grind-select.html`:
-  ```liquid
-  <select id="{{ include.id | default: 'grind-select' }}" name="{{ include.name }}" class="subscribe-select">
-    {% for g in site.data.grinds %}
-      <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-    {% endfor %}
-  </select>
-  ```
+* **Status**: ✅ **Implemented**
+* **Solution**: Centralized grind levels in `_data/grind_levels.yml` and created `_includes/grind-options.html`. Replaced the copy-pasted `<option>` blocks in all 7 files ([_flights/the-aviary.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/the-aviary.md), [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md), [_custom/bring-your-own-beans.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-beans.md), [_custom/bring-your-own-burner.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-burner.md), [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md), [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html), and [subscribe-form.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/subscribe-form.markdown)).
+
 
 ---
 
@@ -361,23 +340,9 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ## 4. Data Centralization (`_data/`)
 
 ### 4.1 `_data/grind_levels.yml`
-Currently, the valid coffee grind options exist only as copy-pasted `<option>` elements in HTML. Moving them to `_data/grind_levels.yml`:
-```yaml
-- value: "Whole Bean"
-  label: "Whole Bean"
-  default: true
-- value: "Coarsest — Cold Brew"
-  label: "Coarsest — Cold Brew"
-- value: "Coarser — French Press"
-  label: "Coarser — French Press"
-- value: "Medium — Drip / Filter"
-  label: "Medium — Drip / Filter"
-- value: "Finer — Pour Over"
-  label: "Finer — Pour Over"
-- value: "Finest — Espresso"
-  label: "Finest — Espresso"
-```
-* **Benefit**: Adding a new grind or altering copy happens in one file and propagates site-wide.
+* **Status**: ✅ **Implemented**
+* Centralized all 6 grind options into [_data/grind_levels.yml](file:///Users/ianr/Documents/yellow-wing-roasters/_data/grind_levels.yml) and rendered through `_includes/grind-options.html`.
+
 
 ---
 
@@ -447,8 +412,8 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 
 | Phase | Recommendation | Effort | Impact | Lines Saved / Reduction |
 |---|---|---|---|---|
-| **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | Eliminates ~75 lines of redundant Liquid across 3 files |
-| **Phase 1** | **Grind Selector Include** (`_data/grinds.yml` + include) | Low | High | Eliminates ~50 lines of identical `<option>` blocks in 7 files |
+| **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | ✅ Completed (unified 6 catalog listings) |
+| **Phase 1** | **Grind Selector Include** (`_data/grind_levels.yml` + `grind-options.html`) | Low | High | ✅ Completed (unified 7 forms) |
 | **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | Eliminates 4 redundant 5-dot spans and level lookups |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
 | **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | Eliminates ~80 lines of duplicated complex DOM across 4 files |

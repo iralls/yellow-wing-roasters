@@ -60,12 +60,7 @@ permalink: /subscribe/
   <div class="order-field">
     <label for="sub-grind-select">Grind</label>
     <select id="sub-grind-select" class="subscribe-select" style="width: 100%;">
-      <option value="Whole Bean" selected>Whole Bean</option>
-      <option value="Coarsest — Cold Brew">Coarsest — Cold Brew</option>
-      <option value="Coarser — French Press">Coarser — French Press</option>
-      <option value="Medium — Drip / Filter">Medium — Drip / Filter</option>
-      <option value="Finer — Pour Over">Finer — Pour Over</option>
-      <option value="Finest — Espresso">Finest — Espresso</option>
+      {% include grind-options.html %}
     </select>
   </div>
 
