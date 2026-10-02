@@ -11,7 +11,8 @@ price: 32
 layman: Custom
 descriptor: custom blend
 overlay_notes: "craft your own custom blend from our single origin roasts"
-visual_type: lazy_susan
+mascot_file: build-a-bird-transparent.png
+mascot_alt: "Build Your Own Blend mascot"
 ---
 
 <div class="roast-minimal-vertical">
@@ -20,7 +21,7 @@ visual_type: lazy_susan
   <div class="roast-mv-divider"></div>
 
   <div class="roast-mv-center roast-mv-bird-wrap">
-    {% include lazy-susan.html hero=true %}
+    <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="Build Your Own Blend" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
   </div>
 
   <div class="roast-mv-center">
