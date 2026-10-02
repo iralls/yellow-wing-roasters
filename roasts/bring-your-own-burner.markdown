@@ -17,7 +17,7 @@ permalink: /roasts/bring-your-own-burner/
 </div>
 <div class="roast-mv-subtitle">Bring Your Own Burner</div>
 
-<p class="roast-mv-tasting"><em>Custom Roast Level for Single Origins</em><br>Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order.</p>
+<p class="roast-mv-tasting">Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order.</p>
 
 <div class="roast-mv-divider"></div>
 
