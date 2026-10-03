@@ -8,117 +8,127 @@ permalink: /subscribe/
 
 <div class="roast-mv-divider"></div>
 
-<div id="sub-image-wrap" class="roast-mv-center roast-mv-bird-wrap" style="display: none;">
-  <img id="sub-image" src="" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-</div>
-
 <div class="roast-mv-center">
   <h1 id="sub-title" class="roast-mv-title">Subscribe</h1>
 </div>
-<div id="sub-subtitle" class="roast-mv-subtitle" style="display: none;"></div>
-<p id="sub-description" class="roast-mv-tasting" style="display: none;"></p>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
+<div class="roast-mv-divider"></div>
+
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form order-form--checkout" id="subscribe-form">
   <input type="hidden" name="entry.1935997805" id="sub-roast-hidden" value="">
   <input type="hidden" name="entry.903789519" id="sub-price-hidden" value="">
   <input type="hidden" name="entry.1261348961" value="Active">
   <input type="hidden" name="entry.1336119512" value="">
+  <input type="hidden" name="entry.1606791078" id="sub-size-hidden" value="">
+  <input type="hidden" name="entry.2064801247" id="sub-freq-hidden" value="">
+  <input type="hidden" id="sub-grind-hidden" value="">
 
-  <div class="order-field roast-mv-center" id="sub-roast-field" style="display: none;">
-    <label for="sub-roast-select">Coffee</label>
-    <select id="sub-roast-select" class="subscribe-select">
-      {% for s in site.subscriptions %}
-        <option value="{{ s.slug }}">{{ s.title }} (Subscription)</option>
-      {% endfor %}
-      {% for r in site.roasts %}
-        {% assign s_meta = site.data.statuses[r.status] %}
-        {% if r.subscription and r.subscription != false and r.subscription.available != false and s_meta.subscribable != false %}
-          <option value="{{ r.slug }}">{{ r.title }}</option>
-        {% endif %}
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="order-field roast-mv-center">
-    <label for="sub-size-select">Size</label>
-    <select id="sub-size-select" name="entry.1606791078" class="subscribe-select">
-      <option value="12oz" selected>12oz</option>
-      <option value="1lb">1lb</option>
-      <option value="2lb">2lb</option>
-      <option value="5lb">5lb</option>
-    </select>
-  </div>
-
-  <div class="order-field roast-mv-center">
-    <label for="sub-grind-select">Grind</label>
-    <select id="sub-grind-select" class="subscribe-select">
-      {% include grind-options.html %}
-    </select>
-  </div>
-
-  <div class="order-field roast-mv-center">
-    <label for="sub-freq-select">Frequency</label>
-    <select id="sub-freq-select" name="entry.2064801247" class="subscribe-select">
-      <option value="Every 2 weeks" selected>Every 2 weeks</option>
-      <option value="Monthly">Monthly</option>
-    </select>
-  </div>
-
-  <div class="order-field">
-    <label for="sub-name">Name</label>
-    <input id="sub-name" type="text" name="entry.1153405702" required autocomplete="name">
-  </div>
-
-  <div class="order-field">
-    <label for="sub-email">Email</label>
-    <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
-  </div>
-
-  <fieldset class="order-delivery">
-    <legend>Delivery method</legend>
-    <div class="pill-radios">
-      <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
-      <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
-    </div>
-    <p id="sub-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
-  </fieldset>
-
-  <div id="sub-address-fields" class="order-shipping" style="display:none;">
-    <div class="order-field">
-      <label for="sub-address">Street address</label>
-      <input id="sub-address" type="text" name="entry.148046999" autocomplete="street-address">
-    </div>
-    <div class="order-field">
-      <label for="sub-city">City</label>
-      <input id="sub-city" type="text" name="entry.1534670804" autocomplete="address-level2">
-    </div>
-    <div class="order-field-row">
-      <div class="order-field">
-        <label for="sub-state">State</label>
-        <select id="sub-state" name="entry.414179858" autocomplete="address-level1">
-          {% include state-options.html %}
+  <div class="order-checkout-grid">
+    <div class="order-checkout-main">
+      <div class="order-field roast-mv-center" id="sub-roast-field" style="display: none;">
+        <label for="sub-roast-select" class="roast-mv-meta-label">Coffee</label>
+        <select id="sub-roast-select" class="subscribe-select">
+          {% for s in site.subscriptions %}
+            <option value="{{ s.slug }}">{{ s.title }} (Subscription)</option>
+          {% endfor %}
+          {% for r in site.roasts %}
+            {% assign s_meta = site.data.statuses[r.status] %}
+            {% if r.subscription and r.subscription != false and r.subscription.available != false and s_meta.subscribable != false %}
+              <option value="{{ r.slug }}">{{ r.title }}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </div>
+
       <div class="order-field">
-        <label for="sub-zip">ZIP</label>
-        <input id="sub-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
+        <label for="sub-name" class="roast-mv-meta-label">Name</label>
+        <input id="sub-name" type="text" name="entry.1153405702" required autocomplete="name">
+      </div>
+
+      <div class="order-field">
+        <label for="sub-email" class="roast-mv-meta-label">Email</label>
+        <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
+      </div>
+
+      <fieldset class="order-delivery">
+        <legend>Delivery method</legend>
+        <div class="pill-radios">
+          <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
+          <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
+        </div>
+        <p id="sub-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
+      </fieldset>
+
+      <div id="sub-address-fields" class="order-shipping" style="display:none;">
+        <div class="order-field">
+          <label for="sub-address" class="roast-mv-meta-label">Street address</label>
+          <input id="sub-address" type="text" name="entry.148046999" autocomplete="street-address">
+        </div>
+        <div class="order-field">
+          <label for="sub-city" class="roast-mv-meta-label">City</label>
+          <input id="sub-city" type="text" name="entry.1534670804" autocomplete="address-level2">
+        </div>
+        <div class="order-field-row">
+          <div class="order-field">
+            <label for="sub-state" class="roast-mv-meta-label">State</label>
+            <select id="sub-state" name="entry.414179858" autocomplete="address-level1">
+              {% include state-options.html %}
+            </select>
+          </div>
+          <div class="order-field">
+            <label for="sub-zip" class="roast-mv-meta-label">ZIP</label>
+            <input id="sub-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
+          </div>
+        </div>
+      </div>
+
+      <div class="order-field">
+        <label for="sub-notes" class="roast-mv-meta-label">Notes (optional)</label>
+        <textarea id="sub-notes" name="entry.1381358427" rows="3"></textarea>
+      </div>
+
+      <div class="order-actions">
+        <button type="submit" class="order-submit">Subscribe</button>
+      </div>
+
+      <p class="order-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="order-checkout-sidebar">
+      <div class="order-summary-card">
+        <div class="order-summary-header">
+          <h2 class="order-summary-title">Subscription Summary</h2>
+        </div>
+
+        <div class="order-cart-items">
+          <div class="order-cart-card">
+            <div class="order-cart-card-thumb">
+              <img id="sub-summary-thumb" src="" alt="" class="order-cart-card-img" style="display:none;">
+              <span id="sub-summary-ph" class="order-cart-card-ph" aria-hidden="true" style="display:none;">☕</span>
+            </div>
+            <div class="order-cart-card-info">
+              <div class="order-cart-card-title" id="sub-summary-roast-title"></div>
+              <div class="order-cart-card-meta" id="sub-summary-meta"></div>
+            </div>
+            <div class="order-cart-card-actions">
+              <div class="order-cart-card-total" id="sub-summary-price"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-cart-summary-totals">
+          <div class="order-cart-summary-row">
+            <span>Frequency</span>
+            <span id="sub-summary-freq-row"></span>
+          </div>
+          <div class="order-cart-summary-row order-cart-summary-row--total">
+            <span class="order-cart-total-label">Total per delivery</span>
+            <span class="order-cart-total-value" id="sub-summary-total"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="order-field">
-    <label for="sub-notes">Notes (optional)</label>
-    <textarea id="sub-notes" name="entry.1381358427" rows="3"></textarea>
-  </div>
-
-  <div class="roast-mv-center" style="margin-top: 1.5rem;">
-    <div class="roast-detail-price-line" id="sub-price-line"></div>
-    <div class="order-actions" style="margin-top: 0;">
-      <button type="submit" class="order-submit">Subscribe</button>
-    </div>
-  </div>
-
-  <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
 </div>

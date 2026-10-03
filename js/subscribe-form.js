@@ -22,18 +22,24 @@
     var queryRoast = params.get('roast') || '';
     var hiddenInput = document.getElementById('sub-roast-hidden');
     var priceHiddenInput = document.getElementById('sub-price-hidden');
+    var sizeHiddenInput = document.getElementById('sub-size-hidden');
+    var freqHiddenInput = document.getElementById('sub-freq-hidden');
+    var grindHiddenInput = document.getElementById('sub-grind-hidden');
     var title = document.getElementById('sub-title');
-    var subtitleEl = document.getElementById('sub-subtitle');
-    var descEl = document.getElementById('sub-description');
-    var imageWrap = document.getElementById('sub-image-wrap');
-    var imageEl = document.getElementById('sub-image');
     var roastSelect = document.getElementById('sub-roast-select');
     var roastField = document.getElementById('sub-roast-field');
+
+    var summaryThumb = document.getElementById('sub-summary-thumb');
+    var summaryPh = document.getElementById('sub-summary-ph');
+    var summaryTitle = document.getElementById('sub-summary-roast-title');
+    var summaryMeta = document.getElementById('sub-summary-meta');
+    var summaryFreqRow = document.getElementById('sub-summary-freq-row');
+    var summaryPrice = document.getElementById('sub-summary-price');
+    var summaryTotal = document.getElementById('sub-summary-total');
 
     var subConfig = config.subConfig || {};
     var mascotMap = config.mascotMap || {};
     var titleMap = config.titleMap || {};
-    var descriptionMap = config.descriptionMap || {};
     var disabledSubRoasts = config.disabledSubRoasts || {};
 
     var activeRoast = queryRoast;
@@ -75,35 +81,18 @@
         title.textContent = 'Subscribe';
       }
 
-      if (subtitleEl) {
-        if (displayTitle) {
-          subtitleEl.textContent = displayTitle;
-          subtitleEl.style.display = '';
-        } else {
-          subtitleEl.textContent = '';
-          subtitleEl.style.display = 'none';
-        }
-      }
-
-      if (descEl) {
-        var displayDesc = (descriptionMap && descriptionMap[r]) ? descriptionMap[r] : '';
-        if (displayDesc) {
-          descEl.textContent = displayDesc;
-          descEl.style.display = '';
-        } else {
-          descEl.textContent = '';
-          descEl.style.display = 'none';
-        }
-      }
-
       function updateMascot() {
         var mascotSrc = mascotMap[r] || (window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[r] && window.YWR_ROASTS_DATA[r].mascot ? ('/images/' + window.YWR_ROASTS_DATA[r].mascot) : '');
-        if (mascotSrc && imageEl && imageWrap) {
-          imageEl.src = mascotSrc;
-          imageEl.alt = displayTitle ? (displayTitle + ' mascot') : '';
-          imageWrap.style.display = '';
-        } else if (imageWrap) {
-          imageWrap.style.display = 'none';
+        if (summaryThumb && summaryPh) {
+          if (mascotSrc) {
+            summaryThumb.src = mascotSrc;
+            summaryThumb.alt = displayTitle ? (displayTitle + ' mascot') : '';
+            summaryThumb.style.display = '';
+            summaryPh.style.display = 'none';
+          } else {
+            summaryThumb.style.display = 'none';
+            summaryPh.style.display = '';
+          }
         }
       }
       updateMascot();
@@ -111,108 +100,32 @@
         document.addEventListener('DOMContentLoaded', updateMascot);
       }
 
-      var currentSubConfig = subConfig[r];
-      if (currentSubConfig) {
-        var sizeSelect = document.getElementById('sub-size-select');
-        if (sizeSelect && currentSubConfig.sizes) {
-          var prevSize = sizeSelect.value;
-          sizeSelect.innerHTML = '';
-          var qpSize = params.get('size');
-          var targetSize = qpSize || prevSize;
-          var selectedSizeIdx = 0;
-          for (var si = 0; si < currentSubConfig.sizes.length; si++) {
-            var sizeVal = currentSubConfig.sizes[si];
-            var opt = document.createElement('option');
-            opt.value = sizeVal;
-            opt.textContent = sizeVal;
-            sizeSelect.appendChild(opt);
-            if (targetSize && targetSize === sizeVal) {
-              selectedSizeIdx = si;
-            }
-          }
-          if (sizeSelect.options.length > 0) {
-            sizeSelect.selectedIndex = selectedSizeIdx;
-            sizeSelect.value = currentSubConfig.sizes[selectedSizeIdx];
-          }
-        }
+      var currentSubConfig = subConfig[r] || {};
+      var qpSize = params.get('size');
+      var chosenSize = qpSize || (currentSubConfig.sizes && currentSubConfig.sizes[0]) || '12oz';
+      if (sizeHiddenInput) sizeHiddenInput.value = chosenSize;
 
-        var freqSelect = document.getElementById('sub-freq-select');
-        if (freqSelect && currentSubConfig.frequencies) {
-          var prevFreq = freqSelect.value;
-          freqSelect.innerHTML = '';
-          var qpFreq = params.get('frequency');
-          var targetFreq = qpFreq || prevFreq;
-          var selectedFreqIdx = 0;
-          for (var fi = 0; fi < currentSubConfig.frequencies.length; fi++) {
-            var freqVal = currentSubConfig.frequencies[fi];
-            var fOpt = document.createElement('option');
-            fOpt.value = freqVal;
-            fOpt.textContent = freqVal;
-            freqSelect.appendChild(fOpt);
-            if (targetFreq && targetFreq === freqVal) {
-              selectedFreqIdx = fi;
-            }
-          }
-          if (freqSelect.options.length > 0) {
-            freqSelect.selectedIndex = selectedFreqIdx;
-            freqSelect.value = currentSubConfig.frequencies[selectedFreqIdx];
-          }
-        }
+      var qpFreq = params.get('frequency');
+      var chosenFreq = qpFreq || (currentSubConfig.frequencies && currentSubConfig.frequencies[0]) || 'Every 2 weeks';
+      if (freqHiddenInput) freqHiddenInput.value = chosenFreq;
 
-        var qpGrind = params.get('grind');
-        if (qpGrind) {
-          var grindSelect = document.getElementById('sub-grind-select');
-          if (grindSelect) {
-            for (var gr = 0; gr < grindSelect.options.length; gr++) {
-              var optVal = grindSelect.options[gr].value.toLowerCase();
-              if (optVal === qpGrind.toLowerCase() || optVal.indexOf(qpGrind.toLowerCase()) >= 0) {
-                grindSelect.selectedIndex = gr;
-                break;
-              }
-            }
-          }
-        }
+      var qpGrind = params.get('grind');
+      var chosenGrind = qpGrind || 'Whole Bean';
+      if (grindHiddenInput) grindHiddenInput.value = chosenGrind;
+
+      var priceVal = 0;
+      if (currentSubConfig.prices && typeof currentSubConfig.prices[chosenSize] === 'number') {
+        priceVal = currentSubConfig.prices[chosenSize];
+      }
+      if (priceHiddenInput) {
+        priceHiddenInput.value = '$' + priceVal;
       }
 
-      updatePrice();
-    }
-
-    function updatePrice() {
-      var currentSubConfig = subConfig[activeRoast];
-      var sizeSelect = document.getElementById('sub-size-select');
-      var priceLine = document.getElementById('sub-price-line');
-      var submitBtn = form.querySelector('.order-submit');
-      if (submitBtn) {
-        submitBtn.textContent = 'Subscribe';
-      }
-
-      if (currentSubConfig && currentSubConfig.prices && sizeSelect) {
-        var sVal = sizeSelect.value || (sizeSelect.options && sizeSelect.options[sizeSelect.selectedIndex] ? sizeSelect.options[sizeSelect.selectedIndex].value : (sizeSelect.options && sizeSelect.options[0] ? sizeSelect.options[0].value : ''));
-        var p = currentSubConfig.prices[sVal];
-        if (p !== undefined && p !== null) {
-          if (priceLine) {
-            priceLine.textContent = '$' + p;
-            priceLine.style.display = '';
-          }
-          if (priceHiddenInput) {
-            priceHiddenInput.value = '$' + p;
-          }
-          return;
-        }
-      }
-      if (priceLine) {
-        priceLine.textContent = '';
-        priceLine.style.display = 'none';
-      }
-    }
-
-    var sizeSelectEl = document.getElementById('sub-size-select');
-    if (sizeSelectEl) {
-      sizeSelectEl.addEventListener('change', updatePrice);
-    }
-    var freqSelectEl = document.getElementById('sub-freq-select');
-    if (freqSelectEl) {
-      freqSelectEl.addEventListener('change', updatePrice);
+      if (summaryTitle) summaryTitle.textContent = displayTitle;
+      if (summaryMeta) summaryMeta.textContent = chosenSize + ' · ' + chosenGrind;
+      if (summaryFreqRow) summaryFreqRow.textContent = chosenFreq;
+      if (summaryPrice) summaryPrice.textContent = '$' + priceVal;
+      if (summaryTotal) summaryTotal.textContent = '$' + Number(priceVal).toFixed(2);
     }
 
     if (roastSelect) {
@@ -271,18 +184,17 @@
     var submitBtn = form.querySelector('.order-submit');
 
     form.addEventListener('submit', function () {
-      var grindSelect = document.getElementById('sub-grind-select');
-      var grindVal = grindSelect ? grindSelect.value : 'Whole Bean';
+      var grindVal = grindHiddenInput ? grindHiddenInput.value : (params.get('grind') || 'Whole Bean');
       if (hiddenInput && hiddenInput.value && hiddenInput.value.indexOf('Grind:') < 0) {
         hiddenInput.value = hiddenInput.value + ' (Grind: ' + grindVal + ')';
       }
 
       // Gather and set the price right before form submission to Google Forms
       var currentSubConfig = subConfig[activeRoast];
-      if (currentSubConfig && currentSubConfig.prices && priceHiddenInput) {
-        var selectedSize = form.querySelector('select[name="entry.1606791078"]');
-        if (selectedSize && currentSubConfig.prices[selectedSize.value]) {
-          priceHiddenInput.value = '$' + currentSubConfig.prices[selectedSize.value];
+      if (currentSubConfig && currentSubConfig.prices && priceHiddenInput && sizeHiddenInput) {
+        var sVal = sizeHiddenInput.value;
+        if (currentSubConfig.prices[sVal]) {
+          priceHiddenInput.value = '$' + currentSubConfig.prices[sVal];
         }
       }
 
