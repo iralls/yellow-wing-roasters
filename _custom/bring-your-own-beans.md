@@ -49,7 +49,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
 
 <h2 class="roasts-category">Place a BYOB Order</h2>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form" style="max-width: 26rem; margin: 2rem auto; text-align: left;">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse" method="POST" class="order-form" id="byob-form">
 
   <div class="order-field">
     <label for="byob-name" class="roast-mv-meta-label">Name</label>
@@ -68,7 +68,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
 
   <div class="order-field">
     <label for="byob-roast" class="roast-mv-meta-label">Roast level</label>
-    <select id="byob-roast" name="entry.1076774005" class="subscribe-select" style="min-width: 14rem; width: 100%;" required>
+    <select id="byob-roast" name="entry.1076774005" class="subscribe-select" required>
       <option value="" disabled selected>Choose a roast level</option>
       <option value="City (light)">City (light)</option>
       <option value="City+ (medium-light)">City+ (medium-light)</option>
@@ -81,7 +81,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
 
   <div class="order-field">
     <label for="byob-grind" class="roast-mv-meta-label">Grind level</label>
-    <select id="byob-grind" class="subscribe-select" style="min-width: 14rem; width: 100%;">
+    <select id="byob-grind" class="subscribe-select">
       {% include grind-options.html %}
     </select>
   </div>
@@ -92,13 +92,13 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
   </div>
 
-  <fieldset class="order-delivery" style="text-align: center;">
-    <legend class="roast-mv-meta-label" style="margin: 0 auto; padding: 0 0.4rem;">Delivery method</legend>
-    <div class="pill-radios" style="justify-content: center;">
+  <fieldset class="order-delivery">
+    <legend class="roast-mv-meta-label">Delivery method</legend>
+    <div class="pill-radios">
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     </div>
-    <p id="byob-delivery-note" class="order-delivery-note" style="text-align: center;">Please specify in the notes how you want to coordinate pickup.</p>
+    <p id="byob-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
   </fieldset>
 
   <div id="byob-shipping" class="order-shipping" style="display:none; text-align: left;">
@@ -127,11 +127,11 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     <textarea id="byob-notes" name="entry.1381358427" rows="3" placeholder="Any preferences — first crack, second crack, specific development time, etc."></textarea>
   </div>
 
-  <div class="order-actions" style="justify-content: center;">
+  <div class="order-actions">
     <button type="submit" class="order-submit">Submit BYOB order</button>
   </div>
 
-  <p class="order-status" role="status" aria-live="polite" style="text-align: center;"></p>
+  <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
 <script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

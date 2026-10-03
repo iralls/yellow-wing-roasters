@@ -24,7 +24,7 @@ permalink: /subscribe/
 
   <div class="order-field" id="sub-roast-field" style="display: none;">
     <label for="sub-roast-select">Coffee</label>
-    <select id="sub-roast-select" class="subscribe-select" style="width: 100%;">
+    <select id="sub-roast-select" class="subscribe-select">
       {% for s in site.subscriptions %}
         <option value="{{ s.slug }}">{{ s.title }} (Subscription)</option>
       {% endfor %}
@@ -49,7 +49,7 @@ permalink: /subscribe/
 
   <div class="order-field">
     <label for="sub-size-select">Size</label>
-    <select id="sub-size-select" name="entry.1606791078" class="subscribe-select" style="width: 100%;">
+    <select id="sub-size-select" name="entry.1606791078" class="subscribe-select">
       <option value="12oz" selected>12oz</option>
       <option value="1lb">1lb</option>
       <option value="2lb">2lb</option>
@@ -59,14 +59,14 @@ permalink: /subscribe/
 
   <div class="order-field">
     <label for="sub-grind-select">Grind</label>
-    <select id="sub-grind-select" class="subscribe-select" style="width: 100%;">
+    <select id="sub-grind-select" class="subscribe-select">
       {% include grind-options.html %}
     </select>
   </div>
 
   <div class="order-field">
     <label for="sub-freq-select">Frequency</label>
-    <select id="sub-freq-select" name="entry.2064801247" class="subscribe-select" style="width: 100%;">
+    <select id="sub-freq-select" name="entry.2064801247" class="subscribe-select">
       <option value="Every 2 weeks" selected>Every 2 weeks</option>
       <option value="Monthly">Monthly</option>
     </select>

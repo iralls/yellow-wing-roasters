@@ -20,7 +20,7 @@ permalink: /order/
   <a href="{{ '/roasts/' | relative_url }}" class="order-browse-link">Browse coffees &rarr;</a>
 </div>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse" method="POST" class="order-form" id="order-form" style="display:none; max-width: 26rem; margin: 2rem auto; text-align: left;">
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse" method="POST" class="order-form" id="order-form" style="display:none;">
   <input type="hidden" name="entry.1935997805" id="order-items-hidden" value="">
   <input type="hidden" name="entry.552044967" id="order-total-hidden" value="">
 
@@ -42,12 +42,12 @@ permalink: /order/
   </div>
 
   <fieldset class="order-delivery">
-    <legend class="roast-mv-meta-label" style="text-align: center; margin: 0 auto; padding: 0 0.4rem;">Delivery method</legend>
-    <div class="pill-radios" style="justify-content: center;">
+    <legend>Delivery method</legend>
+    <div class="pill-radios">
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
     <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
     </div>
-    <p id="order-delivery-note" class="order-delivery-note" style="text-align: center;">Please specify in the notes how you want to coordinate pickup.</p>
+    <p id="order-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
   </fieldset>
 
   <div id="order-address-fields" class="order-shipping" style="display:none;">
@@ -85,12 +85,12 @@ permalink: /order/
     <textarea id="order-notes" name="entry.1381358427" rows="3"></textarea>
   </div>
 
-  <div class="order-actions" style="justify-content: center;">
+  <div class="order-actions">
     <button type="submit" class="order-submit">Place order</button>
     <button type="button" class="order-clear">Clear cart</button>
   </div>
 
-  <p class="order-status" role="status" aria-live="polite" style="text-align: center;"></p>
+  <p class="order-status" role="status" aria-live="polite"></p>
 </form>
 
 </div>
