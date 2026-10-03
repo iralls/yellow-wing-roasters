@@ -12,7 +12,7 @@ mascot: potoo
 mascot_file: audubon-potoo-transparent.png
 bg_pattern: /images/patterns/halloween-pattern.svg
 bg_pattern_size: 380px 380px
-status: incubating
+status: just_hatched
 price:
   12oz: 12
   1lb: 14
