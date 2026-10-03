@@ -50,6 +50,11 @@ permalink: /subscribe/
         <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
       </div>
 
+      <div class="order-field">
+        <label for="sub-phone" class="roast-mv-meta-label">Phone number (optional)</label>
+        <input id="sub-phone" type="tel" name="entry.1484480937" autocomplete="tel" placeholder="123-456-7890" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Please enter a 10-digit phone number (e.g. 123-456-7890)">
+      </div>
+
       <fieldset class="order-delivery">
         <legend>Delivery method</legend>
         <div class="pill-radios">
