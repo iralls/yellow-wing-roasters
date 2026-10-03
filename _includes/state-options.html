@@ -1,0 +1,4 @@
+<option value="" disabled{% unless include.selected %} selected{% endunless %}>State</option>
+{% for s in site.data.states %}
+<option value="{{ s.code }}" title="{{ s.name }}"{% if include.selected == s.code %} selected{% endif %}>{{ s.code }}</option>
+{% endfor %}

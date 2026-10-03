@@ -251,7 +251,9 @@ mascot_alt: "Build Your Own Blend mascot"
         <div class="order-field-row">
           <div class="order-field">
             <label for="byob-state" class="roast-mv-meta-label">State</label>
-            <input id="byob-state" type="text" name="entry.821511879" autocomplete="address-level1">
+            <select id="byob-state" name="entry.821511879" autocomplete="address-level1">
+              {% include state-options.html %}
+            </select>
           </div>
           <div class="order-field">
             <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>

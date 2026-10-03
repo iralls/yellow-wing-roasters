@@ -113,7 +113,9 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     <div class="order-field-row">
       <div class="order-field">
         <label for="byob-state" class="roast-mv-meta-label">State</label>
-        <input id="byob-state" type="text" name="entry.414179858" autocomplete="address-level1">
+        <select id="byob-state" name="entry.414179858" autocomplete="address-level1">
+          {% include state-options.html %}
+        </select>
       </div>
       <div class="order-field">
         <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>

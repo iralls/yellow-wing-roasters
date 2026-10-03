@@ -62,7 +62,9 @@ permalink: /order/
     <div class="order-field-row">
       <div class="order-field">
         <label for="order-state" class="roast-mv-meta-label">State</label>
-        <input id="order-state" type="text" name="entry.414179858" autocomplete="address-level1">
+        <select id="order-state" name="entry.414179858" autocomplete="address-level1">
+          {% include state-options.html %}
+        </select>
       </div>
       <div class="order-field">
         <label for="order-zip" class="roast-mv-meta-label">ZIP</label>

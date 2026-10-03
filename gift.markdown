@@ -379,7 +379,9 @@ permalink: /gift/
       <div class="order-field-row">
         <div class="order-field">
           <label for="gift-state" class="roast-mv-meta-label">State</label>
-          <input id="gift-state" type="text" required autocomplete="address-level1">
+          <select id="gift-state" required autocomplete="address-level1">
+            {% include state-options.html %}
+          </select>
         </div>
         <div class="order-field">
           <label for="gift-zip" class="roast-mv-meta-label">ZIP</label>
