@@ -23,6 +23,8 @@
     var hiddenInput = document.getElementById('sub-roast-hidden');
     var priceHiddenInput = document.getElementById('sub-price-hidden');
     var title = document.getElementById('sub-title');
+    var subtitleEl = document.getElementById('sub-subtitle');
+    var descEl = document.getElementById('sub-description');
     var imageWrap = document.getElementById('sub-image-wrap');
     var imageEl = document.getElementById('sub-image');
     var roastSelect = document.getElementById('sub-roast-select');
@@ -31,6 +33,7 @@
     var subConfig = config.subConfig || {};
     var mascotMap = config.mascotMap || {};
     var titleMap = config.titleMap || {};
+    var descriptionMap = config.descriptionMap || {};
     var disabledSubRoasts = config.disabledSubRoasts || {};
 
     var activeRoast = queryRoast;
@@ -69,10 +72,27 @@
         : (r ? r.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : '');
 
       if (title) {
-        if (isExplicitQuery && displayTitle) {
-          title.textContent = 'Subscribe — ' + displayTitle;
+        title.textContent = 'Subscribe';
+      }
+
+      if (subtitleEl) {
+        if (displayTitle) {
+          subtitleEl.textContent = displayTitle;
+          subtitleEl.style.display = '';
         } else {
-          title.textContent = 'Subscribe';
+          subtitleEl.textContent = '';
+          subtitleEl.style.display = 'none';
+        }
+      }
+
+      if (descEl) {
+        var displayDesc = (descriptionMap && descriptionMap[r]) ? descriptionMap[r] : '';
+        if (displayDesc) {
+          descEl.textContent = displayDesc;
+          descEl.style.display = '';
+        } else {
+          descEl.textContent = '';
+          descEl.style.display = 'none';
         }
       }
 
@@ -104,10 +124,7 @@
             var sizeVal = currentSubConfig.sizes[si];
             var opt = document.createElement('option');
             opt.value = sizeVal;
-            var optPrice = (currentSubConfig.prices && currentSubConfig.prices[sizeVal] !== undefined)
-              ? ' — $' + currentSubConfig.prices[sizeVal]
-              : '';
-            opt.textContent = sizeVal + optPrice;
+            opt.textContent = sizeVal;
             sizeSelect.appendChild(opt);
             if (targetSize && targetSize === sizeVal) {
               selectedSizeIdx = si;
@@ -163,25 +180,30 @@
     function updatePrice() {
       var currentSubConfig = subConfig[activeRoast];
       var sizeSelect = document.getElementById('sub-size-select');
-      var freqSelect = document.getElementById('sub-freq-select');
+      var priceLine = document.getElementById('sub-price-line');
       var submitBtn = form.querySelector('.order-submit');
-      if (!submitBtn) return;
+      if (submitBtn) {
+        submitBtn.textContent = 'Subscribe';
+      }
 
       if (currentSubConfig && currentSubConfig.prices && sizeSelect) {
         var sVal = sizeSelect.value || (sizeSelect.options && sizeSelect.options[sizeSelect.selectedIndex] ? sizeSelect.options[sizeSelect.selectedIndex].value : (sizeSelect.options && sizeSelect.options[0] ? sizeSelect.options[0].value : ''));
         var p = currentSubConfig.prices[sVal];
         if (p !== undefined && p !== null) {
-          var fVal = freqSelect ? (freqSelect.value || (freqSelect.options && freqSelect.options[freqSelect.selectedIndex] ? freqSelect.options[freqSelect.selectedIndex].value : '')) : '';
-          var isMonthly = (fVal === 'Monthly');
-          var freqSuffix = isMonthly ? '/mo' : (fVal === 'Every 2 weeks' ? ' / 2 wks' : '');
-          submitBtn.textContent = 'Subscribe — $' + p + freqSuffix;
+          if (priceLine) {
+            priceLine.textContent = '$' + p;
+            priceLine.style.display = '';
+          }
           if (priceHiddenInput) {
             priceHiddenInput.value = '$' + p;
           }
           return;
         }
       }
-      submitBtn.textContent = 'Subscribe';
+      if (priceLine) {
+        priceLine.textContent = '';
+        priceLine.style.display = 'none';
+      }
     }
 
     var sizeSelectEl = document.getElementById('sub-size-select');

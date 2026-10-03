@@ -15,6 +15,8 @@ permalink: /subscribe/
 <div class="roast-mv-center">
   <h1 id="sub-title" class="roast-mv-title">Subscribe</h1>
 </div>
+<div id="sub-subtitle" class="roast-mv-subtitle" style="display: none;"></div>
+<p id="sub-description" class="roast-mv-tasting" style="display: none;"></p>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="subscribe-form">
   <input type="hidden" name="entry.1935997805" id="sub-roast-hidden" value="">
@@ -22,7 +24,7 @@ permalink: /subscribe/
   <input type="hidden" name="entry.1261348961" value="Active">
   <input type="hidden" name="entry.1336119512" value="">
 
-  <div class="order-field" id="sub-roast-field" style="display: none;">
+  <div class="order-field roast-mv-center" id="sub-roast-field" style="display: none;">
     <label for="sub-roast-select">Coffee</label>
     <select id="sub-roast-select" class="subscribe-select">
       {% for s in site.subscriptions %}
@@ -37,17 +39,7 @@ permalink: /subscribe/
     </select>
   </div>
 
-  <div class="order-field">
-    <label for="sub-name">Name</label>
-    <input id="sub-name" type="text" name="entry.1153405702" required autocomplete="name">
-  </div>
-
-  <div class="order-field">
-    <label for="sub-email">Email</label>
-    <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
-  </div>
-
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="sub-size-select">Size</label>
     <select id="sub-size-select" name="entry.1606791078" class="subscribe-select">
       <option value="12oz" selected>12oz</option>
@@ -57,19 +49,29 @@ permalink: /subscribe/
     </select>
   </div>
 
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="sub-grind-select">Grind</label>
     <select id="sub-grind-select" class="subscribe-select">
       {% include grind-options.html %}
     </select>
   </div>
 
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="sub-freq-select">Frequency</label>
     <select id="sub-freq-select" name="entry.2064801247" class="subscribe-select">
       <option value="Every 2 weeks" selected>Every 2 weeks</option>
       <option value="Monthly">Monthly</option>
     </select>
+  </div>
+
+  <div class="order-field">
+    <label for="sub-name">Name</label>
+    <input id="sub-name" type="text" name="entry.1153405702" required autocomplete="name">
+  </div>
+
+  <div class="order-field">
+    <label for="sub-email">Email</label>
+    <input id="sub-email" type="email" name="entry.65766604" required autocomplete="email">
   </div>
 
   <fieldset class="order-delivery">
@@ -107,8 +109,11 @@ permalink: /subscribe/
     <textarea id="sub-notes" name="entry.1381358427" rows="3"></textarea>
   </div>
 
-  <div class="order-actions">
-    <button type="submit" class="order-submit">Subscribe</button>
+  <div class="roast-mv-center" style="margin-top: 1.5rem;">
+    <div class="roast-detail-price-line" id="sub-price-line"></div>
+    <div class="order-actions" style="margin-top: 0;">
+      <button type="submit" class="order-submit">Subscribe</button>
+    </div>
   </div>
 
   <p class="order-status" role="status" aria-live="polite"></p>
@@ -161,6 +166,24 @@ permalink: /subscribe/
     {% endfor %}
   };
 
+  var descriptionMap = {
+    {% for r in site.roasts %}
+      {% assign r_desc = r.description | default: r.subtitle | default: r.descriptor | strip_html | normalize_whitespace | strip %}
+      {% if r_desc != empty %}
+    '{{ r.slug }}': {{ r_desc | jsonify }},
+      {% endif %}
+    {% endfor %}
+    {% for s in site.subscriptions %}
+      {% assign s_desc = s.description | default: s.content | strip_html | normalize_whitespace | strip %}
+      {% if s_desc != empty %}
+    '{{ s.slug }}': {{ s_desc | jsonify }},
+        {% if s.slug == 'migrator' %}
+    'the-migrator': {{ s_desc | jsonify }},
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  };
+
   var mascotMap = {
     {% for r in site.roasts %}
       {% if r.mascot_file %}
@@ -199,6 +222,7 @@ permalink: /subscribe/
   initSubscribeForm({
     subConfig: subConfig,
     titleMap: titleMap,
+    descriptionMap: descriptionMap,
     mascotMap: mascotMap,
     disabledSubRoasts: disabledSubRoasts,
     thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
