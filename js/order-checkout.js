@@ -154,119 +154,90 @@
       emptyEl.style.display = 'none';
       itemsEl.innerHTML = '';
 
+      var totalQty = 0;
+      for (var q = 0; q < items.length; q++) {
+        totalQty += items[q].qty;
+      }
+      var countEl = document.getElementById('order-summary-count');
+      if (countEl) {
+        countEl.textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
+      }
+
       for (var j = 0; j < items.length; j++) {
         var item = items[j];
-        var row = document.createElement('div');
-        row.className = 'order-cart-row';
+        var card = document.createElement('div');
+        card.className = 'order-cart-card';
 
+        var thumb = document.createElement('div');
+        thumb.className = 'order-cart-card-thumb';
         if (item.data.mascot) {
           var birdImg = document.createElement('img');
           birdImg.src = '/images/' + item.data.mascot;
           birdImg.alt = '';
-          birdImg.className = 'order-cart-bird';
-          row.appendChild(birdImg);
+          birdImg.className = 'order-cart-card-img';
+          birdImg.onerror = function () { this.style.display = 'none'; };
+          thumb.appendChild(birdImg);
+        } else {
+          var ph = document.createElement('span');
+          ph.className = 'order-cart-card-ph';
+          ph.setAttribute('aria-hidden', 'true');
+          ph.textContent = '☕';
+          thumb.appendChild(ph);
         }
+        var badge = document.createElement('span');
+        badge.className = 'order-cart-card-badge';
+        badge.textContent = item.qty;
+        thumb.appendChild(badge);
 
-        var nameEl = document.createElement('div');
-        nameEl.className = 'order-cart-item-name';
-        nameEl.textContent = item.data.label;
+        card.appendChild(thumb);
 
-        var dotsEl = null;
-        if (item.data.dots > 0) {
-          var dotsColors = ['#d4b896','#b8944a','#8a6830','#5c3d1a','#2c1e14'];
-          dotsEl = document.createElement('span');
-          dotsEl.className = 'order-cart-dots';
-          for (var di = 0; di < 5; di++) {
-            var dot = document.createElement('span');
-            dot.className = 'order-cart-dot';
-            dot.style.background = di < item.data.dots ? dotsColors[di] : '#e8e0d5';
-            dotsEl.appendChild(dot);
-          }
-        }
+        var info = document.createElement('div');
+        info.className = 'order-cart-card-info';
 
-        var sizeEl = document.createElement('span');
-        sizeEl.className = 'order-cart-item-size';
+        var title = document.createElement('div');
+        title.className = 'order-cart-card-title';
+        title.textContent = item.data.label;
+        info.appendChild(title);
+
+        var meta = document.createElement('div');
+        meta.className = 'order-cart-card-meta';
+        var metaText = document.createElement('span');
         var metaParts = [item.data.size];
         if (item.roastLevel) metaParts.push(item.roastLevel);
         if (item.grind) metaParts.push(item.grind);
-        sizeEl.textContent = metaParts.join(' · ');
+        metaText.textContent = metaParts.join(' · ');
+        meta.appendChild(metaText);
+        info.appendChild(meta);
+        card.appendChild(info);
 
-        var qtyWrap = document.createElement('div');
-        qtyWrap.className = 'order-cart-qty-wrap';
+        var actions = document.createElement('div');
+        actions.className = 'order-cart-card-actions';
 
-        var minus = document.createElement('button');
-        minus.type = 'button';
-        minus.className = 'order-cart-qty-btn';
-        minus.textContent = '−';
-        minus.setAttribute('aria-label', 'Decrease quantity');
-
-        var qtyInput = document.createElement('input');
-        qtyInput.type = 'number';
-        qtyInput.min = '0';
-        qtyInput.value = item.qty;
-        qtyInput.className = 'order-cart-qty';
-        qtyInput.setAttribute('data-key', item.key);
-        qtyInput.inputMode = 'numeric';
-
-        var plus = document.createElement('button');
-        plus.type = 'button';
-        plus.className = 'order-cart-qty-btn';
-        plus.textContent = '+';
-        plus.setAttribute('aria-label', 'Increase quantity');
+        var lineTotal = (item.data.price || 0) * item.qty;
+        var totalEl = document.createElement('div');
+        totalEl.className = 'order-cart-card-total';
+        totalEl.textContent = '$' + lineTotal;
+        actions.appendChild(totalEl);
 
         var removeBtn = document.createElement('button');
         removeBtn.type = 'button';
-        removeBtn.className = 'order-cart-remove';
+        removeBtn.className = 'order-cart-card-remove';
         removeBtn.textContent = '×';
-        removeBtn.setAttribute('aria-label', 'Remove item');
+        removeBtn.setAttribute('aria-label', 'Remove ' + item.data.label);
+        actions.appendChild(removeBtn);
 
-        (function (input, k) {
-          minus.addEventListener('click', function () {
-            var n = Math.max(0, parseInt(input.value, 10) - 1);
-            var c = loadCart();
-            if (n <= 0) { delete c[k]; } else { c[k] = n; }
-            saveCart(c);
-            render();
-          });
-          plus.addEventListener('click', function () {
-            var n = parseInt(input.value, 10) + 1;
-            var c = loadCart();
-            c[k] = n;
-            saveCart(c);
-            render();
-          });
-          input.addEventListener('change', function () {
-            var n = parseInt(input.value, 10);
-            if (isNaN(n) || n < 0) n = 0;
-            var c = loadCart();
-            if (n <= 0) { delete c[k]; } else { c[k] = n; }
-            saveCart(c);
-            render();
-          });
+        card.appendChild(actions);
+
+        (function (k) {
           removeBtn.addEventListener('click', function () {
             var c = loadCart();
             delete c[k];
             saveCart(c);
             render();
           });
-        })(qtyInput, item.key);
+        })(item.key);
 
-        qtyWrap.appendChild(minus);
-        qtyWrap.appendChild(qtyInput);
-        qtyWrap.appendChild(plus);
-
-        var priceEl = document.createElement('div');
-        priceEl.className = 'order-cart-item-price';
-        var lineTotal = (item.data.price || 0) * item.qty;
-        priceEl.textContent = '$' + lineTotal;
-
-        row.appendChild(nameEl);
-        if (dotsEl) row.appendChild(dotsEl);
-        row.appendChild(sizeEl);
-        row.appendChild(qtyWrap);
-        row.appendChild(priceEl);
-        row.appendChild(removeBtn);
-        itemsEl.appendChild(row);
+        itemsEl.appendChild(card);
       }
 
       var subtotal = 0;
@@ -285,20 +256,27 @@
 
       var grandTotal = Math.max(0, subtotal - discountValue);
 
+      var totalsWrap = document.createElement('div');
+      totalsWrap.className = 'order-cart-summary-totals';
+
+      var subtotalRow = document.createElement('div');
+      subtotalRow.className = 'order-cart-summary-row';
+      subtotalRow.innerHTML = '<span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span>';
+      totalsWrap.appendChild(subtotalRow);
+
       if (discountValue > 0) {
         var discountRow = document.createElement('div');
-        discountRow.className = 'order-cart-total';
-        discountRow.style.borderTop = 'none';
-        discountRow.style.paddingTop = '0.5rem';
-        discountRow.style.color = '#5746e3';
-        discountRow.innerHTML = '<span class="order-cart-total-label">Discount (' + appliedDiscount.code + ' &mdash; $' + appliedDiscount.value.toFixed(2) + ' available)</span><span class="order-cart-total-value">-$' + discountValue.toFixed(2) + '</span>';
-        itemsEl.appendChild(discountRow);
+        discountRow.className = 'order-cart-summary-row order-cart-summary-row--discount';
+        discountRow.innerHTML = '<span>Discount (' + appliedDiscount.code + ')</span><span>-$' + discountValue.toFixed(2) + '</span>';
+        totalsWrap.appendChild(discountRow);
       }
 
       var totalRow = document.createElement('div');
-      totalRow.className = 'order-cart-total';
+      totalRow.className = 'order-cart-summary-row order-cart-summary-row--total';
       totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
-      itemsEl.appendChild(totalRow);
+      totalsWrap.appendChild(totalRow);
+
+      itemsEl.appendChild(totalsWrap);
 
       currentRenderedItems = items;
 

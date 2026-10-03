@@ -66,7 +66,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     <input id="byob-link" type="url" name="entry.1935997805" required placeholder="https://burmancoffee.com/...">
   </div>
 
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="byob-roast" class="roast-mv-meta-label">Roast level</label>
     <select id="byob-roast" name="entry.1076774005" class="subscribe-select" required>
       <option value="" disabled selected>Choose a roast level</option>
@@ -79,16 +79,16 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     </select>
   </div>
 
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="byob-grind" class="roast-mv-meta-label">Grind level</label>
     <select id="byob-grind" class="subscribe-select">
       {% include grind-options.html %}
     </select>
   </div>
 
-  <div class="order-field">
+  <div class="order-field roast-mv-center">
     <label for="byob-qty" class="roast-mv-meta-label">lbs</label>
-    <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required style="width: 5rem; display: block;">
+    <input id="byob-qty" type="number" name="entry.1351521045" min="1" max="10" value="1" required style="width: 5rem; display: block; margin: 0 auto; text-align: center;">
     <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
   </div>
 
