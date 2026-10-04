@@ -50,6 +50,14 @@ permalink: /roasts/
     <label for="filter-brewing" class="roast-mv-meta-label">Brewing Method</label>
     <select id="filter-brewing" class="subscribe-select">
       <option value="">All Methods</option>
+      <option value="AeroPress">AeroPress</option>
+      <option value="Chemex">Chemex</option>
+      <option value="Cold Brew">Cold Brew</option>
+      <option value="Drip">Drip</option>
+      <option value="Espresso">Espresso</option>
+      <option value="French Press">French Press</option>
+      <option value="Moka Pot">Moka Pot</option>
+      <option value="Pour-over">Pour-over</option>
     </select>
   </div>
 

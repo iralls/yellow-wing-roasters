@@ -164,7 +164,22 @@ Standard single-origin offerings showcase our prescribed roast recommendation. F
 ### Descriptors & Tasting Notes
 * `descriptor`: Short punchy phrase (e.g., `bright and classic`, `dense and chocolatey`).
 * `tasting_notes`: Comma-separated list (e.g., `caramel, brown sugar, sweet finish`). Rendered with bullet separators (` · `) on the site.
-* `brewing_method`: Recommended methods (e.g., `Pour-over, Drip, AeroPress`).
+
+### Brewing Methods (`brewing_method`)
+Recommended methods should be comma-separated, chosen from the canonical supported list:
+* `AeroPress`
+* `Chemex`
+* `Cold Brew`
+* `Drip`
+* `Espresso`
+* `French Press`
+* `Moka Pot`
+* `Pour-over`
+
+Example:
+```yaml
+brewing_method: Pour-over, Drip, French Press
+```
 
 ### Certifications (`certification`)
 To add a certification badge to a roast, use the `certification:` key with one of two valid values:

@@ -22,7 +22,7 @@ This document outlines architectural and code-level optimization opportunities a
    - [3.5 Backdrop Blur Mixin](#35-backdrop-blur-mixin)
 4. [Data Centralization (`_data/` & `_config.yml`)](#4-data-centralization-_data--_configyml)
    - [4.1 `_data/grind_levels.yml`](#41-_datagrind_levelsyml)
-   - [4.2 `_data/brewing_methods.yml`](#42-_databrewing_methodsyml)
+   - [4.2 Standardize Brewing Methods](#42-standardize-brewing-methods)
    - [4.3 Centralizing All Google Form Actions & Field Entry IDs](#43-centralizing-all-google-form-actions--field-entry-ids)
    - [4.4 Centralizing Bag Sizes & Default Product Attributes (`_data/bag_sizes.yml`)](#44-centralizing-bag-sizes--default-product-attributes-_databag_sizesyml)
 5. [JavaScript Modularization](#5-javascript-modularization)
@@ -313,10 +313,9 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 * Centralized all 6 grind options into [_data/grind_levels.yml](file:///Users/ianr/Documents/yellow-wing-roasters/_data/grind_levels.yml) and rendered through `_includes/grind-options.html`.
 
 
----
-
-### 4.2 `_data/brewing_methods.yml`
-In [js/catalog-filters.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/catalog-filters.js#L25-L33), brewing methods are normalized via a JavaScript object (`METHOD_MAP`). Roast frontmatters also manually specify them as freeform strings. Centralizing into `_data/brewing_methods.yml` allows templates and filters to share a single source of truth.
+### 4.2 Standardize Brewing Methods
+* **Status**: ✅ **Implemented**
+* **Solution**: Canonical brewing methods (`AeroPress`, `Chemex`, `Cold Brew`, `Drip`, `Espresso`, `French Press`, `Moka Pot`, `Pour-over`) are hardcoded directly into `<select id="filter-brewing">` in [roasts/index.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/roasts/index.markdown) (mirroring `filter-certification`). Simplified [js/catalog-filters.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/catalog-filters.js) by removing runtime DOM generation, `METHOD_MAP`, and `normalizeMethod`. Documented canonical options in [ROAST_MAINTENANCE.md](file:///Users/ianr/Documents/yellow-wing-roasters/ROAST_MAINTENANCE.md).
 
 ---
 

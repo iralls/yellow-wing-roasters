@@ -20,27 +20,6 @@
     var origins = {};
     var processes = {};
     var levels = { 'Light': true, 'Medium': true, 'Dark': true };
-    var brewingMethods = {};
-
-    var METHOD_MAP = {
-      'pour-over': 'Pour-over',
-      'espresso': 'Espresso',
-      'drip': 'Drip',
-      'french press': 'French Press',
-      'moka pot': 'Moka Pot',
-      'aeropress': 'AeroPress',
-      'cold brew': 'Cold Brew'
-    };
-
-    function normalizeMethod(method) {
-      var clean = method.trim().toLowerCase();
-      if (METHOD_MAP[clean]) {
-        return METHOD_MAP[clean];
-      }
-      return clean.split(' ').map(function (word) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      }).join(' ');
-    }
 
     // 1. Scan cards to extract unique filter values
     cards.forEach(function (card) {
@@ -90,17 +69,11 @@
 
       // Brewing methods
       var brewingAttr = card.getAttribute('data-brewing') || '';
-      var methods = brewingAttr.replace(/\bor\b/gi, '').split(',').map(function (m) {
-        return normalizeMethod(m);
-      }).filter(function (m) {
-        return m.length > 0;
-      });
+      var cardMethods = brewingAttr.split(',').map(function (m) {
+        return m.trim();
+      }).filter(Boolean);
 
-      card.setAttribute('data-brewing-list', JSON.stringify(methods));
-
-      methods.forEach(function (method) {
-        brewingMethods[method] = true;
-      });
+      card.setAttribute('data-brewing-list', JSON.stringify(cardMethods));
     });
 
     // 2. Populate Dropdowns Dynamically
@@ -164,13 +137,6 @@
       selectLevel.appendChild(opt);
     });
 
-    // Brewing Methods
-    Object.keys(brewingMethods).sort().forEach(function (method) {
-      var opt = document.createElement('option');
-      opt.value = method;
-      opt.textContent = method;
-      selectBrewing.appendChild(opt);
-    });
 
     // 3. Filter Application Logic
     function applyFilters() {
