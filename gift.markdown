@@ -129,7 +129,7 @@ permalink: /gift/
         {% endfor %}
 
         <option disabled>── Subscriptions ──</option>
-        <option value="migrator">Migrator</option>
+        <option value="the-migrator">The Migrator</option>
         <option value="wingshot-collective">Wingshot Collective</option>
         <option value="fledglings">Fledglings</option>
         <option value="murmurations">Murmurations</option>
@@ -239,15 +239,15 @@ permalink: /gift/
           <!-- Subscriptions -->
           <div class="gift-select-group">
             <div class="gift-select-group-header">Subscriptions</div>
-            <div class="gift-select-option" data-value="migrator" data-title="Migrator" data-meta="Rotating roaster's choice single origin" data-img="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" role="option" tabindex="0">
+            <div class="gift-select-option" data-value="the-migrator" data-title="The Migrator" data-meta="Rotating roaster's choice single origin" data-img="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" role="option" tabindex="0">
               <div class="gift-select-option-thumb">
                 <img src="{{ '/images/audubon-arctic-tern-transparent.png' | relative_url }}" alt="" class="gift-select-option-img" loading="lazy" decoding="async">
               </div>
               <div class="gift-select-option-info">
-                <div class="gift-select-option-title">Migrator</div>
+                <div class="gift-select-option-title">The Migrator</div>
                 <div class="gift-select-option-meta">Rotating roaster's choice single origin</div>
               </div>
-              <a href="{{ '/subscriptions/the-migrator/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore Migrator in a new tab">Explore <span>&nearr;</span></a>
+              <a href="{{ '/subscriptions/the-migrator/' | relative_url }}" class="gift-select-option-link" target="_blank" rel="noopener noreferrer" title="Explore The Migrator in a new tab">Explore <span>&nearr;</span></a>
             </div>
 
             <div class="gift-select-option" data-value="wingshot-collective" data-title="Wingshot Collective" data-meta="Rotating espresso exploration pick" data-img="{{ '/images/audubon-crosshair-transparent.png' | relative_url }}" role="option" tabindex="0">

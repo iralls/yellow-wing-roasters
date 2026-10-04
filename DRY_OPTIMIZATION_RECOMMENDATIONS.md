@@ -34,6 +34,8 @@ This document outlines architectural and code-level optimization opportunities a
    - [6.4 Schema.org JSON-LD 6-Level Fallback Ladders](#64-schemaorg-json-ld-6-level-fallback-ladders)
    - [6.5 Hardcoded JavaScript Duplicate Maps](#65-hardcoded-javascript-duplicate-maps)
    - [6.6 Triple-Check Aliasing in Card Iterations](#66-triple-check-aliasing-in-card-iterations)
+   - [6.7 Artificial Catalog Frequency Fallbacks](#67-artificial-catalog-frequency-fallbacks)
+   - [6.8 Direct Price Lookups & Pricing Indirection Elimination](#68-direct-price-lookups--pricing-indirection-elimination)
 7. [Repository Hygiene & File Organization](#7-repository-hygiene--file-organization)
 8. [Prioritized Implementation Matrix](#8-prioritized-implementation-matrix)
 
@@ -445,6 +447,82 @@ Yet in the body of the exact same file, values are repeatedly defaulted:
 
 ---
 
+### 6.7 Artificial Catalog Frequency Fallbacks
+* **Current State**:
+  Subscription frequency intervals are defined cleanly and authoritatively in YAML frontmatter:
+  - All dedicated subscriptions ([_subscriptions/*.md](file:///Users/ianr/Documents/yellow-wing-roasters/_subscriptions/)) define `frequencies: ["Monthly"]` (fixed, single-option delivery schedule).
+  - All roasts with subscriptions ([_roasts/*.md](file:///Users/ianr/Documents/yellow-wing-roasters/_roasts/)) define `frequencies: ["Every 2 weeks", "Monthly"]`.
+
+  Yet client JavaScript and Liquid templates litter artificial fallback constants across the codebase that directly conflict with the catalog data:
+  1. **Contradictory Hardcoded Defaults in Client JS**:
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L130), [L504](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L504), [L524](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L524), [L573](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L573), [L901](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L901):
+       ```javascript
+       var freqVal = qpFreq || (sEntry && sEntry.frequencies && sEntry.frequencies[0]) || 'Every 2 weeks';
+       // and in submission builders:
+       it.frequency || 'Every 2 weeks'
+       ```
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L75) and [js/cart.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L79), [L224](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L224):
+       ```javascript
+       var freq = parts[4] || (s && s.frequencies && s.frequencies[0]) || 'Monthly';
+       ```
+     - **Bug Created**: If a dedicated subscription like *The Migrator* (which strictly offers `Monthly`) has its frequency omitted in query parameters, `order-checkout.js` defaults it to `'Every 2 weeks'`—an invalid frequency that does not exist for that product. Conversely, if a roast subscription (whose primary frequency is `'Every 2 weeks'`) falls back in `cart.js`, it defaults to `'Monthly'`.
+  2. **Multi-tier Liquid Default Ladders in Templates**:
+     - In [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L125-L126), [L241](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L241):
+       ```liquid
+       {% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
+       {% assign freqs = sub_config.frequencies | default: default_freqs %}
+       defaultFreq: {{ freqs.first | default: sub_config.frequencies.first | default: "Monthly" | jsonify }},
+       ```
+       Every subscribable roast in `_roasts/*.md` explicitly defines `frequencies:` in frontmatter; `default_freqs` and the 3-level fallback ladder are purely defensive noise.
+     - In [_layouts/subscription.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/subscription.html#L50):
+       `{{ page.frequencies.first | default: "Monthly" }}`.
+     - In [js/cart-data.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart-data.js#L58-L71):
+       `frequencies: {{ s.frequencies | default: '["Monthly"]' | jsonify }},` passes a JSON string literal as a fallback to `jsonify`.
+* **DRY Solution**:
+  - Remove all hardcoded string literals (`'Every 2 weeks'`, `'Monthly'`).
+  - Rely directly on the authoritative catalog entry: `product.frequencies[0]`. If a frequency is invalid or missing, fail visibly or notify rather than assigning illegal intervals.
+
+---
+
+### 6.8 Direct Price Lookups & Pricing Indirection Elimination
+* **Current State**:
+  Product prices across the catalog are defined in root `price:` maps (or integer prices for flights and custom blends). However, multiple templates and client scripts layer artificial fallbacks, redundant data maps, and synthetic fallbacks over direct lookups:
+  1. **The Phantom `subscription_prices` Map**:
+     - In [js/cart-data.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart-data.js#L21-L28):
+       ```liquid
+       {% if r.subscription %}
+       subscription_prices: {
+         {% assign sp = r.subscription.price | default: r.price %}
+         {% for entry in sp %}
+           {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+         {% endfor %}
+       },
+       {% endif %}
+       ```
+       And in [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L250): `{% assign sub_prices = sub_config.price | default: roast_prices %}`.
+       And in [gift.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/gift.markdown#L421): `{% assign r_prices = r_sub.price | default: r.price %}`.
+     - **The Reality**: In 100% of roasts in `_roasts/*.md`, `r.subscription.price` is `nil`. Roasts simply charge their standard root `price:`. Generating an identical `subscription_prices` map in `YWR_ROASTS_DATA` bloats client payloads and forces `cart.js` and `order-checkout.js` into branching logic (`if (r.subscription_prices) ... else r.prices`) for identical data.
+     - **Solution**: Delete the synthetic `subscription_prices` map and enforce direct lookups on `r.prices[size]`.
+  2. **Hardcoded Price Fallback Traps in Cart Scripts**:
+     - In [js/cart.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L171) & [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L233):
+       ```javascript
+       var priceVal = (origData && origData.prices && typeof origData.prices[sizeStr] === 'number') ? origData.prices[sizeStr] : 12;
+       ```
+     - If a roast origin or size is misconfigured, it silently defaults to `$12`. For premium coffees ($14 for Ethiopia Guji, $14 for Ethiopia Wush Wush), this underbills customers without developer awareness.
+     - **Solution**: Enforce direct lookup on `origData.prices[sizeStr]`.
+  3. **Arbitrary Default in BYOB Component Beans**:
+     - In [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md#L289):
+       `{% assign p1 = rp["1lb"] | default: rp["12oz"] | default: 16 %}`
+     - Falls back to `16` for beans whose real prices are $12 or $14. Moreover, `js/byob-mixer.js` never uses component bean prices because BYOB is a flat $32.
+  4. **Self-Referential Price Fallbacks**:
+     - In [_layouts/roast.html](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html#L178):
+       `${{ first_eff | default: first_price }}` inside an `{% else %}` block where `first_eff == first_price` is already guaranteed true.
+  5. **Externalized Flight Pricing Injections**:
+     - In `_includes/cart-indicator.html` and `order.markdown`, Liquid collection queries run on every page render to extract flight prices and pass them to client scripts, with trailing hardcoded fallbacks `config.flightAviaryPrice || 38` and `config.flightPyoPrice || 10` in `cart.js` and `order-checkout.js`.
+     - **Solution**: Include `site.flights` directly in `js/cart-data.js` as `window.YWR_FLIGHTS_DATA`. Direct lookups (`YWR_FLIGHTS_DATA['the-aviary'].price`) eliminate Liquid filtering from `cart-indicator.html` and remove the need for hardcoded JS fallback numbers.
+
+---
+
 ## 7. Repository Hygiene & File Organization
 
 The project root currently contains **9 standalone preview/scratch HTML files**:
@@ -469,7 +547,8 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 | **Phase 1** | **Category Layout Consolidation** (`_layouts/category.html`) | Low | High | ✅ Completed (unified 6 catalog listings) |
 | **Phase 1** | **Grind Selector Include** (`_data/grind_levels.yml` + `grind-options.html`) | Low | High | ✅ Completed (unified 7 forms) |
 | **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | ✅ Completed (unified cards and detail pages) |
-| **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (Section 6) | Low | High | ✅ Completed (eliminated dead fallbacks & fixed cormorant mascot) |
+| **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (6.1–6.6) | Low | High | ✅ Completed (eliminated dead fallbacks & fixed cormorant mascot) |
+| **Phase 2** | **Catalog Frequency & Direct Price Lookups** (6.7 & 6.8) | Low | High | Eliminates contradictory interval defaults, deletes duplicate `subscription_prices` map, exposes `YWR_FLIGHTS_DATA` |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
 | **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | ✅ Completed (unified 4 templates) |
 | **Phase 3** | **Shared Cart Core** (`window.YWR_CART.parseItem`) | Medium | High | Eliminates ~90 lines of duplicate logic between `cart.js` & `order-checkout.js` |

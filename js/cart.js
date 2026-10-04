@@ -16,8 +16,6 @@
   return function initYWRCart(config) {
     if (!config) return;
 
-    var flightAviaryPrice = config.flightAviaryPrice || 38;
-    var flightPyoPrice = config.flightPyoPrice || 10;
     var ROASTS_URL = config.ROASTS_URL || '/roasts/';
     var ORDER_URL = config.ORDER_URL || '/order/';
     var IMAGES_BASE = config.IMAGES_BASE || '/images/';
@@ -43,82 +41,88 @@
       return IMAGES_BASE + clean;
     }
 
+    function generateCartItemId(item) {
+      if (item.id) return item.id;
+      if (item.type === 'subscription') {
+        return 'sub:' + item.slug;
+      }
+      if (item.type === 'roast') {
+        return 'roast:' + item.slug + ':' + (item.variant || '') + ':' + (item.size || '') + ':' + (item.grind || '');
+      }
+      if (item.type === 'custom') {
+        return 'custom:' + (item.origin || item.slug) + ':' + (item.size || '') + ':' + (item.grind || '') + ':' + (item.roastLevel || '');
+      }
+      if (item.type === 'flight') {
+        return 'flight:' + item.slug + ':' + (item.subtitle || '') + ':' + (item.grind || '');
+      }
+      return (item.slug || 'item') + ':' + (item.size || '') + ':' + (item.grind || '');
+    }
+
     function getCart() {
       try {
-        var raw = localStorage.getItem('ywr_cart');
-        return raw ? JSON.parse(raw) : {};
+        return JSON.parse(localStorage.getItem('ywr_cart')) || {};
       } catch (e) {
         return {};
       }
     }
 
-    function parseCartItem(ck, qty) {
-      var parts = ck.split('|');
-      var rSlug = parts[0] || '';
-      var vSlug = parts[1] || '';
-      var rSize = parts[2] || '';
-      var rGrind = parts[3] || 'Whole Bean';
+    window.ywrGetCart = getCart;
 
-      var title = '';
-      var meta = '';
-      var mascot = null;
-      var unitPrice = 0;
-      var rData = getRoastsData();
+    window.ywrAddToCart = function (item, qty) {
+      if (!item || typeof item !== 'object') {
+        console.error('ywrAddToCart: Invalid item object provided:', item);
+        return false;
+      }
+      qty = parseInt(qty || item.qty || 1, 10);
+      if (isNaN(qty) || qty <= 0) qty = 1;
 
-      if (rSlug === 'the-aviary') {
-        title = 'The Aviary Flight';
-        meta = '4 × 8oz' + (rGrind ? ' · ' + rGrind : '');
-        mascot = 'audubon-cage-transparent.png';
-        unitPrice = flightAviaryPrice;
-      } else if (rSlug === 'peck-your-own') {
-        title = 'Peck Your Own';
-        var count = (rSize || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean).length;
-        meta = (count > 0 ? count + ' × 8oz bags' : 'Sampler flight') + (rGrind ? ' · ' + rGrind : '');
-        mascot = 'audubon-cardinal-transparent.png';
-        unitPrice = (count || 4) * flightPyoPrice;
-      } else if (rSlug === 'byob-burner') {
-        var originSlug = vSlug;
-        var rRoastLevel = parts[4] || '';
-        var origData = rData[originSlug];
-        if (origData) {
-          title = 'BYOB: ' + origData.title;
-          mascot = 'bird-on-spit-transparent.png';
-          var sizeKey = rSize || '12oz';
-          unitPrice = (origData.prices && typeof origData.prices[sizeKey] === 'number') ? origData.prices[sizeKey] : 12;
-        } else {
-          title = 'BYOB: ' + (originSlug ? originSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); }) : 'Custom Roast');
-          mascot = 'bird-on-spit-transparent.png';
-          unitPrice = 12;
-        }
-        meta = (rSize ? rSize : '12oz') + (rRoastLevel ? ' · ' + rRoastLevel : '') + (rGrind ? ' · ' + rGrind : '');
-      } else if (rData[rSlug]) {
-        var r = rData[rSlug];
-        title = r.title;
-        if (vSlug && r.variants && r.variants[vSlug]) {
-          title += ' — ' + r.variants[vSlug];
-        }
-        var extraRoast = parts[4] || '';
-        meta = (rSize ? rSize : '12oz') + (extraRoast ? ' · ' + extraRoast : '') + (rGrind ? ' · ' + rGrind : '');
-        mascot = r.mascot;
-        var sizeKey = rSize || '12oz';
-        unitPrice = (r.prices && typeof r.prices[sizeKey] === 'number') ? r.prices[sizeKey] : 0;
-      } else {
-        title = rSlug.replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
-        var extraRoast = parts[4] || '';
-        meta = (rSize ? rSize : '') + (extraRoast ? ' · ' + extraRoast : '') + (rGrind ? ' · ' + rGrind : '');
-        unitPrice = 0;
+      item.id = generateCartItemId(item);
+      var isSub = (item.type === 'subscription');
+
+      var cart = getCart();
+      var cartTypes = new Set(Object.values(cart).map(function (it) {
+        return it.type === 'subscription' ? 'subscription' : 'roast';
+      }));
+      var hasExistingSub = cartTypes.has('subscription');
+      var hasExistingOneTime = cartTypes.has('roast');
+
+      if (isSub && hasExistingOneTime) {
+        var ok = window.confirm('Your cart currently contains one-time items. Subscriptions are billed and delivered separately. Would you like to replace your cart with this subscription?');
+        if (!ok) return false;
+        cart = {};
+      } else if (!isSub && hasExistingSub) {
+        var ok = window.confirm('Your cart currently contains a subscription. One-time items cannot be combined with subscriptions. Would you like to replace your cart with this item?');
+        if (!ok) return false;
+        cart = {};
       }
 
-      return {
-        key: ck,
-        title: title,
-        meta: meta,
-        mascot: mascot,
-        unitPrice: unitPrice,
-        qty: qty,
-        lineTotal: unitPrice * qty
-      };
-    }
+      if (isSub) {
+        // At most one subscription per roast/type: replace existing subscription for this slug
+        Object.values(cart).forEach(function (it) {
+          if (it.type === 'subscription' && it.slug === item.slug) {
+            delete cart[it.id];
+          }
+        });
+        item.qty = 1;
+        cart[item.id] = item;
+      } else {
+        if (cart[item.id]) {
+          cart[item.id].qty += qty;
+        } else {
+          item.qty = qty;
+          cart[item.id] = item;
+        }
+      }
+
+      try {
+        localStorage.setItem('ywr_cart', JSON.stringify(cart));
+      } catch (e) {
+        console.error('ywrAddToCart: Failed to save cart to localStorage:', e);
+        return false;
+      }
+      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+      return true;
+    };
 
     function update() {
       var indicator = document.getElementById('ywr-cart-indicator');
@@ -126,22 +130,36 @@
       var dropdown = document.getElementById('ywr-cart-dropdown');
       if (!indicator || !el || !dropdown) return;
 
-      var cart = getCart();
+      var cartList = Object.values(getCart());
       var total = 0;
       var items = [];
       var subtotal = 0;
 
-      for (var k in cart) {
-        if (Object.prototype.hasOwnProperty.call(cart, k)) {
-          var n = parseInt(cart[k], 10);
-          if (!isNaN(n) && n > 0) {
-            total += n;
-            var item = parseCartItem(k, n);
-            items.push(item);
-            subtotal += item.lineTotal;
-          }
+      cartList.forEach(function (it) {
+        if (it && it.qty > 0) {
+          total += it.qty;
+          var lineTotal = (it.price || 0) * it.qty;
+          var metaParts = [];
+          if (it.size) metaParts.push(it.size);
+          if (it.roastLevel) metaParts.push(it.roastLevel);
+          if (it.grind) metaParts.push(it.grind);
+          if (it.frequency) metaParts.push(it.frequency);
+          if (it.subtitle && it.type === 'flight') metaParts.push(it.subtitle);
+
+          items.push({
+            id: it.id,
+            type: it.type,
+            title: it.title || it.slug,
+            meta: metaParts.join(' · '),
+            mascot: it.mascot,
+            unitPrice: it.price || 0,
+            qty: it.qty,
+            lineTotal: lineTotal,
+            isSubscription: (it.type === 'subscription')
+          });
+          subtotal += lineTotal;
         }
-      }
+      });
 
       el.textContent = total;
       indicator.classList.toggle('cart-indicator-empty', total === 0);
@@ -171,13 +189,16 @@
               : '<span class="cart-dropdown-item-ph" aria-hidden="true">&#9749;</span>') +
           '</div>' +
           '<div class="cart-dropdown-item-info">' +
-            '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' + escapeHtml(it.title) + '</div>' +
+            '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' +
+              escapeHtml(it.title) +
+              (it.isSubscription ? ' <span class="cart-dropdown-item-badge" style="font-size:0.65rem; padding:0.15rem 0.45rem; background:#ebe7df; border-radius:999px; text-transform:uppercase; font-weight:700; margin-left:0.3rem;">Sub</span>' : '') +
+            '</div>' +
             '<div class="cart-dropdown-item-meta">' + escapeHtml(it.meta) + '</div>' +
             '<div class="cart-dropdown-item-qty-price">' + it.qty + ' &times; $' + it.unitPrice + '</div>' +
           '</div>' +
           '<div class="cart-dropdown-item-actions">' +
             '<div class="cart-dropdown-item-total">$' + it.lineTotal + '</div>' +
-            '<button type="button" class="cart-dropdown-item-remove" data-key="' + escapeHtml(it.key) + '" title="Remove item" aria-label="Remove ' + escapeHtml(it.title) + '">&times;</button>' +
+            '<button type="button" class="cart-dropdown-item-remove" data-key="' + escapeHtml(it.id) + '" title="Remove item" aria-label="Remove ' + escapeHtml(it.title) + '">&times;</button>' +
           '</div>' +
         '</div>';
       }
@@ -185,10 +206,10 @@
 
       html += '<div class="cart-dropdown-footer">' +
         '<div class="cart-dropdown-subtotal-row">' +
-          '<span class="cart-dropdown-subtotal-label">Subtotal</span>' +
+          '<span class="cart-dropdown-subtotal-label">Total</span>' +
           '<span class="cart-dropdown-subtotal-val">$' + subtotal + '</span>' +
         '</div>' +
-        '<a href="' + escapeHtml(ORDER_URL) + '" class="cart-dropdown-checkout-btn">View Cart &amp; Checkout &rarr;</a>' +
+        '<a href="' + escapeHtml(ORDER_URL) + '" class="cart-dropdown-checkout-btn">View cart &amp; checkout &rarr;</a>' +
       '</div>';
 
       dropdown.innerHTML = html;
@@ -294,6 +315,8 @@
       });
     }
 
+    // Event Delegation: global click listener on document.
+    // If click did not originate on or inside a quick-add button, ignore it and let normal navigation proceed.
     document.addEventListener('click', function (e) {
       var priceBtn = e.target.closest('.roasts-entry-overlay-price-btn');
       var quickAddBtn = e.target.closest('.roasts-entry-quick-add');
@@ -307,20 +330,25 @@
       var slug = btn.getAttribute('data-slug');
       if (!slug) return;
 
-      var size = btn.getAttribute('data-size') || '12oz';
-      var key = slug + '||' + size + '|Whole Bean';
-      var cart;
-      try {
-        var raw = localStorage.getItem('ywr_cart');
-        cart = raw ? JSON.parse(raw) : {};
-      } catch (err) {
-        cart = {};
+      var size = btn.getAttribute('data-size');
+      var rData = getRoastsData();
+      var r = rData[slug] || {};
+      var price = r.prices[size];
+      var added = window.ywrAddToCart({
+        type: 'roast',
+        slug: slug,
+        title: r.title || slug,
+        size: size,
+        grind: 'Whole Bean',
+        price: price,
+        mascot: r.mascot || null,
+        qty: 1
+      }, 1);
+
+      if (!added) {
+        console.error('Failed to quick-add roast to cart:', slug);
+        return;
       }
-      cart[key] = (cart[key] || 0) + 1;
-      try {
-        localStorage.setItem('ywr_cart', JSON.stringify(cart));
-      } catch (err) {}
-      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
 
       var card = btn.closest('.roasts-entry');
       var cardQuickAdd = card ? card.querySelector('.roasts-entry-quick-add') : null;

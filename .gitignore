@@ -6,6 +6,7 @@ vendor
 Gemfile.lock
 .DS_Store
 run.sh
+agy.sh
 
 # Preview & playground HTML files
 *-preview.html

@@ -29,7 +29,7 @@
     var disabledSubRoasts = config.disabledSubRoasts || {};
 
     function getUnitPrice(product, size) {
-      var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
+      var isSubscriptionOnly = ['the-migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
       if (isSubscriptionOnly) {
         var c = subConfig[product];
         return (c && c.prices && c.prices[size]) ? c.prices[size] : null;
@@ -48,7 +48,7 @@
     var isSubscribable = false;
 
     if (product) {
-      var isSubscriptionOnly = ['migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
+      var isSubscriptionOnly = ['the-migrator', 'wingshot-collective', 'fledglings', 'murmurations', 'runts-rations', 'rubber-duck-club'].indexOf(product) >= 0;
       if ((isSubscriptionOnly || (subConfig && subConfig[product])) && !disabledSubRoasts[product]) {
         isSubscribable = true;
       }

@@ -26,11 +26,55 @@ layout: default
   {{ content }}
 </div>
 
-<div class="roast-mv-center" style="margin-top:1rem;">
-  <a href="{{ '/subscribe/?roast=' | append: page.slug | relative_url }}" class="add-to-order-btn">Subscribe — ${{ page.price["12oz"] }}/mo</a>
+<div class="roast-mv-center" style="margin-top: 1rem;">
+  <label for="sub-grind-select" class="roast-mv-meta-label">Grind</label>
+  <select id="sub-grind-select" class="subscribe-select">
+    {% include grind-options.html %}
+  </select>
+</div>
+
+{% assign default_size = page.sizes.first %}
+{% assign default_freq = page.frequencies.first %}
+{% assign default_price = page.price[default_size] %}
+
+<div class="roast-mv-center" style="margin-top: 1.25rem;">
+  <div class="roast-detail-price-line">${{ default_price }}</div>
+  <button type="button" class="add-to-order-btn" id="sub-add-btn">Add to Cart</button>
 </div>
 
 </div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('sub-add-btn');
+    btn.addEventListener('click', function () {
+      var grindEl = document.getElementById('sub-grind-select');
+      var item = {
+        type: 'subscription',
+        slug: '{{ page.slug }}',
+        title: '{{ page.title }}',
+        subtitle: '{{ page.subtitle }}',
+        size: {{ default_size | jsonify }},
+        grind: grindEl.value,
+        frequency: {{ default_freq | jsonify }},
+        price: {{ default_price | jsonify }},
+        mascot: '{{ page.mascot_file }}',
+        qty: 1
+      };
+      var added = window.ywrAddToCart(item, 1);
+      if (added) {
+        btn.textContent = 'Added!';
+        btn.disabled = true;
+        setTimeout(function () {
+          btn.textContent = 'Add to Cart';
+          btn.disabled = false;
+        }, 1200);
+      } else {
+        console.error('Failed to add subscription to cart:', item);
+      }
+    });
+  })();
+</script>
 
 <script type="application/ld+json">
 {
@@ -46,7 +90,7 @@ layout: default
   "offers": {
     "@type": "Offer",
     "priceCurrency": "USD",
-    "price": "{{ page.price['12oz'] }}",
+    "price": "{{ default_price }}",
     "availability": "https://schema.org/InStock"
   }
 }

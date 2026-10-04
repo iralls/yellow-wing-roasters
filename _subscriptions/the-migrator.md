@@ -1,6 +1,6 @@
 ---
-title: Migrator
-slug: migrator
+title: The Migrator
+slug: the-migrator
 subtitle: Rotating Single Origin
 category: subscriptions
 order: 1

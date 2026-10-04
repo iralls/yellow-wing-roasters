@@ -19,7 +19,6 @@
     var pricesOneTime = config.pricesOneTime || {};
     var pricesSub = config.pricesSub || {};
     var roastSlug = config.roastSlug || '';
-    var subscribeBaseUrl = config.subscribeBaseUrl || '/subscribe/';
     var defaultFreq = config.defaultFreq || 'Monthly';
 
     function loadCart() {
@@ -49,7 +48,6 @@
     var priceEl = document.getElementById('roast-detail-price');
     var subPanel = document.getElementById('sub-details-panel');
     var addBtn = document.getElementById('add-to-cart-btn');
-    var subLink = document.getElementById('sub-link');
     var freqSelect = document.getElementById('sub-freq-select');
 
     var currentMode = 'onetime';
@@ -61,16 +59,14 @@
     }
 
     function updatePricesAndMode() {
-      var size = sizeSelect ? sizeSelect.value : '12oz';
-      var otInfo = pricesOneTime[size] || { price: 0, effective: 0 };
-      var subP = (pricesSub && typeof pricesSub[size] === 'number') ? pricesSub[size] : otInfo.price;
-
+      var size = sizeSelect.value;
+      var otInfo = pricesOneTime[size];
       var isSub = (currentMode === 'subscribe');
 
       // Update price displayed above Add to Cart button
       if (priceEl) {
         if (isSub) {
-          priceEl.innerHTML = '$' + subP;
+          priceEl.innerHTML = '$' + pricesSub[size];
         } else {
           if (otInfo.effective < otInfo.price) {
             priceEl.innerHTML = '<s>$' + otInfo.price + '</s> <span class="temp-val">$' + otInfo.effective + '</span>';
@@ -80,21 +76,10 @@
         }
       }
 
-      if (isSub) {
-        if (subPanel) subPanel.style.display = 'block';
-        if (addBtn) addBtn.style.display = 'none';
-        if (subLink) subLink.style.display = 'inline-block';
-      } else {
-        if (subPanel) subPanel.style.display = 'none';
-        if (addBtn) addBtn.style.display = 'inline-block';
-        if (subLink) subLink.style.display = 'none';
-      }
-
-      if (subLink) {
-        var freq = freqSelect ? freqSelect.value : defaultFreq;
-        var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-        subLink.textContent = 'Subscribe';
-        subLink.href = subscribeBaseUrl + '?roast=' + encodeURIComponent(roastSlug) + '&size=' + encodeURIComponent(size) + '&frequency=' + encodeURIComponent(freq) + '&grind=' + encodeURIComponent(grind);
+      if (subPanel) subPanel.style.display = isSub ? 'block' : 'none';
+      if (addBtn) {
+        addBtn.textContent = 'Add to Cart';
+        addBtn.style.display = 'inline-block';
       }
     }
 
@@ -143,21 +128,38 @@
 
     updatePricesAndMode();
 
-    if (addBtn) {
-      addBtn.addEventListener('click', function () {
-        var size = sizeSelect ? sizeSelect.value : '12oz';
-        var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-        var k = cartKey(roastSlug, '', size, grind);
-        var cart = loadCart();
-        cart[k] = (cart[k] || 0) + 1;
-        saveCart(cart);
+    addBtn.addEventListener('click', function () {
+      var isSub = (currentMode === 'subscribe');
+      var size = sizeSelect.value;
+      var price = isSub ? pricesSub[size] : pricesOneTime[size].effective;
+      var rData = (window.YWR_ROASTS_DATA && window.YWR_ROASTS_DATA[roastSlug]) || {};
+
+      var item = {
+        type: isSub ? 'subscription' : 'roast',
+        slug: roastSlug,
+        title: rData.title || roastSlug,
+        size: size,
+        grind: grindSelect.value,
+        price: price,
+        mascot: rData.mascot || null,
+        qty: 1
+      };
+      if (isSub) {
+        item.frequency = freqSelect.value;
+      }
+
+      var added = window.ywrAddToCart(item, 1);
+
+      if (added) {
         addBtn.textContent = 'Added!';
         addBtn.disabled = true;
         setTimeout(function () {
           addBtn.textContent = 'Add to Cart';
           addBtn.disabled = false;
         }, 1200);
-      });
-    }
+      } else {
+        console.error('Failed to add roast to cart:', item);
+      }
+    });
   };
 });

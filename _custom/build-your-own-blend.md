@@ -204,14 +204,14 @@ mascot_alt: "Build Your Own Blend mascot"
     <h2 class="roasts-category" style="margin-top: 0; text-align: center;">4. Place Your Custom Blend Order</h2>
     
     <div class="roast-detail-price-line" style="text-align: center; margin-bottom: 1.5rem;">
-      $32 <span style="font-size: 0.95rem; font-weight: 600; color: #8a7060;">(one 12oz bag)</span>
+      ${{ page.price }} <span style="font-size: 0.95rem; font-weight: 600; color: #8a7060;">(one 12oz bag)</span>
     </div>
 
     <form action="https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse" method="POST" class="order-form" id="byob-form">
       
       <!-- Recipe details and total price are dynamically injected here on submission -->
       <input type="hidden" name="entry.52896454" id="hidden-recipe" value="">
-      <input type="hidden" name="entry.260019949" id="hidden-total" value="$32">
+      <input type="hidden" name="entry.260019949" id="hidden-total" value="${{ page.price }}">
 
       <div class="order-field">
         <label for="byob-name" class="roast-mv-meta-label">Name</label>
@@ -285,8 +285,6 @@ mascot_alt: "Build Your Own Blend mascot"
     {% for r in single_origins %}
       {% assign s_meta = site.data.statuses[r.status] %}
       {% if s_meta == nil or s_meta.orderable != false %}
-        {% assign rp = r.price %}
-        {% assign p1 = rp["1lb"] | default: rp["12oz"] | default: 16 %}
         {% assign o_first = r.origins.first %}
         {% assign country = o_first | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
         {% if country == nil or country == "" %}{% assign country = r.title | split: " " | first %}{% endif %}
@@ -299,7 +297,6 @@ mascot_alt: "Build Your Own Blend mascot"
           tasting_notes: {{ notes_raw | jsonify }},
           descriptor: {{ r.descriptor | default: "" | jsonify }},
           url: {{ r.url | relative_url | jsonify }},
-          price: {{ p1 }},
           cup_characteristics: {{ r.description | default: "" | strip | jsonify }}
         },
       {% endif %}

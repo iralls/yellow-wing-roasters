@@ -40,6 +40,23 @@ window.YWR_ROASTS_DATA = {
   {% endfor %}
 };
 
+window.YWR_SUBSCRIPTIONS_DATA = {
+  {% for s in site.subscriptions %}
+    {{ s.slug | jsonify }}: {
+      title: {{ s.title | jsonify }},
+      subtitle: {{ s.subtitle | jsonify }},
+      mascot: {{ s.mascot_file | jsonify }},
+      sizes: {{ s.sizes | jsonify }},
+      frequencies: {{ s.frequencies | jsonify }},
+      prices: {
+        {% for entry in s.price %}
+          {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      }
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+};
+
 window.YWR_ROAST_LEVELS = {
   {% for lvl_num in (1..5) %}
     {% assign lvl_num_str = lvl_num | append: "" %}

@@ -175,13 +175,10 @@ layout: default
     {% if first_eff and first_eff < first_price %}
       <s>${{ first_price }}</s> <span class="temp-val">${{ first_eff }}</span>
     {% else %}
-      ${{ first_eff | default: first_price }}
+      ${{ first_eff }}
     {% endif %}
   </div>
   <button class="add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>Add to Cart</button>
-  {% if sub_available %}
-  <a href="#" id="sub-link" class="add-to-order-btn{% unless is_orderable %} add-to-order-btn--disabled{% endunless %}" style="display: none;"{% unless is_orderable %} aria-disabled="true"{% endunless %}>Subscribe</a>
-  {% endif %}
 </div>
 
 {% unless is_orderable %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
@@ -241,13 +238,12 @@ layout: default
 <script>
   initRoastDetail({
     roastSlug: {{ page.slug | jsonify }},
-    subscribeBaseUrl: {{ '/subscribe/' | relative_url | jsonify }},
-    defaultFreq: {{ freqs.first | default: sub_config.frequencies.first | default: "Monthly" | jsonify }},
+    defaultFreq: {{ freqs.first | jsonify }},
     pricesOneTime: {
       {% for s in sizes %}
         {% assign price = roast_prices[s] %}
         {% if page.temporary_price and page.temporary_price[s] %}{% assign eff_price = page.temporary_price[s] %}{% else %}{% assign eff_price = price %}{% endif %}
-        {{ s | jsonify }}: { price: {{ price | default: 0 }}, effective: {{ eff_price | default: 0 }} }{% unless forloop.last %},{% endunless %}
+        {{ s | jsonify }}: { price: {{ price }}, effective: {{ eff_price }} }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     },
     pricesSub: {

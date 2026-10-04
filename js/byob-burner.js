@@ -50,8 +50,7 @@
     };
 
     function getCurrentOrigin() {
-      var slug = originSelect.value;
-      return origins[slug] || null;
+      return origins[originSelect.value];
     }
 
     function updateDotsVisual(dotsCount) {
@@ -69,16 +68,11 @@
 
     function updatePrice() {
       var orig = getCurrentOrigin();
-      if (!orig || !priceDisplay) return;
-      var size = sizeSelect ? sizeSelect.value : '12oz';
-      var p = (orig.prices && typeof orig.prices[size] === 'number') ? orig.prices[size] : 12;
-      priceDisplay.textContent = '$' + p;
+      priceDisplay.textContent = '$' + orig.prices[sizeSelect.value];
     }
 
     function updateRoastLevelState() {
       var orig = getCurrentOrigin();
-      if (!orig || !roastSelect) return;
-
       var currentLevel = roastSelect.value;
       var dotsCount = levelDotsMap[currentLevel] || 2;
       updateDotsVisual(dotsCount);
@@ -94,7 +88,6 @@
 
     function updateOriginState(resetRoastToPrescribed) {
       var orig = getCurrentOrigin();
-      if (!orig) return;
 
       if (notesEl) {
         notesEl.textContent = orig.tasting_notes ? ('Notes: ' + orig.tasting_notes) : '';
@@ -109,7 +102,6 @@
         var prevSize = sizeSelect.value;
         sizeSelect.innerHTML = '';
         var sizes = Object.keys(orig.prices);
-        if (sizes.length === 0) sizes = ['12oz', '1lb', '2lb', '5lb'];
         for (var s = 0; s < sizes.length; s++) {
           var opt = document.createElement('option');
           opt.value = sizes[s];
@@ -163,41 +155,33 @@
     updateOriginState(true);
 
     // Add to Cart
-    if (addBtn) {
-      addBtn.addEventListener('click', function () {
-        var orig = getCurrentOrigin();
-        if (!orig) return;
+    addBtn.addEventListener('click', function () {
+      var orig = getCurrentOrigin();
+      var size = sizeSelect.value;
+      var item = {
+        type: 'custom',
+        slug: 'byob-burner',
+        origin: originSelect.value,
+        title: 'BYOB: ' + orig.title,
+        size: size,
+        grind: grindSelect.value,
+        roastLevel: roastSelect.value,
+        price: orig.prices[size],
+        mascot: 'bird-on-spit-transparent.png',
+        qty: 1
+      };
 
-        var originSlug = originSelect.value;
-        var size = sizeSelect ? sizeSelect.value : '12oz';
-        var grind = grindSelect ? grindSelect.value : 'Whole Bean';
-        var roastLevel = roastSelect ? roastSelect.value : (orig.prescribed_level || 'City+');
-
-        var cartKey = 'byob-burner|' + originSlug + '|' + size + '|' + grind + '|' + roastLevel;
-
-        var cart;
-        try {
-          var raw = localStorage.getItem(STORAGE_KEY);
-          cart = raw ? JSON.parse(raw) : {};
-        } catch (e) {
-          cart = {};
-        }
-
-        cart[cartKey] = (cart[cartKey] || 0) + 1;
-
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-        } catch (e) {}
-
-        window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
-
+      var added = window.ywrAddToCart(item, 1);
+      if (added) {
         addBtn.textContent = 'Added to Cart!';
         addBtn.disabled = true;
         setTimeout(function () {
           addBtn.textContent = 'Add to Cart';
           addBtn.disabled = false;
         }, 1200);
-      });
-    }
+      } else {
+        console.error('Failed to add BYOB burner to cart:', item);
+      }
+    });
   };
 });
