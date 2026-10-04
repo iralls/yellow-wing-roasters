@@ -22,7 +22,6 @@
     var itemsEl = document.getElementById('order-cart-items');
     var totalsEl = document.getElementById('order-summary-totals');
     var pageTitleEl = document.getElementById('order-page-title');
-    var summaryTitleEl = document.getElementById('order-summary-title');
     var summaryCountEl = document.getElementById('order-summary-count');
     var submitBtn = document.getElementById('order-submit-btn') || (form ? form.querySelector('.order-submit') : null);
     var discountSection = document.getElementById('discount-code-section');
@@ -166,15 +165,6 @@
       if (currentMode === 'subscribe') {
         if (pageTitleEl) pageTitleEl.textContent = 'Subscribe';
         document.title = 'Subscribe · Yellow Wing Roasters';
-        if (summaryTitleEl) summaryTitleEl.textContent = 'Subscription Summary';
-        if (summaryCountEl) {
-          if (items.length > 1) {
-            summaryCountEl.style.display = '';
-            summaryCountEl.textContent = items.length + ' subscriptions';
-          } else {
-            summaryCountEl.style.display = 'none';
-          }
-        }
         if (submitBtn) submitBtn.textContent = 'Subscribe';
 
         form.action = SUB_FORM_ACTION;
@@ -193,7 +183,6 @@
       } else {
         if (pageTitleEl) pageTitleEl.textContent = 'Order';
         document.title = 'Order · Yellow Wing Roasters';
-        if (summaryTitleEl) summaryTitleEl.textContent = 'Order Summary';
         if (submitBtn) submitBtn.textContent = 'Place order';
 
         form.action = ORDER_FORM_ACTION;
@@ -206,15 +195,15 @@
         if (subStatusDetailsHidden) subStatusDetailsHidden.removeAttribute('name');
         if (subSizeHidden) subSizeHidden.removeAttribute('name');
         if (subFreqHidden) subFreqHidden.removeAttribute('name');
+      }
 
-        var totalQty = 0;
-        for (var q = 0; q < items.length; q++) {
-          totalQty += items[q].qty;
-        }
-        if (summaryCountEl) {
-          summaryCountEl.style.display = '';
-          summaryCountEl.textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
-        }
+      var totalQty = 0;
+      for (var q = 0; q < items.length; q++) {
+        totalQty += items[q].qty;
+      }
+      if (summaryCountEl) {
+        summaryCountEl.style.display = '';
+        summaryCountEl.textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
       }
 
       // Discount code display strictly depends on whether there is at least one subscription in the cart
@@ -333,62 +322,23 @@
         var totalsWrap = document.createElement('div');
         totalsWrap.className = 'order-cart-summary-totals';
 
-        if (currentMode === 'subscribe') {
-          var freqs = [];
-          for (var f = 0; f < items.length; f++) {
-            var fVal = items[f].frequency || 'Every 2 weeks';
-            if (freqs.indexOf(fVal) === -1) {
-              freqs.push(fVal);
-            }
-          }
+        // Subtotal & discount rows only appear for one-time orders when a discount is active
+        if (currentMode !== 'subscribe' && discountValue > 0) {
+          var subtotalRow = document.createElement('div');
+          subtotalRow.className = 'order-cart-summary-row';
+          subtotalRow.innerHTML = '<span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span>';
+          totalsWrap.appendChild(subtotalRow);
 
-          if (freqs.length <= 1) {
-            var freqStr = freqs[0] || 'Every 2 weeks';
-            var freqRow = document.createElement('div');
-            freqRow.className = 'order-cart-summary-row';
-            freqRow.innerHTML = '<span>Frequency</span><span>' + freqStr + '</span>';
-            totalsWrap.appendChild(freqRow);
-
-            var totalRow = document.createElement('div');
-            totalRow.className = 'order-cart-summary-row order-cart-summary-row--total';
-            totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
-            totalsWrap.appendChild(totalRow);
-          } else {
-            var byFreq = {};
-            for (var bf = 0; bf < items.length; bf++) {
-              var itFreq = items[bf].frequency || 'Every 2 weeks';
-              byFreq[itFreq] = (byFreq[itFreq] || 0) + ((items[bf].data.price || 0) * items[bf].qty);
-            }
-            for (var frq in byFreq) {
-              var row = document.createElement('div');
-              row.className = 'order-cart-summary-row';
-              row.innerHTML = '<span>' + frq + '</span><span>$' + byFreq[frq].toFixed(2) + '</span>';
-              totalsWrap.appendChild(row);
-            }
-            var subCombinedRow = document.createElement('div');
-            subCombinedRow.className = 'order-cart-summary-row order-cart-summary-row--total';
-            subCombinedRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
-            totalsWrap.appendChild(subCombinedRow);
-          }
-        } else {
-          // One-Time Order: only show subtotal if a discount was applied!
-          if (discountValue > 0) {
-            var subtotalRow = document.createElement('div');
-            subtotalRow.className = 'order-cart-summary-row';
-            subtotalRow.innerHTML = '<span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span>';
-            totalsWrap.appendChild(subtotalRow);
-
-            var discountRow = document.createElement('div');
-            discountRow.className = 'order-cart-summary-row order-cart-summary-row--discount';
-            discountRow.innerHTML = '<span>Discount (' + appliedDiscount.code + ')</span><span>-$' + discountValue.toFixed(2) + '</span>';
-            totalsWrap.appendChild(discountRow);
-          }
-
-          var totalRow = document.createElement('div');
-          totalRow.className = 'order-cart-summary-row order-cart-summary-row--total';
-          totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
-          totalsWrap.appendChild(totalRow);
+          var discountRow = document.createElement('div');
+          discountRow.className = 'order-cart-summary-row order-cart-summary-row--discount';
+          discountRow.innerHTML = '<span>Discount (' + appliedDiscount.code + ')</span><span>-$' + discountValue.toFixed(2) + '</span>';
+          totalsWrap.appendChild(discountRow);
         }
+
+        var totalRow = document.createElement('div');
+        totalRow.className = 'order-cart-summary-row order-cart-summary-row--total';
+        totalRow.innerHTML = '<span class="order-cart-total-label">Total</span><span class="order-cart-total-value">$' + grandTotal.toFixed(2) + '</span>';
+        totalsWrap.appendChild(totalRow);
 
         totalsEl.appendChild(totalsWrap);
       }

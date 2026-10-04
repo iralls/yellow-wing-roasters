@@ -20,10 +20,11 @@ This document outlines architectural and code-level optimization opportunities a
    - [3.3 Sass Maps for Category Theming](#33-sass-maps-for-category-theming)
    - [3.4 Reusable Button / Pill Mixin](#34-reusable-button--pill-mixin)
    - [3.5 Backdrop Blur Mixin](#35-backdrop-blur-mixin)
-4. [Data Centralization (`_data/`)](#4-data-centralization-_data)
+4. [Data Centralization (`_data/` & `_config.yml`)](#4-data-centralization-_data--_configyml)
    - [4.1 `_data/grind_levels.yml`](#41-_datagrind_levelsyml)
    - [4.2 `_data/brewing_methods.yml`](#42-_databrewing_methodsyml)
-   - [4.3 `_data/google_form_fields.yml`](#43-_datagoogle_form_fieldsyml)
+   - [4.3 Centralizing All Google Form Actions & Field Entry IDs](#43-centralizing-all-google-form-actions--field-entry-ids)
+   - [4.4 Centralizing Bag Sizes & Default Product Attributes (`_data/bag_sizes.yml`)](#44-centralizing-bag-sizes--default-product-attributes-_databag_sizesyml)
 5. [JavaScript Modularization](#5-javascript-modularization)
    - [5.1 Shared Cart Parsing & Storage (`parseCartItem`)](#51-shared-cart-parsing--storage-parsecartitem)
    - [5.2 Unified Google Form Iframe Submissions](#52-unified-google-form-iframe-submissions)
@@ -36,6 +37,8 @@ This document outlines architectural and code-level optimization opportunities a
    - [6.6 Triple-Check Aliasing in Card Iterations](#66-triple-check-aliasing-in-card-iterations)
    - [6.7 Artificial Catalog Frequency Fallbacks](#67-artificial-catalog-frequency-fallbacks)
    - [6.8 Direct Price Lookups & Pricing Indirection Elimination](#68-direct-price-lookups--pricing-indirection-elimination)
+   - [6.9 Silent Early Returns vs. Fast-Fail Runtime Exceptions](#69-silent-early-returns-vs-fast-fail-runtime-exceptions)
+   - [6.10 Hardcoded Product Attributes & Options (Sizes, Prices, Default Grind, Delivery Towns)](#610-hardcoded-product-attributes--options-sizes-prices-default-grind-delivery-towns)
 7. [Repository Hygiene & File Organization](#7-repository-hygiene--file-organization)
 8. [Prioritized Implementation Matrix](#8-prioritized-implementation-matrix)
 
@@ -317,17 +320,109 @@ In [js/catalog-filters.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/
 
 ---
 
-### 4.3 `_data/google_form_fields.yml`
-Google Forms field entry IDs are scattered as hardcoded strings across Markdown forms and JavaScript handlers:
-* `entry.1153405702` (Customer Name)
-* `entry.40149380` (Customer Email)
-* `entry.1896226742` (Delivery Method)
-* `entry.148046999` (Street Address)
-* `entry.1534670804` (City)
-* `entry.414179858` (State)
-* `entry.1472936948` (ZIP Code)
+### 4.3 Centralizing All Google Form Actions & Field Entry IDs
+* **Current State**:
+  While `digital_gift_form_url` and `digital_gift_entries` are cleanly centralized in `_config.yml` (lines 10–19), the remaining four Google Forms in the codebase hardcode their submission URLs and 25+ `entry.XXXX` field IDs directly in HTML templates and client JavaScript files:
+  1. **Order Checkout Form** ([order.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/order.markdown#L22-L86)):
+     - Submission URL: `https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse` (also hardcoded in [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L32)).
+     - Form Entries: `entry.1935997805` (items), `entry.552044967` (total), `entry.1153405702` (name), `entry.40149380` (email), `entry.1852073865` (phone), `entry.1896226742` (delivery method), `entry.148046999` (address), `entry.1534670804` (city), `entry.414179858` (state), `entry.1472936948` (ZIP), `entry.1381358427` (notes).
+  2. **Subscription Intake Form** ([js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L33), [L720-L745](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L720-L745)):
+     - Submission URL: `https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse`.
+     - Form Entries: `entry.1153405702` (name), `entry.65766604` (email — differs from order email!), `entry.1484480937` (phone — differs from order phone!), `entry.1896226742` (delivery), `entry.148046999` (address), `entry.1534670804` (city), `entry.414179858` (state), `entry.1472936948` (ZIP), `entry.1381358427` (notes), `entry.1935997805` (roast + grind), `entry.1606791078` (size), `entry.2064801247` (frequency), `entry.903789519` (price), `entry.1261348961` (status), `entry.1336119512` (status details).
+  3. **Build Your Own Blend (BYOB)** ([_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md#L210-L245) & [js/byob-mixer.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/byob-mixer.js#L643)):
+     - Submission URL: `https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse`.
+     - Form Entries: `entry.52896454` (recipe), `entry.260019949` (total), `entry.1582897284` (name), `entry.1584009735` (email), `entry.577333073` (delivery), `entry.2120898522` (address), `entry.1017833079` (city), `entry.1054366668` (state), `entry.1706691494` (ZIP), `entry.191295914` (notes).
+  4. **Pigeon Post Mailing List** ([pigeon-post.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/pigeon-post.markdown#L26-L28)):
+     - Submission URL: `https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse`.
+     - Form Entries: `entry.1049864914` (email).
+* **DRY / Config-Driven Solution**:
+  Centralize all form endpoints and entry IDs under `google_forms` in `_config.yml` (mirroring `digital_gift_entries`):
+  ```yaml
+  google_forms:
+    order:
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse"
+      entries:
+        items: "entry.1935997805"
+        total: "entry.552044967"
+        name: "entry.1153405702"
+        email: "entry.40149380"
+        phone: "entry.1852073865"
+        delivery: "entry.1896226742"
+        address: "entry.148046999"
+        city: "entry.1534670804"
+        state: "entry.414179858"
+        zip: "entry.1472936948"
+        notes: "entry.1381358427"
+    subscription:
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse"
+      entries:
+        name: "entry.1153405702"
+        email: "entry.65766604"
+        phone: "entry.1484480937"
+        delivery: "entry.1896226742"
+        address: "entry.148046999"
+        city: "entry.1534670804"
+        state: "entry.414179858"
+        zip: "entry.1472936948"
+        notes: "entry.1381358427"
+        roast: "entry.1935997805"
+        size: "entry.1606791078"
+        frequency: "entry.2064801247"
+        price: "entry.903789519"
+        status: "entry.1261348961"
+        status_details: "entry.1336119512"
+    byob:
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse"
+      entries:
+        recipe: "entry.52896454"
+        total: "entry.260019949"
+        name: "entry.1582897284"
+        email: "entry.1584009735"
+        delivery: "entry.577333073"
+        address: "entry.2120898522"
+        city: "entry.1017833079"
+        state: "entry.1054366668"
+        zip: "entry.1706691494"
+        notes: "entry.191295914"
+    pigeon_post:
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse"
+      entries:
+        email: "entry.1049864914"
+  ```
+  Templates access entry IDs via `name="{{ site.google_forms.order.entries.email }}"`, and scripts receive form configurations via data attributes or initialization options (`initOrderCheckout({ forms: ... })`), entirely eliminating hardcoded magic numbers from client code.
 
-Centralizing these IDs in `_config.yml` (mirroring `digital_gift_entries:`) or `_data/google_form_fields.yml` eliminates the risk of typos and makes form updates painless if Google Forms are ever recreated.
+---
+
+### 4.4 Centralizing Bag Sizes & Default Product Attributes (`_data/bag_sizes.yml`)
+* **Current State**:
+  Standard bag sizes (`12oz`, `1lb`, `2lb`, `5lb`) and default values are currently hardcoded across multiple templates and scripts instead of being derived from a single configuration:
+  1. **Fabricated Fallback Size Arrays**:
+     - In [gift.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/gift.markdown#L415): `{% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}`.
+     - In [gift.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/gift.markdown#L426): `{% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}`.
+     - In [_custom/bring-your-own-burner.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-burner.md#L84-L88): Hardcoded static `<option>` elements for `12oz`, `1lb`, `2lb`, and `5lb`, ignoring the actual sizes offered by the chosen single-origin coffee.
+  2. **Hardcoded Fallback Strings in Client JS**:
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L62): `params.get('size') || '12oz'`.
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L407): `subItem.data ? subItem.data.size : '12oz'`.
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L735): `it.data.size || '12oz'`.
+     - In [js/gift-order.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js#L103), [L409](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js#L409): `getUnitPrice(product, '12oz')`.
+* **DRY / Config-Driven Solution**:
+  Create `_data/bag_sizes.yml` containing standard size definitions, display labels, weights, and default order flags:
+  ```yaml
+  - id: "12oz"
+    label: "12oz"
+    weight_oz: 12
+    default: true
+  - id: "1lb"
+    label: "1lb"
+    weight_oz: 16
+  - id: "2lb"
+    label: "2lb"
+    weight_oz: 32
+  - id: "5lb"
+    label: "5lb"
+    weight_oz: 80
+  ```
+  Templates and scripts dynamically query `site.data.bag_sizes` or the roast's explicit `sizes` property, eliminating all magic `'12oz'` strings.
 
 ---
 
@@ -523,6 +618,90 @@ Yet in the body of the exact same file, values are repeatedly defaulted:
 
 ---
 
+### 6.9 Silent Early Returns vs. Fast-Fail Runtime Exceptions
+* **Guiding Principle**:
+  > *"I'd rather a failure than a default value that doesn't make sense."*
+  > *"I'd rather a behavior log an error in the console than a behavior not work on the site because of an early return."*
+
+* **Current State**:
+  Across the client JavaScript codebase, numerous critical lifecycle and user interaction flows use defensive `if (!el) return;` guard patterns and silent empty `catch (e) {}` blocks. When an element ID changes during a template refactor or a DOM element fails to mount, the scripts silently abort execution without throwing any errors or writing anything to the browser console:
+  1. **Silent Initialization Aborts on Dedicated Pages**:
+     - [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L30):
+       `if (!form || !emptyEl || !itemsEl) return;`
+       If any of these checkout DOM elements are renamed or missing, initialization halts silently. Customers see a completely unresponsive or frozen page with zero console logs.
+     - [js/byob-burner.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/byob-burner.js#L34):
+       `if (!originSelect) return;`
+       Silently disables the single-origin dropdown, roast-level stepper, and Add to Cart button for custom roast profiling.
+     - [js/flights.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L76):
+       `if (!addBtn || !countEl) return;`
+       Silently halts the Peck-Your-Own custom flight picker.
+     - [js/gift-order.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js#L182):
+       `if (!customMenu || !customTrigger) return;`
+       Silently leaves the gift coffee picker non-functional.
+     - [js/manage-subscriptions.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/manage-subscriptions.js#L59):
+       `if (!lookupForm || !lookupEmail || !lookupBtn || !lookupSection || !resultsSection) return;`
+       Silently kills the customer subscription self-service portal.
+     - [js/catalog-filters.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/catalog-filters.js#L17):
+       `if (!cards.length || !selectOrigin || !selectLevel || !selectBrewing) return;`
+       Silently disables all category filtering dropdowns.
+     - [js/coffee-quiz.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/coffee-quiz.js#L38):
+       `if (!quizContainer) return;`
+       Silently abandons the recommendation quiz.
+     - [js/form-submit.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/form-submit.js#L18), [L88](file:///Users/ianr/Documents/yellow-wing-roasters/js/form-submit.js#L88):
+       `if (!form) return;`
+       Silently falls back to default browser form submission without iframe interception or status handling.
+  2. **Silent Catch Blocks (Error Swallowing)**:
+     - [js/cart.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L64-L66):
+       `getCart()` wraps `JSON.parse(localStorage.getItem('ywr_cart'))` in `try...catch` and returns `{}` silently. If storage contains invalid JSON or quota errors occur, items vanish from the user's cart without any debuggable breadcrumb in the console.
+     - [js/cart.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L313):
+       `try { ... } catch (err) {}` in dropdown removal handler silently swallows errors.
+     - [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L50):
+       `try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}` silently swallows storage write failures.
+     - [js/flights.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L13-L21):
+       `catch (e) { return {}; }` and `catch (e) {}` completely mask storage serialization issues.
+
+* **Fast-Fail Solution**:
+  1. **Let Runtime Exceptions Throw Naturally**:
+     Eliminate redundant `if (!el) return;` guard boilerplate before DOM property reads and listener registrations. Direct lookups (e.g. `form.addEventListener(...)`) naturally throw a standard `TypeError` if an element is missing, which browser DevTools automatically logs with file, line number, and interactive stack trace.
+  2. **Explicit `console.error` for Logical Non-Throwing Failures**:
+     Where an operation returns a status code or encounters an invalid parameter (such as `window.ywrAddToCart` returning `false` or unrecognized product slugs), log explicit `console.error('Contextual error message', payload)` so failures are visible in the console immediately.
+  3. **No Silent Catch Blocks**:
+     Always log caught errors: `catch (e) { console.error('Failed to parse cart storage:', e); return {}; }`.
+
+---
+
+### 6.10 Hardcoded Product Attributes & Options (Sizes, Prices, Default Grind, Delivery Towns)
+* **Current State**:
+  Several key product options, dimensions, and business rules remain hardcoded as magic strings or numbers instead of relying on frontmatter or `_config.yml` / `_data/`:
+  1. **Hardcoded Bag Size Fallbacks**:
+     - `js/order-checkout.js`: `qpSize = params.get('size') || '12oz'`, `subSizeHidden.value = subItem.data ? subItem.data.size : '12oz'`, and `it.data.size || '12oz'`.
+     - `js/gift-order.js`: `getUnitPrice(product, '12oz')` hardcoded in two separate calculation paths ([L103](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js#L103), [L409](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js#L409)).
+     - `_custom/bring-your-own-burner.md`: Statically defines `<option value="12oz">`, `1lb`, `2lb`, `5lb` in markup instead of reflecting the chosen single-origin coffee's real `sizes` frontmatter array.
+     - `_custom/build-your-own-blend.md`: Statically includes `(one 12oz bag)` in HTML ([L207](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md#L207)).
+     - `_layouts/roast.html`: Schema.org uses a hardcoded 5-level size ladder (`roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz']`) instead of extracting `roast_prices[sizes.last]`.
+  2. **Hardcoded Flight Bundle Sizes & Mascots**:
+     - In [js/flights.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L25), [L69](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L69): `options.price || 38` and `options.pricePerBag || 10` duplicate YAML frontmatter values as fallback numbers.
+     - In [js/flights.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L35), [L137](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L137): `size: '4 × 8oz bags'` and `size: selected.length + ' × 8oz bags'` hardcode the 8oz flight unit in JavaScript strings.
+     - In [js/flights.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L38), [L140](file:///Users/ianr/Documents/yellow-wing-roasters/js/flights.js#L140): Mascot image filenames (`audubon-cage-transparent.png` and `audubon-cardinal-transparent.png`) are hardcoded in JS instead of passed via configuration.
+  3. **Hardcoded Grind Defaults**:
+     - In [js/cart.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/cart.js#L342): Quick add button hardcodes `grind: 'Whole Bean'`.
+     - In [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L63), [L402](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L402), [L733](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L733): `(it.grind || 'Whole Bean')`.
+     - In [js/roast-detail.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/roast-detail.js#L41): `(grind || 'Whole Bean')`.
+  4. **Duplicated Town Delivery Strings**:
+     - The exact notice: `'Available in Guilford, (North) Branford, Madison, and Durham.'` is duplicated verbatim across three separate JavaScript files:
+       - [js/order-checkout.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/order-checkout.js#L445)
+       - [js/form-submit.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/form-submit.js#L38)
+       - [js/byob-mixer.js](file:///Users/ianr/Documents/yellow-wing-roasters/js/byob-mixer.js#L664)
+       - and referenced in [about.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/about.markdown#L22).
+     - Any future expansion or modification of the local delivery radius requires coordinated edits across 4 different files.
+* **DRY / Config-Driven Solution**:
+  - Centralize store delivery towns in `_config.yml` (`local_delivery_towns: ["Guilford", "(North) Branford", "Madison", "Durham"]`) and pass to forms or render dynamically in templates.
+  - Centralize default grind in `_data/grind_levels.yml` or `_config.yml`.
+  - Pass flight options (price, size, mascot) strictly from YAML frontmatter via `initAviaryFlight({ ... })` and `initPYOFlight({ ... })`, removing JS fallback numbers.
+  - Rely on `site.data.bag_sizes` and roast `sizes` lists rather than hardcoding `'12oz'`.
+
+---
+
 ## 7. Repository Hygiene & File Organization
 
 The project root currently contains **9 standalone preview/scratch HTML files**:
@@ -549,6 +728,9 @@ These files are already excluded in [_config.yml](file:///Users/ianr/Documents/y
 | **Phase 1** | **Roast Dots Include** (`_includes/roast-dots.html`) | Low | High | ✅ Completed (unified cards and detail pages) |
 | **Phase 2** | **Defensive Fallback & Ghost Property Elimination** (6.1–6.6) | Low | High | ✅ Completed (eliminated dead fallbacks & fixed cormorant mascot) |
 | **Phase 2** | **Catalog Frequency & Direct Price Lookups** (6.7 & 6.8) | Low | High | Eliminates contradictory interval defaults, deletes duplicate `subscription_prices` map, exposes `YWR_FLIGHTS_DATA` |
+| **Phase 2** | **Google Form Actions & Entry IDs Centralization** (4.3) | Low | High | Centralizes 25+ scattered field IDs to `_config.yml` (mirroring `digital_gift_entries`) |
+| **Phase 2** | **Bag Sizes & Store Defaults Centralization** (4.4, 6.10) | Low | High | Creates `_data/bag_sizes.yml`, centralizes delivery towns in `_config.yml`, removes hardcoded `'12oz'`/`'Whole Bean'` |
+| **Phase 2** | **Fast-Fail Runtime Exceptions & Silent Return Elimination** (6.9) | Low | High | Replaces 10+ silent `if (!el) return;` blockers and unlogged catch blocks with natural exceptions / explicit `console.error` |
 | **Phase 2** | **Sass Category Maps & Mixins** (Buttons, Blurs, Categories) | Medium | High | Cuts ~80 lines of repetitive CSS across `_cards.scss` & `_roast-detail.scss` |
 | **Phase 2** | **Lazy Susan Include** (`_includes/lazy-susan.html`) | Low | Medium | ✅ Completed (unified 4 templates) |
 | **Phase 3** | **Shared Cart Core** (`window.YWR_CART.parseItem`) | Medium | High | Eliminates ~90 lines of duplicate logic between `cart.js` & `order-checkout.js` |
