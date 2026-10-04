@@ -28,8 +28,8 @@
 
     if (!form || !emptyEl || !itemsEl) return;
 
-    var ORDER_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse';
-    var SUB_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse';
+    var ORDER_FORM_ACTION = form.getAttribute('action');
+    var SUB_FORM_ACTION = form.getAttribute('data-sub-action');
 
     var emailInput = document.getElementById('order-email');
     var phoneInput = document.getElementById('order-phone');
@@ -46,7 +46,11 @@
     }
 
     function saveCart(c) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(c));
+      } catch (e) {
+        console.error('saveCart: Failed to save cart to localStorage:', e);
+      }
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 
@@ -347,15 +351,15 @@
 
       // Update hidden inputs for Google Forms
       if (currentMode === 'subscribe') {
-        var subItem = items[0] || {};
+        var subItem = items[0];
         var roastVal = items.map(function (it) {
-          return (it.data.roast || '') + ' (Grind: ' + (it.grind || 'Whole Bean') + ')';
+          return it.data.roast + ' (Grind: ' + it.grind + ')';
         }).join(', ');
 
         if (itemsHidden) itemsHidden.value = roastVal;
         if (subPriceHidden) subPriceHidden.value = '$' + grandTotal;
-        if (subSizeHidden) subSizeHidden.value = subItem.data ? subItem.data.size : '12oz';
-        if (subFreqHidden) subFreqHidden.value = subItem.frequency || 'Every 2 weeks';
+        if (subSizeHidden) subSizeHidden.value = subItem.data.size;
+        if (subFreqHidden) subFreqHidden.value = subItem.frequency;
         if (subStatusHidden) subStatusHidden.value = 'Active';
       } else {
         var itemLines = items.map(function (item) {
@@ -376,7 +380,7 @@
     window.addEventListener('storage', render);
 
     // Delivery Method Radio Handling
-    var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
+    var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
     var addressFields = document.getElementById('order-address-fields');
     var deliveryNote = document.getElementById('order-delivery-note');
 
@@ -385,14 +389,16 @@
       var inputs = addressFields.querySelectorAll('input, select');
       for (var k = 0; k < inputs.length; k++) {
         inputs[k].disabled = isPickup;
+        if (isPickup) {
+          inputs[k].removeAttribute('required');
+        } else {
+          inputs[k].setAttribute('required', 'true');
+        }
       }
     }
 
     function updateDeliveryNote(isPickup) {
-      if (!deliveryNote) return;
-      deliveryNote.textContent = isPickup
-        ? 'Please specify in the notes how you want to coordinate pickup.'
-        : 'Available in Guilford, (North) Branford, Madison, and Durham.';
+      deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
       deliveryNote.style.display = '';
     }
 
@@ -407,7 +413,7 @@
       });
     }
 
-    var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
+    var initialDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
     var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
     setAddressFieldsState(isInitialPickup);
     updateDeliveryNote(isInitialPickup);
@@ -643,7 +649,7 @@
         window.location.href = (config.thanksUrl || '/thanks/');
       }
 
-      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
       var isPickup = (!delivery || delivery.value === 'Pickup');
       setAddressFieldsState(isPickup);
 
@@ -654,15 +660,15 @@
           return;
         }
 
-        var customerName = (document.getElementById('order-name') || {}).value || '';
-        var customerEmail = (emailInput || {}).value || '';
-        var customerPhone = (phoneInput || {}).value || '';
+        var customerName = document.getElementById('order-name').value;
+        var customerEmail = emailInput.value;
+        var customerPhone = phoneInput ? phoneInput.value : '';
         var deliveryMethod = isPickup ? 'Pickup' : 'Hand delivery';
-        var addressVal = (document.getElementById('order-address') || {}).value || '';
-        var cityVal = (document.getElementById('order-city') || {}).value || '';
-        var stateVal = (document.getElementById('order-state') || {}).value || '';
-        var zipVal = (document.getElementById('order-zip') || {}).value || '';
-        var notesVal = (document.getElementById('order-notes') || {}).value || '';
+        var addressVal = isPickup ? '' : document.getElementById('order-address').value;
+        var cityVal = isPickup ? '' : document.getElementById('order-city').value;
+        var stateVal = isPickup ? '' : document.getElementById('order-state').value;
+        var zipVal = isPickup ? '' : document.getElementById('order-zip').value;
+        var notesVal = document.getElementById('order-notes').value;
 
         var safetyTimer = setTimeout(finish, 4000);
 
@@ -680,11 +686,11 @@
           }
           if (notesVal) params.append('entry.1381358427', notesVal);
 
-          var roastVal = (it.data.roast || '') + ' (Grind: ' + (it.grind || 'Whole Bean') + ')';
+          var roastVal = it.data.roast + ' (Grind: ' + it.grind + ')';
           params.append('entry.1935997805', roastVal);
-          params.append('entry.1606791078', it.data.size || '12oz');
-          params.append('entry.2064801247', it.frequency || 'Every 2 weeks');
-          params.append('entry.903789519', '$' + (it.data.price || 0));
+          params.append('entry.1606791078', it.data.size);
+          params.append('entry.2064801247', it.frequency);
+          params.append('entry.903789519', '$' + it.data.price);
           params.append('entry.1261348961', 'Active');
           params.append('entry.1336119512', '');
 

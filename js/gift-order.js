@@ -16,6 +16,7 @@
   return function initGiftOrder(config) {
     config = config || {};
     var form = document.getElementById('gift-form');
+    var defaultFormAction = form.getAttribute('action');
     var params = new URLSearchParams(window.location.search);
     var productSelect = document.getElementById('gift-product');
     var pageTitle = document.getElementById('gift-page-title');
@@ -386,8 +387,7 @@
 
       var durationRadio = form.querySelector('input[name="gift-duration"]:checked');
       var duration = durationRadio ? durationRadio.value : 'One-time';
-
-      form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse';
+      form.action = defaultFormAction;
 
       // Map Purchaser
       document.getElementById('gift-purchaser-name').name = 'entry.1153405702';

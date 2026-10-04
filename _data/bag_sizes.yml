@@ -1,0 +1,13 @@
+- id: "12oz"
+  label: "12oz"
+  weight_oz: 12
+  default: true
+- id: "1lb"
+  label: "1lb"
+  weight_oz: 16
+- id: "2lb"
+  label: "2lb"
+  weight_oz: 32
+- id: "5lb"
+  label: "5lb"
+  weight_oz: 80

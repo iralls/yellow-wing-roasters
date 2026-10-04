@@ -62,6 +62,7 @@
       try {
         return JSON.parse(localStorage.getItem('ywr_cart')) || {};
       } catch (e) {
+        console.error('getCart: Failed to parse localStorage ywr_cart:', e);
         return {};
       }
     }
@@ -310,7 +311,9 @@
           var cart = raw ? JSON.parse(raw) : {};
           delete cart[key];
           localStorage.setItem('ywr_cart', JSON.stringify(cart));
-        } catch (err) {}
+        } catch (err) {
+          console.error('ywrCart: Failed to remove item from cart:', err);
+        }
         window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
       });
     }

@@ -19,7 +19,7 @@ permalink: /gift/
 
 <p class="roast-mv-tasting">Send freshly roasted coffees, recurring gift subscriptions, or digital gift cards directly to their door.</p>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse" method="POST" class="order-form" id="gift-form" style="max-width: 38rem; margin: 2rem auto; text-align: left;">
+<form action="{{ site.google_forms.subscription.url }}" method="POST" class="order-form" id="gift-form" style="max-width: 38rem; margin: 2rem auto; text-align: left;">
   <!-- Dynamic Name Hidden Inputs -->
   <input type="hidden" id="gift-roast-hidden" value="">
   <input type="hidden" id="gift-price-hidden" value="">

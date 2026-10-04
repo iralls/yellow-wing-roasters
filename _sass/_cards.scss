@@ -199,39 +199,23 @@
 }
 
 // Category-based visual backgrounds
-.roasts-entry[data-category="blend"] .roasts-entry-visual,
-.roasts-entry[data-type="blend"] .roasts-entry-visual {
-  background-color: $color-cat-blend;
-}
+$category-colors: (
+  "blend": $color-cat-blend,
+  "single-origin": $color-cat-single-origin,
+  "single origin": $color-cat-single-origin,
+  "seasonal": $color-cat-seasonal,
+  "custom": $color-cat-custom,
+  "subscriptions": $color-cat-subscription,
+  "subscription": $color-cat-subscription,
+  "flight": $color-cat-flight,
+  "flights": $color-cat-flight,
+);
 
-.roasts-entry[data-category="single origin"] .roasts-entry-visual,
-.roasts-entry[data-category="single-origin"] .roasts-entry-visual,
-.roasts-entry[data-type="single-origin"] .roasts-entry-visual {
-  background-color: $color-cat-single-origin;
-}
-
-.roasts-entry[data-category="seasonal"] .roasts-entry-visual,
-.roasts-entry[data-type="seasonal"] .roasts-entry-visual {
-  background-color: $color-cat-seasonal;
-}
-
-.roasts-entry[data-category="custom"] .roasts-entry-visual,
-.roasts-entry[data-type="custom"] .roasts-entry-visual {
-  background-color: $color-cat-custom;
-}
-
-.roasts-entry[data-category="subscriptions"] .roasts-entry-visual,
-.roasts-entry[data-category="subscription"] .roasts-entry-visual,
-.roasts-entry[data-type="subscriptions"] .roasts-entry-visual,
-.roasts-entry[data-type="subscription"] .roasts-entry-visual {
-  background-color: $color-cat-subscription;
-}
-
-.roasts-entry[data-category="flight"] .roasts-entry-visual,
-.roasts-entry[data-category="flights"] .roasts-entry-visual,
-.roasts-entry[data-type="flight"] .roasts-entry-visual,
-.roasts-entry[data-type="flights"] .roasts-entry-visual {
-  background-color: $color-cat-flight;
+@each $cat, $color in $category-colors {
+  .roasts-entry[data-category="#{$cat}"] .roasts-entry-visual,
+  .roasts-entry[data-type="#{$cat}"] .roasts-entry-visual {
+    background-color: $color;
+  }
 }
 
 .roasts-entry-visual:hover,

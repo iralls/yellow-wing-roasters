@@ -19,7 +19,7 @@
 
     var status = form.querySelector('.order-status');
     var submitBtn = form.querySelector('.order-submit');
-    var deliveryRadios = form.querySelectorAll('input[name="entry.1896226742"]');
+    var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
     var addressFields = document.getElementById('byob-shipping');
     var deliveryNote = document.getElementById('byob-delivery-note');
 
@@ -28,14 +28,16 @@
       var inputs = addressFields.querySelectorAll('input, select, textarea');
       for (var k = 0; k < inputs.length; k++) {
         inputs[k].disabled = isPickup;
+        if (isPickup) {
+          inputs[k].removeAttribute('required');
+        } else {
+          inputs[k].setAttribute('required', 'true');
+        }
       }
     }
 
     function updateDeliveryNote(isPickup) {
-      if (!deliveryNote) return;
-      deliveryNote.textContent = isPickup
-        ? 'Please specify in the notes how you want to coordinate pickup.'
-        : 'Available in Guilford, (North) Branford, Madison, and Durham.';
+      deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
       deliveryNote.style.display = '';
     }
 
@@ -49,7 +51,7 @@
       });
     }
 
-    var initialDelivery = form.querySelector('input[name="entry.1896226742"]:checked');
+    var initialDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
     var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
     setAddressFieldsState(isInitialPickup);
     updateDeliveryNote(isInitialPickup);
@@ -66,7 +68,7 @@
         notesEl.value = currentNotes ? grindPrefix + ' ' + currentNotes : grindPrefix;
       }
 
-      var delivery = form.querySelector('input[name="entry.1896226742"]:checked');
+      var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
       setAddressFieldsState(!delivery || delivery.value === 'Pickup');
 
       if (status) {
@@ -83,12 +85,14 @@
 
   window.initPigeonPostForm = function (options) {
     options = options || {};
-    var thanksUrl = options.thanksUrl || '/thanks/';
+    var thanksUrl = options.thanksUrl;
+    var successMsg = options.successMsg || "You're signed up! Keep an eye on your inbox.";
     var form = document.getElementById('pigeon-post-form');
     if (!form) return;
 
     var status = document.getElementById('pigeon-post-status');
     var submitBtn = document.getElementById('pigeon-post-submit');
+    var intro = document.getElementById('pigeon-post-intro');
 
     var iframe = createSubmitIframe('pigeon-post-submit-frame');
     form.target = 'pigeon-post-submit-frame';
@@ -101,7 +105,16 @@
       if (submitBtn) submitBtn.disabled = true;
 
       iframe.onload = function () {
-        window.location.href = thanksUrl;
+        if (thanksUrl) {
+          window.location.href = thanksUrl;
+          return;
+        }
+        if (intro) intro.style.display = 'none';
+        form.style.display = 'none';
+        if (status) {
+          status.textContent = successMsg;
+          status.className = 'order-status order-status-success';
+        }
       };
     });
   };

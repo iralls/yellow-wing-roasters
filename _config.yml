@@ -17,6 +17,93 @@ digital_gift_entries:
   recipient_email: "entry.889676030"
   gift_message: "entry.466744405"
   notes: "entry.1004578870"
+
+# Local Hand Delivery Radius
+local_delivery_towns:
+  - "Guilford"
+  - "(North) Branford"
+  - "Madison"
+  - "Durham"
+  - "Killingworth"
+  - "East Haven"
+
+# Centralized Google Forms Endpoints & Form Entries
+google_forms:
+  order:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse"
+    entries:
+      items: "entry.1935997805"
+      total: "entry.552044967"
+      name: "entry.1153405702"
+      email: "entry.40149380"
+      phone: "entry.1852073865"
+      delivery: "entry.1896226742"
+      address: "entry.148046999"
+      city: "entry.1534670804"
+      state: "entry.414179858"
+      zip: "entry.1472936948"
+      notes: "entry.1381358427"
+  subscription:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSdEBWvbvQxmQOTD1DiqizruupFLmHSwcGM0cB9sUGjyWf-33A/formResponse"
+    entries:
+      name: "entry.1153405702"
+      email: "entry.65766604"
+      phone: "entry.1484480937"
+      delivery: "entry.1896226742"
+      address: "entry.148046999"
+      city: "entry.1534670804"
+      state: "entry.414179858"
+      zip: "entry.1472936948"
+      notes: "entry.1381358427"
+      roast: "entry.1935997805"
+      size: "entry.1606791078"
+      frequency: "entry.2064801247"
+      price: "entry.903789519"
+      status: "entry.1261348961"
+      status_details: "entry.1336119512"
+  byob_blend:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSdqjeaQw5cFzSsCq2IMTZraYBSclfbjnXSwZ8KvqpCEuWTHdA/formResponse"
+    entries:
+      recipe: "entry.52896454"
+      total: "entry.260019949"
+      name: "entry.1582897284"
+      email: "entry.1584009735"
+      delivery: "entry.577333073"
+      address: "entry.1996760403"
+      city: "entry.571087983"
+      state: "entry.821511879"
+      zip: "entry.445360762"
+      notes: "entry.2042833038"
+  byob_beans:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSfClX9h3_082mkOk2-WhWsoQgZZ_loOwZ6eGRdZ9d6PSdFzjw/formResponse"
+    entries:
+      name: "entry.1153405702"
+      email: "entry.40149380"
+      link: "entry.1935997805"
+      roast: "entry.1076774005"
+      qty: "entry.1351521045"
+      delivery: "entry.1896226742"
+      address: "entry.148046999"
+      city: "entry.1534670804"
+      state: "entry.414179858"
+      zip: "entry.1472936948"
+      notes: "entry.1381358427"
+  pigeon_post:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse"
+    entries:
+      email: "entry.1049864914"
+  digital_gift:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSfq0RUOcyBD_UErZhfgKA2OMBCOO6P0nffkgOcInDN_Epns9Q/formResponse"
+    entries:
+      purchaser_name: "entry.1174565391"
+      purchaser_email: "entry.1118434606"
+      amount: "entry.1384609460"
+      gift_code: "entry.1963271107"
+      recipient_name: "entry.1199366537"
+      recipient_email: "entry.889676030"
+      gift_message: "entry.466744405"
+      notes: "entry.1004578870"
+
 # Theme
 remote_theme: sblisesivdin/biscuit
 

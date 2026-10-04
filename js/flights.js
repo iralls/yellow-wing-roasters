@@ -10,6 +10,7 @@
       var raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : {};
     } catch (e) {
+      console.error('safeCartGet: Failed to parse localStorage ywr_cart:', e);
       return {};
     }
   }
@@ -17,7 +18,9 @@
   function safeCartSet(cart) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    } catch (e) {}
+    } catch (e) {
+      console.error('safeCartSet: Failed to save localStorage ywr_cart:', e);
+    }
   }
 
   window.initAviaryFlight = function (options) {

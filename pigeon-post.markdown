@@ -21,10 +21,10 @@ permalink: /pigeon-post/
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
-  <p style="text-align: center; margin-bottom: 2rem;">Sign up to hear about new roasts, seasonal blends, and restocks.</p>
+  <p id="pigeon-post-intro" style="text-align: center; margin-bottom: 2rem;">Sign up to hear about new roasts, seasonal blends, and restocks.</p>
 
-  <form action="https://docs.google.com/forms/d/e/1FAIpQLSc2fpSWVJxRnC3hBamoq-7JqXVVypLoVaDHoKiQldEymJW7vw/formResponse" method="POST" class="mailing-list-form" id="pigeon-post-form" style="margin: 0 auto; max-width: 480px;">
-    <input id="pigeon-post-email" type="email" name="entry.1049864914" placeholder="your@email.com" aria-label="Email address" autocomplete="email" required class="mailing-list-input">
+  <form action="{{ site.google_forms.pigeon_post.url }}" method="POST" class="mailing-list-form" id="pigeon-post-form" style="margin: 0 auto; max-width: 480px;">
+    <input id="pigeon-post-email" type="email" name="{{ site.google_forms.pigeon_post.entries.email }}" placeholder="your@email.com" aria-label="Email address" autocomplete="email" required class="mailing-list-input">
     <button type="submit" class="mailing-list-btn" id="pigeon-post-submit">Sign Me Up</button>
   </form>
 
@@ -35,6 +35,6 @@ permalink: /pigeon-post/
 
 <script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  initPigeonPostForm({ thanksUrl: '{{ "/thanks/" | relative_url }}' });
+  initPigeonPostForm();
 </script>
 

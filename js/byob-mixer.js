@@ -640,7 +640,7 @@
   var form = document.getElementById('byob-form');
   var status = form.querySelector('.order-status');
 
-  var deliveryRadios = form.querySelectorAll('input[name="entry.577333073"]');
+  var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
   var addressFields = document.getElementById('byob-shipping');
   var deliveryNote = document.getElementById('byob-delivery-note');
   
@@ -658,10 +658,7 @@
   }
 
   function updateDeliveryNote(isPickup) {
-    if (!deliveryNote) return;
-    deliveryNote.textContent = isPickup
-      ? 'Please specify in the notes how you want to coordinate pickup.'
-      : 'Available in Guilford, (North) Branford, Madison, and Durham.';
+    deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
     deliveryNote.style.display = '';
   }
 
@@ -675,7 +672,7 @@
     });
   }
 
-  var initialDelivery = form.querySelector('input[name="entry.577333073"]:checked');
+  var initialDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
   var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
   setAddressFieldsState(isInitialPickup);
   updateDeliveryNote(isInitialPickup);
@@ -690,7 +687,7 @@
     // Populate hidden field with the recipe
     hiddenRecipe.value = getRecipeString();
 
-    var delivery = form.querySelector('input[name="entry.577333073"]:checked');
+    var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
     setAddressFieldsState(!delivery || delivery.value === 'Pickup');
 
     if (status) {

@@ -19,10 +19,10 @@ permalink: /order/
   <a href="{{ '/roasts/' | relative_url }}" class="order-browse-link">Browse coffees &rarr;</a>
 </div>
 
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSezZ8Cg4gcc1E-t72_pv4yt1s3ooXSMaP47R7iTD31mQE7zng/formResponse" method="POST" class="order-form order-form--checkout" id="order-form" style="display:none;">
+<form action="{{ site.google_forms.order.url }}" data-sub-action="{{ site.google_forms.subscription.url }}" method="POST" class="order-form order-form--checkout" id="order-form" style="display:none;">
   <!-- Shared & Order-specific hidden inputs -->
-  <input type="hidden" name="entry.1935997805" id="order-items-hidden" value="">
-  <input type="hidden" name="entry.552044967" id="order-total-hidden" value="">
+  <input type="hidden" name="{{ site.google_forms.order.entries.items }}" id="order-items-hidden" value="">
+  <input type="hidden" name="{{ site.google_forms.order.entries.total }}" id="order-total-hidden" value="">
 
   <!-- Subscription-specific hidden inputs (activated in Subscription mode) -->
   <input type="hidden" id="sub-price-hidden" value="">
@@ -35,54 +35,54 @@ permalink: /order/
     <div class="order-checkout-main">
       <div class="order-field">
         <label for="order-name" class="roast-mv-meta-label">Name</label>
-        <input id="order-name" type="text" name="entry.1153405702" required autocomplete="name">
+        <input id="order-name" type="text" name="{{ site.google_forms.order.entries.name }}" required autocomplete="name">
       </div>
 
       <div class="order-field">
         <label for="order-email" class="roast-mv-meta-label">Email</label>
-        <input id="order-email" type="email" name="entry.40149380" required autocomplete="email">
+        <input id="order-email" type="email" name="{{ site.google_forms.order.entries.email }}" required autocomplete="email">
       </div>
 
       <div class="order-field">
         <label for="order-phone" class="roast-mv-meta-label">Phone number (optional)</label>
-        <input id="order-phone" type="tel" name="entry.1852073865" autocomplete="tel" placeholder="123-456-7890" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Please enter a 10-digit phone number (e.g. 123-456-7890)">
+        <input id="order-phone" type="tel" name="{{ site.google_forms.order.entries.phone }}" autocomplete="tel" placeholder="123-456-7890" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Please enter a 10-digit phone number (e.g. 123-456-7890)">
       </div>
 
       <fieldset class="order-delivery">
         <legend>Delivery method</legend>
         <div class="pill-radios">
-          <label class="order-radio"><input type="radio" name="entry.1896226742" value="Pickup" checked> Pickup</label>
-          <label class="order-radio"><input type="radio" name="entry.1896226742" value="Hand delivery"> Hand delivery</label>
+          <label class="order-radio"><input type="radio" name="{{ site.google_forms.order.entries.delivery }}" value="Pickup" checked> Pickup</label>
+          <label class="order-radio"><input type="radio" name="{{ site.google_forms.order.entries.delivery }}" value="Hand delivery"> Hand delivery</label>
         </div>
-        <p id="order-delivery-note" class="order-delivery-note">Please specify in the notes how you want to coordinate pickup.</p>
+        <p id="order-delivery-note" class="order-delivery-note" data-pickup-msg="Please specify in the notes how you want to coordinate pickup." data-delivery-msg="Available in {{ site.local_delivery_towns | join: ', ' }}.">Please specify in the notes how you want to coordinate pickup.</p>
       </fieldset>
 
       <div id="order-address-fields" class="order-shipping" style="display:none;">
         <div class="order-field">
           <label for="order-address" class="roast-mv-meta-label">Street address</label>
-          <input id="order-address" type="text" name="entry.148046999" autocomplete="street-address">
+          <input id="order-address" type="text" name="{{ site.google_forms.order.entries.address }}" autocomplete="street-address">
         </div>
         <div class="order-field">
           <label for="order-city" class="roast-mv-meta-label">City</label>
-          <input id="order-city" type="text" name="entry.1534670804" autocomplete="address-level2">
+          <input id="order-city" type="text" name="{{ site.google_forms.order.entries.city }}" autocomplete="address-level2">
         </div>
         <div class="order-field-row">
           <div class="order-field">
             <label for="order-state" class="roast-mv-meta-label">State</label>
-            <select id="order-state" name="entry.414179858" autocomplete="address-level1">
+            <select id="order-state" name="{{ site.google_forms.order.entries.state }}" autocomplete="address-level1">
               {% include state-options.html %}
             </select>
           </div>
           <div class="order-field">
             <label for="order-zip" class="roast-mv-meta-label">ZIP</label>
-            <input id="order-zip" type="text" name="entry.1472936948" autocomplete="postal-code">
+            <input id="order-zip" type="text" name="{{ site.google_forms.order.entries.zip }}" autocomplete="postal-code">
           </div>
         </div>
       </div>
 
       <div class="order-field">
         <label for="order-notes" class="roast-mv-meta-label">Notes (optional)</label>
-        <textarea id="order-notes" name="entry.1381358427" rows="3"></textarea>
+        <textarea id="order-notes" name="{{ site.google_forms.order.entries.notes }}" rows="3"></textarea>
       </div>
 
       <div class="order-actions">
