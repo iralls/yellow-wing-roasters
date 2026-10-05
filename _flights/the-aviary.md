@@ -2,6 +2,7 @@
 layout: default
 title: The Aviary
 slug: the-aviary
+category: flight
 order: 1
 permalink: /flights/the-aviary/
 price: 38

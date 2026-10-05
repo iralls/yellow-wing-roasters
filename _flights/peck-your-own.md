@@ -2,11 +2,13 @@
 layout: default
 title: Peck Your Own
 slug: peck-your-own
+category: flight
 order: 2
 permalink: /flights/peck-your-own/
 price_per_bag: 10
 min_bags: 4
-visual_type: lazy_susan
+mascot_file: peck-your-own-transparent.png
+mascot_alt: "Peck Your Own"
 ---
 
 <div class="roast-minimal-vertical">
@@ -14,7 +16,7 @@ visual_type: lazy_susan
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  {% include lazy-susan.html hero=true %}
+  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="roast-mv-bird" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">

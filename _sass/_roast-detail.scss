@@ -1125,11 +1125,11 @@
   flex-shrink: 0;
 
   &--incubating     { background: #111; color: #ffd600; }
-  &--just_hatched   { background: #2e7d32; color: #fff; }
+  &--just_hatched   { background: var(--badge-just_hatched-bg); color: var(--badge-just_hatched-color); }
   &--mid_molt       { background: #111; color: #ffe600; }
-  &--migrating_soon { background: #c2410c; color: #fff; }
-  &--low_stock      { background: #e65100; color: #fff; }
-  &--flown_south    { background: #475569; color: #fff; letter-spacing: 0.08em; }
+  &--migrating_soon { background: var(--badge-migrating_soon-bg); color: var(--badge-migrating_soon-color); }
+  &--low_stock      { background: var(--badge-low_stock-bg); color: var(--badge-low_stock-color); }
+  &--flown_south    { background: var(--badge-flown_south-bg); color: var(--badge-flown_south-color); letter-spacing: 0.08em; }
   &--not_subscribable { background: #c0392b; color: #fff; }
 }
 

@@ -8,6 +8,13 @@
 @import "fonts";
 @import "variables";
 
+:root {
+{% for badge in site.data.badge_colors %}
+  --badge-{{ badge[0] }}-bg: {{ badge[1].background }};
+  --badge-{{ badge[0] }}-color: {{ badge[1].color }};
+{% endfor %}
+}
+
 // Remote theme base
 @import "normalize", "biscuit", "syntax";
 

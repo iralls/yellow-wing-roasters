@@ -187,6 +187,7 @@ To add a certification badge to a roast, use the `certification:` key with one o
 * `certification: fair_trade_organic` — Displays the **FTO** badge on cards and "Certification: Fair Trade Organic" on the detail page.
 * Rotating single origins (`rotating: true` with `history:`): When rotating to an organic lot (e.g. Kayon Mountain for Ethiopia Guji), set `certification: organic` in the top-level frontmatter for the active lot.
 * Omit `certification` for uncertified roasts and blends (blends do not carry certification badges).
+* Badge and pill colors across the catalog (FTO, Organic, Featured, statuses) are centrally configured in `_data/badge_colors.yml`.
 
 ---
 
@@ -317,7 +318,7 @@ Like subscriptions and roasts, items in the `_flights` and `_custom` collections
 
 ### Flights (`_flights/`)
 * Items: `_flights/the-aviary.md` (`order: 1`), `_flights/peck-your-own.md` (`order: 2`).
-* Template: `_includes/flight-cards.html` iterates over `site.flights | sort: "order"`.
+* Template: `_includes/category-section.html` iterates over `site.flights | sort: "order"`.
 * Changing `order:` in frontmatter will immediately update display order on `/flights/` and in the Flights section of `/roasts/`.
 
 ### Custom Offerings (`_custom/`)
@@ -325,6 +326,6 @@ Like subscriptions and roasts, items in the `_flights` and `_custom` collections
   * `_custom/build-your-own-blend.md` (`order: 1`)
   * `_custom/bring-your-own-beans.md` (`order: 2`)
   * `_custom/bring-your-own-burner.md` (`order: 3`)
-* Template: `_includes/custom-cards.html` iterates over `site.custom | sort: "order"`.
+* Template: `_includes/category-section.html` iterates over `site.custom | sort: "order"`.
 * Changing `order:` in frontmatter will immediately update display order on `/custom/` and in the Custom section of `/roasts/`.
 

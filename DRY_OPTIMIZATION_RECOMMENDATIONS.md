@@ -60,64 +60,14 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ## 2. Liquid Templates & Jekyll Layouts (High Impact)
 
 ### 2.1 Category Pages Layout Consolidation
-* **Current State**: [blends.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/blends.markdown), [single-origins.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/single-origins.markdown), and [seasonals.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/seasonals.markdown) repeat identical markup:
-  ```liquid
-  {% assign all_roasts = site.roasts | sort: "order" %}
-  {% assign cat_roasts = all_roasts | where: "category", "..." %}
-  {% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
-  {% assign cat_incubating = cat_roasts | where_exp: "item", "item.status == 'incubating'" %}
-  {% assign cat_flown = cat_roasts | where_exp: "item", "item.status == 'flown_south'" %}
-  {% assign cat_roasts = cat_active | concat: cat_incubating | concat: cat_flown %}
-
-  <div class="roasts-grid">
-  {% for r in cat_roasts %}
-    {% include roast-card.html roast=r %}
-  {% endfor %}
-  </div>
-  ```
-* **DRY Solution**: Create a single `_layouts/category.html`:
-  ```liquid
-  ---
-  layout: default
-  ---
-  <h1>{{ page.title }}</h1>
-  {% if page.intro %}<p class="category-intro">{{ page.intro }}</p>{% endif %}
-
-  {% assign all_roasts = site.roasts | sort: "order" %}
-  {% assign cat_roasts = all_roasts | where: "category", page.category %}
-  {% assign cat_active = cat_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
-  {% assign cat_incubating = cat_roasts | where_exp: "item", "item.status == 'incubating'" %}
-  {% assign cat_flown = cat_roasts | where_exp: "item", "item.status == 'flown_south'" %}
-  {% assign roasts_to_render = cat_active | concat: cat_incubating | concat: cat_flown %}
-
-  <div class="roasts-grid">
-    {% for r in roasts_to_render %}
-      {% include roast-card.html roast=r %}
-    {% endfor %}
-  </div>
-  ```
-  Each page then reduces to just 6 lines of YAML frontmatter:
-  ```markdown
-  ---
-  layout: category
-  title: Blends
-  permalink: /blends/
-  category: blend
-  intro: "Our signature and everyday blends..."
-  ---
-  ```
+* **Status**: ✅ **Implemented**
+* **Solution**: Unified all category pages (`blends.markdown`, `single-origins.markdown`, `seasonals.markdown`, `custom.markdown`, `flights/index.markdown`, `subscribe.markdown`) under `_layouts/category.html` using frontmatter metadata. `_layouts/category.html` delegates rendering to `_includes/category-section.html`.
 
 ---
 
-### 2.2 Status-Partitioned Roast Sorting Include
-* **Current State**: The 3-tier partitioning logic (`active` $\rightarrow$ `incubating` $\rightarrow$ `flown_south`) is duplicated 6 times across [roasts/index.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/roasts/index.markdown#L68-L84), [blends.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/blends.markdown#L11-L16), [single-origins.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/single-origins.markdown#L11-L16), and [seasonals.markdown](file:///Users/ianr/Documents/yellow-wing-roasters/seasonals.markdown#L11-L16).
-* **DRY Solution**: If kept modular, extract into `_includes/partition-roasts.html`:
-  ```liquid
-  {% comment %}
-    Usage: {% include partition-roasts.html category="blend" assign_to="blends" %}
-  {% endcomment %}
-  ```
-  Or use the unified category layout from 2.1.
+### 2.2 Status-Partitioned Roast Sorting & Collection Engine
+* **Status**: ✅ **Implemented**
+* **Solution**: Extracted 3-tier status partitioning (`active` $\rightarrow$ `incubating` $\rightarrow$ `flown_south`) and collection resolution into `_includes/category-section.html`. Unifies `roasts/index.markdown`, `_layouts/category.html`, and collection rendering (Custom, Subscriptions, Flights), eliminating redundant files (`custom-cards.html`, `flight-cards.html`, `subscription-cards.html`) in favor of a universal `_includes/roast-card.html`.
 
 ---
 
@@ -166,10 +116,9 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 
 ---
 
-### 2.6 Lazy Susan Animation Component
+### 2.6 Mascot Asset Standardization (Retired Lazy Susan Component)
 * **Status**: ✅ **Implemented**
-* **Solution**: Created `_includes/lazy-susan.html` supporting both card and hero header variants (`hero=true`). Replaced the duplicate 20-line DOM structures across [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html), [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html), [_custom/build-your-own-blend.md](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md), and [_flights/peck-your-own.md](file:///Users/ianr/Documents/yellow-wing-roasters/_flights/peck-your-own.md).
-
+* **Solution**: Replaced the custom 3D-depth "Lazy Susan" multi-element component with a standardized master cutout (`peck-your-own-transparent.png`). Peck Your Own now utilizes standard `mascot_file` frontmatter like every other product in the roost, eliminating `_includes/lazy-susan.html`, `visual_type` exception logic, and ~190 lines of specialized SCSS.
 
 ---
 
@@ -528,16 +477,9 @@ Yet in the body of the exact same file, values are repeatedly defaulted:
 
 ---
 
-### 6.6 Triple-Check Aliasing in Card Iterations
-* In [_includes/custom-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/custom-cards.html#L5):
-  ```liquid
-  {% if item.visual_type == "lazy_susan" or item.slug == "build-your-own-blend" or item.data_roast == "byob-blend" %}
-  ```
-* In [_includes/flight-cards.html](file:///Users/ianr/Documents/yellow-wing-roasters/_includes/flight-cards.html#L5):
-  ```liquid
-  {% if f.visual_type == "lazy_susan" or f.slug == "peck-your-own" %}
-  ```
-* **Solution**: Cleanly rely on `visual_type: lazy_susan` as the canonical schema property.
+### 6.6 Elimination of Visual Type Aliasing
+* **Status**: ✅ **Implemented**
+* **Solution**: Completely eliminated the aliasing checks (`visual_type == "lazy_susan"` vs slug lookups) by standardizing Peck Your Own with `mascot_file: peck-your-own-transparent.png`. All catalog cards now render standard mascot artwork uniformly.
 
 ---
 

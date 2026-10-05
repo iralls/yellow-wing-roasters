@@ -1,0 +1,2 @@
+1. Gift subscriptions don't email the actual recipient
+2. BYOB (Build Your Own Blend) doesn't email the recipient

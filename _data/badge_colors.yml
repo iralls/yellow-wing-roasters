@@ -1,0 +1,38 @@
+# Badge color mapping for roast cards and catalog badges
+# Single source of truth for badge and pill colors across the site.
+
+fto:
+  background: "#0075a2"
+  color: "#ffffff"
+
+organic:
+  background: "#166534"
+  color: "#ffffff"
+
+featured:
+  background: "#e8a0b4"
+  color: "#ffffff"
+
+just_hatched:
+  background: "#2e7d32"
+  color: "#ffffff"
+
+incubating:
+  background: "#ffd600"
+  color: "#111111"
+
+mid_molt:
+  background: "#ffe600"
+  color: "#111111"
+
+migrating_soon:
+  background: "#c2410c"
+  color: "#ffffff"
+
+low_stock:
+  background: "#e65100"
+  color: "#ffffff"
+
+flown_south:
+  background: "#475569"
+  color: "#ffffff"

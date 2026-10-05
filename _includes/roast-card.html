@@ -73,8 +73,8 @@
    data-tasting-notes="{{ r.tasting_notes | escape }}"
    data-descriptor="{{ r.descriptor | escape }}"
    data-status="{{ r.status }}"
-   data-roast="{{ r.slug }}">
-  <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{{ r.title | escape }}">
+   data-roast="{{ r.data_roast | default: r.slug }}">
+  <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{% if r.card_title %}{{ r.card_title }}{% if r.subtitle %} - {{ r.subtitle }}{% endif %}{% else %}{{ r.title | escape }}{% endif %}">
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
       {% if r.featured %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
@@ -84,11 +84,15 @@
         <div class="roasts-entry-organic-badge" title="Organic">Organic</div>
       {% endif %}
     {% endunless %}
-    {% if r.mascot_file %}<img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="" class="roasts-entry-mascot" loading="lazy" decoding="async">{% endif %}
+    {% if r.mascot_file %}
+      <img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="{{ r.mascot_alt | default: r.title | escape }}" class="roasts-entry-mascot" loading="lazy" decoding="async">
+    {% endif %}
     {% unless include.hide_overlay %}
     <div class="roasts-entry-overlay">
       {% if r.tasting_notes %}
         <div class="roasts-entry-overlay-notes">{{ r.tasting_notes | replace: ", ", " · " | downcase }}</div>
+      {% elsif r.overlay_notes %}
+        <div class="roasts-entry-overlay-notes">{{ r.overlay_notes }}</div>
       {% elsif r.descriptor %}
         <div class="roasts-entry-overlay-notes">{{ r.descriptor }}</div>
       {% endif %}
@@ -103,7 +107,7 @@
       {% elsif r.brewing_method %}
         <div class="roasts-entry-overlay-brewing">{{ r.brewing_method | replace: ", ", " · " }}</div>
       {% endif %}
-      {% unless r.category == 'subscriptions' or r.category == 'flight' or r.category == 'flights' %}
+      {% unless r.category == 'subscriptions' or r.category == 'flight' or r.category == 'custom' %}
         {% if rp and rp.size > 0 %}
           <div class="roasts-entry-overlay-prices" aria-label="Prices by bag size">
             {% for entry in rp %}
@@ -135,18 +139,25 @@
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
-        <div class="roasts-entry-title">{{ r.title }}</div>
+        <div class="roasts-entry-title">{{ r.card_title | default: r.title }}</div>
         {% unless r.category == 'subscriptions' %}
           {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         {% endunless %}
+        {% if r.notes %}
+          <div class="roasts-entry-notes">{{ r.notes }}</div>
+        {% elsif r.min_bags %}
+          <div class="roasts-entry-notes">Choose at least {{ r.min_bags }} 8oz bags</div>
+        {% endif %}
         {% unless include.hide_price %}
-          <div class="roasts-entry-prices">
-            {% if r.temporary_price and r.temporary_price["12oz"] %}
-              <s>${{ price_12 }}</s> <span class="roasts-entry-temp-price">${{ r.temporary_price["12oz"] }}</span>
-            {% else %}
-              ${{ card_display_price }}
-            {% endif %}
-          </div>
+          {% if r.temporary_price and r.temporary_price["12oz"] %}
+            <div class="roasts-entry-prices"><s>${{ rp["12oz"] }}</s> <span class="roasts-entry-temp-price">${{ r.temporary_price["12oz"] }}</span></div>
+          {% elsif card_display_price %}
+            <div class="roasts-entry-prices">${{ card_display_price }}</div>
+          {% elsif r.price %}
+            <div class="roasts-entry-prices">${{ r.price }}</div>
+          {% elsif r.price_per_bag and r.min_bags %}
+            <div class="roasts-entry-prices">${{ r.price_per_bag }} per bag (${{ r.min_bags | times: r.price_per_bag }} min)</div>
+          {% endif %}
         {% endunless %}
       </div>
       <div class="roasts-entry-meta">

@@ -73,78 +73,12 @@ permalink: /roasts/
 
 <!-- Roasts Grid -->
 <div class="roasts-grid" id="roasts-grid">
-  {% assign blends = site.roasts | where: "category", "blend" | sort: "order" %}
-  {% assign blends_active = blends | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
-  {% assign blends_incubating = blends | where_exp: "item", "item.status == 'incubating'" %}
-  {% assign blends_flown = blends | where_exp: "item", "item.status == 'flown_south'" %}
-  {% assign blends = blends_active | concat: blends_incubating | concat: blends_flown %}
-
-  {% assign seasonals = site.roasts | where: "category", "seasonal" | sort: "order" %}
-  {% assign seasonals_active = seasonals | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
-  {% assign seasonals_incubating = seasonals | where_exp: "item", "item.status == 'incubating'" %}
-  {% assign seasonals_flown = seasonals | where_exp: "item", "item.status == 'flown_south'" %}
-  {% assign seasonals = seasonals_active | concat: seasonals_incubating | concat: seasonals_flown %}
-
-  {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
-  {% assign single_origins_active = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
-  {% assign single_origins_incubating = single_origins | where_exp: "item", "item.status == 'incubating'" %}
-  {% assign single_origins_flown = single_origins | where_exp: "item", "item.status == 'flown_south'" %}
-  {% assign single_origins = single_origins_active | concat: single_origins_incubating | concat: single_origins_flown %}
-
-  {% assign subscriptions = site.subscriptions | sort: "order" %}
-
-  <!-- Blends -->
-  <div class="roasts-section-break" data-category="blend">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Blends</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% for r in blends %}
-    {% include roast-card.html roast=r %}
-  {% endfor %}
-
-  <!-- Seasonals -->
-  <div class="roasts-section-break" data-category="seasonal">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Seasonals</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% for r in seasonals %}
-    {% include roast-card.html roast=r %}
-  {% endfor %}
-
-  <!-- Single Origins -->
-  <div class="roasts-section-break" data-category="single origin">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Single Origins</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% for r in single_origins %}
-    {% include roast-card.html roast=r %}
-  {% endfor %}
-
-  <!-- Custom -->
-  <div class="roasts-section-break" data-category="custom">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Custom</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% include custom-cards.html %}
-
-  <!-- Subscriptions -->
-  <div class="roasts-section-break" data-category="subscriptions">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Subscriptions</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% include subscription-cards.html %}
-
-  <div class="roasts-section-break" data-category="flight">
-    <div class="roasts-section-break-line"></div>
-    <span class="roasts-section-break-title">Flights</span>
-    <div class="roasts-section-break-line"></div>
-  </div>
-  {% include flight-cards.html %}
+  {% include category-section.html category="blend" title="Blends" show_break=true %}
+  {% include category-section.html category="seasonal" title="Seasonals" show_break=true %}
+  {% include category-section.html category="single origin" title="Single Origins" show_break=true %}
+  {% include category-section.html category="custom" title="Custom" show_break=true %}
+  {% include category-section.html category="subscriptions" title="Subscriptions" show_break=true %}
+  {% include category-section.html category="flight" title="Flights" show_break=true %}
 </div>
 
 <!-- JavaScript for Dynamic Filters -->

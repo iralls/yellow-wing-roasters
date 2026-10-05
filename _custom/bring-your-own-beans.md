@@ -4,12 +4,12 @@ title: "BYOB — Bring Your Own Beans"
 card_title: "BYOB"
 subtitle: "Bring your own beans"
 slug: bring-your-own-beans
+category: custom
 data_roast: byob
 order: 2
 permalink: /roasts/bring-your-own-beans/
 mascot_file: binocular-birds-transparent.png
 mascot_alt: "Bring your own beans mascot"
-layman: Custom
 descriptor: custom roast
 overlay_notes: "send us your green beans and we'll roast them to perfection"
 ---

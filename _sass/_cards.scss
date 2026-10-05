@@ -623,13 +623,13 @@ $category-colors: (
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 
-  &--incubating     { background: #ffd600; color: #111; }
-  &--just_hatched   { background: #2e7d32; color: #fff; }
-  &--mid_molt       { background: #ffe600; color: #111; }
-  &--migrating_soon { background: #c2410c; color: #fff; }
-  &--low_stock      { background: #e65100; color: #fff; }
-  &--flown_south    { background: #475569; color: #fff; }
-  &--rotating       { background: #e8a0b4; color: #fff; }
+  &--incubating     { background: var(--badge-incubating-bg); color: var(--badge-incubating-color); }
+  &--just_hatched   { background: var(--badge-just_hatched-bg); color: var(--badge-just_hatched-color); }
+  &--mid_molt       { background: var(--badge-mid_molt-bg); color: var(--badge-mid_molt-color); }
+  &--migrating_soon { background: var(--badge-migrating_soon-bg); color: var(--badge-migrating_soon-color); }
+  &--low_stock      { background: var(--badge-low_stock-bg); color: var(--badge-low_stock-color); }
+  &--flown_south    { background: var(--badge-flown_south-bg); color: var(--badge-flown_south-color); }
+  &--rotating       { background: var(--badge-featured-bg); color: var(--badge-featured-color); }
 }
 
 /* ── Overlay Price Breakdown ── */

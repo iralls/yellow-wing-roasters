@@ -10,7 +10,7 @@ description: >-
 
 > **Guiding Principle**: *"I'd rather a failure than a default value that doesn't make sense."*
 
-Follow these three mandatory architectural principles when writing or modifying code in this repository:
+Follow these four mandatory architectural principles when writing or modifying code in this repository:
 
 ---
 
@@ -86,3 +86,19 @@ Do not clutter code with redundant `if (!element) console.log(...)` guard boiler
       console.error('Failed to add item to cart:', item);
     }
     ```
+
+---
+
+## 4. Ask Rather Than Fall Back on Missing Data (Fix the Underlying Source)
+
+If a value is missing and you think it requires a conditional with a default or `nil`/`null` fallback, stop and ask the user how to proceed instead of introducing fallback code.
+
+* **Underlying Data Problem**:
+  * Missing values in templates, scripts, or components are rarely solved by adding fallback conditionals or default values.
+  * Most likely, the underlying data (in YAML frontmatter, `_data/`, `_config.yml`, or the data model) is missing or incomplete and needs to be provided or corrected.
+* **Anti-Patterns**:
+  * ❌ Adding Liquid `{% if page.origin %}{{ page.origin }}{% else %}Single Origin{% endif %}` or `{{ page.weight | default: "12oz" }}` when frontmatter is missing the field.
+  * ❌ Adding JavaScript `orig.prices[size] || null` or ternary defaults when the price map is incomplete.
+  * ❌ Silently defaulting missing category names, tags, or roast attributes.
+* **Correct Pattern**:
+  * ✅ Ask the user: *"The field `<field>` is missing on `<item/file>`. Should we add `<field>` to the underlying YAML frontmatter/config, or is there a specific way this should be handled?"*

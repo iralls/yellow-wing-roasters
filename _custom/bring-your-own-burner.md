@@ -4,12 +4,12 @@ title: "BYOB — Bring Your Own Burner"
 card_title: "BYOB"
 subtitle: "Bring your own burner"
 slug: bring-your-own-burner
+category: custom
 data_roast: byob-burner
 order: 3
 permalink: /roasts/bring-your-own-burner/
 mascot_file: bird-on-spit-transparent.png
 mascot_alt: "BYOB mascot"
-layman: Custom
 descriptor: custom roast level
 overlay_notes: "pick any single origin and customize your roast level"
 ---
