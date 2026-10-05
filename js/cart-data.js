@@ -59,10 +59,9 @@ window.YWR_SUBSCRIPTIONS_DATA = {
 
 window.YWR_ROAST_LEVELS = {
   {% for lvl_num in (1..5) %}
-    {% assign lvl_num_str = lvl_num | append: "" %}
-    {% assign lvl_data = site.data.roast_levels[lvl_num] | default: site.data.roast_levels[lvl_num_str] %}
+    {% assign lvl_data = site.data.roast_levels[lvl_num] %}
     {{ lvl_num | jsonify }}: {
-      name: {{ lvl_data.specialty | default: lvl_data.name | jsonify }},
+      name: {{ lvl_data.specialty | jsonify }},
       full_name: {{ lvl_data.name | jsonify }},
       dots: {{ lvl_data.dots }},
       layman: {{ lvl_data.layman | jsonify }},
@@ -70,3 +69,8 @@ window.YWR_ROAST_LEVELS = {
     }{% unless forloop.last %},{% endunless %}
   {% endfor %}
 };
+
+window.YWR_BAG_SIZES = {{ site.data.bag_sizes | jsonify }};
+
+{% assign default_grind = site.data.grind_levels | where: "default", true | map: "value" | first %}
+window.YWR_DEFAULT_GRIND = {{ default_grind | jsonify }};

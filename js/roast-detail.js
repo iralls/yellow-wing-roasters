@@ -15,31 +15,9 @@
 
   return function initRoastDetail(config) {
     config = config || {};
-    var STORAGE_KEY = 'ywr_cart';
     var pricesOneTime = config.pricesOneTime || {};
     var pricesSub = config.pricesSub || {};
     var roastSlug = config.roastSlug || '';
-    var defaultFreq = config.defaultFreq || 'Monthly';
-
-    function loadCart() {
-      try {
-        var raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch (e) {
-        return {};
-      }
-    }
-
-    function saveCart(c) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(c));
-      } catch (e) {}
-      window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
-    }
-
-    function cartKey(roast, variant, size, grind) {
-      return roast + '|' + (variant || '') + '|' + size + '|' + (grind || 'Whole Bean');
-    }
 
     var sizeSelect = document.getElementById('order-size-select');
     var grindSelect = document.getElementById('order-grind-select');

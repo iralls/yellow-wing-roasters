@@ -3,42 +3,19 @@
  * Handles The Aviary and Peck-Your-Own custom bundle selections and cart additions.
  */
 (function () {
-  var STORAGE_KEY = 'ywr_cart';
-
-  function safeCartGet() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      console.error('safeCartGet: Failed to parse localStorage ywr_cart:', e);
-      return {};
-    }
-  }
-
-  function safeCartSet(cart) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    } catch (e) {
-      console.error('safeCartSet: Failed to save localStorage ywr_cart:', e);
-    }
-  }
-
   window.initAviaryFlight = function (options) {
-    options = options || {};
-    var price = options.price || 38;
     var addBtn = document.getElementById('aviary-add-btn');
     var grindSelect = document.getElementById('aviary-grind-select');
 
     addBtn.addEventListener('click', function () {
-      var grind = grindSelect.value;
       var item = {
         type: 'flight',
         slug: 'the-aviary',
         title: 'The Aviary Flight',
         size: '4 × 8oz bags',
-        grind: grind,
-        price: price,
-        mascot: 'audubon-cage-transparent.png',
+        grind: grindSelect.value,
+        price: options.price,
+        mascot: options.mascot,
         qty: 1
       };
       var added = window.ywrAddToCart(item, 1);
@@ -46,7 +23,7 @@
         addBtn.textContent = 'Added!';
         addBtn.disabled = true;
         setTimeout(function () {
-          addBtn.textContent = 'Add to Order — $' + price;
+          addBtn.textContent = 'Add to Order — $' + options.price;
           addBtn.disabled = false;
         }, 1200);
       } else {
@@ -68,15 +45,14 @@
   };
 
   window.initPYOFlight = function (options) {
-    options = options || {};
-    var pricePerBag = options.pricePerBag || 10;
-    var minBags = options.minBags || 4;
+    var pricePerBag = options.pricePerBag;
+    var minBags = options.minBags;
+    var mascot = options.mascot;
     var selected = [];
     var optionsEls = document.querySelectorAll('.pyo-option');
     var addBtn = document.getElementById('pyo-add');
     var countEl = document.getElementById('pyo-count');
     var grindSelect = document.getElementById('pyo-grind-select');
-    if (!addBtn || !countEl) return;
 
     function update() {
       var count = selected.length;
@@ -131,16 +107,15 @@
           }
         }
       }
-      var grind = grindSelect.value;
       var item = {
         type: 'flight',
         slug: 'peck-your-own',
         title: 'Peck Your Own',
         subtitle: titles.join(', '),
         size: selected.length + ' × 8oz bags',
-        grind: grind,
+        grind: grindSelect.value,
         price: selected.length * pricePerBag,
-        mascot: 'audubon-cardinal-transparent.png',
+        mascot: mascot,
         qty: 1
       };
       var added = window.ywrAddToCart(item, 1);

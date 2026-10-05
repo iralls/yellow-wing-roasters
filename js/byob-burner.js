@@ -31,30 +31,11 @@
     var priceDisplay = document.getElementById('byob-price-display');
     var addBtn = document.getElementById('byob-add-to-cart-btn');
 
-    if (!originSelect) return;
-
-    var levelDotsMap = {
-      'City': 1,
-      'City+': 2,
-      'Full City': 3,
-      'Full City+': 4,
-      'Vienna': 5
-    };
-
-    var dotNumberToLevel = {
-      1: 'City',
-      2: 'City+',
-      3: 'Full City',
-      4: 'Full City+',
-      5: 'Vienna'
-    };
-
     function getCurrentOrigin() {
       return origins[originSelect.value];
     }
 
     function updateDotsVisual(dotsCount) {
-      if (!dotsStepper) return;
       var dots = dotsStepper.querySelectorAll('.roast-dot');
       for (var i = 0; i < dots.length; i++) {
         var num = i + 1;
@@ -74,7 +55,7 @@
     function updateRoastLevelState() {
       var orig = getCurrentOrigin();
       var currentLevel = roastSelect.value;
-      var dotsCount = levelDotsMap[currentLevel] || 2;
+      var dotsCount = parseInt(roastSelect.selectedOptions[0].getAttribute('data-dots'), 10);
       updateDotsVisual(dotsCount);
 
       if (statusText) {
@@ -128,28 +109,19 @@
       updateOriginState(true);
     });
 
-    if (roastSelect) {
-      roastSelect.addEventListener('change', function () {
-        updateRoastLevelState();
-      });
-    }
+    roastSelect.addEventListener('change', function () {
+      updateRoastLevelState();
+    });
 
-    if (dotsStepper) {
-      dotsStepper.addEventListener('click', function (e) {
-        var dot = e.target.closest('.roast-dot');
-        if (!dot) return;
-        var lvlNum = parseInt(dot.getAttribute('data-level'), 10);
-        var targetLevel = dotNumberToLevel[lvlNum];
-        if (targetLevel && roastSelect) {
-          roastSelect.value = targetLevel;
-          updateRoastLevelState();
-        }
-      });
-    }
+    dotsStepper.addEventListener('click', function (e) {
+      var dot = e.target.closest('.roast-dot');
+      if (!dot) return;
+      var lvlNum = parseInt(dot.getAttribute('data-level'), 10);
+      roastSelect.value = window.YWR_ROAST_LEVELS[lvlNum].specialty;
+      updateRoastLevelState();
+    });
 
-    if (sizeSelect) {
-      sizeSelect.addEventListener('change', updatePrice);
-    }
+    sizeSelect.addEventListener('change', updatePrice);
 
     // Initial setup
     updateOriginState(true);

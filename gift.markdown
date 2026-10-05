@@ -412,20 +412,22 @@ permalink: /gift/
 <script src="{{ '/js/gift-order.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
 (function () {
-  {% assign default_sub_sizes = "12oz,1lb,2lb,5lb" | split: "," %}
   var subConfig = {
     {% for r in site.roasts %}
       {% if r.subscription and r.subscription != false and r.subscription.available != false %}
-        {% assign r_sub = r.subscription %}
-        {% if r.sizes %}{% assign r_sizes = r.sizes %}{% else %}{% assign r_sizes = default_sub_sizes %}{% endif %}
-        {% assign r_prices = r_sub.price | default: r.price %}
-        '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, prices: {{ r_prices | jsonify }} },
+        {% assign r_sizes = "" | split: "" %}
+        {% if r.sizes %}
+          {% assign r_sizes = r.sizes %}
+        {% else %}
+          {% for entry in r.price %}
+            {% assign r_sizes = r_sizes | push: entry[0] %}
+          {% endfor %}
+        {% endif %}
+        '{{ r.slug }}': { sizes: {{ r_sizes | jsonify }}, prices: {{ r.price | jsonify }} },
       {% endif %}
     {% endfor %}
     {% for s in site.subscriptions %}
-      {% if s.sizes %}{% assign s_sizes = s.sizes %}{% else %}{% assign s_sizes = "12oz" | split: "," %}{% endif %}
-      {% assign s_prices = s.price %}
-      '{{ s.slug }}': { sizes: {{ s_sizes | jsonify }}, prices: {{ s_prices | jsonify }} }{% unless forloop.last %},{% endunless %}
+      '{{ s.slug }}': { sizes: {{ s.sizes | jsonify }}, prices: {{ s.price | jsonify }} }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   };
 
@@ -442,8 +444,8 @@ permalink: /gift/
   initGiftOrder({
     subConfig: subConfig,
     disabledSubRoasts: disabledSubRoasts,
-    digitalFormUrl: {{ site.digital_gift_form_url | jsonify }},
-    digitalFormEntries: {{ site.digital_gift_entries | jsonify }},
+    digitalFormUrl: {{ site.google_forms.digital_gift.url | jsonify }},
+    digitalFormEntries: {{ site.google_forms.digital_gift.entries | jsonify }},
     thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
   });
 })();

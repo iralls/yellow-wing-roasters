@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: detail-page
 title: The Aviary
 slug: the-aviary
 category: flight
@@ -8,24 +8,9 @@ permalink: /flights/the-aviary/
 price: 38
 mascot_file: audubon-cage-transparent.png
 mascot_alt: "The Aviary cage"
+intro: "A range of four blends, from bright and floral to dark and smoky"
 notes: "Four blends, one box"
 ---
-
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-cage-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-</div>
-
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">The Aviary</h1>
-</div>
-
-<p class="roast-mv-tasting">A range of four blends, from bright and floral to dark and smoky</p>
-
-<div class="roast-mv-divider"></div>
 
 <p class="roast-mv-body">Four blends, each individually packaged in its own 8oz bag — a great way to explore the full range before committing to a full bag.</p>
 
@@ -55,11 +40,12 @@ notes: "Four blends, one box"
   <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ page.price }}</button>
 </div>
 
-</div>
-
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  initAviaryFlight({ price: {{ page.price }} });
+  initAviaryFlight({
+    price: {{ page.price }},
+    mascot: {{ page.mascot_file | jsonify }}
+  });
 </script>
 
 <script type="application/ld+json">
@@ -67,7 +53,7 @@ notes: "Four blends, one box"
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": "The Aviary Flight",
-  "image": {{ '/images/audubon-cage-transparent.png' | absolute_url | jsonify }},
+  "image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},
   "description": "A sampler flight of four signature Yellow Wing Roasters blends, each individually packaged in an 8oz bag.",
   "brand": {
     "@type": "Brand",

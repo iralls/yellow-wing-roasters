@@ -1,8 +1,9 @@
 ---
-layout: default
+layout: detail-page
 title: "BYOB — Build Your Own Blend"
 card_title: "BYOB"
 subtitle: "Build Your Own Blend"
+intro: "Combine up to three varieties of green beans, select individual roast levels, and design a custom coffee profile exactly to your taste."
 slug: build-your-own-blend
 category: custom
 data_roast: byob-blend
@@ -15,23 +16,7 @@ mascot_file: build-a-bird-transparent.png
 mascot_alt: "Build Your Own Blend mascot"
 ---
 
-<div class="roast-minimal-vertical">
 <div class="byob-container">
-  
-  <div class="roast-mv-divider"></div>
-
-  <div class="roast-mv-center roast-mv-bird-wrap">
-    <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="Build Your Own Blend" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-  </div>
-
-  <div class="roast-mv-center">
-    <h1 class="roast-mv-title">BYOB</h1>
-  </div>
-  <div class="roast-mv-subtitle">Build Your Own Blend</div>
-
-  <p class="roast-mv-tasting">Combine up to three varieties of green beans, select individual roast levels, and design a custom coffee profile exactly to your taste.</p>
-
-  <div class="roast-mv-divider"></div>
 
   <!-- Step 1: Bean Selection & Filters -->
   {% assign single_origins = site.roasts | where: "category", "single origin" %}
@@ -275,7 +260,6 @@ mascot_alt: "Build Your Own Blend mascot"
     </form>
   </div>
 
-</div>
 </div>
 
 <script src="{{ '/js/byob-mixer.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

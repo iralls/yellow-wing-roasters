@@ -1,8 +1,9 @@
 ---
-layout: default
+layout: detail-page
 title: "BYOB — Bring Your Own Burner"
 card_title: "BYOB"
 subtitle: "Bring your own burner"
+intro: "Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order."
 slug: bring-your-own-burner
 category: custom
 data_roast: byob-burner
@@ -13,23 +14,6 @@ mascot_alt: "BYOB mascot"
 descriptor: custom roast level
 overlay_notes: "pick any single origin and customize your roast level"
 ---
-
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img id="byob-mascot-img" src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="BYOB Burner" class="roast-mv-bird" fetchpriority="high" decoding="async">
-</div>
-
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">BYOB</h1>
-</div>
-<div class="roast-mv-subtitle">Bring Your Own Burner</div>
-
-<p class="roast-mv-tasting">Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order.</p>
-
-<div class="roast-mv-divider"></div>
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
 {% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
@@ -81,10 +65,7 @@ overlay_notes: "pick any single origin and customize your roast level"
   <div class="roast-mv-center" style="margin-top: 1.25rem;">
     <label for="byob-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom: 0.35rem;">3. Roast Amount</label>
     <select id="byob-size-select" class="subscribe-select" style="min-width: 16rem; width: 100%;">
-      <option value="12oz" selected>12oz</option>
-      <option value="1lb">1lb</option>
-      <option value="2lb">2lb</option>
-      <option value="5lb">5lb</option>
+      {% include bag-size-options.html %}
     </select>
   </div>
 
@@ -100,8 +81,6 @@ overlay_notes: "pick any single origin and customize your roast level"
     <div class="roast-detail-price-line" id="byob-price-display" style="margin-bottom: 0.75rem;">$12</div>
     <button type="button" class="add-to-order-btn" id="byob-add-to-cart-btn" style="min-width: 14rem; padding: 0.65rem 1.8rem; font-size: 0.9rem;">Add to Cart</button>
   </div>
-
-</div>
 
 </div>
 

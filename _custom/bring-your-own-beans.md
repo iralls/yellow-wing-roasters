@@ -1,8 +1,9 @@
 ---
-layout: default
+layout: detail-page
 title: "BYOB — Bring Your Own Beans"
 card_title: "BYOB"
 subtitle: "Bring your own beans"
+intro: "Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest."
 slug: bring-your-own-beans
 category: custom
 data_roast: byob
@@ -13,23 +14,6 @@ mascot_alt: "Bring your own beans mascot"
 descriptor: custom roast
 overlay_notes: "send us your green beans and we'll roast them to perfection"
 ---
-
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-</div>
-
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">BYOB</h1>
-</div>
-<div class="roast-mv-subtitle">Bring Your Own Beans</div>
-
-<p class="roast-mv-tasting">Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest.</p>
-
-<div class="roast-mv-divider"></div>
 
 <h2 class="roasts-category">Approved Suppliers</h2>
 
@@ -140,6 +124,3 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
 <script>
   initBYOBForm({ thanksUrl: '{{ "/thanks/" | relative_url }}' });
 </script>
-
-
-</div>

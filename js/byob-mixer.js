@@ -611,13 +611,10 @@
     selectedBeans.forEach(function (name) {
       var slider = document.getElementById('slider-' + escapeId(name));
       var roast = document.getElementById('roast-' + escapeId(name));
-      var pct = slider ? slider.value : '0';
-      var rst = roast ? roast.value : 'Medium';
-      parts.push(name + ' (' + pct + '% - ' + rst + ')');
+      parts.push(name + ' (' + slider.value + '% - ' + roast.value + ')');
     });
     var grindEl = document.getElementById('byob-blend-grind-select');
-    var grindVal = grindEl ? grindEl.value : 'Whole Bean';
-    return parts.join(', ') + ' [Grind: ' + grindVal + ']';
+    return parts.join(', ') + ' [Grind: ' + grindEl.value + ']';
   }
 
   // Escape helpers

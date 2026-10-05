@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: detail-page
 title: Peck Your Own
 slug: peck-your-own
 category: flight
@@ -9,23 +9,8 @@ price_per_bag: 10
 min_bags: 4
 mascot_file: peck-your-own-transparent.png
 mascot_alt: "Peck Your Own"
+intro: "Pick at least 4 of our available roasts — each one comes as an 8oz bag."
 ---
-
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="roast-mv-bird" fetchpriority="high" decoding="async">
-</div>
-
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">Peck Your Own</h1>
-</div>
-
-<p class="roast-mv-tasting">Pick at least {{ page.min_bags }} of our available roasts — each one comes as an 8oz bag.</p>
-
-<div class="roast-mv-divider"></div>
 
 <p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ page.min_bags }} roasts:</p>
 
@@ -108,13 +93,12 @@ mascot_alt: "Peck Your Own"
   <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select at least {{ default_min }} roasts — ${{ default_price }}</button>
 </div>
 
-</div>
-
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
   initPYOFlight({
     pricePerBag: {{ page.price_per_bag }},
-    minBags: {{ page.min_bags }}
+    minBags: {{ page.min_bags }},
+    mascot: {{ page.mascot_file | jsonify }}
   });
 </script>
 
@@ -123,7 +107,7 @@ mascot_alt: "Peck Your Own"
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": "Peck Your Own Flight",
-  "image": {{ '/images/audubon-robin-transparent.png' | absolute_url | jsonify }},
+  "image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},
   "description": "Custom sampler flight: choose any four or more of our freshly roasted coffees in 8oz bags.",
   "brand": {
     "@type": "Brand",

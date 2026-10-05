@@ -23,10 +23,8 @@
     var totalsEl = document.getElementById('order-summary-totals');
     var pageTitleEl = document.getElementById('order-page-title');
     var summaryCountEl = document.getElementById('order-summary-count');
-    var submitBtn = document.getElementById('order-submit-btn') || (form ? form.querySelector('.order-submit') : null);
+    var submitBtn = document.getElementById('order-submit-btn');
     var discountSection = document.getElementById('discount-code-section');
-
-    if (!form || !emptyEl || !itemsEl) return;
 
     var ORDER_FORM_ACTION = form.getAttribute('action');
     var SUB_FORM_ACTION = form.getAttribute('data-sub-action');
@@ -61,42 +59,48 @@
       var qpRoast = params.get('roast');
       if (!qpRoast) return;
 
-      var qpFreq = params.get('frequency');
-      var qpSize = params.get('size') || '12oz';
-      var qpGrind = params.get('grind') || 'Whole Bean';
-
       var subData = (typeof window !== 'undefined' && window.YWR_SUBSCRIPTIONS_DATA) ? window.YWR_SUBSCRIPTIONS_DATA : {};
       var rData = (typeof window !== 'undefined' && window.YWR_ROASTS_DATA) ? window.YWR_ROASTS_DATA : {};
       var sEntry = subData[qpRoast];
       var rEntry = rData[qpRoast];
+      var entry = sEntry || rEntry;
+      if (!entry) return;
+
+      var qpFreq = params.get('frequency');
+      var qpSize = params.get('size');
+      var qpGrind = params.get('grind');
+
       var isDedicatedSub = !!sEntry;
       var isSubProduct = isDedicatedSub || (qpFreq !== null);
 
+      var defaultGrind = (typeof window !== 'undefined' && window.YWR_DEFAULT_GRIND) || 'Whole Bean';
+      var grindVal = qpGrind || defaultGrind;
+      var sizeVal = qpSize || (sEntry ? sEntry.sizes[0] : Object.keys(rEntry.prices)[0]);
+
       var item = null;
       if (isSubProduct) {
-        var entry = sEntry || rEntry;
-        var unitPrice = (entry && entry.prices && typeof entry.prices[qpSize] === 'number') ? entry.prices[qpSize] : 0;
-        var freqVal = qpFreq || (sEntry && sEntry.frequencies && sEntry.frequencies[0]) || 'Every 2 weeks';
+        var unitPrice = (entry.prices && typeof entry.prices[sizeVal] === 'number') ? entry.prices[sizeVal] : 0;
+        var freqVal = qpFreq || (sEntry && sEntry.frequencies ? sEntry.frequencies[0] : null);
         item = {
           type: 'subscription',
           slug: qpRoast,
-          title: sEntry ? sEntry.title : (rEntry ? rEntry.title : qpRoast),
+          title: sEntry ? sEntry.title : rEntry.title,
           subtitle: (sEntry && sEntry.subtitle) || '',
-          size: qpSize,
-          grind: qpGrind,
+          size: sizeVal,
+          grind: grindVal,
           frequency: freqVal,
           price: unitPrice,
-          mascot: (entry && entry.mascot) || null,
+          mascot: entry.mascot || null,
           qty: 1
         };
       } else if (rEntry) {
-        var unitPrice = (rEntry.prices && typeof rEntry.prices[qpSize] === 'number') ? rEntry.prices[qpSize] : 0;
+        var unitPrice = (rEntry.prices && typeof rEntry.prices[sizeVal] === 'number') ? rEntry.prices[sizeVal] : 0;
         item = {
           type: 'roast',
           slug: qpRoast,
           title: rEntry.title,
-          size: qpSize,
-          grind: qpGrind,
+          size: sizeVal,
+          grind: grindVal,
           price: unitPrice,
           mascot: rEntry.mascot || null,
           qty: 1
@@ -385,7 +389,6 @@
     var deliveryNote = document.getElementById('order-delivery-note');
 
     function setAddressFieldsState(isPickup) {
-      if (!addressFields) return;
       var inputs = addressFields.querySelectorAll('input, select');
       for (var k = 0; k < inputs.length; k++) {
         inputs[k].disabled = isPickup;
@@ -635,8 +638,16 @@
     });
 
     function clearCart() {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {
+        console.warn('clearCart: Failed to clear localStorage ywr_cart:', e);
+      }
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+      } catch (e) {
+        console.warn('clearCart: Failed to clear sessionStorage ywr_cart:', e);
+      }
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 

@@ -1,26 +1,6 @@
 ---
-layout: default
+layout: detail-page
 ---
-
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-{% if page.mascot_file %}
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-</div>
-{% endif %}
-
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">{{ page.title }}</h1>
-</div>
-
-{% if page.subtitle %}
-<p class="roast-mv-tasting">{{ page.subtitle }}</p>
-{% endif %}
-
-<div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
   {{ content }}
@@ -40,8 +20,6 @@ layout: default
 <div class="roast-mv-center" style="margin-top: 1.25rem;">
   <div class="roast-detail-price-line">${{ default_price }}</div>
   <button type="button" class="add-to-order-btn" id="sub-add-btn">Add to Cart</button>
-</div>
-
 </div>
 
 <script>

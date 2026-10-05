@@ -129,9 +129,6 @@
           </div>
         {% endif %}
       {% endunless %}
-      {% if r.category == 'subscriptions' %}
-        <button type="button" class="roasts-entry-sub-btn" onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ '/order/?roast=' | append: r.slug | relative_url }}';">Subscribe</button>
-      {% endif %}
       {% include roast-overlay-status.html roast=r %}
     </div>
     {% endunless %}

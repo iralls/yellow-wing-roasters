@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<div class="roast-minimal-vertical">
+
+<div class="roast-mv-divider"></div>
+
+{% if page.mascot_file %}
+<div class="roast-mv-center roast-mv-bird-wrap">
+  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="roast-mv-bird" fetchpriority="high" decoding="async">
+</div>
+{% endif %}
+
+<div class="roast-mv-center">
+  <h1 class="roast-mv-title">{{ page.card_title | default: page.title }}</h1>
+</div>
+
+{% if page.card_title and page.subtitle %}
+<div class="roast-mv-subtitle">{{ page.subtitle }}</div>
+{% endif %}
+
+{% if page.intro %}
+<p class="roast-mv-tasting">{{ page.intro }}</p>
+{% elsif page.card_title == nil and page.subtitle %}
+<p class="roast-mv-tasting">{{ page.subtitle }}</p>
+{% endif %}
+
+<div class="roast-mv-divider"></div>
+
+{{ content }}
+
+</div>

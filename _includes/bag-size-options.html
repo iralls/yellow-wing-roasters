@@ -1,0 +1,10 @@
+{%- assign selected_size = include.selected -%}
+{%- for sz in site.data.bag_sizes -%}
+  {%- assign is_selected = false -%}
+  {%- if selected_size -%}
+    {%- if sz.id == selected_size -%}{%- assign is_selected = true -%}{%- endif -%}
+  {%- elsif sz.default -%}
+    {%- assign is_selected = true -%}
+  {%- endif %}
+  <option value="{{ sz.id }}"{% if is_selected %} selected{% endif %}>{{ sz.label }}</option>
+{%- endfor -%}

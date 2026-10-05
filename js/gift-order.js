@@ -123,20 +123,16 @@
   var customTriggerTitle = document.getElementById('gift-select-trigger-title');
   var customTriggerMeta = document.getElementById('gift-select-trigger-meta');
   var customMenu = document.getElementById('gift-select-menu');
-  var customOptions = customMenu ? customMenu.querySelectorAll('.gift-select-option') : [];
+  var customOptions = customMenu.querySelectorAll('.gift-select-option');
 
   function updateCustomDropdownDisplay(val) {
     if (!val) {
-      if (customTriggerImg) customTriggerImg.style.display = 'none';
-      if (customTriggerPh) customTriggerPh.style.display = 'block';
-      if (customTriggerTitle) {
-        customTriggerTitle.textContent = 'Choose a coffee or subscription...';
-        customTriggerTitle.classList.add('gift-select-trigger-title--placeholder');
-      }
-      if (customTriggerMeta) {
-        customTriggerMeta.style.display = 'none';
-        customTriggerMeta.textContent = '';
-      }
+      customTriggerImg.style.display = 'none';
+      customTriggerPh.style.display = 'block';
+      customTriggerTitle.textContent = 'Choose a coffee or subscription...';
+      customTriggerTitle.classList.add('gift-select-trigger-title--placeholder');
+      customTriggerMeta.style.display = 'none';
+      customTriggerMeta.textContent = '';
       customOptions.forEach(function (opt) {
         opt.classList.remove('is-selected');
       });
@@ -150,28 +146,22 @@
         var meta = opt.getAttribute('data-meta');
         var img = opt.getAttribute('data-img');
 
-        if (customTriggerTitle) {
-          customTriggerTitle.textContent = title;
-          customTriggerTitle.classList.remove('gift-select-trigger-title--placeholder');
-        }
-        if (customTriggerMeta) {
-          if (meta) {
-            customTriggerMeta.textContent = meta;
-            customTriggerMeta.style.display = 'block';
-          } else {
-            customTriggerMeta.style.display = 'none';
-          }
+        customTriggerTitle.textContent = title;
+        customTriggerTitle.classList.remove('gift-select-trigger-title--placeholder');
+        if (meta) {
+          customTriggerMeta.textContent = meta;
+          customTriggerMeta.style.display = 'block';
+        } else {
+          customTriggerMeta.style.display = 'none';
         }
 
-        if (customTriggerImg && customTriggerPh) {
-          if (img) {
-            customTriggerImg.src = img;
-            customTriggerImg.style.display = 'block';
-            customTriggerPh.style.display = 'none';
-          } else {
-            customTriggerImg.style.display = 'none';
-            customTriggerPh.style.display = 'block';
-          }
+        if (img) {
+          customTriggerImg.src = img;
+          customTriggerImg.style.display = 'block';
+          customTriggerPh.style.display = 'none';
+        } else {
+          customTriggerImg.style.display = 'none';
+          customTriggerPh.style.display = 'block';
         }
       } else {
         opt.classList.remove('is-selected');
@@ -180,7 +170,6 @@
   }
 
   function toggleDropdown(show) {
-    if (!customMenu || !customTrigger) return;
     var isOpening = (typeof show === 'boolean') ? show : (customMenu.style.display !== 'block');
     customMenu.style.display = isOpening ? 'block' : 'none';
     customTrigger.classList.toggle('is-open', isOpening);

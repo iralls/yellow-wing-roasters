@@ -11,6 +11,8 @@ layout: default
     {% assign sizes = sizes | push: entry[0] %}
   {% endfor %}
 {% endif %}
+{% assign first_size = sizes.first %}
+{% assign last_size = sizes.last %}
 
 <div class="roast-minimal-vertical">
 
@@ -122,8 +124,9 @@ layout: default
   {% assign sub_available = false %}
 {% endif %}
 
-{% assign default_freqs = "Every 2 weeks,Monthly" | split: "," %}
-{% assign freqs = sub_config.frequencies | default: default_freqs %}
+{% if sub_available %}
+  {% assign freqs = sub_config.frequencies %}
+{% endif %}
 
 <div class="roast-mv-center" style="margin-top:0.75rem;">
   <label for="order-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Roast Amount</label>
@@ -165,7 +168,6 @@ layout: default
 {% endif %}
 
 <div class="roast-mv-center" style="margin-top: 1.25rem;">
-  {% assign first_size = sizes.first %}
   {% assign first_price = roast_prices[first_size] %}
   {% assign first_eff = first_price %}
   {% if page.temporary_price and page.temporary_price[first_size] %}
@@ -238,7 +240,6 @@ layout: default
 <script>
   initRoastDetail({
     roastSlug: {{ page.slug | jsonify }},
-    defaultFreq: {{ freqs.first | jsonify }},
     pricesOneTime: {
       {% for s in sizes %}
         {% assign price = roast_prices[s] %}
@@ -247,12 +248,9 @@ layout: default
       {% endfor %}
     },
     pricesSub: {
-      {% assign sub_prices = sub_config.price | default: roast_prices %}
-      {% if sub_prices %}
-        {% for entry in sub_prices %}
-          {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      {% endif %}
+      {% for entry in roast_prices %}
+        {{ entry[0] | jsonify }}: {{ entry[1] }}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
     }
   });
 </script>
@@ -271,9 +269,9 @@ layout: default
   "offers": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "{{ roast_prices['12oz'] | default: roast_prices.first[1] }}",
-    "highPrice": "{{ roast_prices['5lb'] | default: roast_prices['2lb'] | default: roast_prices['1lb'] | default: roast_prices['12oz'] | default: roast_prices.first[1] }}",
-    "offerCount": "{{ sizes.size | default: 1 }}",
+    "lowPrice": "{{ roast_prices[first_size] }}",
+    "highPrice": "{{ roast_prices[last_size] }}",
+    "offerCount": "{{ sizes.size }}",
     "availability": "{% if page.status == 'flown_south' or page.status == 'incubating' %}https://schema.org/OutOfStock{% else %}https://schema.org/InStock{% endif %}"
   }
 }

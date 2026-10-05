@@ -41,7 +41,9 @@
     function saveMockDb() {
       try {
         localStorage.setItem('ywr_mock_subscriptions', JSON.stringify(MOCK_DB));
-      } catch (e) {}
+      } catch (e) {
+        console.error('saveMockDb: Failed to save mock subscriptions:', e);
+      }
     }
 
     var lookupForm = document.getElementById('lookup-form');
@@ -55,8 +57,6 @@
     var subscriptionsList = document.getElementById('subscriptions-list');
     var mockIndicator = document.getElementById('mock-indicator');
     var backSearchBtn = document.getElementById('back-search-btn');
-
-    if (!lookupForm || !lookupEmail || !lookupBtn || !lookupSection || !resultsSection) return;
 
     var currentSearchEmail = "";
 
@@ -239,6 +239,7 @@
           }
         })
         .catch(function (err) {
+          console.error('manage-subscriptions: Error updating subscription:', err);
           alert("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
           buttonEl.textContent = originalText;
           buttonEl.disabled = false;
@@ -283,6 +284,7 @@
             }
           })
           .catch(function (err) {
+            console.error('manage-subscriptions: Error fetching subscriptions:', err);
             showError("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
           });
       }

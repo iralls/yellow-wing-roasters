@@ -342,7 +342,7 @@
         slug: slug,
         title: r.title || slug,
         size: size,
-        grind: 'Whole Bean',
+        grind: (window.YWR_DEFAULT_GRIND || 'Whole Bean'),
         price: price,
         mascot: r.mascot || null,
         qty: 1
