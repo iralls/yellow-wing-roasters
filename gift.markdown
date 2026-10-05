@@ -24,6 +24,7 @@ permalink: /gift/
   <input type="hidden" id="gift-roast-hidden" value="">
   <input type="hidden" id="gift-price-hidden" value="">
   <input type="hidden" id="gift-status-hidden" value="Active">
+  <input type="hidden" id="gift-status-details-hidden" value="">
   <input type="hidden" id="gift-frequency-hidden" value="Monthly">
   <input type="hidden" id="gift-delivery-hidden" value="Hand delivery">
   <input type="hidden" id="gift-notes-hidden" value="">
@@ -354,8 +355,8 @@ permalink: /gift/
     </div>
 
     <div class="order-field">
-      <label id="gift-recipient-email-label" for="gift-recipient-email" class="roast-mv-meta-label">Recipient's Email (optional)</label>
-      <input id="gift-recipient-email" type="email" autocomplete="off">
+      <label id="gift-recipient-email-label" for="gift-recipient-email" class="roast-mv-meta-label">Recipient's Email</label>
+      <input id="gift-recipient-email" type="email" required autocomplete="off">
     </div>
 
     <div class="order-field" style="margin-bottom: 0;">
@@ -444,8 +445,11 @@ permalink: /gift/
   initGiftOrder({
     subConfig: subConfig,
     disabledSubRoasts: disabledSubRoasts,
+    subscriptionEntries: {{ site.google_forms.subscription.entries | jsonify }},
     digitalFormUrl: {{ site.google_forms.digital_gift.url | jsonify }},
     digitalFormEntries: {{ site.google_forms.digital_gift.entries | jsonify }},
+    giftSubscriptionUrl: {{ site.google_forms.gift_subscription.url | jsonify }},
+    giftSubscriptionEntries: {{ site.google_forms.gift_subscription.entries | jsonify }},
     thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
   });
 })();

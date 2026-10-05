@@ -298,5 +298,12 @@
         lookupEmail.focus();
       });
     }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var paramEmail = urlParams.get('email');
+    if (paramEmail && lookupEmail) {
+      lookupEmail.value = paramEmail.trim();
+      lookupForm.dispatchEvent(new Event('submit'));
+    }
   };
 });

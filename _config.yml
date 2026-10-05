@@ -93,6 +93,18 @@ google_forms:
       recipient_email: "entry.889676030"
       gift_message: "entry.466744405"
       notes: "entry.1004578870"
+  gift_subscription:
+    url: "https://docs.google.com/forms/d/e/1FAIpQLScU04DnNyyAhTSwsCxtLTmk1Y1Saz3070jUbPJ814C6HH0X4Q/formResponse"
+    entries:
+      purchaser_name: "entry.6302791"
+      purchaser_email: "entry.1747345037"
+      recipient_name: "entry.453310460"
+      recipient_email: "entry.1159756250"
+      roast: "entry.1451334035"
+      duration: "entry.1696198038"
+      price: "entry.1013852380"
+      gift_message: "entry.1627460312"
+      notes: "entry.1820392488"
 
 # Theme
 remote_theme: sblisesivdin/biscuit

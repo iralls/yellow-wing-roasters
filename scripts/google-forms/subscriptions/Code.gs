@@ -1,4 +1,4 @@
-function doGet() {           
+function previewSubscriptionEmail() {
 
       var imageFileId = '1q2emovnTHhxcUWRrOuHb1v3ulcL_buY3'; // Replace with your actual File ID
 
@@ -13,7 +13,7 @@ function doGet() {
 
       var template = HtmlService.createTemplateFromFile('subscription');                                                                                         
 
-      orderId = "YWR-1234-PREVIEW";
+      var orderId = "YWR-1234-PREVIEW";
       // Inject mock values for previewing                                                                                                                        
       template.customerName = "Jane Doe";                                                                                                                         
       template.orderId = orderId;                                                                                                                      

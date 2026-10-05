@@ -209,9 +209,9 @@ However, deep re-evaluation reveals critical areas that still require immediate 
 
 ## 4. Email Automation & Operational Gaps (from `TODO.txt`)
 
-- [ ] **4.1 Gift Subscriptions Recipient Notification Email**
-  - *Problem*: When a gift subscription is purchased, Google Apps Script in [`scripts/google-forms/subscriptions/Code.gs`](file:///Users/ianr/Documents/yellow-wing-roasters/scripts/google-forms/subscriptions/Code.gs) sends a confirmation to `customerEmail` (the purchaser), but no email is dispatched to the recipient (`recipient_email`).
-  - *Action*: Update `Code.gs` to extract `Recipient Email` and send a personalized gift announcement template with the purchaser's message and gift details.
+- [x] **4.1 Gift Subscriptions Recipient Notification Email**
+  - *Status*: **COMPLETE**
+  - *Details*: Implemented Option B dual-submission architecture. Created dedicated Google Form for Gift Subscriptions (`site.google_forms.gift_subscription`) with Apps Script trigger in [`scripts/google-forms/gift-subscriptions/`](file:///Users/ianr/Documents/yellow-wing-roasters/scripts/google-forms/gift-subscriptions/) that dispatches [`purchaser-confirmation.html`](file:///Users/ianr/Documents/yellow-wing-roasters/scripts/google-forms/gift-subscriptions/purchaser-confirmation.html) (receipt with price to buyer) and [`recipient-announcement.html`](file:///Users/ianr/Documents/yellow-wing-roasters/scripts/google-forms/gift-subscriptions/recipient-announcement.html) (gift announcement without price to recipient). Updated [`js/gift-order.js`](file:///Users/ianr/Documents/yellow-wing-roasters/js/gift-order.js) to dual-post to the gift form while submitting recipient delivery details to [`site.google_forms.subscription`](file:///Users/ianr/Documents/yellow-wing-roasters/_config.yml). Both emails are sent intentionally to the recipient; added a direct link to the [Subscription Management page](https://www.yellowwingroasters.com/subscriptions/manage/) in [`subscription.html`](file:///Users/ianr/Documents/yellow-wing-roasters/scripts/google-forms/subscriptions/subscription.html), added `?email=` auto-lookup in [`js/manage-subscriptions.js`](file:///Users/ianr/Documents/yellow-wing-roasters/js/manage-subscriptions.js), and resolved `doGet` function name collision across `Code.gs` and `Management.gs`.
 - [ ] **4.2 BYOB (Build Your Own Blend) Customer Confirmation Email**
   - *Problem*: BYOB submissions to `site.google_forms.byob_blend.url` are stored in Google Sheets, but there is no Google Apps Script trigger script in `scripts/google-forms/` to email a recipe confirmation to the customer.
   - *Action*: Create `scripts/google-forms/byob/Code.gs` and `byob-confirmation-template.html` to send a branded blend recipe summary to `e.namedValues['Email'][0]`.
@@ -243,5 +243,5 @@ However, deep re-evaluation reveals critical areas that still require immediate 
 - [ ] Move standalone preview HTML files into `_previews/` and update `_config.yml` exclusion list.
 
 ### Phase 5: Operational & Email Automation (Features)
-- [ ] Implement recipient notification in `scripts/google-forms/subscriptions/Code.gs`.
+- [x] Implement recipient notification in `scripts/google-forms/subscriptions/Code.gs`.
 - [ ] Implement BYOB recipe confirmation in `scripts/google-forms/byob/Code.gs`.

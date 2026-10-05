@@ -1,6 +1,10 @@
 // 1. GET Request: Lookup subscription status
 function doGet(e) {
-  var email = e.parameter.email;
+  if (e && e.parameter && e.parameter.preview) {
+    return previewSubscriptionEmail();
+  }
+
+  var email = e && e.parameter ? e.parameter.email : null;
   if (!email) {
     return ContentService.createTextOutput(JSON.stringify({ error: "Email parameter required" }))
       .setMimeType(ContentService.MimeType.JSON);

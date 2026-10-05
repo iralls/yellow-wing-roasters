@@ -324,8 +324,8 @@
 
       var recEmail = document.getElementById('gift-recipient-email');
       var recEmailLabel = document.getElementById('gift-recipient-email-label');
-      if (recEmail) recEmail.required = !isDirect;
-      if (recEmailLabel) recEmailLabel.textContent = isDirect ? "Recipient's Email (optional)" : "Recipient's Email";
+      if (recEmail) recEmail.required = true;
+      if (recEmailLabel) recEmailLabel.textContent = "Recipient's Email";
 
       // Reset titles & prices
       if (isDirect) {
@@ -374,69 +374,109 @@
         return;
       }
 
+      if (!purchaserName || !purchaserEmail || !recipientName || !recipientEmail) {
+        alert('Please fill out all required fields.');
+        return;
+      }
+
       var durationRadio = form.querySelector('input[name="gift-duration"]:checked');
       var duration = durationRadio ? durationRadio.value : 'One-time';
+      var months = (duration === 'One-time') ? 1 : parseInt(duration, 10);
+      var unitPrice = getUnitPrice(product, '12oz');
+      var totalPrice = '$' + (unitPrice * months);
+
+      // 1. Submit purchase details to dedicated Gift Subscription Google Form
+      var pendingFetch = null;
+      if (config.giftSubscriptionUrl && config.giftSubscriptionEntries) {
+        var giftEntries = config.giftSubscriptionEntries;
+        var giftParams = new URLSearchParams();
+        if (giftEntries.purchaser_name) giftParams.append(giftEntries.purchaser_name, purchaserName);
+        if (giftEntries.purchaser_email) giftParams.append(giftEntries.purchaser_email, purchaserEmail);
+        if (giftEntries.recipient_name) giftParams.append(giftEntries.recipient_name, recipientName);
+        if (giftEntries.recipient_email) giftParams.append(giftEntries.recipient_email, recipientEmail);
+        if (giftEntries.roast) giftParams.append(giftEntries.roast, product);
+        if (giftEntries.duration) giftParams.append(giftEntries.duration, duration);
+        if (giftEntries.price) giftParams.append(giftEntries.price, totalPrice);
+        if (giftEntries.gift_message && giftMessage) giftParams.append(giftEntries.gift_message, giftMessage);
+        if (giftEntries.notes && userNotes) giftParams.append(giftEntries.notes, userNotes);
+
+        pendingFetch = fetch(config.giftSubscriptionUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          keepalive: true,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: giftParams.toString()
+        }).catch(function (err) {
+          console.error('Gift subscription form submission error:', err);
+        });
+      }
+
+      // 2. Submit recipient delivery details to primary Subscriptions Google Form
       form.action = defaultFormAction;
+      var subEntries = config.subscriptionEntries;
 
-      // Map Purchaser
-      document.getElementById('gift-purchaser-name').name = 'entry.1153405702';
-      document.getElementById('gift-purchaser-email').name = 'entry.65766604';
+      // Map Recipient as the primary subscriber on the row
+      document.getElementById('gift-recipient-name').name = subEntries.name;
+      document.getElementById('gift-recipient-email').name = subEntries.email;
 
-      // Map Delivery Address
-      document.getElementById('gift-address').name = 'entry.148046999';
-      document.getElementById('gift-city').name = 'entry.1534670804';
-      document.getElementById('gift-state').name = 'entry.414179858';
-      document.getElementById('gift-zip').name = 'entry.1472936948';
+      // Map Delivery Address (Recipient address)
+      document.getElementById('gift-address').name = subEntries.address;
+      document.getElementById('gift-city').name = subEntries.city;
+      document.getElementById('gift-state').name = subEntries.state;
+      document.getElementById('gift-zip').name = subEntries.zip;
 
       // Map Hidden Fields
       var hiddenRoast = document.getElementById('gift-roast-hidden');
-      hiddenRoast.name = 'entry.1935997805';
+      hiddenRoast.name = subEntries.roast;
       hiddenRoast.value = product;
 
       var hiddenPrice = document.getElementById('gift-price-hidden');
-      hiddenPrice.name = 'entry.903789519';
-      var unitPrice = getUnitPrice(product, '12oz');
-      var months = (duration === 'One-time') ? 1 : (parseInt(duration) || 3);
-      if (unitPrice) {
-        hiddenPrice.value = '$' + (unitPrice * months);
-      }
+      hiddenPrice.name = subEntries.price;
+      hiddenPrice.value = totalPrice;
 
       var hiddenStatus = document.getElementById('gift-status-hidden');
-      hiddenStatus.name = 'entry.1261348961';
+      hiddenStatus.name = subEntries.status;
+      hiddenStatus.value = 'Active';
+
+      var hiddenStatusDetails = document.getElementById('gift-status-details-hidden');
+      if (hiddenStatusDetails) {
+        hiddenStatusDetails.name = subEntries.status_details;
+        hiddenStatusDetails.value = 'Gift from ' + purchaserName + ' (' + duration + ')';
+      }
 
       var hiddenFreq = document.getElementById('gift-frequency-hidden');
-      hiddenFreq.name = 'entry.2064801247';
+      hiddenFreq.name = subEntries.frequency;
+      hiddenFreq.value = 'Monthly';
 
       var hiddenDeliv = document.getElementById('gift-delivery-hidden');
-      hiddenDeliv.name = 'entry.1896226742';
+      hiddenDeliv.name = subEntries.delivery;
+      hiddenDeliv.value = 'Hand delivery';
 
       var hiddenSize = document.getElementById('gift-size-hidden');
-      hiddenSize.name = 'entry.1606791078';
+      hiddenSize.name = subEntries.size;
+      hiddenSize.value = '12oz';
 
-      // Map Notes Field (recipient details serialized)
+      // Map Notes Field (purchaser details and gift message serialized)
       var hiddenNotes = document.getElementById('gift-notes-hidden');
-      hiddenNotes.name = 'entry.1381358427';
+      hiddenNotes.name = subEntries.notes;
 
-      var giftPrefix = '[GIFT_PURCHASE] Recipient: ' + recipientName;
-      if (recipientEmail) {
-        giftPrefix += ' (' + recipientEmail + ')';
-      }
-      giftPrefix += ' | Duration: ' + duration;
+      var giftPrefix = '[GIFT_PURCHASE] Purchaser: ' + purchaserName + ' (' + purchaserEmail + ') | Duration: ' + duration;
       if (giftMessage) {
         giftPrefix += ' | Msg: ' + giftMessage;
       }
-
       hiddenNotes.value = userNotes ? giftPrefix + ' | Original Notes: ' + userNotes : giftPrefix;
 
-      // Remove unused digital inputs names
+      // Remove unused input names so purchaser info doesn't overwrite form fields
+      document.getElementById('gift-purchaser-name').removeAttribute('name');
+      document.getElementById('gift-purchaser-email').removeAttribute('name');
       document.getElementById('gift-card-amount-hidden').removeAttribute('name');
       document.getElementById('gift-code-hidden').removeAttribute('name');
-      document.getElementById('gift-recipient-name').removeAttribute('name');
-      document.getElementById('gift-recipient-email').removeAttribute('name');
       document.getElementById('gift-message').removeAttribute('name');
       document.getElementById('gift-notes').removeAttribute('name');
 
-      submitFormAndRedirect(config.thanksUrl || '/thanks/');
+      submitFormAndRedirect(config.thanksUrl || '/thanks/', pendingFetch);
 
     } else {
       // Code Flow (Digital Gift Card)
@@ -463,6 +503,8 @@
       document.getElementById('gift-roast-hidden').removeAttribute('name');
       document.getElementById('gift-price-hidden').removeAttribute('name');
       document.getElementById('gift-status-hidden').removeAttribute('name');
+      var statusDetailsHidden = document.getElementById('gift-status-details-hidden');
+      if (statusDetailsHidden) statusDetailsHidden.removeAttribute('name');
       document.getElementById('gift-frequency-hidden').removeAttribute('name');
       document.getElementById('gift-delivery-hidden').removeAttribute('name');
       document.getElementById('gift-size-hidden').removeAttribute('name');
@@ -494,14 +536,30 @@
     submitFormAndRedirect((config.thanksUrl || '/thanks/') + '?code=' + encodeURIComponent(giftCode));
   }
 
-  function submitFormAndRedirect(redirectUrl) {
+  function submitFormAndRedirect(redirectUrl, pendingPromise) {
     if (status) {
       status.textContent = 'Sending…';
       status.className = 'order-status order-status-pending';
     }
+    if (submitBtn) {
+      submitBtn.disabled = true;
+    }
+
+    var redirected = false;
+    function finish() {
+      if (redirected) return;
+      redirected = true;
+      window.location.href = redirectUrl;
+    }
+
+    var safetyTimeout = setTimeout(finish, 4000);
 
     iframe.onload = function () {
-      window.location.href = redirectUrl;
+      if (pendingPromise && typeof pendingPromise.then === 'function') {
+        pendingPromise.then(finish).catch(finish);
+      } else {
+        finish();
+      }
     };
 
     form.submit();

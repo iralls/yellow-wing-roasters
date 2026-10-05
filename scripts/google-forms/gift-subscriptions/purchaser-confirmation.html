@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #2c1e14;
+        background-color: #fdfbf7;
+        padding: 20px;
+        margin: 0;
+      }
+      .card {
+        max-width: 500px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid #e8e0d5;
+        border-radius: 8px;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      .header {
+        border-bottom: 2px solid #e8e0d5;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+      }
+      .header-title {
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-size: 18px;
+        color: #f0c838;
+      }
+      .highlight {
+        background: #f9f6f0;
+        border-left: 4px solid #f0c838;
+        padding: 12px 14px;
+        margin: 16px 0;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .footer {
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 900;
+        font-size: 15px;
+        color: #f0c838;
+        margin-top: 24px;
+        border-top: 1px solid #e8e0d5;
+        padding-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <table border="0" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif;">
+          <tr>
+            <td style="vertical-align: middle; padding-right: 12px;">
+              <img src="cid:myResizedImage"
+                   height="60"
+                   alt="Yellow Wing Roasters"
+                   style="height: 60px; width: auto; display: block;" />
+            </td>
+            <td class="header-title" style="vertical-align: middle;">
+              Yellow Wing Roasters
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <p>Thanks for your gift order, <strong><?= purchaserName ?></strong>!</p>
+      <p>Your gift subscription for <strong><?= recipientName ?></strong> has been registered.</p>
+
+      <div class="highlight">
+        <strong>Order ID:</strong> <?= orderId ?><br>
+        <strong>Recipient:</strong> <?= recipientName ?> (<?= recipientEmail ?>)<br>
+        <strong>Coffee:</strong> <?= roast ?><br>
+        <strong>Bag Size:</strong> <?= size ?><br>
+        <strong>Duration:</strong> <?= duration ?><br>
+        <strong>Frequency:</strong> <?= frequency ?><br>
+        <strong>Delivery Method:</strong> <?= deliveryMethod ?><br>
+        <strong>Total Amount:</strong> <?= cost ?>
+      </div>
+
+      <p style="font-size: 14px; line-height: 1.5; color: #554338;">
+        We've dispatched an email announcement to <strong><?= recipientName ?></strong> letting them know about their gift!
+      </p>
+
+      <p style="font-size: 14px; line-height: 1.5; color: #554338;">
+        We will email you back shortly to coordinate payment details.
+      </p>
+
+      <div class="footer">
+        Chirp,<br>
+        <strong>Yellow Wing Roasters</strong>
+      </div>
+    </div>
+  </body>
+</html>
