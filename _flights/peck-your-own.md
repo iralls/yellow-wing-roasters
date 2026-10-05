@@ -10,6 +10,7 @@ min_bags: 4
 mascot_file: peck-your-own-transparent.png
 mascot_alt: "Peck Your Own"
 intro: "Pick at least 4 of our available roasts — each one comes as an 8oz bag."
+overlay_notes: "pick at least 4 of our available roasts in 8oz bags"
 ---
 
 <p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ page.min_bags }} roasts:</p>

@@ -10,6 +10,7 @@ mascot_file: audubon-cage-transparent.png
 mascot_alt: "The Aviary cage"
 intro: "A range of four blends, from bright and floral to dark and smoky"
 notes: "Four blends, one box"
+overlay_notes: "a range of four blends, from bright and floral to dark and smoky"
 ---
 
 <p class="roast-mv-body">Four blends, each individually packaged in its own 8oz bag — a great way to explore the full range before committing to a full bag.</p>
