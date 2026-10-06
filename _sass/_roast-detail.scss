@@ -590,6 +590,27 @@
   font-size: 1.05rem;
 }
 
+.discount-status {
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: block;
+  margin-top: 0.25rem;
+  min-height: 1.1rem;
+  text-align: center;
+
+  &.is-pending {
+    color: #555;
+  }
+
+  &.is-error {
+    color: #b91c1c;
+  }
+
+  &.is-success {
+    color: #2e7d32;
+  }
+}
+
 .order-empty {
   text-align: center;
   padding: 3rem 1rem;

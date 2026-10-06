@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        background-color: #fdfbf7;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #2c1e14;
+        -webkit-font-smoothing: antialiased;
+      }
+      .card {
+        max-width: 520px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid #e8e0d5;
+        border-radius: 8px;
+        padding: 28px 24px;
+        box-sizing: border-box;
+      }
+      .header {
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-size: 18px;
+        color: #f0c838;
+        border-bottom: 2px solid #e8e0d5;
+        padding-bottom: 14px;
+        margin-bottom: 20px;
+      }
+      .badge {
+        display: inline-block;
+        background-color: #f0c838;
+        color: #2c1e14;
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+      }
+      .greeting {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #2c1e14;
+        margin: 0 0 14px 0;
+      }
+      .quote-box {
+        background: #fdfbf7;
+        border: 1px dashed #e8d085;
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin: 16px 0;
+        font-style: italic;
+        color: #443022;
+        line-height: 1.5;
+        font-size: 14px;
+      }
+      .quote-author {
+        font-style: normal;
+        font-weight: bold;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #8a7060;
+        text-align: right;
+      }
+      .voucher-card {
+        background-color: #faf7f2;
+        border: 2px dashed #f0c838;
+        border-radius: 8px;
+        padding: 22px 18px;
+        margin: 22px 0;
+        text-align: center;
+      }
+      .voucher-amount {
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        color: #2c1e14;
+        margin-bottom: 8px;
+      }
+      .voucher-code {
+        font-family: monospace;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        color: #2c1e14;
+        background-color: #ffffff;
+        padding: 10px 18px;
+        border: 1px solid #e0d0c0;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 4px 0 8px 0;
+      }
+      .voucher-caption {
+        font-size: 12px;
+        color: #725e50;
+        margin-top: 4px;
+      }
+      .cta-btn {
+        display: inline-block;
+        background-color: #2c1e14;
+        color: #ffffff !important;
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 14px 28px;
+        border-radius: 6px;
+        margin-top: 16px;
+      }
+      .instructions {
+        font-size: 13px;
+        color: #554338;
+        line-height: 1.5;
+        margin: 18px 0;
+        padding-top: 16px;
+        border-top: 1px solid #f0e6d8;
+      }
+      .instructions ul {
+        margin: 8px 0 0 18px;
+        padding: 0;
+      }
+      .instructions li {
+        margin-bottom: 4px;
+      }
+      .support-note {
+        font-size: 12px;
+        color: #725e50;
+        line-height: 1.4;
+        margin-top: 16px;
+      }
+      .support-note a {
+        color: #9c6d12;
+        text-decoration: underline;
+      }
+      .footer {
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #f0c838;
+        margin-top: 24px;
+        border-top: 1px solid #e8e0d5;
+        padding-top: 14px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 20px; background-color: #fdfbf7; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2c1e14;">
+    <div class="card" style="max-width: 520px; margin: 0 auto; background: #ffffff; border: 1px solid #e8e0d5; border-radius: 8px; padding: 28px 24px; box-sizing: border-box;">
+      
+      <!-- Brand Header -->
+      <div class="header" style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; font-size: 18px; color: #f0c838; border-bottom: 2px solid #e8e0d5; padding-bottom: 14px; margin-bottom: 20px;">
+        <table border="0" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif;">
+          <tr>
+            <td style="vertical-align: middle; padding-right: 12px; width: 60px;">
+              <img src="cid:myResizedImage"
+                   height="60"
+                   alt="Yellow Wing Roasters"
+                   style="height: 60px; width: auto; display: block;" />
+            </td>
+            <td style="vertical-align: middle; font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; color: #f0c838; font-size: 18px; letter-spacing: 0.1em;">
+              Yellow Wing Roasters
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Badge -->
+      <div>
+        <span class="badge" style="display: inline-block; background-color: #f0c838; color: #2c1e14; font-family: 'Montserrat', Arial, sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 999px; margin-bottom: 14px;">
+          &#10003; Digital Gift Card
+        </span>
+      </div>
+
+      <!-- Greeting -->
+      <? if (recipientName) { ?>
+        <p class="greeting" style="font-size: 16px; font-weight: bold; color: #2c1e14; margin: 0 0 8px 0;">
+          Hi <?= recipientName ?>,
+        </p>
+      <? } ?>
+      <p class="greeting" style="font-size: 15px; line-height: 1.5; color: #2c1e14; margin: 0 0 16px 0;">
+        <strong><?= purchaserName ?></strong> sent you a digital gift card to Yellow Wing Roasters!
+      </p>
+
+      <!-- Personal Message (if present) -->
+      <? if (giftMessage) { ?>
+        <div class="quote-box" style="background: #fdfbf7; border: 1px dashed #e8d085; border-radius: 6px; padding: 14px 16px; margin: 16px 0; font-style: italic; color: #443022; line-height: 1.5; font-size: 14px;">
+          “<?= giftMessage ?>”
+          <div class="quote-author" style="font-style: normal; font-weight: bold; margin-top: 8px; font-size: 12px; color: #8a7060; text-align: right;">
+            — <?= purchaserName ?>
+          </div>
+        </div>
+      <? } ?>
+
+      <!-- Voucher Box -->
+      <div class="voucher-card" style="background-color: #faf7f2; border: 2px dashed #f0c838; border-radius: 8px; padding: 22px 18px; margin: 22px 0; text-align: center;">
+        <div class="voucher-amount" style="font-family: 'Montserrat', Arial, sans-serif; font-size: 32px; font-weight: 900; color: #2c1e14; margin-bottom: 8px;">
+          $<?= amount ?>
+        </div>
+        <div>
+          <span class="voucher-code" style="font-family: monospace; font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #2c1e14; background-color: #ffffff; padding: 10px 18px; border: 1px solid #e0d0c0; border-radius: 6px; display: inline-block; margin: 4px 0 8px 0;">
+            <?= giftCode ?>
+          </span>
+        </div>
+        <div class="voucher-caption" style="font-size: 12px; color: #725e50; margin-top: 4px;">
+          Enter this code under &ldquo;Promo or Gift Code&rdquo; at checkout
+        </div>
+
+        <div style="text-align: center; margin-top: 18px;">
+          <a href="https://www.yellowwingroasters.com/order/?code=<?= encodeURIComponent(giftCode) ?>"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="cta-btn"
+             style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: 'Montserrat', Arial, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; padding: 14px 28px; border-radius: 6px;">
+            Redeem Your Coffee &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Redemption Instructions -->
+      <div class="instructions" style="font-size: 13px; color: #554338; line-height: 1.5; margin: 18px 0; padding-top: 16px; border-top: 1px solid #f0e6d8;">
+        <strong>How to redeem your gift:</strong>
+        <ul style="margin: 8px 0 0 18px; padding: 0;">
+          <li style="margin-bottom: 4px;">Pick any custom blends, single origins, or tasting flights.</li>
+          <li style="margin-bottom: 4px;">Your gift balance will apply directly against your order total.</li>
+          <li style="margin-bottom: 4px;">All coffee is roasted fresh to order in small batches.</li>
+        </ul>
+      </div>
+
+      <p class="support-note" style="font-size: 12px; color: #725e50; line-height: 1.4; margin-top: 16px;">
+        Questions? Reply directly to this email or contact <a href="mailto:chirp@yellowwingroasters.com" style="color: #9c6d12; text-decoration: underline;">chirp@yellowwingroasters.com</a>.
+      </p>
+
+      <!-- Footer Sign-off -->
+      <div class="footer" style="font-family: 'Montserrat', Arial, sans-serif; font-size: 14px; color: #f0c838; margin-top: 24px; border-top: 1px solid #e8e0d5; padding-top: 14px; line-height: 1.4;">
+        Chirp,<br>
+        <strong>Yellow Wing Roasters</strong>
+      </div>
+
+    </div>
+  </body>
+</html>

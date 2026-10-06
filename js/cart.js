@@ -21,6 +21,17 @@
     var IMAGES_BASE = config.IMAGES_BASE || '/images/';
     var roastsData = config.roastsData || window.YWR_ROASTS_DATA || {};
 
+    // Persist gift code from URL query params across pages in this session
+    if (typeof window !== 'undefined' && window.location && window.location.search) {
+      var urlParams = new URLSearchParams(window.location.search);
+      var qpCode = urlParams.get('code');
+      if (qpCode) {
+        try {
+          sessionStorage.setItem('ywr_gift_code', qpCode.trim().toUpperCase());
+        } catch (e) {}
+      }
+    }
+
     function getRoastsData() {
       return (config && config.roastsData) || window.YWR_ROASTS_DATA || roastsData || {};
     }

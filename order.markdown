@@ -107,7 +107,7 @@ permalink: /order/
             <input id="discount-code-input" type="text" placeholder="Promo or GIFT-..." style="flex: 1; margin-bottom: 0; height: 38px; font-size: 0.85rem; text-transform: uppercase;" autocomplete="off">
             <button id="apply-discount-btn" type="button" class="order-submit" style="margin: 0; width: auto; padding: 0 1.25rem; min-height: unset; height: 38px; border-radius: 999px; font-size: 0.8rem;">Apply</button>
           </div>
-          <span id="discount-status" style="font-size: 0.8rem; font-weight: 500; display: block; margin-top: 0.25rem; min-height: 1.1rem; text-align: center;"></span>
+          <span id="discount-status" class="discount-status"></span>
         </div>
 
         <!-- Totals dynamically rendered by order-checkout.js -->

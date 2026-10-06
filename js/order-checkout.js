@@ -25,6 +25,9 @@
     var summaryCountEl = document.getElementById('order-summary-count');
     var submitBtn = document.getElementById('order-submit-btn');
     var discountSection = document.getElementById('discount-code-section');
+    var applyBtn = document.getElementById('apply-discount-btn');
+    var discountInput = document.getElementById('discount-code-input');
+    var discountStatus = document.getElementById('discount-status');
 
     var ORDER_FORM_ACTION = form.getAttribute('action');
     var SUB_FORM_ACTION = form.getAttribute('data-sub-action');
@@ -52,67 +55,75 @@
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 
-    // Auto-populate from URL query params if user arrived with ?roast=...
+    // Auto-populate from URL query params (?roast=..., ?code=...)
     (function handleQueryParams() {
       if (typeof window === 'undefined' || !window.location.search) return;
       var params = new URLSearchParams(window.location.search);
+
+      var qpCode = params.get('code');
+      if (qpCode) {
+        try {
+          sessionStorage.setItem('ywr_gift_code', qpCode.trim().toUpperCase());
+        } catch (e) {}
+      }
+
       var qpRoast = params.get('roast');
-      if (!qpRoast) return;
+      if (qpRoast) {
+        var subData = (typeof window !== 'undefined' && window.YWR_SUBSCRIPTIONS_DATA) ? window.YWR_SUBSCRIPTIONS_DATA : {};
+        var rData = (typeof window !== 'undefined' && window.YWR_ROASTS_DATA) ? window.YWR_ROASTS_DATA : {};
+        var sEntry = subData[qpRoast];
+        var rEntry = rData[qpRoast];
+        var entry = sEntry || rEntry;
+        if (entry) {
+          var qpFreq = params.get('frequency');
+          var qpSize = params.get('size');
+          var qpGrind = params.get('grind');
 
-      var subData = (typeof window !== 'undefined' && window.YWR_SUBSCRIPTIONS_DATA) ? window.YWR_SUBSCRIPTIONS_DATA : {};
-      var rData = (typeof window !== 'undefined' && window.YWR_ROASTS_DATA) ? window.YWR_ROASTS_DATA : {};
-      var sEntry = subData[qpRoast];
-      var rEntry = rData[qpRoast];
-      var entry = sEntry || rEntry;
-      if (!entry) return;
+          var isDedicatedSub = !!sEntry;
+          var isSubProduct = isDedicatedSub || (qpFreq !== null);
 
-      var qpFreq = params.get('frequency');
-      var qpSize = params.get('size');
-      var qpGrind = params.get('grind');
+          var defaultGrind = (typeof window !== 'undefined' && window.YWR_DEFAULT_GRIND) || 'Whole Bean';
+          var grindVal = qpGrind || defaultGrind;
+          var sizeVal = qpSize || (sEntry ? sEntry.sizes[0] : Object.keys(rEntry.prices)[0]);
 
-      var isDedicatedSub = !!sEntry;
-      var isSubProduct = isDedicatedSub || (qpFreq !== null);
+          var item = null;
+          if (isSubProduct) {
+            var unitPrice = (entry.prices && typeof entry.prices[sizeVal] === 'number') ? entry.prices[sizeVal] : 0;
+            var freqVal = qpFreq || (sEntry && sEntry.frequencies ? sEntry.frequencies[0] : null);
+            item = {
+              type: 'subscription',
+              slug: qpRoast,
+              title: sEntry ? sEntry.title : rEntry.title,
+              subtitle: (sEntry && sEntry.subtitle) || '',
+              size: sizeVal,
+              grind: grindVal,
+              frequency: freqVal,
+              price: unitPrice,
+              mascot: entry.mascot || null,
+              qty: 1
+            };
+          } else if (rEntry) {
+            var unitPrice = (rEntry.prices && typeof rEntry.prices[sizeVal] === 'number') ? rEntry.prices[sizeVal] : 0;
+            item = {
+              type: 'roast',
+              slug: qpRoast,
+              title: rEntry.title,
+              size: sizeVal,
+              grind: grindVal,
+              price: unitPrice,
+              mascot: rEntry.mascot || null,
+              qty: 1
+            };
+          }
 
-      var defaultGrind = (typeof window !== 'undefined' && window.YWR_DEFAULT_GRIND) || 'Whole Bean';
-      var grindVal = qpGrind || defaultGrind;
-      var sizeVal = qpSize || (sEntry ? sEntry.sizes[0] : Object.keys(rEntry.prices)[0]);
-
-      var item = null;
-      if (isSubProduct) {
-        var unitPrice = (entry.prices && typeof entry.prices[sizeVal] === 'number') ? entry.prices[sizeVal] : 0;
-        var freqVal = qpFreq || (sEntry && sEntry.frequencies ? sEntry.frequencies[0] : null);
-        item = {
-          type: 'subscription',
-          slug: qpRoast,
-          title: sEntry ? sEntry.title : rEntry.title,
-          subtitle: (sEntry && sEntry.subtitle) || '',
-          size: sizeVal,
-          grind: grindVal,
-          frequency: freqVal,
-          price: unitPrice,
-          mascot: entry.mascot || null,
-          qty: 1
-        };
-      } else if (rEntry) {
-        var unitPrice = (rEntry.prices && typeof rEntry.prices[sizeVal] === 'number') ? rEntry.prices[sizeVal] : 0;
-        item = {
-          type: 'roast',
-          slug: qpRoast,
-          title: rEntry.title,
-          size: sizeVal,
-          grind: grindVal,
-          price: unitPrice,
-          mascot: rEntry.mascot || null,
-          qty: 1
-        };
+          if (item) {
+            window.ywrAddToCart(item, 1);
+          }
+        }
       }
 
-      if (item) {
-        window.ywrAddToCart(item, 1);
-      }
-
-      // Immediately clear query params from address bar so reloads do not re-add items
-      if (window.history && typeof window.history.replaceState === 'function') {
+      // Immediately clear query params from address bar so reloads do not re-add items or re-trigger params
+      if ((qpRoast || qpCode) && window.history && typeof window.history.replaceState === 'function') {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     })();
@@ -220,6 +231,8 @@
       }
       if (hasSubscriptions) {
         appliedDiscount = null;
+      } else {
+        populateGiftCodeInput();
       }
 
       // Render Item Cards
@@ -379,6 +392,98 @@
       }
     }
 
+    // Discount Code & Gift Card Handling
+    function populateGiftCodeInput() {
+      if (currentMode !== 'order' || appliedDiscount || !discountInput) return;
+      var cartList = Object.values(loadCart()).filter(function (it) { return it && it.qty > 0; });
+      if (cartList.length === 0 || cartList.some(function (it) { return it.type === 'subscription'; })) return;
+
+      var savedCode = null;
+      try {
+        savedCode = sessionStorage.getItem('ywr_gift_code');
+      } catch (e) {}
+
+      if (savedCode && !discountInput.value) {
+        discountInput.value = savedCode;
+      }
+    }
+
+    if (applyBtn && discountInput && discountStatus) {
+      applyBtn.addEventListener('click', function () {
+        if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
+          appliedDiscount = null;
+          return;
+        }
+        var code = discountInput.value.trim().toUpperCase();
+        if (!code) {
+          appliedDiscount = null;
+          discountStatus.textContent = '';
+          discountStatus.className = 'discount-status';
+          try {
+            sessionStorage.removeItem('ywr_gift_code');
+          } catch (e) {}
+          render();
+          return;
+        }
+
+        discountStatus.textContent = 'Verifying...';
+        discountStatus.className = 'discount-status is-pending';
+
+        var apiUrl = config.discountApiUrl;
+        if (!apiUrl || apiUrl.trim() === '') {
+          discountStatus.textContent = 'Discount service unavailable.';
+          discountStatus.className = 'discount-status is-error';
+          return;
+        }
+
+        var verifyUrl = apiUrl + '?action=verify&code=' + encodeURIComponent(code);
+
+        fetch(verifyUrl)
+          .then(function (response) { return response.json(); })
+          .then(function (data) {
+            if (data.valid) {
+              appliedDiscount = {
+                code: code,
+                type: data.type,
+                value: data.value,
+                description: data.description || ''
+              };
+              discountStatus.textContent = 'Discount applied: ' + (data.description || code);
+              discountStatus.className = 'discount-status is-success';
+              try {
+                sessionStorage.setItem('ywr_gift_code', code);
+              } catch (e) {}
+            } else {
+              appliedDiscount = null;
+              discountStatus.textContent = data.message || 'Invalid discount code.';
+              discountStatus.className = 'discount-status is-error';
+              try {
+                sessionStorage.removeItem('ywr_gift_code');
+              } catch (e) {}
+            }
+            render();
+          })
+          .catch(function (err) {
+            console.error('Validation fetch error:', err);
+            discountStatus.textContent = 'Could not verify code. Please try again.';
+            discountStatus.className = 'discount-status is-error';
+            appliedDiscount = null;
+            render();
+          });
+      });
+
+      discountInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
+            appliedDiscount = null;
+            return;
+          }
+          applyBtn.click();
+        }
+      });
+    }
+
     render();
     window.addEventListener('ywr-cart-changed', render);
     window.addEventListener('storage', render);
@@ -496,77 +601,6 @@
       });
     }
 
-    // Apply Discount Button Click Handler (Sidebar)
-    var applyBtn = document.getElementById('apply-discount-btn');
-    var discountInput = document.getElementById('discount-code-input');
-    var discountStatus = document.getElementById('discount-status');
-
-    if (applyBtn && discountInput && discountStatus) {
-      applyBtn.addEventListener('click', function () {
-        if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
-          appliedDiscount = null;
-          return;
-        }
-        var code = discountInput.value.trim().toUpperCase();
-        if (!code) {
-          appliedDiscount = null;
-          discountStatus.textContent = '';
-          render();
-          return;
-        }
-
-        discountStatus.textContent = 'Verifying...';
-        discountStatus.style.color = '#666';
-
-        var apiUrl = config.discountApiUrl;
-        if (!apiUrl || apiUrl.trim() === '') {
-          discountStatus.textContent = 'Discount service unavailable.';
-          discountStatus.style.color = '#d32f2f';
-          return;
-        }
-
-        var verifyUrl = apiUrl + '?action=verify&code=' + encodeURIComponent(code);
-
-        fetch(verifyUrl)
-          .then(function (response) { return response.json(); })
-          .then(function (data) {
-            if (data.valid) {
-              appliedDiscount = {
-                code: code,
-                type: data.type,
-                value: data.value,
-                description: data.description || ''
-              };
-              discountStatus.textContent = 'Discount applied: ' + (data.description || code);
-              discountStatus.style.color = '#2e7d32';
-            } else {
-              appliedDiscount = null;
-              discountStatus.textContent = data.message || 'Invalid discount code.';
-              discountStatus.style.color = '#d32f2f';
-            }
-            render();
-          })
-          .catch(function (err) {
-            console.error('Validation fetch error:', err);
-            discountStatus.textContent = 'Could not verify code. Please try again.';
-            discountStatus.style.color = '#d32f2f';
-            appliedDiscount = null;
-            render();
-          });
-      });
-
-      discountInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
-            appliedDiscount = null;
-            return;
-          }
-          applyBtn.click();
-        }
-      });
-    }
-
     var status = form.querySelector('.order-status');
 
     var iframe = document.createElement('iframe');
@@ -647,6 +681,11 @@
         sessionStorage.removeItem(STORAGE_KEY);
       } catch (e) {
         console.warn('clearCart: Failed to clear sessionStorage ywr_cart:', e);
+      }
+      try {
+        sessionStorage.removeItem('ywr_gift_code');
+      } catch (e) {
+        console.warn('clearCart: Failed to clear sessionStorage ywr_gift_code:', e);
       }
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
