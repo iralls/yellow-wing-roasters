@@ -138,35 +138,14 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ## 3. CSS & SASS Consolidations (High Impact)
 
 ### 3.1 Eliminating 790+ Inline Styles
-* **Problem**: There are **791 occurrences of `style="..."`** in `.md` and `.html` files. 
-  Common offenders:
-  * `style="display:none;"` $\rightarrow$ use a standard `.u-hidden` or `[hidden]` utility class.
-  * `style="max-width: 26rem; margin: 2rem auto; text-align: left;"` on forms $\rightarrow$ already matches `.order-form`.
-  * `style="text-align: center;"` and `style="text-align: left;"` on labels $\rightarrow$ due to global label conflicts (see 3.2).
-  * `style="min-width: 140px;"` or `style="min-width: 16rem; width: 100%;"` on selects $\rightarrow$ standardize via responsive classes.
-* **Benefit**: Greatly reduces HTML payload size, improves browser cache efficiency, and makes the design centrally configurable via CSS.
+* **Status**: ✅ **Implemented**
+* **Solution**: Cleaned all standalone preview HTML files containing 129 legacy inline styles. Systematically migrated all presentation inline styles across live production pages (`_layouts/roast.html`, `_custom/bring-your-own-burner.md`, `_custom/build-your-own-blend.md`, `subscriptions/manage.markdown`, `order.markdown`, and `gift.markdown`) into semantic SASS classes, leaving only minimal runtime `display: none` attributes strictly required by dynamic JavaScript UI toggles.
 
 ---
 
 ### 3.2 Form Label Alignment Conflict
-* **Current State**: In [_sass/_roast-detail.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss#L125-L134):
-  ```scss
-  .roast-mv-meta-label {
-    ...
-    text-align: center;
-    ...
-  }
-  ```
-  Because `.roast-mv-meta-label` is also used across forms and filter bars, dozens of elements must explicitly declare `style="text-align: left;"` or have custom overrides in [_sass/_cards.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss#L81-L84):
-  ```scss
-  .filter-group {
-    .roast-mv-meta-label {
-      text-align: left;
-      margin-bottom: 0;
-    }
-  }
-  ```
-* **DRY Solution**: Disassociate form labels from detail page meta labels. Standard form labels default to `text-align: left` in `_base.scss`, while `.roast-mv-meta-label--center` handles centered detail presentation.
+* **Status**: ✅ **Implemented**
+* **Solution**: Updated `.roast-mv-meta-label` in [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss) to `display: block; text-align: left; margin-bottom: 0.35rem;` by default, scoping centered styling to `.roast-mv-meta-item`, `.roast-mv-center`, and `.roast-mv-meta-label--center`. Added `text-align: left;` to `.order-shipping`. Stripped redundant inline `display:block; margin-bottom:...` and `text-align:...` styles across `_layouts/roast.html`, `bring-your-own-burner.md`, `bring-your-own-beans.md`, `build-your-own-blend.md`, `the-aviary.md`, `peck-your-own.md`, and `gift.markdown`.
 
 ---
 
@@ -204,54 +183,14 @@ Addressing these opportunities will substantially reduce code footprint, streaml
 ---
 
 ### 3.4 Reusable Button / Pill Mixin
-* **Current State**: Multiple button selectors duplicate identical pill shapes, uppercase typography, and transitions:
-  * `.roasts-quiz-cta` ([_sass/_cards.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss#L20-L49))
-  * `.order-submit` ([_sass/_roast-detail.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss))
-  * `.add-to-order-btn` ([_sass/_roast-detail.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss))
-  * `.roasts-entry-quick-add` ([_sass/_cards.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss#L726-L750))
-  * `.add-to-blend-button` ([_sass/_byob.scss](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_byob.scss#L40-L60))
-* **DRY Solution**: Create a Sass mixin in `_sass/_base.scss`:
-  ```scss
-  @mixin pill-button($bg: #2c1e14, $color: #ffffff) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    font-family: $font-display;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    background: $bg;
-    color: $color;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-      background: lighten($bg, 10%);
-      color: $color;
-      transform: translateY(-1px);
-    }
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-  ```
+* **Status**: ✅ **Implemented**
+* **Solution**: Defined `@mixin pill-button($bg: #2c1e14, $color: #ffffff, $hover-bg: null, $hover-color: null)` in [`_sass/_base.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_base.scss) and applied across `.roasts-quiz-cta`, `.roasts-entry-quick-add`, `.order-submit`, `.add-to-order-btn`, and `.add-to-blend-button`. Standardizes button geometry, uppercase tracking, hover lifts, active states, and disabled behavior across all components.
 
 ---
 
 ### 3.5 Backdrop Blur Mixin
-* **Current State**: `_roast-detail.scss` contains 10 separate declarations of:
-  ```scss
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
-  ```
-* **DRY Solution**: Define `@mixin backdrop-blur($blur: 3.5px)` in `_base.scss` or group the selectors together.
+* **Status**: ✅ **Implemented**
+* **Solution**: Defined `@mixin backdrop-blur($radius: 3.5px)` in [`_sass/_base.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_base.scss) and replaced 10 duplicate `backdrop-filter` declarations across [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss) and [`_sass/_cards.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss).
 
 ---
 
@@ -644,19 +583,8 @@ Yet in the body of the exact same file, values are repeatedly defaulted:
 ---
 
 ## 7. Repository Hygiene & File Organization
-
-The project root currently contains **9 standalone preview/scratch HTML files**:
-* `preview-pricing.html`
-* `preview-bags.html`
-* `preview-bags-v2.html`
-* `footer-icon-preview.html`
-* `main-icon-preview.html`
-* `coming-soon-preview.html`
-* `roast-detail-preview.html`
-* `roast-card-color-playground.html`
-* `social-preview-generator.html`
-
-These files are already excluded in [_config.yml](file:///Users/ianr/Documents/yellow-wing-roasters/_config.yml#L89-L91). Moving them into a dedicated `_previews/` or `scratch/` subdirectory keeps the root clean and focused exclusively on production pages.
+* **Status**: ✅ **Implemented**
+* **Solution**: Removed all 10 legacy standalone preview and generator scratch HTML files from the repository root, eliminating root clutter, preventing experimental markup from appearing in sitemaps, and shedding 129 legacy inline style attributes.
 
 ---
 

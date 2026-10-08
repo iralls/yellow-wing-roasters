@@ -32,6 +32,45 @@ function generateSecureToken() {
 }
 
 /**
+ * Roaster Admin Security: Salted SHA-256 Password Hash.
+ * Safe for public open-source git repositories; plaintext passwords are never stored in git.
+ * Generate new hashes with: node scripts/generate-admin-hash.js
+ */
+var ADMIN_SALT = 'yellow-wing-roasters-auth-v1';
+var ADMIN_PASSWORD_HASH = 'fe65aec7e9795f3d9f4d55755b8c3bc82818e8955ac270c5ab5ebc09e28b3de9';
+
+function computeAdminHash(key) {
+  var input = ADMIN_SALT + key.toString().trim();
+  var rawBytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, input, Utilities.Charset.UTF_8);
+  var hex = "";
+  for (var i = 0; i < rawBytes.length; i++) {
+    var b = rawBytes[i];
+    if (b < 0) b += 256;
+    var bHex = b.toString(16);
+    if (bHex.length === 1) bHex = "0" + bHex;
+    hex += bHex;
+  }
+  return hex;
+}
+
+function isValidAdminKey(providedKey) {
+  if (!providedKey) return false;
+  var trimmed = providedKey.toString().trim();
+
+  // 1. Check optional Script Properties (Google Cloud secret override)
+  var storedKey = "";
+  try {
+    storedKey = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  } catch (err) {}
+  if (storedKey && trimmed === storedKey.toString().trim()) {
+    return true;
+  }
+
+  // 2. Validate against salted SHA-256 hash
+  return computeAdminHash(trimmed) === ADMIN_PASSWORD_HASH;
+}
+
+/**
  * Robust helper to find column index matching any variation of a header name (case-insensitive).
  */
 function findColumnIndex(headers, possibleNames) {
@@ -154,6 +193,80 @@ function doGet(e) {
     previewTpl.cost = "$42.00";
     previewTpl.deliveryMethod = "Pickup";
     return previewTpl.evaluate();
+  }
+
+  // Roaster Admin: List all orders with valid passcode
+  if (e && e.parameter && (e.parameter.action === 'admin_list' || e.parameter.adminKey)) {
+    var adminKeyParam = e.parameter.adminKey ? e.parameter.adminKey.toString().trim() : "";
+    if (!isValidAdminKey(adminKeyParam)) {
+      return ContentService.createTextOutput(JSON.stringify({ error: "Unauthorized: Invalid Admin Key" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var adminSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var adminData = adminSheet.getDataRange().getValues();
+    if (adminData.length <= 1) {
+      return ContentService.createTextOutput(JSON.stringify({ orders: [] }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var aHeaders = adminData[0];
+    var aOrderIdIdx = findColumnIndex(aHeaders, ["Order ID", "Order #", "Order Number", "Order No.", "Order", "orderId"]);
+    var aManageTokenIdx = findColumnIndex(aHeaders, ["Manage Token", "Token", "Secret Token", "manageToken"]);
+    var aEmailIdx = findColumnIndex(aHeaders, ["Email", "Email Address"]);
+    var aTimestampIdx = findColumnIndex(aHeaders, ["Timestamp"]);
+    var aNameIdx = findColumnIndex(aHeaders, ["Name", "Customer Name", "Full Name"]);
+    var aItemsIdx = findColumnIndex(aHeaders, ["Items", "Order Items", "Item"]);
+    var aTotalIdx = findColumnIndex(aHeaders, ["Total", "Price", "Cost", "Order Total"]);
+    var aDeliveryIdx = findColumnIndex(aHeaders, ["Delivery Method", "Delivery"]);
+    var aAddressIdx = findColumnIndex(aHeaders, ["Street address", "Address", "Street Address"]);
+    var aCityIdx = findColumnIndex(aHeaders, ["City"]);
+    var aStateIdx = findColumnIndex(aHeaders, ["State"]);
+    var aZipIdx = findColumnIndex(aHeaders, ["ZIP", "Zip Code", "Postal Code"]);
+    var aNotesIdx = findColumnIndex(aHeaders, ["Notes", "Order Notes", "Special Instructions"]);
+    var aStatusIdx = findColumnIndex(aHeaders, ["Status", "Order Status"]);
+    var aStatusDetailsIdx = findColumnIndex(aHeaders, ["Status Details", "Notes / Details", "Status Note", "Status Message"]);
+
+    var allOrders = [];
+    for (var a = 1; a < adminData.length; a++) {
+      var aRow = adminData[a];
+      var oId = aOrderIdIdx !== -1 && aRow[aOrderIdIdx] ? aRow[aOrderIdIdx].toString().trim() : (1000 + a).toString();
+      var oEmail = aEmailIdx !== -1 && aRow[aEmailIdx] ? aRow[aEmailIdx].toString().trim() : "";
+      if (!oId && !oEmail) continue;
+
+      var oStatus = (aStatusIdx !== -1 && aRow[aStatusIdx] && aRow[aStatusIdx].toString().trim() !== "")
+        ? aRow[aStatusIdx].toString().trim()
+        : "Received";
+      var oStatusDetails = (aStatusDetailsIdx !== -1 && aRow[aStatusDetailsIdx])
+        ? aRow[aStatusDetailsIdx].toString().trim()
+        : "";
+
+      var oTimestamp = "";
+      if (aTimestampIdx !== -1 && aRow[aTimestampIdx]) {
+        oTimestamp = aRow[aTimestampIdx] instanceof Date ? aRow[aTimestampIdx].toLocaleString() : aRow[aTimestampIdx].toString().trim();
+      }
+
+      allOrders.push({
+        orderId: oId,
+        token: aManageTokenIdx !== -1 && aRow[aManageTokenIdx] ? aRow[aManageTokenIdx].toString().trim() : "",
+        name: aNameIdx !== -1 && aRow[aNameIdx] ? aRow[aNameIdx].toString().trim() : "Customer",
+        email: oEmail,
+        items: aItemsIdx !== -1 && aRow[aItemsIdx] ? aRow[aItemsIdx].toString().trim() : "",
+        total: aTotalIdx !== -1 && aRow[aTotalIdx] ? aRow[aTotalIdx].toString().trim() : "",
+        deliveryMethod: aDeliveryIdx !== -1 && aRow[aDeliveryIdx] ? aRow[aDeliveryIdx].toString().trim() : "Pickup",
+        address: aAddressIdx !== -1 && aRow[aAddressIdx] ? aRow[aAddressIdx].toString().trim() : "",
+        city: aCityIdx !== -1 && aRow[aCityIdx] ? aRow[aCityIdx].toString().trim() : "",
+        state: aStateIdx !== -1 && aRow[aStateIdx] ? aRow[aStateIdx].toString().trim() : "",
+        zip: aZipIdx !== -1 && aRow[aZipIdx] ? aRow[aZipIdx].toString().trim() : "",
+        notes: aNotesIdx !== -1 && aRow[aNotesIdx] ? aRow[aNotesIdx].toString().trim() : "",
+        status: oStatus,
+        statusDetails: oStatusDetails,
+        timestamp: oTimestamp
+      });
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ orders: allOrders }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 
   var orderIdParam = e && e.parameter && e.parameter.orderId ? e.parameter.orderId.toString().trim() : null;
@@ -315,6 +428,59 @@ function doPost(e) {
     })).setMimeType(ContentService.MimeType.JSON);
   }
 
+  // ACTION: ADMIN UPDATE STATUS (Roaster Passcode Protected)
+  if (action === 'admin_update_status') {
+    var adminKeyParam = postData.adminKey ? postData.adminKey.toString().trim() : "";
+    if (!isValidAdminKey(adminKeyParam)) {
+      return ContentService.createTextOutput(JSON.stringify({ error: "Unauthorized: Invalid Admin Key" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var adminOrderId = postData.orderId ? postData.orderId.toString().trim() : "";
+    var newStatus = postData.status ? postData.status.toString().trim() : "";
+    var newStatusDetails = postData.statusDetails ? postData.statusDetails.toString().trim() : "";
+
+    if (!adminOrderId || !newStatus) {
+      return ContentService.createTextOutput(JSON.stringify({ error: "Missing orderId or status parameter" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var adminTargetRow = -1;
+    for (var m = 1; m < data.length; m++) {
+      var mRow = data[m];
+      var mOrderId = orderIdIdx !== -1 && mRow[orderIdIdx] ? mRow[orderIdIdx].toString().trim() : (1000 + m).toString();
+      if (mOrderId === adminOrderId) {
+        adminTargetRow = m + 1;
+        break;
+      }
+    }
+
+    if (adminTargetRow === -1) {
+      return ContentService.createTextOutput(JSON.stringify({ error: "Order not found: #" + adminOrderId }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (statusIdx !== -1) sheet.getRange(adminTargetRow, statusIdx + 1).setValue(newStatus);
+    if (statusDetailsIdx !== -1) sheet.getRange(adminTargetRow, statusDetailsIdx + 1).setValue(newStatusDetails);
+
+    var lower = newStatus.toLowerCase();
+    var notifyStatuses = ['delayed', 'roasted', 'ready for pickup', 'ready to deliver', 'out for delivery', 'delivered', 'cancelled'];
+    var notifyCustomer = postData.notifyCustomer === true;
+    var emailSent = false;
+    if (notifyCustomer && notifyStatuses.indexOf(lower) !== -1) {
+      sendStatusEmailForRow(sheet, adminTargetRow);
+      emailSent = true;
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      orderId: adminOrderId,
+      status: newStatus,
+      statusDetails: newStatusDetails,
+      emailSent: emailSent
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   // Authenticated actions require valid orderId & token
   var orderId = postData.orderId ? postData.orderId.toString().trim() : "";
   var token = postData.token ? postData.token.toString().trim() : "";
@@ -460,29 +626,9 @@ function onOpen() {
 }
 
 function onEdit(e) {
-  if (!e || !e.range) return;
-  var sheet = e.range.getSheet();
-  var row = e.range.getRow();
-  if (row <= 1) return; // Header row
-
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  var statusCol = findColumnIndex(headers, ["Status", "Order Status"]) + 1;
-
-  // When the Status column is updated
-  if (statusCol > 0 && e.range.getColumn() === statusCol) {
-    var newStatus = e.value ? e.value.toString().trim() : sheet.getRange(row, statusCol).getValue().toString().trim();
-    var oldStatus = e.oldValue ? e.oldValue.toString().trim() : "";
-
-    // Ignore if empty or unchanged
-    if (!newStatus || newStatus === oldStatus) return;
-
-    var lower = newStatus.toLowerCase();
-    // Automatically send status update email for all progression statuses
-    var notifyStatuses = ['delayed', 'roasted', 'ready for pickup', 'ready to deliver', 'out for delivery', 'delivered', 'cancelled'];
-    if (notifyStatuses.indexOf(lower) !== -1) {
-      sendStatusEmailForRow(sheet, row);
-    }
-  }
+  // Direct spreadsheet edits are silent by default (no automatic email dispatch).
+  // To dispatch a status email manually from the sheet, use the top menu:
+  // Yellow Wing Roasters -> Resend Status Email for Selected Row
 }
 
 function menuSendSelectedRowStatusEmail() {

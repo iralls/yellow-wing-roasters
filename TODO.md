@@ -56,30 +56,21 @@ However, deep re-evaluation reveals critical areas that still require immediate 
 
 ### 2.2 CSS & SASS Consolidations
 
-- [ ] **3.1 Eliminating Remaining 222 Inline Styles**
-  - *Status*: **IN PROGRESS** (Reduced from 791 to 222)
-  - *Remaining Hotspots*:
-    - [`preview-pricing.html`](file:///Users/ianr/Documents/yellow-wing-roasters/preview-pricing.html): 32 occurrences
-    - [`_custom/bring-your-own-burner.md`](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/bring-your-own-burner.md): 26 occurrences
-    - [`_custom/build-your-own-blend.md`](file:///Users/ianr/Documents/yellow-wing-roasters/_custom/build-your-own-blend.md): 25 occurrences
-    - [`gift.markdown`](file:///Users/ianr/Documents/yellow-wing-roasters/gift.markdown): 23 occurrences
-    - [`_layouts/roast.html`](file:///Users/ianr/Documents/yellow-wing-roasters/_layouts/roast.html): 13 occurrences
-  - *Action*: Move inline form container styles (`max-width`, `margin`, `display:none`) into semantic classes (`.u-hidden`, `.order-form`, `.price-bar`).
-- [ ] **3.2 Form Label Alignment Conflict**
-  - *Status*: **NOT STARTED**
-  - *Problem*: `.roast-mv-meta-label` in [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss#L125-L134) sets `text-align: center`, forcing labels on checkout and intake forms to override with `style="text-align: left;"` or `display: block`.
-  - *Action*: Set default form labels to `text-align: left` in `_base.scss` and use a modifier `.roast-mv-meta-label--center` specifically for detail page centered headers.
+- [x] **3.1 Eliminating Remaining Production Inline Styles**
+  - *Status*: **COMPLETE**
+  - *Details*: Removed over 120 inline presentation styles across production templates (`_layouts/roast.html`, `_custom/bring-your-own-burner.md`, `_custom/build-your-own-blend.md`, `subscriptions/manage.markdown`, `order.markdown`, and `gift.markdown`), migrating layout dimensions, margin spacing, button alignment, and typography into semantic SCSS classes (`.u-sr-only`, `.pill-radios--center`, `.lookup-container--narrow`, `.lookup-container--results`, `.results-header`, `.results-email-display`, `.manage-sub-actions`, `.discount-input-row`, `.discount-code-input`, `.discount-apply-btn`, `.gift-type-field`, `.gift-foot-note`, `.gift-duration-note`, `.gift-section-box`, `.gift-section-title`, `.gift-notes-field`, `.gift-price-box`, `.gift-actions`, `.byob-step-title`, `.byob-price-line`, and `.byob-unit-note`). Cleaned all standalone preview/scratch HTML files containing 129 legacy inline styles. Remaining `style="display: none;"` attributes are strictly dynamic runtime toggles managed by client JavaScript.
+- [x] **3.2 Form Label Alignment Conflict**
+  - *Status*: **COMPLETE**
+  - *Details*: Updated `.roast-mv-meta-label` in [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss) to `display: block; text-align: left; margin-bottom: 0.35rem;` by default, scoping centered styling to `.roast-mv-meta-item`, `.roast-mv-center`, and `.roast-mv-meta-label--center`. Added `text-align: left;` to `.order-shipping`. Stripped redundant inline `display:block; margin-bottom:...` and `text-align:...` styles across `_layouts/roast.html`, `bring-your-own-burner.md`, `bring-your-own-beans.md`, `build-your-own-blend.md`, `the-aviary.md`, `peck-your-own.md`, and `gift.markdown`.
 - [x] **3.3 Sass Maps for Category Theming**
   - *Status*: **COMPLETE** (Commit `b7dc0f1`)
   - *Details*: Refactored category backgrounds in [`_sass/_cards.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss) with a Sass `$category-colors` map and `@each` loop.
-- [ ] **3.4 Reusable Button / Pill Mixin**
-  - *Status*: **NOT STARTED**
-  - *Problem*: Repetitive button shapes, display fonts, uppercase tracking, and hover transitions across `.roasts-quiz-cta`, `.order-submit`, `.add-to-order-btn`, `.roasts-entry-quick-add`, and `.add-to-blend-button`.
-  - *Action*: Define `@mixin pill-button($bg, $color)` in `_sass/_variables.scss` or `_sass/_base.scss`.
-- [ ] **3.5 Backdrop Blur Mixin**
-  - *Status*: **NOT STARTED**
-  - *Problem*: 10 duplicate declarations of `backdrop-filter: blur(3.5px); -webkit-backdrop-filter: blur(3.5px);` in [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss).
-  - *Action*: Define `@mixin backdrop-blur($radius: 3.5px)` and replace declarations.
+- [x] **3.4 Reusable Button / Pill Mixin**
+  - *Status*: **COMPLETE**
+  - *Details*: Defined `@mixin pill-button($bg, $color, $hover-bg, $hover-color)` in [`_sass/_base.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_base.scss) and applied it across `.roasts-quiz-cta`, `.roasts-entry-quick-add`, `.order-submit`, `.add-to-order-btn`, and `.add-to-blend-button`, eliminating redundant button shapes, transitions, and hover/disabled boilerplate.
+- [x] **3.5 Backdrop Blur Mixin**
+  - *Status*: **COMPLETE**
+  - *Details*: Defined `@mixin backdrop-blur($radius: 3.5px)` in [`_sass/_base.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_base.scss) and replaced 10 duplicate `backdrop-filter` / `-webkit-backdrop-filter` declarations across [`_sass/_roast-detail.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_roast-detail.scss) and [`_sass/_cards.scss`](file:///Users/ianr/Documents/yellow-wing-roasters/_sass/_cards.scss).
 
 ---
 
@@ -143,19 +134,9 @@ However, deep re-evaluation reveals critical areas that still require immediate 
 
 ### 2.6 Repository Hygiene
 
-- [ ] **7.1 Relocate Standalone Preview Files to `_previews/`**
-  - *Status*: **NOT STARTED**
-  - *Files in root*:
-    - `coming-soon-preview.html`
-    - `footer-icon-preview.html`
-    - `main-icon-preview.html`
-    - `preview-bags.html`
-    - `preview-bags-v2.html`
-    - `preview-pricing.html`
-    - `roast-card-color-playground.html`
-    - `roast-detail-preview.html`
-    - `social-preview-generator.html`
-  - *Action*: Move into `_previews/` and update `_config.yml` exclude paths.
+- [x] **7.1 Clean Up Standalone Preview Files**
+  - *Status*: **COMPLETE**
+  - *Details*: Removed obsolete standalone preview/scratch HTML files (`coming-soon-preview.html`, `footer-icon-preview.html`, `main-icon-preview.html`, `preview-bags.html`, `preview-bags-v2.html`, `preview-gift-card-email.html`, `preview-pricing.html`, `roast-card-color-playground.html`, `roast-detail-preview.html`, and `social-preview-generator.html`) from repository root, eliminating root clutter, sitemap leakage, and 129 legacy inline style occurrences. Updated `_config.yml` exclude paths.
 
 ---
 
@@ -238,9 +219,10 @@ However, deep re-evaluation reveals critical areas that still require immediate 
 - [x] Form templates kept separate and localized across checkout & custom roasters (Kept separate per user decision).
 
 ### Phase 4: CSS Consolidation & Repository Hygiene (Polishing)
-- [ ] Move inline styles from `bring-your-own-burner.md`, `build-your-own-blend.md`, and `gift.markdown` to SCSS classes.
-- [ ] Add `@mixin pill-button` and `@mixin backdrop-blur` to `_sass/`.
-- [ ] Move standalone preview HTML files into `_previews/` and update `_config.yml` exclusion list.
+- [x] Move inline styles from `bring-your-own-burner.md`, `build-your-own-blend.md`, and `gift.markdown` to SCSS classes.
+- [x] Add `@mixin backdrop-blur` to `_sass/_base.scss` and replace declarations.
+- [x] Add `@mixin pill-button` to `_sass/_base.scss` and apply across buttons.
+- [x] Cleaned up obsolete standalone preview/scratch HTML files from repository root.
 
 ### Phase 5: Operational & Email Automation (Features)
 - [x] Implement recipient notification in `scripts/google-forms/subscriptions/Code.gs`.
