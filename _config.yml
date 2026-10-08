@@ -5,7 +5,7 @@ description: >-
   Small-batch coffee roasting.
 baseurl: ""
 url: "https://yellowwingroasters.com"
-subscription_api_url: "https://script.google.com/macros/s/AKfycbwLndIoyAjX12dU4wccUsIg-4QiIRIawziVn2POikVQN7PFgXymlA-GcaQHD0rqeN65/exec"
+subscription_api_url: "https://script.google.com/macros/s/AKfycbyS2PxFsT2iLXOB8NzsDUu1mwHN6HWrhQTDYtcHNafIz04O4-b_2XI0ao9IVaKc9yA2/exec"
 discount_codes_api_url: "https://script.google.com/macros/s/AKfycbyLa8yr6s5eiPAgwnaMIhetJKGBHsyRxLIETRiMQzWdEFU9KqWK2mLTJPccZ_i1Z5S8/exec"
 order_api_url: "https://script.google.com/macros/s/AKfycbw757NfnQevxDXPq5k3BzDKc-F8s3Ig1xTDtnuH9C6NiWw2Bys-7S0_gAT8HRftDImv/exec"
 
