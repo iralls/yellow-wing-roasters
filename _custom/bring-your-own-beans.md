@@ -85,7 +85,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     <p id="byob-delivery-note" class="order-delivery-note" data-pickup-msg="Please specify in the notes how you want to coordinate pickup." data-delivery-msg="Available in {{ site.local_delivery_towns | join: ', ' }}.">Please specify in the notes how you want to coordinate pickup.</p>
   </fieldset>
 
-  <div id="byob-shipping" class="order-shipping" style="display:none; text-align: left;">
+  <div id="byob-shipping" class="order-shipping" style="display:none;">
     <div class="order-field">
       <label for="byob-address" class="roast-mv-meta-label">Street address</label>
       <input id="byob-address" type="text" name="{{ site.google_forms.byob_beans.entries.address }}" autocomplete="street-address">

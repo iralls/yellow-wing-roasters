@@ -101,11 +101,11 @@ permalink: /order/
         <div class="order-cart-items" id="order-cart-items"></div>
 
         <!-- Discount / Gift Code (Located at bottom of Order Summary sidebar, above totals; hidden in Subscription mode) -->
-        <div class="order-field order-summary-discount" id="discount-code-section" style="display: none; margin-top: 1rem; margin-bottom: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color, #e5e5e5);">
-          <label for="discount-code-input" class="roast-mv-meta-label" style="margin-bottom: 0.35rem;">Discount code or Gift card</label>
-          <div style="display: flex; gap: 0.5rem; width: 100%;">
-            <input id="discount-code-input" type="text" placeholder="Promo or GIFT-..." style="flex: 1; margin-bottom: 0; height: 38px; font-size: 0.85rem; text-transform: uppercase;" autocomplete="off">
-            <button id="apply-discount-btn" type="button" class="order-submit" style="margin: 0; width: auto; padding: 0 1.25rem; min-height: unset; height: 38px; border-radius: 999px; font-size: 0.8rem;">Apply</button>
+        <div class="order-field order-summary-discount" id="discount-code-section" style="display: none;">
+          <label for="discount-code-input" class="roast-mv-meta-label">Discount code or Gift card</label>
+          <div class="discount-input-row">
+            <input id="discount-code-input" type="text" class="discount-code-input" placeholder="Promo or GIFT-..." autocomplete="off">
+            <button id="apply-discount-btn" type="button" class="order-submit discount-apply-btn">Apply</button>
           </div>
           <span id="discount-status" class="discount-status"></span>
         </div>

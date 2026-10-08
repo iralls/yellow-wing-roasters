@@ -128,8 +128,8 @@ layout: default
   {% assign freqs = sub_config.frequencies %}
 {% endif %}
 
-<div class="roast-mv-center" style="margin-top:0.75rem;">
-  <label for="order-size-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Roast Amount</label>
+<div class="roast-mv-center roast-mv-center--mt-sm">
+  <label for="order-size-select" class="roast-mv-meta-label">Roast Amount</label>
   <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
     {% for s in sizes %}
       <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
@@ -137,16 +137,16 @@ layout: default
   </select>
 </div>
 
-<div class="roast-mv-center" style="margin-top:0.75rem;">
-  <label for="order-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
+<div class="roast-mv-center roast-mv-center--mt-sm">
+  <label for="order-grind-select" class="roast-mv-meta-label">Grind</label>
   <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
     {% include grind-options.html %}
   </select>
 </div>
 
 {% if sub_available %}
-<div class="roast-mv-center" style="margin-top:0.85rem;">
-  <label class="roast-mv-meta-label" style="display:block; margin-bottom:0.4rem;">Purchase Option</label>
+<div class="roast-mv-center roast-mv-center--mt-sm">
+  <label class="roast-mv-meta-label">Purchase Option</label>
   <div class="roast-purchase-toggle" role="radiogroup" aria-label="Purchase Option">
     <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %}>One-Time Purchase</button>
     <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %}>Subscribe</button>
@@ -155,8 +155,8 @@ layout: default
 {% endif %}
 
 {% if sub_available %}
-<div id="sub-details-panel" class="roast-mv-center" style="display: none; margin-top:0.85rem;">
-  <label for="sub-freq-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Frequency</label>
+<div id="sub-details-panel" class="roast-mv-center roast-mv-center--mt-sm" style="display: none;">
+  <label for="sub-freq-select" class="roast-mv-meta-label">Frequency</label>
   <select id="sub-freq-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
     {% for f in freqs %}
       <option value="{{ f }}">{{ f }}</option>
@@ -164,10 +164,10 @@ layout: default
   </select>
 </div>
 {% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
-  <p class="coming-soon-footnote" style="text-align:center; margin: 0.5rem 0;">{{ p_status_info.sub_footnote }}</p>
+  <p class="coming-soon-footnote">{{ p_status_info.sub_footnote }}</p>
 {% endif %}
 
-<div class="roast-mv-center" style="margin-top: 1.25rem;">
+<div class="roast-mv-center roast-mv-center--mt-lg">
   {% assign first_price = roast_prices[first_size] %}
   {% assign first_eff = first_price %}
   {% if page.temporary_price and page.temporary_price[first_size] %}
@@ -183,11 +183,11 @@ layout: default
   <button class="add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>Add to Cart</button>
 </div>
 
-{% unless is_orderable %}<p class="coming-soon-footnote" style="text-align:center; margin-top: 0.5rem;">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
+{% unless is_orderable %}<p class="coming-soon-footnote">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
 
 {% if page.origins and page.category != 'single origin' %}
 <div class="roast-mv-divider"></div>
-<div class="roast-mv-center" style="margin-bottom:0.75rem;">
+<div class="roast-mv-center roast-mv-center--mb-sm">
   <div class="roast-mv-meta-label">Component Origins</div>
 </div>
 <ul class="roast-mv-comp-list">
@@ -197,7 +197,7 @@ layout: default
 </ul>
 {% elsif page.components %}
 <div class="roast-mv-divider"></div>
-<div class="roast-mv-center" style="margin-bottom:0.75rem;">
+<div class="roast-mv-center roast-mv-center--mb-sm">
   <div class="roast-mv-meta-label">Component Origins</div>
 </div>
 <ul class="roast-mv-comp-list">

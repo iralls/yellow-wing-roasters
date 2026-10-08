@@ -31,7 +31,7 @@ overlay_notes: "a range of four blends, from bright and floral to dark and smoky
 <div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center" style="margin-bottom:1rem;">
-  <label for="aviary-grind-select" class="roast-mv-meta-label" style="display:block; margin-bottom:0.35rem;">Grind</label>
+  <label for="aviary-grind-select" class="roast-mv-meta-label">Grind</label>
   <select id="aviary-grind-select" class="subscribe-select" style="min-width: 12rem;">
     {% include grind-options.html %}
   </select>

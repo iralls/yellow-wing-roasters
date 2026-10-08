@@ -426,7 +426,7 @@
             '<input type="range" class="percentage-slider" id="slider-' + id + '" min="0" max="100" step="10" value="' + val + '">' +
             '<span class="percentage-label" id="label-' + id + '">' + val + '%</span>' +
           '</div>' +
-          '<select class="subscribe-select" style="width: 100%;" id="roast-' + id + '">' +
+          '<select class="subscribe-select" id="roast-' + id + '">' +
             '<option value="Light"' + (roastVal === 'Light' ? ' selected' : '') + '>Light Roast</option>' +
             '<option value="Medium"' + (roastVal === 'Medium' ? ' selected' : '') + '>Medium Roast</option>' +
             '<option value="Dark"' + (roastVal === 'Dark' ? ' selected' : '') + '>Dark Roast</option>' +

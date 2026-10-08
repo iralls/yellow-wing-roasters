@@ -40,10 +40,10 @@ mascot_alt: "Build Your Own Blend mascot"
     <h2 class="roasts-category">1. Choose Coffee Beans</h2>
     
     <!-- Filters Row -->
-    <div class="filters-row" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
-      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-        <label for="filter-origin" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Origin</label>
-        <select id="filter-origin" class="subscribe-select" style="min-width: 140px;">
+    <div class="filters-row">
+      <div class="filter-group">
+        <label for="filter-origin" class="roast-mv-meta-label">Origin</label>
+        <select id="filter-origin" class="subscribe-select">
           <option value="">All Origins</option>
           {% for o in uniq_origins %}
             <option value="{{ o }}">{{ o }}</option>
@@ -51,9 +51,9 @@ mascot_alt: "Build Your Own Blend mascot"
         </select>
       </div>
 
-      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-        <label for="filter-process" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Process</label>
-        <select id="filter-process" class="subscribe-select" style="min-width: 140px;">
+      <div class="filter-group">
+        <label for="filter-process" class="roast-mv-meta-label">Process</label>
+        <select id="filter-process" class="subscribe-select">
           <option value="">All Processes</option>
           {% for p in uniq_procs %}
             <option value="{{ p | downcase }}">{{ p }}</option>
@@ -61,9 +61,9 @@ mascot_alt: "Build Your Own Blend mascot"
         </select>
       </div>
       
-      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-        <label for="filter-notes" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Flavor Profile</label>
-        <select id="filter-notes" class="subscribe-select" style="min-width: 140px;">
+      <div class="filter-group">
+        <label for="filter-notes" class="roast-mv-meta-label">Flavor Profile</label>
+        <select id="filter-notes" class="subscribe-select">
           <option value="">All Flavors</option>
           <option value="chocolate">Chocolate / Cocoa</option>
           <option value="fruit">Fruity (Berry, Apple, Plum)</option>
@@ -75,9 +75,9 @@ mascot_alt: "Build Your Own Blend mascot"
         </select>
       </div>
 
-      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-        <label for="filter-acidity" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Acidity</label>
-        <select id="filter-acidity" class="subscribe-select" style="min-width: 140px;">
+      <div class="filter-group">
+        <label for="filter-acidity" class="roast-mv-meta-label">Acidity</label>
+        <select id="filter-acidity" class="subscribe-select">
           <option value="">All Acidity Levels</option>
           <option value="low">Low (1-2)</option>
           <option value="medium">Medium (3)</option>
@@ -85,9 +85,9 @@ mascot_alt: "Build Your Own Blend mascot"
         </select>
       </div>
 
-      <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.35rem;">
-        <label for="filter-body" class="roast-mv-meta-label" style="text-align: left; margin-bottom: 0;">Body</label>
-        <select id="filter-body" class="subscribe-select" style="min-width: 140px;">
+      <div class="filter-group">
+        <label for="filter-body" class="roast-mv-meta-label">Body</label>
+        <select id="filter-body" class="subscribe-select">
           <option value="">All Body Levels</option>
           <option value="light">Light (1-2)</option>
           <option value="medium">Medium (3)</option>
@@ -100,7 +100,7 @@ mascot_alt: "Build Your Own Blend mascot"
     <div class="selection-workspace">
       <div class="selection-left">
         <label for="bean-select-dropdown" class="roast-mv-meta-label">Select a Coffee Bean</label>
-        <select id="bean-select-dropdown" class="subscribe-select" style="width: 100%;">
+        <select id="bean-select-dropdown" class="subscribe-select">
           <option value="" disabled selected>Select from list...</option>
           {% for r in single_origins %}
             {% assign s_meta = site.data.statuses[r.status] %}
@@ -135,7 +135,7 @@ mascot_alt: "Build Your Own Blend mascot"
     
     <!-- Mixer Panel -->
     <div class="mixer-panel">
-      <h2 class="roasts-category" style="margin-top: 0; padding-bottom: 0.5rem; border-bottom: 1px solid #eaeaea;">2. Adjust Composition & Roasts</h2>
+      <h2 class="roasts-category byob-step-title">2. Adjust Composition & Roasts</h2>
       <div class="mixer-empty-note" id="mixer-empty-note">
         No beans added. Use the selector above to build your recipe.
       </div>
@@ -144,7 +144,7 @@ mascot_alt: "Build Your Own Blend mascot"
 
     <!-- Preview Panel -->
     <div class="preview-panel">
-      <h2 class="roasts-category" style="margin-top: 0; padding-bottom: 0.5rem; border-bottom: 1px solid #eaeaea;">3. Predicted Taste Profile</h2>
+      <h2 class="roasts-category byob-step-title">3. Predicted Taste Profile</h2>
       <div id="preview-content" style="display: none;">
         
         <div class="preview-stat">
@@ -186,10 +186,10 @@ mascot_alt: "Build Your Own Blend mascot"
 
   <!-- Step 4: Checkout Form -->
   <div class="order-section" id="order-section">
-    <h2 class="roasts-category" style="margin-top: 0; text-align: center;">4. Place Your Custom Blend Order</h2>
+    <h2 class="roasts-category byob-step-title byob-step-title--center">4. Place Your Custom Blend Order</h2>
     
-    <div class="roast-detail-price-line" style="text-align: center; margin-bottom: 1.5rem;">
-      ${{ page.price }} <span style="font-size: 0.95rem; font-weight: 600; color: #8a7060;">(one 12oz bag)</span>
+    <div class="roast-detail-price-line byob-price-line">
+      ${{ page.price }} <span class="byob-unit-note">(one 12oz bag)</span>
     </div>
 
     <form action="{{ site.google_forms.byob_blend.url }}" method="POST" class="order-form" id="byob-form">
@@ -224,7 +224,7 @@ mascot_alt: "Build Your Own Blend mascot"
         <p id="byob-delivery-note" class="order-delivery-note" data-pickup-msg="Please specify in the notes how you want to coordinate pickup." data-delivery-msg="Available in {{ site.local_delivery_towns | join: ', ' }}.">Please specify in the notes how you want to coordinate pickup.</p>
       </fieldset>
 
-      <div id="byob-shipping" class="order-shipping" style="display:none; text-align: left;">
+      <div id="byob-shipping" class="order-shipping" style="display:none;">
         <div class="order-field">
           <label for="byob-address" class="roast-mv-meta-label">Street address</label>
           <input id="byob-address" type="text" name="{{ site.google_forms.byob_blend.entries.address }}" autocomplete="street-address">
