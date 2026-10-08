@@ -1,0 +1,458 @@
+// Yellow Wing Roasters - Manage Orders Stylesheet
+// Codified styling system for order management, status badges, alert banners, and in-place item editing.
+
+.order-card {
+  background: #fcfbfa;
+  border: 1px solid #e8e0d5;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.order-title {
+  margin: 0;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #2c1e14;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #8a7060;
+  margin-bottom: 1rem;
+}
+
+.roast-mv-bird {
+  max-width: 100%;
+  object-fit: contain;
+}
+
+// ----------------------------------------------------
+// Semantic Status Badges
+// ----------------------------------------------------
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.status-received {
+  background-color: #f4fbf7;
+  color: #1e824c;
+  border-color: #c9eedc;
+}
+
+.status-delayed {
+  background-color: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.status-roasted {
+  background-color: #eef8fc;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+.status-ready {
+  background-color: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+
+.status-delivered {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-color: #e5e7eb;
+}
+
+.status-cancelled {
+  background-color: #fdf2f2;
+  color: #c0392b;
+  border-color: #f8d7da;
+}
+
+// ----------------------------------------------------
+// Alert & Notice Banners
+// ----------------------------------------------------
+.order-delay-box {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #92400e;
+  font-size: 0.92rem;
+  line-height: 1.45;
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+.order-ready-box {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-left: 4px solid #10b981;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #065f46;
+  font-size: 0.92rem;
+  line-height: 1.45;
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+.order-roasted-box {
+  background-color: #eef8fc;
+  border: 1px solid #bae6fd;
+  border-left: 4px solid #0284c7;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #0369a1;
+  font-size: 0.92rem;
+  line-height: 1.45;
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+.order-delivered-box {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #6b7280;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #374151;
+  font-size: 0.92rem;
+  line-height: 1.45;
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+.order-cancelled-box {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #991b1b;
+  font-size: 0.92rem;
+  line-height: 1.45;
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+// ----------------------------------------------------
+// Order Items List
+// ----------------------------------------------------
+.order-items-box {
+  background: #ffffff;
+  border: 1px solid #f0e9df;
+  border-radius: 0.35rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.order-item-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f5f0eb;
+  font-size: 0.95rem;
+  color: #3b2b20;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.order-item-desc {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.order-item-name {
+  font-weight: 600;
+  color: #2c1e14;
+}
+
+.order-item-meta {
+  font-size: 0.85rem;
+  color: #7d6b5e;
+}
+
+.order-item-price {
+  font-weight: 700;
+  color: #2c1e14;
+}
+
+.order-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #e8e0d5;
+  font-size: 1.05rem;
+}
+
+.order-total-label {
+  font-weight: 700;
+  color: #2c1e14;
+}
+
+.order-total-val {
+  font-weight: 800;
+  color: #2c1e14;
+}
+
+.order-delivery-meta {
+  font-size: 0.88rem;
+  color: #6e5e54;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #f7f5f2;
+  border-radius: 0.25rem;
+}
+
+// ----------------------------------------------------
+// Cancellation Semantic Classes
+// ----------------------------------------------------
+.cancel-reason-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fdf8f7;
+  border: 1px solid #f8d7da;
+  border-radius: 0.35rem;
+}
+
+.cancel-confirm-prompt {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 0.75rem;
+  color: #c0392b;
+}
+
+.cancel-reason-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+
+// ----------------------------------------------------
+// Status & Message States
+// ----------------------------------------------------
+.order-msg-error {
+  text-align: center;
+  color: #c0392b;
+  font-weight: 700;
+  margin: 2rem 0;
+}
+
+.order-msg-loading {
+  text-align: center;
+  color: #8a7060;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+.order-mock-link-wrap {
+  margin-top: 1rem;
+}
+
+.order-mock-link {
+  font-weight: 700;
+  color: #2c1e14;
+  text-decoration: underline;
+
+  &:hover {
+    color: #8a7060;
+  }
+}
+
+// ----------------------------------------------------
+// Order Status Preview System
+// ----------------------------------------------------
+.order-preview-container {
+  max-width: 48rem;
+  margin: 0 auto 2.5rem;
+}
+
+.order-preview-toolbar {
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.order-preview-toolbar-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a7060;
+  margin: 0 0 0.85rem;
+}
+
+.order-preview-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.order-preview-tab {
+  background: #f7f5f2;
+  color: #554439;
+  border: 1px solid #e2d7cc;
+  border-radius: 2rem;
+  padding: 0.4rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #eae3da;
+    color: #2c1e14;
+    border-color: #cbbaa8;
+  }
+
+  &--active {
+    background: #2c1e14;
+    color: #faf8f5;
+    border-color: #2c1e14;
+
+    &:hover {
+      background: #402c1d;
+      color: #faf8f5;
+      border-color: #402c1d;
+    }
+  }
+}
+
+.order-preview-info-box {
+  background: #fdfbf7;
+  border: 1px dashed #d6c7b9;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #6e5e54;
+}
+
+.order-preview-permissions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.order-preview-perm-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  strong {
+    color: #2c1e14;
+  }
+}
+
+.order-preview-link-btn {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2c1e14;
+  text-decoration: underline;
+
+  &:hover {
+    color: #8a7060;
+  }
+}
+
+.order-preview-stack-header {
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8e0d5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.order-preview-stack-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2c1e14;
+}
+
+.order-preview-helper {
+  background: #fcfbf7;
+  border: 1px solid #ebdcd0;
+  border-radius: 0.35rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: #7d6b5e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

@@ -7,6 +7,7 @@ baseurl: ""
 url: "https://yellowwingroasters.com"
 subscription_api_url: "https://script.google.com/macros/s/AKfycbwLndIoyAjX12dU4wccUsIg-4QiIRIawziVn2POikVQN7PFgXymlA-GcaQHD0rqeN65/exec"
 discount_codes_api_url: "https://script.google.com/macros/s/AKfycbyLa8yr6s5eiPAgwnaMIhetJKGBHsyRxLIETRiMQzWdEFU9KqWK2mLTJPccZ_i1Z5S8/exec"
+order_api_url: "https://script.google.com/macros/s/AKfycbwr7eoBTP2EkW9eTk5ikf6rwTzJlcGmitoQIa0GHndtJs3c3Lv99cQj2sqg-UYKz6Yp/exec"
 
 # Local Hand Delivery Radius
 local_delivery_towns:
