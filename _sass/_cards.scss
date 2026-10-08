@@ -18,33 +18,15 @@
 }
 
 .roasts-quiz-cta {
-  display: inline-flex;
-  align-items: center;
+  @include pill-button(#2c1e14, #ffffff, #443022);
   gap: 0.5rem;
   padding: 0.65rem 1.35rem;
-  background: #2c1e14;
-  color: #ffffff;
-  border-radius: 999px;
-  font-family: $font-display;
   font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(44, 30, 20, 0.12);
   white-space: nowrap;
 
   &:hover {
-    background: #443022;
-    color: #ffffff;
-    transform: translateY(-1px);
     box-shadow: 0 4px 14px rgba(44, 30, 20, 0.2);
-    text-decoration: none;
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
@@ -79,13 +61,20 @@
   gap: 0.35rem;
 
   .roast-mv-meta-label {
-    text-align: left;
     margin-bottom: 0;
   }
 
   select {
     min-width: 140px;
     margin: 0;
+    text-align: left;
+    text-align-last: left;
+    padding-left: 1rem;
+    padding-right: 2.2rem;
+
+    option {
+      text-align: left;
+    }
   }
 
   #filter-brewing {
@@ -536,8 +525,7 @@ $category-colors: (
   position: absolute;
   inset: 0;
   background: rgba(254, 252, 249, 0.95);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  @include backdrop-blur(6px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -709,36 +697,18 @@ $category-colors: (
 }
 
 .roasts-entry-quick-add {
+  @include pill-button(#2c1e14, #faf8f5, #443022);
   margin-top: 0.75rem;
   padding: 0.45rem 1.15rem;
-  background: #2c1e14;
-  color: #faf8f5;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  font-family: $font-display;
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.15s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   pointer-events: auto;
   line-height: 1.35;
   white-space: nowrap;
 
   &:hover {
-    background: #443022;
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 
   &.is-added,

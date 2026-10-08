@@ -7,6 +7,13 @@
 .roast-mv-center {
   text-align: center;
   margin-bottom: 0.5em;
+
+  &--mt-sm { margin-top: 0.75rem; }
+  &--mt-md { margin-top: 1rem; }
+  &--mt-lg { margin-top: 1.25rem; }
+  &--mt-xl { margin-top: 1.5rem; }
+  &--mb-sm { margin-bottom: 0.75rem; }
+  &--mb-md { margin-bottom: 1rem; }
 }
 
 .roast-mv-bird-wrap {
@@ -15,13 +22,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-bird {
   height: 10rem;
   width: auto;
+
+  &--lg {
+    height: 14rem;
+  }
 }
 
 .roast-mv-bird-label {
@@ -43,8 +53,7 @@
   letter-spacing: -0.02em;
   color: #2c1e14;
   margin: 0 0 0.3rem;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-subtitle {
@@ -56,8 +65,7 @@
   color: #999;
   margin-bottom: 0.25rem;
   text-align: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-descriptor {
@@ -67,8 +75,7 @@
   color: #3a2a1d;
   margin-bottom: 0.35rem;
   text-align: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-tasting {
@@ -78,8 +85,7 @@
   margin: 0 auto 1.5rem;
   line-height: 1.55;
   text-align: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-roast-level-header {
@@ -90,8 +96,7 @@
   gap: 0.4rem;
   margin: 1.25rem auto 2.5rem;
   text-align: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-roast-level-name {
@@ -118,19 +123,29 @@
   text-align: center;
   flex: 1 1 10rem;
   max-width: 14rem;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-meta-label {
+  display: block;
   font-family: $font-display;
   font-weight: 700;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  text-align: center;
+  text-align: left;
   color: #aaa;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.35rem;
+
+  &--center,
+  .roast-mv-meta-item &,
+  .roast-mv-center & {
+    text-align: center;
+  }
+
+  .roast-mv-meta-item & {
+    margin-bottom: 0.2rem;
+  }
 }
 
 .roast-mv-meta-value {
@@ -159,8 +174,7 @@
   margin: 0 auto 1.5rem;
   color: #2c1e14;
   line-height: 1.75;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 
   ul,
   ol {
@@ -172,8 +186,7 @@
   list-style: none;
   padding: 0;
   text-align: center;
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
+  @include backdrop-blur;
 }
 
 .roast-mv-comp-list li {
@@ -465,6 +478,7 @@
 
 
 .order-shipping {
+  text-align: left;
   margin: 0 0 1.25rem;
   padding: 1rem 1.25rem;
   background: #f8f6f2;
@@ -519,25 +533,10 @@
 }
 
 .order-submit {
-  font-family: $font-display;
-  font-weight: 700;
+  @include pill-button(#2c1e14, #faf8f5, #4a3528);
   font-size: 0.85rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #faf8f5;
-  background: #2c1e14;
   padding: 0.85rem 2.2rem;
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.2s;
-}
-
-.order-submit:hover {
-  background: #4a3528;
-  transform: translateY(-1px);
 }
 
 .order-clear {
@@ -564,10 +563,6 @@
   transform: translateY(-1px);
 }
 
-.order-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
 
 .order-status {
   margin: 1rem 0 0;
@@ -588,6 +583,37 @@
   color: #2e7d32;
   font-weight: 500;
   font-size: 1.05rem;
+}
+
+.order-summary-discount {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color, #e5e5e5);
+}
+
+.discount-input-row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.discount-code-input {
+  flex: 1;
+  margin-bottom: 0;
+  height: 38px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.discount-apply-btn {
+  margin: 0;
+  width: auto;
+  padding: 0 1.25rem;
+  min-height: unset;
+  height: 38px;
+  border-radius: 999px;
+  font-size: 0.8rem;
 }
 
 .discount-status {
@@ -1016,36 +1042,20 @@
 }
 
 .add-to-order-btn {
+  @include pill-button(#e8e0d5, #555, #2c1e14, #faf8f5);
   display: inline-block;
   padding: 0.45rem 1rem;
-  background: #e8e0d5;
-  color: #555;
-  border: 0;
-  border-radius: 999px;
-  font-family: $font-display;
-  font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.03em;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.2s;
-}
 
-.add-to-order-btn:hover {
-  background: #2c1e14;
-  color: #faf8f5;
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-
-.add-to-order-btn:disabled,
-.add-to-order-btn--disabled {
-  background: #ddd;
-  color: #aaa;
-  cursor: not-allowed;
-  pointer-events: none;
-  transform: none;
+  &:disabled,
+  &--disabled {
+    background: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+  }
 }
 
 /* ── Roast Detail Purchase Option Pill Toggle & Price Line ── */
@@ -1162,6 +1172,7 @@
 .coming-soon-footnote {
   font-size: 0.8rem;
   color: #888;
-  margin: 0.4rem 0 0;
+  margin: 0.5rem auto 0;
+  text-align: center;
   font-style: italic;
 }

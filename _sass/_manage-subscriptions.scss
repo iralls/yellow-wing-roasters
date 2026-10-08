@@ -2,6 +2,44 @@
   max-width: 40rem;
   margin: 2rem auto;
   text-align: left;
+
+  &--narrow {
+    max-width: 26rem;
+  }
+
+  &--results {
+    max-width: 36rem;
+  }
+
+  .order-form {
+    margin: 0 auto;
+  }
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  .roasts-category {
+    margin: 0;
+  }
+}
+
+.results-email-display {
+  font-weight: 700;
+  color: #8a7060;
+  font-family: $font-display;
+  font-size: 0.85rem;
+}
+
+.manage-sub-actions {
+  margin-top: 2rem;
+  border-top: 1px solid #e8e0d5;
+  padding-top: 1.5rem;
+  justify-content: center;
 }
 
 .sub-card {

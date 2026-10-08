@@ -394,3 +394,68 @@
     transform: translateY(0);
   }
 }
+
+/* ── Gift Form Layout & Components ── */
+.gift-type-field {
+  margin-bottom: 2rem;
+
+  .roast-mv-meta-label {
+    margin-bottom: 0.85rem;
+  }
+}
+
+.gift-foot-note {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.gift-duration-note {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
+.gift-section-box {
+  border: 1px solid #e0d0c0;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  background-color: #faf8f5;
+
+  .order-field:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.gift-section-title {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  text-align: center;
+
+  &--mt {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.gift-notes-field {
+  margin-top: 1.5rem;
+}
+
+.gift-price-box {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #faf8f5;
+  border: 1px solid #e0d0c0;
+  border-radius: 0.5rem;
+}
+
+.gift-actions {
+  margin-top: 2rem;
+}
+

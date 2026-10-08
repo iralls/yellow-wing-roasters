@@ -1,3 +1,41 @@
+@mixin backdrop-blur($radius: 3.5px) {
+  backdrop-filter: blur($radius);
+  -webkit-backdrop-filter: blur($radius);
+}
+
+@mixin pill-button($bg: #2c1e14, $color: #ffffff, $hover-bg: null, $hover-color: null) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-family: $font-display;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  background: $bg;
+  color: $color;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: if($hover-bg, $hover-bg, lighten($bg, 10%));
+    color: if($hover-color, $hover-color, $color);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
 html,
 body {
   font-family: $font-body;
@@ -222,4 +260,21 @@ input.order-cart-qty {
     color: #fff;
     outline: 2px solid #f0c838;
   }
+}
+
+/* ── Utility Classes & Common Form Modifiers ── */
+.u-sr-only {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.pill-radios--center {
+  justify-content: center;
+}
+
+.order-actions--center {
+  justify-content: center;
 }
