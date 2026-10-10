@@ -59,7 +59,6 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
       <option value="Full City (medium)">Full City (medium)</option>
       <option value="Full City+ (medium-dark)">Full City+ (medium-dark)</option>
       <option value="Vienna (dark)">Vienna (dark)</option>
-      <option value="Surprise me">Surprise me</option>
     </select>
   </div>
 

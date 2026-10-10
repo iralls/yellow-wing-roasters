@@ -83,7 +83,7 @@ overlay_notes: "pick at least 4 of our available roasts in 8oz bags"
 
 <div class="roast-mv-center" style="margin-top:1.5rem; margin-bottom:0.5rem;">
   <label for="pyo-grind-select" class="roast-mv-meta-label">Grind</label>
-  <select id="pyo-grind-select" class="subscribe-select" style="min-width: 12rem;">
+  <select id="pyo-grind-select" class="subscribe-select" data-label="Grind" style="min-width: 12rem;">
     {% include grind-options.html %}
   </select>
 </div>

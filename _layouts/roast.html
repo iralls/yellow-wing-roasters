@@ -130,7 +130,7 @@ layout: default
 
 <div class="roast-mv-center roast-mv-center--mt-sm">
   <label for="order-size-select" class="roast-mv-meta-label">Roast Amount</label>
-  <select id="order-size-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
+  <select id="order-size-select" class="subscribe-select" data-label="Amount"{% unless is_orderable %} disabled{% endunless %}>
     {% for s in sizes %}
       <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
     {% endfor %}
@@ -139,7 +139,7 @@ layout: default
 
 <div class="roast-mv-center roast-mv-center--mt-sm">
   <label for="order-grind-select" class="roast-mv-meta-label">Grind</label>
-  <select id="order-grind-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
+  <select id="order-grind-select" class="subscribe-select" data-label="Grind"{% unless is_orderable %} disabled{% endunless %}>
     {% include grind-options.html %}
   </select>
 </div>
@@ -157,7 +157,7 @@ layout: default
 {% if sub_available %}
 <div id="sub-details-panel" class="roast-mv-center roast-mv-center--mt-sm" style="display: none;">
   <label for="sub-freq-select" class="roast-mv-meta-label">Frequency</label>
-  <select id="sub-freq-select" class="subscribe-select"{% unless is_orderable %} disabled{% endunless %}>
+  <select id="sub-freq-select" class="subscribe-select" data-label="Frequency"{% unless is_orderable %} disabled{% endunless %}>
     {% for f in freqs %}
       <option value="{{ f }}">{{ f }}</option>
     {% endfor %}

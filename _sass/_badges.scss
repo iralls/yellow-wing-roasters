@@ -11,7 +11,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  padding: 0.28rem 0.75rem;
+  padding: 0.22rem 0.68rem;
   border-radius: 999px;
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -21,7 +21,7 @@
   &--mid_molt       { background: var(--badge-mid_molt-bg); color: var(--badge-mid_molt-color); }
   &--migrating_soon { background: var(--badge-migrating_soon-bg); color: var(--badge-migrating_soon-color); }
   &--low_stock      { background: var(--badge-low_stock-bg); color: var(--badge-low_stock-color); }
-  &--flown_south    { background: var(--badge-flown_south-bg); color: var(--badge-flown_south-color); font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.28rem 0.6rem; line-height: 1.2; }
+  &--flown_south    { background: var(--badge-flown_south-bg); color: var(--badge-flown_south-color); font-size: 0.58rem; letter-spacing: 0.05em; padding: 0.22rem 0.6rem; line-height: 1.2; }
 }
 
 .roasts-entry-seasonal-badge {
@@ -38,7 +38,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  padding: 0.28rem 0.75rem;
+  padding: 0.22rem 0.68rem;
   border-radius: 999px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
@@ -56,7 +56,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  padding: 0.28rem 0.65rem;
+  padding: 0.22rem 0.62rem;
   border-radius: 999px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
@@ -90,10 +90,10 @@
   display: inline-block;
   font-family: $font-display;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #2c1e14;
   text-decoration: none;
-  padding: 0.4rem 0.9rem;
+  padding: 0.32rem 0.75rem;
   border: 1.5px solid #d0c4b0;
   border-radius: 999px;
   transition:
