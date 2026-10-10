@@ -1,221 +1,402 @@
 /**
  * Yellow Wing Roasters - Catalog Dynamic Filters
- * Scans roast catalog cards and dynamically populates Type, Origin, Process, Level, and Brewing filters.
+ * Minimizable Drawer with Minimal Multi-Select Dropdowns.
+ * Multi-select logic: OR within each dropdown, AND across different categories.
  */
 (function () {
   'use strict';
 
   function initCatalogFilters() {
     var cards = document.querySelectorAll('#roasts-grid .roasts-entry');
-    var selectCategory = document.getElementById('filter-category');
-    var selectOrigin = document.getElementById('filter-origin');
-    var selectProcess = document.getElementById('filter-process');
-    var selectLevel = document.getElementById('filter-level');
-    var selectFlavor = document.getElementById('filter-flavor');
-    var selectBrewing = document.getElementById('filter-brewing');
-    var selectCertification = document.getElementById('filter-certification') || document.getElementById('filter-fto');
     var emptyState = document.getElementById('roasts-empty-filters');
     var resetBtn = document.getElementById('reset-filters-btn');
+    var sectionBreaks = document.querySelectorAll('#roasts-grid .roasts-section-break');
 
-    if (!cards.length || !selectOrigin || !selectLevel || !selectBrewing) return;
+    if (!cards.length) return;
 
     var types = {};
     var origins = {};
     var processes = {};
     var levels = { 'Light': true, 'Medium': true, 'Dark': true };
+    var brewings = {};
+    var flavors = {};
 
-    // 1. Scan cards to extract unique filter values
+    // 1. Scan unique metadata across all cards
     cards.forEach(function (card) {
-      // Type (blend, single origin, seasonal, subscriptions)
+      // Type
       var t = (card.getAttribute('data-type') || '').trim().toLowerCase();
-      if (t) {
-        types[t] = true;
-      }
+      if (t) types[t] = true;
 
-      // Origins (comma-separated list)
+      // Origins
       var originsAttr = card.getAttribute('data-origins') || '';
-      var cardOrigins = originsAttr.split(',').map(function (o) {
-        return o.trim();
-      }).filter(Boolean);
-
+      var cardOrigins = originsAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      cardOrigins.forEach(function (o) { origins[o] = true; });
       card.setAttribute('data-origins-list', JSON.stringify(cardOrigins));
 
-      cardOrigins.forEach(function (origin) {
-        origins[origin] = true;
-      });
-
-      // Processes (comma-separated list)
+      // Processes
       var processAttr = card.getAttribute('data-process') || '';
-      var cardProcesses = processAttr.split(',').map(function (p) {
-        return p.trim();
-      }).filter(Boolean);
-
+      var cardProcesses = processAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      cardProcesses.forEach(function (p) { processes[p] = true; });
       card.setAttribute('data-process-list', JSON.stringify(cardProcesses));
 
-      cardProcesses.forEach(function (proc) {
-        processes[proc] = true;
-      });
-
-      // Beans (comma-separated list of Origin:Process)
+      // Beans (compound Origin:Process)
       var beansAttr = card.getAttribute('data-beans') || '';
       var cardBeans = beansAttr.split(',').map(function (b) {
         var parts = b.split(':');
-        return {
-          origin: parts[0] ? parts[0].trim() : '',
-          process: parts[1] ? parts[1].trim() : ''
-        };
-      }).filter(function (b) {
-        return b.origin || b.process;
-      });
-
+        return { origin: parts[0] ? parts[0].trim() : '', process: parts[1] ? parts[1].trim() : '' };
+      }).filter(function (b) { return b.origin || b.process; });
       card.setAttribute('data-beans-list', JSON.stringify(cardBeans));
 
+      // Roast level categorization
+      var dotsAttr = card.getAttribute('data-roast-dots');
+      var cardComputedLevel = '';
+      if (dotsAttr && dotsAttr.trim() !== '') {
+        var dots = parseInt(dotsAttr, 10);
+        if (dots <= 2) cardComputedLevel = 'Light';
+        else if (dots >= 4) cardComputedLevel = 'Dark';
+        else cardComputedLevel = 'Medium';
+      }
+      card.setAttribute('data-computed-level', cardComputedLevel);
+
       // Brewing methods
-      var brewingAttr = card.getAttribute('data-brewing') || '';
-      var cardMethods = brewingAttr.split(',').map(function (m) {
-        return m.trim();
-      }).filter(Boolean);
+      var brewAttr = card.getAttribute('data-brewing') || '';
+      var cardBrew = brewAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      cardBrew.forEach(function (b) { brewings[b] = true; });
+      card.setAttribute('data-brewing-list', JSON.stringify(cardBrew));
 
-      card.setAttribute('data-brewing-list', JSON.stringify(cardMethods));
+      // Flavor profiles
+      var flavAttr = card.getAttribute('data-flavors') || '';
+      var cardFlavors = flavAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      cardFlavors.forEach(function (f) { flavors[f] = true; });
+      card.setAttribute('data-flavors-list', JSON.stringify(cardFlavors));
     });
 
-    // 2. Populate Dropdowns Dynamically
-    if (selectCategory) {
-      var typeOrder = ['blend', 'seasonal', 'single-origin', 'custom', 'subscriptions', 'flight'];
-      var typeLabels = {
-        'blend': 'Blend',
-        'seasonal': 'Seasonal',
-        'single-origin': 'Single Origin',
-        'single origin': 'Single Origin',
-        'custom': 'Custom',
-        'subscriptions': 'Subscriptions',
-        'subscription': 'Subscriptions',
-        'flight': 'Flights',
-        'flights': 'Flights'
-      };
-      typeOrder.forEach(function (t) {
-        if (types[t]) {
-          var opt = document.createElement('option');
-          opt.value = t;
-          opt.textContent = typeLabels[t] || (t.charAt(0).toUpperCase() + t.slice(1));
-          selectCategory.appendChild(opt);
-        }
+    var typeLabels = {
+      'blend': 'Blend',
+      'seasonal': 'Seasonal',
+      'single-origin': 'Single Origin',
+      'single origin': 'Single Origin',
+      'custom': 'Custom',
+      'subscriptions': 'Subscriptions',
+      'subscription': 'Subscriptions',
+      'flight': 'Flights',
+      'flights': 'Flights'
+    };
+
+    var flavorLabels = {
+      'chocolate': 'Chocolate & Cocoa',
+      'fruits': 'Fruity & Berry',
+      'citrus': 'Citrus & Bright',
+      'sweet': 'Sweet & Caramel',
+      'floral': 'Floral & Tea',
+      'nuts': 'Nutty',
+      'spices': 'Earthy & Spiced'
+    };
+
+    var categoryMeta = {
+      type: { label: 'Type', map: typeLabels },
+      level: { label: 'Roast' },
+      flavor: { label: 'Flavor', map: flavorLabels },
+      origin: { label: 'Origin' },
+      process: { label: 'Process' },
+      brewing: { label: 'Brew' },
+      cert: { label: 'Cert', map: { 'organic': 'Organic', 'fair_trade_organic': 'Fair Trade Organic' } }
+    };
+
+    // State of selected filters
+    var selectedFilters = {
+      type: {},
+      level: {},
+      flavor: {},
+      origin: {},
+      process: {},
+      brewing: {},
+      cert: {}
+    };
+
+    var drawerToggleBtn = document.getElementById('filters-drawer-toggle');
+    var drawerContent = document.getElementById('filters-drawer-content');
+    var tagsPreview = document.getElementById('filters-tags-preview');
+    var activeCountBadge = document.getElementById('filters-active-count');
+    var clearAllBtn = document.getElementById('filters-clear-all');
+
+    // 2. Drawer Toggle Handlers
+    if (drawerToggleBtn && drawerContent) {
+      drawerToggleBtn.addEventListener('click', function () {
+        var isOpen = drawerContent.classList.contains('is-open');
+        drawerContent.classList.toggle('is-open', !isOpen);
+        drawerToggleBtn.setAttribute('aria-expanded', (!isOpen).toString());
       });
     }
 
-    // Origins
-    Object.keys(origins).sort().forEach(function (origin) {
-      var opt = document.createElement('option');
-      opt.value = origin;
-      opt.textContent = origin;
-      selectOrigin.appendChild(opt);
-    });
+    // 3. Render Multi-Select Options
+    function renderOptions(containerId, optionsMap, categoryKey, labelMap) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
 
-    // Processes
-    if (selectProcess) {
-      var processOrder = ['Washed', 'Natural', 'Wet-Hulled'];
-      processOrder.forEach(function (proc) {
-        if (processes[proc]) {
-          var opt = document.createElement('option');
-          opt.value = proc;
-          opt.textContent = proc;
-          selectProcess.appendChild(opt);
-        }
-      });
-      Object.keys(processes).sort().forEach(function (proc) {
-        if (processOrder.indexOf(proc) === -1) {
-          var opt = document.createElement('option');
-          opt.value = proc;
-          opt.textContent = proc;
-          selectProcess.appendChild(opt);
-        }
+      Object.keys(optionsMap).sort().forEach(function (key) {
+        var label = document.createElement('label');
+        label.className = 'mms-option';
+
+        var input = document.createElement('input');
+        input.type = 'checkbox';
+        input.value = key;
+
+        var span = document.createElement('span');
+        span.className = 'mms-option-text';
+        span.textContent = (labelMap && labelMap[key]) ? labelMap[key] : key;
+
+        input.addEventListener('change', function () {
+          if (input.checked) {
+            selectedFilters[categoryKey][key] = true;
+            label.classList.add('is-checked');
+          } else {
+            delete selectedFilters[categoryKey][key];
+            label.classList.remove('is-checked');
+          }
+          updateTriggerLabel(categoryKey, labelMap);
+          updateTagsAndBadges();
+          applyFilters();
+        });
+
+        label.appendChild(input);
+        label.appendChild(span);
+        container.appendChild(label);
       });
     }
 
-    // Roast Levels
-    Object.keys(levels).forEach(function (level) {
-      var opt = document.createElement('option');
-      opt.value = level;
-      opt.textContent = level;
-      selectLevel.appendChild(opt);
+    renderOptions('mms-options-type', types, 'type', typeLabels);
+    renderOptions('mms-options-level', levels, 'level');
+    renderOptions('mms-options-flavor', flavors, 'flavor', flavorLabels);
+    renderOptions('mms-options-origin', origins, 'origin');
+    renderOptions('mms-options-process', processes, 'process');
+    renderOptions('mms-options-brewing', brewings, 'brewing');
+    renderOptions('mms-options-cert', { 'organic': true, 'fair_trade_organic': true }, 'cert', {
+      'organic': 'Organic',
+      'fair_trade_organic': 'Fair Trade Organic'
     });
 
+    // 4. Update Trigger Button Labels
+    function updateTriggerLabel(categoryKey, labelMap) {
+      var trigger = document.getElementById('trigger-filter-' + categoryKey);
+      if (!trigger) return;
+      var valSpan = trigger.querySelector('.mms-value');
+      var keys = Object.keys(selectedFilters[categoryKey]);
 
-    // 3. Filter Application Logic
+      if (keys.length === 0) {
+        valSpan.textContent = 'All';
+        trigger.classList.remove('is-active');
+      } else if (keys.length === 1) {
+        var k = keys[0];
+        valSpan.textContent = (labelMap && labelMap[k]) ? labelMap[k] : k;
+        trigger.classList.add('is-active');
+      } else {
+        valSpan.textContent = keys.length + ' selected';
+        trigger.classList.add('is-active');
+      }
+    }
+
+    // 5. Update Header Tags and Active Badge
+    function updateTagsAndBadges() {
+      if (!tagsPreview || !activeCountBadge) return;
+      tagsPreview.innerHTML = '';
+      var activeCount = 0;
+
+      Object.keys(selectedFilters).forEach(function (cat) {
+        var keys = Object.keys(selectedFilters[cat]);
+        if (keys.length > 0) {
+          activeCount += keys.length;
+          var meta = categoryMeta[cat];
+          var labelName = meta ? meta.label : cat;
+          var textList = keys.map(function (k) {
+            return (meta && meta.map && meta.map[k]) ? meta.map[k] : k;
+          }).join(', ');
+
+          var chip = document.createElement('span');
+          chip.className = 'filters-active-chip';
+          chip.innerHTML = '<span>' + labelName + ': ' + textList + '</span>' +
+            '<button type="button" class="chip-remove" aria-label="Remove ' + labelName + ' filters" title="Clear ' + labelName + '">&times;</button>';
+
+          chip.querySelector('.chip-remove').addEventListener('click', function (e) {
+            e.stopPropagation();
+            clearCategory(cat);
+          });
+
+          tagsPreview.appendChild(chip);
+        }
+      });
+
+      activeCountBadge.textContent = activeCount.toString();
+      activeCountBadge.style.display = activeCount > 0 ? 'inline-flex' : 'none';
+      if (clearAllBtn) {
+        clearAllBtn.classList.toggle('is-visible', activeCount > 0);
+      }
+    }
+
+    function clearCategory(cat) {
+      if (!selectedFilters[cat]) return;
+      selectedFilters[cat] = {};
+      var checks = document.querySelectorAll('#mms-options-' + cat + ' input[type="checkbox"]');
+      checks.forEach(function (c) {
+        c.checked = false;
+        c.closest('.mms-option').classList.remove('is-checked');
+      });
+      var meta = categoryMeta[cat];
+      updateTriggerLabel(cat, meta ? meta.map : null);
+      updateTagsAndBadges();
+      applyFilters();
+    }
+
+    function clearAllFilters() {
+      Object.keys(selectedFilters).forEach(function (cat) {
+        selectedFilters[cat] = {};
+        var meta = categoryMeta[cat];
+        updateTriggerLabel(cat, meta ? meta.map : null);
+      });
+      document.querySelectorAll('.min-multiselect input[type="checkbox"]').forEach(function (c) {
+        c.checked = false;
+      });
+      document.querySelectorAll('.mms-option').forEach(function (opt) {
+        opt.classList.remove('is-checked');
+      });
+      updateTagsAndBadges();
+      applyFilters();
+    }
+
+    // Clear dropdown header button handler
+    document.querySelectorAll('[data-clear-dropdown]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var cat = btn.getAttribute('data-clear-dropdown');
+        if (cat) clearCategory(cat);
+      });
+    });
+
+    if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllFilters);
+    if (resetBtn) resetBtn.addEventListener('click', clearAllFilters);
+
+    // 6. Popover Open/Close Toggling
+    var allMms = document.querySelectorAll('.min-multiselect');
+    allMms.forEach(function (mms) {
+      var trigger = mms.querySelector('.min-multiselect-trigger');
+      if (trigger) {
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isOpen = mms.classList.contains('is-open');
+
+          allMms.forEach(function (other) {
+            if (other !== mms) {
+              other.classList.remove('is-open');
+              var otherTrig = other.querySelector('.min-multiselect-trigger');
+              if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          mms.classList.toggle('is-open', !isOpen);
+          trigger.setAttribute('aria-expanded', (!isOpen).toString());
+        });
+      }
+
+      var menu = mms.querySelector('.min-multiselect-menu');
+      if (menu) {
+        menu.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+      }
+    });
+
+    document.addEventListener('click', function () {
+      allMms.forEach(function (mms) {
+        mms.classList.remove('is-open');
+        var trigger = mms.querySelector('.min-multiselect-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        allMms.forEach(function (mms) {
+          mms.classList.remove('is-open');
+          var trigger = mms.querySelector('.min-multiselect-trigger');
+          if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Helper: Compound Origin & Process Bean Matching
+    function cardMatchesBean(card, selOrigins, selProcesses) {
+      if (selOrigins.length === 0 && selProcesses.length === 0) return true;
+      var beansList = JSON.parse(card.getAttribute('data-beans-list') || '[]');
+      if (beansList.length > 0) {
+        return beansList.some(function (b) {
+          var mO = selOrigins.length === 0 || selOrigins.indexOf(b.origin) >= 0;
+          var mP = selProcesses.length === 0 || selProcesses.indexOf(b.process) >= 0;
+          return mO && mP;
+        });
+      }
+      var cardOrigins = JSON.parse(card.getAttribute('data-origins-list') || '[]');
+      var cardProcesses = JSON.parse(card.getAttribute('data-process-list') || '[]');
+      var mO = selOrigins.length === 0 || selOrigins.some(function (o) { return cardOrigins.indexOf(o) >= 0; });
+      var mP = selProcesses.length === 0 || selProcesses.some(function (p) { return cardProcesses.indexOf(p) >= 0; });
+      return mO && mP;
+    }
+
+    // 7. Filter Execution Logic: OR within category, AND across categories
     function applyFilters() {
-      var chosenType = selectCategory ? selectCategory.value : '';
-      var chosenOrigin = selectOrigin.value;
-      var chosenProcess = selectProcess ? selectProcess.value : '';
-      var chosenLevel = selectLevel.value;
-      var chosenFlavor = selectFlavor ? selectFlavor.value : '';
-      var chosenBrewing = selectBrewing.value;
-      var chosenCert = selectCertification ? selectCertification.value : '';
+      var selTypes = Object.keys(selectedFilters.type);
+      var selLevels = Object.keys(selectedFilters.level);
+      var selFlavors = Object.keys(selectedFilters.flavor);
+      var selBrewings = Object.keys(selectedFilters.brewing);
+      var selCerts = Object.keys(selectedFilters.cert);
+      var selOrigins = Object.keys(selectedFilters.origin);
+      var selProcesses = Object.keys(selectedFilters.process);
 
-      var totalVisible = 0;
-
+      var visible = 0;
       cards.forEach(function (card) {
-        // Check type match
         var cardType = (card.getAttribute('data-type') || '').trim().toLowerCase();
-        var matchesType = !chosenType || cardType === chosenType.toLowerCase();
+        var cardLevel = card.getAttribute('data-computed-level') || '';
+        var cardFlavors = JSON.parse(card.getAttribute('data-flavors-list') || '[]');
+        var cardBrewings = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
+        var isFto = card.getAttribute('data-has-fto') === 'true';
+        var isOrganic = card.getAttribute('data-has-organic') === 'true';
 
-        // Compound Origin & Process matching at the bean component level
-        var beansList = JSON.parse(card.getAttribute('data-beans-list') || '[]');
-        var matchesBean = true;
-        if (chosenOrigin || chosenProcess) {
-          matchesBean = beansList.some(function (bean) {
-            var matchOrigin = !chosenOrigin || bean.origin === chosenOrigin;
-            var matchProcess = !chosenProcess || bean.process === chosenProcess;
-            return matchOrigin && matchProcess;
+        // 1. Type Match (OR within dropdown)
+        var matchType = selTypes.length === 0 || selTypes.indexOf(cardType) >= 0;
+
+        // 2. Origin & Process Match (OR within dropdown, compound bean matching)
+        var matchBean = cardMatchesBean(card, selOrigins, selProcesses);
+
+        // 3. Level Match (OR within dropdown)
+        var matchLevel = selLevels.length === 0 || selLevels.indexOf(cardLevel) >= 0;
+
+        // 4. Flavor Profile Match (OR within dropdown)
+        var matchFlavor = selFlavors.length === 0 || selFlavors.some(function (f) {
+          return cardFlavors.indexOf(f) >= 0;
+        });
+
+        // 5. Brewing Method Match (OR within dropdown)
+        var matchBrewing = selBrewings.length === 0 || selBrewings.some(function (b) {
+          return cardBrewings.indexOf(b) >= 0;
+        });
+
+        // 6. Certification Match (OR within dropdown)
+        var matchCert = true;
+        if (selCerts.length > 0) {
+          matchCert = selCerts.some(function (c) {
+            if (c === 'organic') return isOrganic;
+            if (c === 'fair_trade_organic') return isFto;
+            return false;
           });
         }
 
-        // Map roast level category based on dots
-        var dotsAttr = card.getAttribute('data-roast-dots');
-        var matchesLevel = true;
-        if (chosenLevel) {
-          if (dotsAttr && dotsAttr.trim() !== '') {
-            var dots = parseInt(dotsAttr, 10);
-            var levelCat = 'Medium';
-            if (dots <= 2) levelCat = 'Light';
-            else if (dots >= 4) levelCat = 'Dark';
-            matchesLevel = (levelCat === chosenLevel);
-          } else {
-            matchesLevel = false;
-          }
-        }
-
-        // Flavor profile match
-        var matchesFlavor = true;
-        if (chosenFlavor) {
-          var cardFlavors = (card.getAttribute('data-flavors') || '').split(',').map(function (s) {
-            return s.trim();
-          }).filter(Boolean);
-          matchesFlavor = cardFlavors.indexOf(chosenFlavor) >= 0;
-        }
-
-        // Map brewing method
-        var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
-        var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
-
-        // Certification filter: supports 'organic' and 'fair_trade_organic'
-        var matchesCert = true;
-        if (chosenCert === 'fair_trade_organic' || chosenCert === 'fto') {
-          matchesCert = card.getAttribute('data-has-fto') === 'true';
-        } else if (chosenCert === 'organic') {
-          matchesCert = card.getAttribute('data-has-organic') === 'true';
-        }
-
-        // Show/Hide Card: ALL filters strictly ANDed together
-        if (matchesType && matchesBean && matchesLevel && matchesFlavor && matchesBrewing && matchesCert) {
-          card.style.display = '';
-          totalVisible++;
-        } else {
-          card.style.display = 'none';
-        }
+        // Strict AND across all categories
+        var show = matchType && matchBean && matchLevel && matchFlavor && matchBrewing && matchCert;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
       });
 
       // Update section break visibility
-      var sectionBreaks = document.querySelectorAll('#roasts-grid .roasts-section-break');
       sectionBreaks.forEach(function (breakEl) {
         var sectionCat = (breakEl.getAttribute('data-category') || '').trim().toLowerCase();
         var hasVisible = Array.prototype.some.call(cards, function (card) {
@@ -227,49 +408,61 @@
 
       // Update empty filter state message
       if (emptyState) {
-        emptyState.style.display = totalVisible === 0 ? 'block' : 'none';
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
       }
     }
 
-    // 4. Attach Event Listeners
-    if (selectCategory) selectCategory.addEventListener('change', applyFilters);
-    selectOrigin.addEventListener('change', applyFilters);
-    if (selectProcess) selectProcess.addEventListener('change', applyFilters);
-    selectLevel.addEventListener('change', applyFilters);
-    if (selectFlavor) selectFlavor.addEventListener('change', applyFilters);
-    selectBrewing.addEventListener('change', applyFilters);
-    if (selectCertification) selectCertification.addEventListener('change', applyFilters);
+    // 8. Initial Check for URL Query Parameters (e.g. ?flavor=chocolate, ?type=single-origin, ?certification=organic)
+    var urlParams = new URLSearchParams(window.location.search);
+    var appliedQuery = false;
 
-    if (resetBtn) {
-      resetBtn.addEventListener('click', function () {
-        if (selectCategory) selectCategory.value = '';
-        selectOrigin.value = '';
-        if (selectProcess) selectProcess.value = '';
-        selectLevel.value = '';
-        if (selectFlavor) selectFlavor.value = '';
-        selectBrewing.value = '';
-        if (selectCertification) selectCertification.value = '';
-        applyFilters();
-      });
+    if (urlParams.get('flavor')) {
+      var flavParam = urlParams.get('flavor');
+      var check = document.querySelector('#mms-options-flavor input[value="' + flavParam + '"]');
+      if (check) {
+        check.checked = true;
+        check.closest('.mms-option').classList.add('is-checked');
+        selectedFilters.flavor[flavParam] = true;
+        updateTriggerLabel('flavor', flavorLabels);
+        appliedQuery = true;
+      }
     }
 
-    // Initial check for URL query parameters (e.g. ?flavor=..., ?organic=true, ?fto=true or ?certification=...)
-    var urlParams = new URLSearchParams(window.location.search);
-    if (selectFlavor && urlParams.get('flavor')) {
-      selectFlavor.value = urlParams.get('flavor');
+    if (urlParams.get('type')) {
+      var typeParam = urlParams.get('type').toLowerCase();
+      var checkType = document.querySelector('#mms-options-type input[value="' + typeParam + '"]');
+      if (checkType) {
+        checkType.checked = true;
+        checkType.closest('.mms-option').classList.add('is-checked');
+        selectedFilters.type[typeParam] = true;
+        updateTriggerLabel('type', typeLabels);
+        appliedQuery = true;
+      }
+    }
+
+    if (urlParams.get('certification') || urlParams.get('organic') || urlParams.get('fto')) {
+      var certParam = urlParams.get('certification');
+      if (urlParams.get('organic') === 'true' || certParam === 'organic') certParam = 'organic';
+      else if (urlParams.get('fto') || certParam === 'fair_trade_organic' || certParam === 'fto') certParam = 'fair_trade_organic';
+
+      if (certParam) {
+        var checkCert = document.querySelector('#mms-options-cert input[value="' + certParam + '"]');
+        if (checkCert) {
+          checkCert.checked = true;
+          checkCert.closest('.mms-option').classList.add('is-checked');
+          selectedFilters.cert[certParam] = true;
+          updateTriggerLabel('cert', categoryMeta.cert.map);
+          appliedQuery = true;
+        }
+      }
+    }
+
+    if (appliedQuery) {
+      updateTagsAndBadges();
       applyFilters();
     }
-    if (selectCertification) {
-      if (urlParams.get('organic') === 'true' || urlParams.get('certification') === 'organic') {
-        selectCertification.value = 'organic';
-        applyFilters();
-      } else if (urlParams.get('fto') || urlParams.get('fair-trade-organic') || urlParams.get('certification') === 'fair_trade_organic' || urlParams.get('certification') === 'fto') {
-        selectCertification.value = 'fair_trade_organic';
-        applyFilters();
-      }
-    }
 
-    // 5. Layout View Switcher (Grid vs Compact vs List)
+    // 9. Layout View Switcher (Grid vs Compact vs List)
     var gridEl = document.getElementById('roasts-grid');
     var btnGrid = document.getElementById('view-grid-btn');
     var btnCompact = document.getElementById('view-compact-btn');
