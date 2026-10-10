@@ -170,6 +170,19 @@
       .replace(/'/g, '&#39;');
   }
 
+  function formatPrice(val) {
+    if (!val && val !== 0) return '';
+    var str = String(val).trim();
+    if (!str) return '';
+    var clean = str.replace(/^\$/, '').replace(/,/g, '').trim();
+    var num = parseFloat(clean);
+    if (!isNaN(num) && /^(\d+(\.\d+)?|\.\d+)$/.test(clean)) {
+      return '$' + num.toFixed(2);
+    }
+    if (str.charAt(0) === '$') return str;
+    return '$' + str;
+  }
+
   function getStatusBadgeClass(status) {
     var s = (status || '').toLowerCase();
     if (s === 'received') return 'status-received';
@@ -333,7 +346,7 @@
 
     html += '<div class="order-summary-row">' +
       '<span class="order-total-label">Total</span>' +
-      '<span class="order-total-val">' + escapeHtml(order.total) + '</span>' +
+      '<span class="order-total-val">' + escapeHtml(formatPrice(order.total)) + '</span>' +
       '</div>' +
       '</div>';
 
@@ -675,6 +688,8 @@
   initManageOrders.initOrderPreview = initOrderPreview;
   initManageOrders.parseOrderItems = parseOrderItems;
   initManageOrders.resetMockDb = resetMockDb;
+  initManageOrders.formatPrice = formatPrice;
+  initManageOrders.renderOrderCard = renderOrderCard;
 
   return initManageOrders;
 });
