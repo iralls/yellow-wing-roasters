@@ -268,6 +268,62 @@
         applyFilters();
       }
     }
+
+    // 5. Layout View Switcher (Grid vs Compact vs List)
+    var gridEl = document.getElementById('roasts-grid');
+    var btnGrid = document.getElementById('view-grid-btn');
+    var btnCompact = document.getElementById('view-compact-btn');
+    var btnList = document.getElementById('view-list-btn');
+
+    if (btnGrid && btnList && gridEl) {
+      var viewBtns = [btnGrid, btnCompact, btnList].filter(Boolean);
+
+      function setView(view) {
+        gridEl.classList.toggle('roasts-grid--compact', view === 'compact');
+        gridEl.classList.toggle('roasts-grid--list', view === 'list');
+
+        viewBtns.forEach(function (btn) {
+          var isActive = btn.getAttribute('data-view') === view;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-pressed', isActive.toString());
+        });
+
+        try {
+          localStorage.setItem('ywr_catalog_view', view);
+        } catch (e) {
+          // localStorage may throw in restricted environments
+        }
+      }
+
+      viewBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setView(btn.getAttribute('data-view'));
+        });
+      });
+
+      // Allow clicking anywhere on a list row to navigate to roast details
+      gridEl.addEventListener('click', function (e) {
+        if (!gridEl.classList.contains('roasts-grid--list')) return;
+        if (e.target.closest('a, button')) return;
+        var card = e.target.closest('.roasts-entry');
+        if (card) {
+          var link = card.querySelector('a.roasts-entry-visual');
+          if (link) {
+            window.location.href = link.href;
+          }
+        }
+      });
+
+      // Restore saved view preference
+      try {
+        var savedView = localStorage.getItem('ywr_catalog_view');
+        if (savedView === 'compact' || savedView === 'list') {
+          setView(savedView);
+        }
+      } catch (e) {
+        // Ignore localStorage read errors
+      }
+    }
   }
 
   if (document.readyState === 'loading') {

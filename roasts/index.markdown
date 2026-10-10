@@ -57,20 +57,6 @@ permalink: /roasts/
   </div>
 
   <div class="filter-group">
-    <label for="filter-origin" class="roast-mv-meta-label">Origin</label>
-    <select id="filter-origin" class="subscribe-select">
-      <option value="">All Origins</option>
-    </select>
-  </div>
-  
-  <div class="filter-group">
-    <label for="filter-process" class="roast-mv-meta-label">Process</label>
-    <select id="filter-process" class="subscribe-select">
-      <option value="">All Processes</option>
-    </select>
-  </div>
-
-  <div class="filter-group">
     <label for="filter-brewing" class="roast-mv-meta-label">Brewing Method</label>
     <select id="filter-brewing" class="subscribe-select">
       <option value="">All Methods</option>
@@ -92,6 +78,43 @@ permalink: /roasts/
       <option value="organic">Organic</option>
       <option value="fair_trade_organic">Fair Trade Organic</option>
     </select>
+  </div>
+
+  <div class="filter-group filter-group--view">
+    <span class="roast-mv-meta-label">View</span>
+    <div class="view-switcher" role="group" aria-label="Layout view">
+      <button type="button" class="view-btn is-active" id="view-grid-btn" data-view="grid" aria-label="Standard grid view" title="Standard grid view" aria-pressed="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+        </svg>
+      </button>
+      <button type="button" class="view-btn" id="view-compact-btn" data-view="compact" aria-label="Compact grid view" title="Compact grid view" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="4" height="4" rx="0.75"></rect>
+          <rect x="10" y="3" width="4" height="4" rx="0.75"></rect>
+          <rect x="17" y="3" width="4" height="4" rx="0.75"></rect>
+          <rect x="3" y="10" width="4" height="4" rx="0.75"></rect>
+          <rect x="10" y="10" width="4" height="4" rx="0.75"></rect>
+          <rect x="17" y="10" width="4" height="4" rx="0.75"></rect>
+          <rect x="3" y="17" width="4" height="4" rx="0.75"></rect>
+          <rect x="10" y="17" width="4" height="4" rx="0.75"></rect>
+          <rect x="17" y="17" width="4" height="4" rx="0.75"></rect>
+        </svg>
+      </button>
+      <button type="button" class="view-btn" id="view-list-btn" data-view="list" aria-label="List view" title="List view" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 

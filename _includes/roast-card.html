@@ -153,7 +153,7 @@
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
-        <div class="roasts-entry-title">{{ r.card_title | default: r.title }}</div>
+        <div class="roasts-entry-title"><a href="{{ r.url | relative_url }}">{{ r.card_title | default: r.title }}</a></div>
         {% unless r.category == 'subscriptions' %}
           {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         {% endunless %}
