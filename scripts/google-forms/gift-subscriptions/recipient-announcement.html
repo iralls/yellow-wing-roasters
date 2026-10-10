@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
     <style>
       body {
@@ -9,6 +11,7 @@
         background-color: #fdfbf7;
         padding: 20px;
         margin: 0;
+        -webkit-font-smoothing: antialiased;
       }
       .card {
         max-width: 500px;
@@ -41,14 +44,15 @@
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        padding: 3px 8px;
+        padding: 4px 10px;
         border-radius: 999px;
         margin-bottom: 12px;
       }
       .greeting {
-        font-size: 16px;
+        font-size: 15px;
         line-height: 1.5;
         margin-bottom: 16px;
+        color: #2c1e14;
       }
       .gift-note {
         background: #fdfbf7;
@@ -59,6 +63,7 @@
         font-style: italic;
         color: #443022;
         line-height: 1.5;
+        font-size: 14px;
       }
       .gift-note-author {
         font-style: normal;
@@ -90,9 +95,9 @@
   <body>
     <div class="card">
       <div class="header">
-        <table border="0" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif;">
+        <table border="0" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; width: 100%;">
           <tr>
-            <td style="vertical-align: middle; padding-right: 12px;">
+            <td style="vertical-align: middle; padding-right: 12px; width: 60px;">
               <img src="cid:myResizedImage"
                    height="60"
                    alt="Yellow Wing Roasters"
@@ -107,18 +112,18 @@
 
       <span class="gift-badge">&#10003; Coffee Gift</span>
 
-      <p class="greeting">
-        Hi <strong><?= recipientName ?></strong>,
+      <p class="greeting" style="margin-top: 0;">
+        Hi <strong><?= recipientName || 'there' ?></strong>,
       </p>
 
       <p class="greeting">
-        Great news! <strong><?= purchaserName ?></strong> has sent you freshly roasted coffee from Yellow Wing Roasters!
+        Great news! <strong><?= purchaserName || 'A friend' ?></strong> has sent you freshly roasted coffee from Yellow Wing Roasters!
       </p>
 
       <? if (giftMessage) { ?>
       <div class="gift-note">
         “<?= giftMessage ?>”
-        <div class="gift-note-author">— <?= purchaserName ?></div>
+        <div class="gift-note-author">— <?= purchaserName || 'A friend' ?></div>
       </div>
       <? } ?>
 
