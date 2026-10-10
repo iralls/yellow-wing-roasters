@@ -5,6 +5,7 @@ category: single origin
 mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 rotating: true
+best_seller: true
 order: 3
 roast_level: 2
 region: Santander

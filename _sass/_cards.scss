@@ -1193,6 +1193,11 @@ $category-colors: (
   }
 }
 
+.roasts-entry-badge--inline,
+.roasts-entry-bestseller-badge--inline {
+  display: none;
+}
+
 .roasts-entry-subtitle {
   font-family: $font-display;
   font-weight: 700;
@@ -1368,9 +1373,8 @@ $category-colors: (
   }
 
   .roasts-entry-badge,
-  .roasts-entry-seasonal-badge,
-  .roasts-entry-fto-badge,
-  .roasts-entry-organic-badge {
+  .roasts-entry-bestseller-badge,
+  .roasts-entry-seasonal-badge {
     top: 0.55rem;
     font-size: 0.52rem;
     padding: 0.18rem 0.5rem;
@@ -1379,12 +1383,25 @@ $category-colors: (
 
   .roasts-entry-badge {
     left: 0.55rem;
+
+    &--best_seller {
+      left: auto;
+      right: 0.55rem;
+    }
   }
 
-  .roasts-entry-seasonal-badge,
+  .roasts-entry-bestseller-badge,
+  .roasts-entry-seasonal-badge {
+    right: 0.55rem;
+  }
+
   .roasts-entry-fto-badge,
   .roasts-entry-organic-badge {
+    bottom: 0.55rem;
     right: 0.55rem;
+    font-size: 0.52rem;
+    padding: 0.18rem 0.5rem;
+    letter-spacing: 0.05em;
   }
 
   .roasts-entry-overlay {
@@ -1573,7 +1590,8 @@ $category-colors: (
   .roasts-entry-badge,
   .roasts-entry-seasonal-badge,
   .roasts-entry-fto-badge,
-  .roasts-entry-organic-badge {
+  .roasts-entry-organic-badge,
+  .roasts-entry-bestseller-badge {
     display: none !important;
   }
 
@@ -1624,9 +1642,23 @@ $category-colors: (
   }
 
   .roasts-entry-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
     font-size: 1.05rem;
     line-height: 1.3;
     margin-bottom: 0.15rem;
+
+    .roasts-entry-badge--inline,
+    .roasts-entry-bestseller-badge--inline {
+      display: inline-flex !important;
+      position: static;
+      font-size: 0.58rem;
+      padding: 0.16rem 0.52rem;
+      vertical-align: middle;
+      box-shadow: 0 1px 3px rgba(44, 30, 20, 0.08);
+    }
   }
 
   .roasts-entry-subtitle {

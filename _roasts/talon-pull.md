@@ -9,6 +9,7 @@ tasting_notes: clean, smooth, warm spice, dark chocolate
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: red-shouldered-hawk
 mascot_file: red-shouldered-hawk-transparent.png
+best_seller: true
 price:
   12oz: 12
   1lb: 15

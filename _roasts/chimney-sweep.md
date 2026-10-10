@@ -10,6 +10,7 @@ tasting_notes: dark chocolate, stone fruit, brown sugar
 brewing_method: Espresso, Moka Pot, Drip
 mascot: chimney-swift
 mascot_file: audubon-chimney-swift-2-transparent.png
+best_seller: true
 origins:
   - Brazil Natural
   - Guatemala Washed

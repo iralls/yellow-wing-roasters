@@ -10,6 +10,7 @@ tasting_notes: creamy, sweet milk chocolate
 brewing_method: French Press, Moka Pot, Drip
 mascot: canary
 mascot_file: audubon-canary-transparent.png
+best_seller: true
 origins:
   - Bolivia Washed
   - Sumatra Wet-Hulled

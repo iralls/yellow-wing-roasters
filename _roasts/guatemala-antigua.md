@@ -14,6 +14,7 @@ origins:
   - Guatemala Washed
 mascot: osprey
 mascot_file: audubon-osprey-transparent.png
+best_seller: true
 price:
   12oz: 12
   1lb: 14

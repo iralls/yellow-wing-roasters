@@ -31,6 +31,11 @@ layout: default
 {% endif %}
 
 <div class="roast-mv-center">
+  {% if page.best_seller %}
+  <div class="roast-mv-bestseller-wrap">
+    <span class="roast-bestseller-badge">★ Best Seller</span>
+  </div>
+  {% endif %}
   <h1 class="roast-mv-title">{{ page.title }}</h1>
 </div>
 {% if page.subtitle %}<div class="roast-mv-subtitle">{{ page.subtitle }}</div>{% endif %}

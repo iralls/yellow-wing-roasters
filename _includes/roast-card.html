@@ -94,7 +94,11 @@
   <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{% if r.card_title %}{{ r.card_title }}{% if r.subtitle %} - {{ r.subtitle }}{% endif %}{% else %}{{ r.title | escape }}{% endif %}">
     {% unless include.hide_badges %}
       {% include roast-status-badge.html roast=r %}
-      {% if r.featured %}<div class="roasts-entry-seasonal-badge">Featured</div>{% endif %}
+      {% if r.best_seller %}
+        <div class="roasts-entry-badge roasts-entry-badge--best_seller">★ Best Seller</div>
+      {% elsif r.featured %}
+        <div class="roasts-entry-seasonal-badge">Featured</div>
+      {% endif %}
       {% if is_100_fto %}
         <div class="roasts-entry-fto-badge" title="Fair Trade Organic">FTO</div>
       {% elsif is_100_organic %}
@@ -153,7 +157,12 @@
   <div class="roasts-entry-info">
     <div class="roasts-entry-header">
       <div class="roasts-entry-main">
-        <div class="roasts-entry-title"><a href="{{ r.url | relative_url }}">{{ r.card_title | default: r.title }}</a></div>
+        <div class="roasts-entry-title">
+          <a href="{{ r.url | relative_url }}">{{ r.card_title | default: r.title }}</a>
+          {% if r.best_seller %}
+            <span class="roasts-entry-badge roasts-entry-badge--best_seller roasts-entry-badge--inline">★ Best Seller</span>
+          {% endif %}
+        </div>
         {% unless r.category == 'subscriptions' %}
           {% if r.subtitle %}<div class="roasts-entry-subtitle">{{ r.subtitle }}</div>{% endif %}
         {% endunless %}

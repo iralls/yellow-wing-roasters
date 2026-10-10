@@ -15,6 +15,7 @@ origins:
 certification: fair_trade_organic
 mascot: grey-catbird
 mascot_file: audubon-grey-catbird-transparent.png
+best_seller: true
 price:
   12oz: 12
   1lb: 15
