@@ -58,6 +58,22 @@
   {% assign is_100_organic = true %}
 {% endif %}
 
+{% assign card_profiles = "" | split: "," %}
+{% assign card_text = r.tasting_notes | append: " " | append: r.descriptor | downcase %}
+{% for profile in site.data.flavor_profiles %}
+  {% assign matched = false %}
+  {% for kw in profile.keywords %}
+    {% if card_text contains kw %}
+      {% assign matched = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if matched %}
+    {% assign card_profiles = card_profiles | push: profile.id %}
+  {% endif %}
+{% endfor %}
+{% assign flavor_list = card_profiles | join: "," %}
+
 <div class="roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if r.status == 'incubating' or r.status == 'flown_south' %} roasts-entry--soon{% endif %}"
    data-category="{{ r.category }}"
    data-type="{{ r.category | slugify }}"
@@ -72,6 +88,7 @@
    data-roast-level="{{ r.roast_level }}"
    data-tasting-notes="{{ r.tasting_notes | escape }}"
    data-descriptor="{{ r.descriptor | escape }}"
+   data-flavors="{{ flavor_list }}"
    data-status="{{ r.status }}"
    data-roast="{{ r.data_roast | default: r.slug }}">
   <a class="roasts-entry-visual" href="{{ r.url | relative_url }}" aria-label="{% if r.card_title %}{{ r.card_title }}{% if r.subtitle %} - {{ r.subtitle }}{% endif %}{% else %}{{ r.title | escape }}{% endif %}">

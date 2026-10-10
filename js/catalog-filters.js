@@ -11,8 +11,11 @@
     var selectOrigin = document.getElementById('filter-origin');
     var selectProcess = document.getElementById('filter-process');
     var selectLevel = document.getElementById('filter-level');
+    var selectFlavor = document.getElementById('filter-flavor');
     var selectBrewing = document.getElementById('filter-brewing');
     var selectCertification = document.getElementById('filter-certification') || document.getElementById('filter-fto');
+    var emptyState = document.getElementById('roasts-empty-filters');
+    var resetBtn = document.getElementById('reset-filters-btn');
 
     if (!cards.length || !selectOrigin || !selectLevel || !selectBrewing) return;
 
@@ -144,9 +147,11 @@
       var chosenOrigin = selectOrigin.value;
       var chosenProcess = selectProcess ? selectProcess.value : '';
       var chosenLevel = selectLevel.value;
+      var chosenFlavor = selectFlavor ? selectFlavor.value : '';
       var chosenBrewing = selectBrewing.value;
       var chosenCert = selectCertification ? selectCertification.value : '';
 
+      var totalVisible = 0;
 
       cards.forEach(function (card) {
         // Check type match
@@ -179,6 +184,15 @@
           }
         }
 
+        // Flavor profile match
+        var matchesFlavor = true;
+        if (chosenFlavor) {
+          var cardFlavors = (card.getAttribute('data-flavors') || '').split(',').map(function (s) {
+            return s.trim();
+          }).filter(Boolean);
+          matchesFlavor = cardFlavors.indexOf(chosenFlavor) >= 0;
+        }
+
         // Map brewing method
         var methodsList = JSON.parse(card.getAttribute('data-brewing-list') || '[]');
         var matchesBrewing = !chosenBrewing || methodsList.indexOf(chosenBrewing) >= 0;
@@ -192,8 +206,9 @@
         }
 
         // Show/Hide Card: ALL filters strictly ANDed together
-        if (matchesType && matchesBean && matchesLevel && matchesBrewing && matchesCert) {
+        if (matchesType && matchesBean && matchesLevel && matchesFlavor && matchesBrewing && matchesCert) {
           card.style.display = '';
+          totalVisible++;
         } else {
           card.style.display = 'none';
         }
@@ -209,6 +224,11 @@
         });
         breakEl.style.display = hasVisible ? '' : 'none';
       });
+
+      // Update empty filter state message
+      if (emptyState) {
+        emptyState.style.display = totalVisible === 0 ? 'block' : 'none';
+      }
     }
 
     // 4. Attach Event Listeners
@@ -216,11 +236,29 @@
     selectOrigin.addEventListener('change', applyFilters);
     if (selectProcess) selectProcess.addEventListener('change', applyFilters);
     selectLevel.addEventListener('change', applyFilters);
+    if (selectFlavor) selectFlavor.addEventListener('change', applyFilters);
     selectBrewing.addEventListener('change', applyFilters);
     if (selectCertification) selectCertification.addEventListener('change', applyFilters);
 
-    // Initial check for URL query parameters (e.g. ?organic=true, ?fto=true or ?certification=...)
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        if (selectCategory) selectCategory.value = '';
+        selectOrigin.value = '';
+        if (selectProcess) selectProcess.value = '';
+        selectLevel.value = '';
+        if (selectFlavor) selectFlavor.value = '';
+        selectBrewing.value = '';
+        if (selectCertification) selectCertification.value = '';
+        applyFilters();
+      });
+    }
+
+    // Initial check for URL query parameters (e.g. ?flavor=..., ?organic=true, ?fto=true or ?certification=...)
     var urlParams = new URLSearchParams(window.location.search);
+    if (selectFlavor && urlParams.get('flavor')) {
+      selectFlavor.value = urlParams.get('flavor');
+      applyFilters();
+    }
     if (selectCertification) {
       if (urlParams.get('organic') === 'true' || urlParams.get('certification') === 'organic') {
         selectCertification.value = 'organic';

@@ -47,6 +47,30 @@ permalink: /roasts/
   </div>
 
   <div class="filter-group">
+    <label for="filter-flavor" class="roast-mv-meta-label">Flavor Profile</label>
+    <select id="filter-flavor" class="subscribe-select">
+      <option value="">All Flavors</option>
+      {% for profile in site.data.flavor_profiles %}
+        <option value="{{ profile.id }}">{{ profile.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="filter-origin" class="roast-mv-meta-label">Origin</label>
+    <select id="filter-origin" class="subscribe-select">
+      <option value="">All Origins</option>
+    </select>
+  </div>
+  
+  <div class="filter-group">
+    <label for="filter-process" class="roast-mv-meta-label">Process</label>
+    <select id="filter-process" class="subscribe-select">
+      <option value="">All Processes</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
     <label for="filter-brewing" class="roast-mv-meta-label">Brewing Method</label>
     <select id="filter-brewing" class="subscribe-select">
       <option value="">All Methods</option>
@@ -79,6 +103,12 @@ permalink: /roasts/
   {% include category-section.html category="custom" title="Custom" show_break=true %}
   {% include category-section.html category="subscriptions" title="Subscriptions" show_break=true %}
   {% include category-section.html category="flight" title="Flights" show_break=true %}
+</div>
+
+<!-- Empty Filter State -->
+<div id="roasts-empty-filters" class="roasts-empty-state" style="display: none; text-align: center; margin: 3rem auto; max-width: 28rem;">
+  <p style="font-size: 1.05rem; color: #6e5e54; margin-bottom: 1.25rem;">No coffees match your current filter combination.</p>
+  <button type="button" id="reset-filters-btn" class="action-pill-btn btn-secondary-pill">Reset All Filters</button>
 </div>
 
 <!-- JavaScript for Dynamic Filters -->

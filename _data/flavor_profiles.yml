@@ -1,0 +1,99 @@
+- id: chocolate
+  name: "Chocolate & Cocoa"
+  keywords:
+    - chocolate
+    - cocoa
+    - cacao
+    - fudge
+    - mocha
+
+- id: fruits
+  name: "Fruity & Berry"
+  keywords:
+    - fruit
+    - fruits
+    - berry
+    - berries
+    - blackberry
+    - blueberry
+    - blueberries
+    - apple
+    - grape
+    - fig
+    - currant
+    - blackcurrant
+    - cranberry
+    - cherry
+    - stone fruit
+    - prune
+    - peach
+    - plum
+
+- id: citrus
+  name: "Citrus & Bright"
+  keywords:
+    - citrus
+    - lemon
+    - bergamot
+    - lime
+    - orange
+    - grapefruit
+    - tangerine
+    - citric
+    - bright
+
+- id: sweet
+  name: "Sweet & Caramel"
+  keywords:
+    - sweet
+    - sweetness
+    - caramel
+    - sugar
+    - brown sugar
+    - honey
+    - maple
+    - syrup
+    - molasses
+    - toffee
+    - vanilla
+
+- id: floral
+  name: "Floral & Tea"
+  keywords:
+    - floral
+    - florals
+    - flower
+    - rosewater
+    - jasmine
+    - honeysuckle
+    - tea
+    - black tea
+    - blossom
+    - lavender
+
+- id: nuts
+  name: "Nutty"
+  keywords:
+    - nut
+    - nuts
+    - nutty
+    - hazelnut
+    - pecan
+    - almond
+    - almonds
+    - walnut
+    - peanut
+    - cashew
+
+- id: spices
+  name: "Earthy & Spiced"
+  keywords:
+    - earthy
+    - spice
+    - spices
+    - spiced
+    - cinnamon
+    - cedar
+    - clove
+    - smoky
+    - smoke
