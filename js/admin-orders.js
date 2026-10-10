@@ -262,7 +262,6 @@
     var gateSection = document.getElementById('order-admin-gate-section');
     var gateForm = document.getElementById('order-admin-gate-form');
     var passcodeInput = document.getElementById('order-admin-passcode-input');
-    var rememberCheckbox = document.getElementById('order-admin-remember');
     var gateError = document.getElementById('order-admin-gate-error');
     var gateBtn = document.getElementById('order-admin-gate-btn');
 
@@ -281,22 +280,21 @@
     var selectedOrderId = null;
     var isMockModeActive = false;
     var isDeliveredCollapsed = true;
+    var isCancelledCollapsed = true;
 
     function getStoredKey() {
       try {
-        return sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY) || '';
+        return sessionStorage.getItem(STORAGE_KEY) || '';
       } catch (e) {
         return '';
       }
     }
 
-    function saveKey(key, remember) {
+    function saveKey(key) {
       try {
         sessionStorage.setItem(STORAGE_KEY, key);
-        if (remember) {
-          localStorage.setItem(STORAGE_KEY, key);
-        } else {
-          localStorage.removeItem(STORAGE_KEY);
+        if (typeof document !== 'undefined') {
+          document.documentElement.classList.add('ywr-admin-authenticated');
         }
       } catch (e) {}
     }
@@ -305,10 +303,16 @@
       try {
         sessionStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(STORAGE_KEY);
+        if (typeof document !== 'undefined') {
+          document.documentElement.classList.remove('ywr-admin-authenticated');
+        }
       } catch (e) {}
     }
 
     function showGate(errorMessage) {
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('ywr-admin-authenticated');
+      }
       if (dashboardSection) dashboardSection.style.display = 'none';
       if (gateSection) gateSection.style.display = 'block';
       if (gateError) {
@@ -326,6 +330,9 @@
     }
 
     function showDashboard() {
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.add('ywr-admin-authenticated');
+      }
       if (gateSection) gateSection.style.display = 'none';
       if (dashboardSection) dashboardSection.style.display = 'block';
     }
@@ -360,6 +367,47 @@
       statsContainer.innerHTML = html;
     }
 
+    function formatPrice(val) {
+      if (!val && val !== 0) return '';
+      var str = String(val).trim();
+      if (!str) return '';
+      var clean = str.replace(/^\$/, '').trim();
+      var num = parseFloat(clean);
+      if (!isNaN(num) && clean.match(/^\d+(\.\d+)?$/)) {
+        return '$' + num.toFixed(2);
+      }
+      if (str.charAt(0) === '$') return str;
+      return '$' + str;
+    }
+
+    function parseOrderItems(raw) {
+      if (!raw) return [];
+      var str = String(raw).trim();
+      if (!str) return [];
+
+      if (str.indexOf('\n') !== -1) {
+        return str.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+      }
+
+      var parts = [];
+      var current = '';
+      var depth = 0;
+      for (var i = 0; i < str.length; i++) {
+        var char = str[i];
+        if (char === '(') depth++;
+        else if (char === ')') depth = Math.max(0, depth - 1);
+
+        if (char === ',' && depth === 0) {
+          if (current.trim()) parts.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      if (current.trim()) parts.push(current.trim());
+      return parts;
+    }
+
     function renderInspector(order) {
       if (!order) {
         inspectorContainer.innerHTML = '<div class="order-admin-inspector-empty">Select an order from the queue to view details and update fulfillment status.</div>';
@@ -385,8 +433,31 @@
           '</div>';
       }
 
+      var itemLines = parseOrderItems(order.items);
+      var itemsBoxHtml = '';
+      if (itemLines.length === 0) {
+        itemsBoxHtml = '<div class="order-admin-items-box">No items listed</div>';
+      } else {
+        itemsBoxHtml = '<div class="order-admin-items-box">' +
+          '<ul class="order-admin-items-list">' +
+          itemLines.map(function (it) {
+            return '<li>' + escapeHtml(it) + '</li>';
+          }).join('') +
+          '</ul>' +
+          '</div>';
+      }
+
+      var formattedTotal = formatPrice(order.total);
+      var totalHtml = formattedTotal
+        ? '<span class="order-admin-inspector-divider" aria-hidden="true">|</span>' +
+          '<span class="order-admin-inspector-price">' + escapeHtml(formattedTotal) + '</span>'
+        : '';
+
       var html = '<div class="order-admin-inspector-header">' +
+        '<div class="order-admin-inspector-title-wrap">' +
         '<h3 class="order-admin-inspector-title">Order #' + escapeHtml(order.orderId) + '</h3>' +
+        totalHtml +
+        '</div>' +
         '<span class="status-badge ' + badgeClass + '">' + escapeHtml(order.status) + '</span>' +
         '</div>' +
 
@@ -403,8 +474,8 @@
         '</div>' +
 
         '<div class="order-admin-section-block">' +
-        '<div class="order-admin-section-label">Ordered Items (' + escapeHtml(order.total || '') + ')</div>' +
-        '<div class="order-admin-items-box">' + escapeHtml(order.items || 'No items listed') + '</div>' +
+        '<div class="order-admin-section-label">Ordered Items</div>' +
+        itemsBoxHtml +
         '</div>' +
 
         notesHtml +
@@ -483,13 +554,15 @@
             } else {
               order.status = newStatus;
               order.statusDetails = newDetails;
-              feedbackDiv.className = 'order-admin-feedback order-admin-feedback--success';
-              feedbackDiv.textContent = '✓ Order #' + order.orderId + ' updated to ' + newStatus + (shouldNotify ? ' (email sent)!' : ' (saved silently)!');
-              feedbackDiv.style.display = 'block';
 
               renderStats();
               renderQueue();
               renderInspector(order);
+
+              var newFeedbackDiv = document.getElementById('admin-status-feedback');
+              newFeedbackDiv.className = 'order-admin-feedback order-admin-feedback--success';
+              newFeedbackDiv.textContent = '✓ Order #' + order.orderId + ' updated to ' + newStatus + (shouldNotify ? ' (email sent)!' : ' (saved silently)!');
+              newFeedbackDiv.style.display = 'block';
             }
           });
         });
@@ -536,8 +609,17 @@
       var filtered = filterOrders(currentOrders, activeFilter, currentSearch);
 
       if (filtered.length === 0) {
+        selectedOrderId = null;
         queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">No orders match the selected filter.</div>';
+        renderInspector(null);
         return;
+      }
+
+      if (selectedOrderId) {
+        var isSelectedInFiltered = filtered.some(function (o) { return o.orderId === selectedOrderId; });
+        if (!isSelectedInFiltered) {
+          selectedOrderId = null;
+        }
       }
 
       queueContainer.innerHTML = '';
@@ -545,77 +627,74 @@
       if (activeFilter === 'all') {
         var activeOrders = [];
         var deliveredOrders = [];
+        var cancelledOrders = [];
         filtered.forEach(function (order) {
-          if ((order.status || '').toLowerCase() === 'delivered') {
+          var s = (order.status || '').toLowerCase();
+          if (s === 'delivered') {
             deliveredOrders.push(order);
+          } else if (s === 'cancelled') {
+            cancelledOrders.push(order);
           } else {
             activeOrders.push(order);
           }
         });
-
-        // Auto-select first order if current selection is not in filtered list
-        if (filtered.length > 0) {
-          var hasSelected = filtered.some(function (o) { return o.orderId === selectedOrderId; });
-          if (!hasSelected) {
-            selectedOrderId = activeOrders.length > 0 ? activeOrders[0].orderId : filtered[0].orderId;
-          }
-        }
 
         // Render active orders
         activeOrders.forEach(function (order) {
           queueContainer.appendChild(createCardElement(order));
         });
 
-        // Render collapsible delivered orders section
-        if (deliveredOrders.length > 0) {
+        function appendCollapsibleSection(title, orders, isCollapsed, setCollapsed) {
+          if (orders.length === 0) return;
+
           var collWrap = document.createElement('div');
           collWrap.className = 'order-admin-collapsible-wrap';
 
           var toggleBtn = document.createElement('button');
           toggleBtn.type = 'button';
           toggleBtn.className = 'order-admin-collapse-toggle';
-          toggleBtn.innerHTML = '<span class="order-admin-collapse-title">Delivered Orders (' + deliveredOrders.length + ')</span>' +
-            '<span class="order-admin-collapse-icon">' + (isDeliveredCollapsed ? '▶' : '▼') + '</span>';
+          toggleBtn.innerHTML = '<span class="order-admin-collapse-title">' + title + ' (' + orders.length + ')</span>' +
+            '<span class="order-admin-collapse-icon">' + (isCollapsed ? '▶' : '▼') + '</span>';
 
-          var deliveredContent = document.createElement('div');
-          deliveredContent.className = 'order-admin-collapsed-content';
-          deliveredContent.style.display = isDeliveredCollapsed ? 'none' : 'flex';
+          var content = document.createElement('div');
+          content.className = 'order-admin-collapsed-content';
+          content.style.display = isCollapsed ? 'none' : 'flex';
 
-          deliveredOrders.forEach(function (order) {
-            deliveredContent.appendChild(createCardElement(order));
+          orders.forEach(function (order) {
+            content.appendChild(createCardElement(order));
           });
 
           toggleBtn.addEventListener('click', function () {
-            isDeliveredCollapsed = !isDeliveredCollapsed;
-            deliveredContent.style.display = isDeliveredCollapsed ? 'none' : 'flex';
-            toggleBtn.querySelector('.order-admin-collapse-icon').textContent = isDeliveredCollapsed ? '▶' : '▼';
+            var next = !isCollapsed;
+            setCollapsed(next);
+            isCollapsed = next;
+            content.style.display = next ? 'none' : 'flex';
+            toggleBtn.querySelector('.order-admin-collapse-icon').textContent = next ? '▶' : '▼';
           });
 
           collWrap.appendChild(toggleBtn);
-          collWrap.appendChild(deliveredContent);
+          collWrap.appendChild(content);
           queueContainer.appendChild(collWrap);
         }
-      } else {
-        // Direct rendering when a specific filter is active (including 'delivered')
-        if (filtered.length > 0) {
-          var hasSelectedDirect = filtered.some(function (o) { return o.orderId === selectedOrderId; });
-          if (!hasSelectedDirect) {
-            selectedOrderId = filtered[0].orderId;
-          }
-        }
 
+        appendCollapsibleSection('Delivered Orders', deliveredOrders, isDeliveredCollapsed, function (c) {
+          isDeliveredCollapsed = c;
+        });
+
+        appendCollapsibleSection('Cancelled Orders', cancelledOrders, isCancelledCollapsed, function (c) {
+          isCancelledCollapsed = c;
+        });
+      } else {
+        // Direct rendering when a specific filter is active (including 'delivered' and 'cancelled')
         filtered.forEach(function (order) {
           queueContainer.appendChild(createCardElement(order));
         });
       }
 
-      // If an order was selected, make sure inspector displays it
-      if (selectedOrderId) {
-        var currentSelected = currentOrders.find(function (o) { return o.orderId === selectedOrderId; });
-        if (currentSelected) {
-          renderInspector(currentSelected);
-        }
-      }
+      var currentSelected = selectedOrderId
+        ? currentOrders.find(function (o) { return o.orderId === selectedOrderId; })
+        : null;
+      renderInspector(currentSelected);
     }
 
     function loadOrders(passcode, callback) {
@@ -717,12 +796,9 @@
             gateError.textContent = typeof err === 'string' ? err : 'Invalid roaster passcode. Please check your credentials.';
             gateError.style.display = 'block';
           } else {
-            saveKey(key, rememberCheckbox && rememberCheckbox.checked);
+            saveKey(key);
             showDashboard();
             renderStats();
-            if (orders.length > 0) {
-              selectedOrderId = orders[0].orderId;
-            }
             renderQueue();
           }
         });
@@ -789,16 +865,27 @@
     // Check stored key on init
     var storedKey = getStoredKey();
     if (storedKey) {
+      showDashboard();
+      queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">Loading orders...</div>';
+
       loadOrders(storedKey, function (err, orders) {
         if (err) {
-          clearStoredKey();
-          showGate('Previous session expired. Please enter your passcode again.');
-        } else {
-          showDashboard();
-          renderStats();
-          if (orders.length > 0) {
-            selectedOrderId = orders[0].orderId;
+          var isAuthFailure = typeof err === 'string' && (err.indexOf('Unauthorized') !== -1 || err.indexOf('Invalid') !== -1);
+          if (isAuthFailure) {
+            clearStoredKey();
+            showGate('Previous session expired. Please enter your passcode again.');
+          } else {
+            queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #c0392b; cursor: default;">' +
+              'Could not connect to live order API (' + escapeHtml(err) + ').<br>' +
+              '<button type="button" id="order-admin-retry-btn" class="order-admin-btn-sm" style="margin-top: 0.6rem; display: inline-block;">Retry Connection</button>' +
+              '</div>';
+            var retryBtn = document.getElementById('order-admin-retry-btn');
+            retryBtn.addEventListener('click', function () {
+              refreshBtn.click();
+            });
           }
+        } else {
+          renderStats();
           renderQueue();
         }
       });

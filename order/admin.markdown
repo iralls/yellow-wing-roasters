@@ -5,6 +5,20 @@ permalink: /order/admin/
 sitemap: false
 ---
 
+<script>
+  (function () {
+    try {
+      if (sessionStorage.getItem('ywr_admin_passcode')) {
+        document.documentElement.classList.add('ywr-admin-authenticated');
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  .ywr-admin-authenticated #order-admin-gate-section { display: none !important; }
+  .ywr-admin-authenticated #order-admin-dashboard-section { display: block !important; }
+</style>
+
 <div class="roast-minimal-vertical">
 <div class="order-admin-container">
 
@@ -26,10 +40,6 @@ sitemap: false
       <div>
         <input type="password" id="order-admin-passcode-input" class="order-admin-input" placeholder="Enter owner passcode..." required autocomplete="current-password" autofocus>
       </div>
-      <label class="order-admin-gate-checkbox">
-        <input type="checkbox" id="order-admin-remember">
-        <span>Remember on this device</span>
-      </label>
       <button type="submit" id="order-admin-gate-btn" class="order-admin-save-btn">Unlock Dashboard</button>
       <div id="order-admin-gate-error" class="order-admin-gate-error" style="display: none;"></div>
     </form>
@@ -43,7 +53,7 @@ sitemap: false
         <div id="order-admin-stats" class="order-admin-stats"></div>
         <div class="order-admin-actions">
           <button type="button" id="order-admin-refresh-btn" class="order-admin-btn-sm" title="Refresh order queue">Refresh</button>
-          <button type="button" id="order-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out and lock dashboard">Lock</button>
+          <button type="button" id="order-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out of order manager">Log Out</button>
         </div>
       </div>
       
