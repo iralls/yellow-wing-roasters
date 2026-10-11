@@ -1,0 +1,166 @@
+<!-- Sleek Header with Full Icon Lockup (Image + Text) & Multi-Destination Navigation -->
+<header class="sleek-main-header header-mode-hairline" id="sleek-main-header">
+
+  <!-- Centered Above Lockup (Visible when mode is 'above' or 'hairline') -->
+  <div class="sleek-brand-lockup-above-wrap">
+    <a href="{{ '/' | relative_url }}" class="sleek-brand-lockup-above">
+      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-brand-above-icon" width="231" height="800">
+      <div class="brand-header-name">Yellow Wing</div>
+      <div class="brand-header-sub">Roasters</div>
+    </a>
+  </div>
+</header>
+
+<!-- Sticky / Nav Bar Container (Direct sibling of header for full-page stickiness) -->
+<div class="sleek-sticky-navbar-wrap header-mode-hairline" id="sleek-sticky-navbar-wrap">
+  <div class="sleek-navbar-container">
+    <!-- Inline Left Lockup (Visible when mode is 'left' or when scrolled down) -->
+    <a href="{{ '/' | relative_url }}" class="sleek-brand-lockup-inline">
+      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-brand-inline-icon">
+      <div class="sleek-brand-inline-text">
+        <span class="sleek-brand-inline-name">Yellow Wing</span>
+        <span class="sleek-brand-inline-sub">Roasters</span>
+      </div>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="sleek-nav-links" aria-label="Main Navigation">
+      <!-- Coffee Dropdown (includes all roasts, flights, gifts, quiz) -->
+      <div class="sleek-nav-item sleek-nav-item--has-menu">
+        <button type="button" class="sleek-nav-link sleek-nav-trigger" aria-expanded="false">
+          <span>Coffee</span>
+          <span class="sleek-nav-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="sleek-nav-dropdown-menu">
+          <div class="sleek-nav-menu-header">Roasts & Offerings</div>
+          <a href="{{ '/roasts/' | relative_url }}" class="sleek-nav-dropdown-link">All Roasts</a>
+          <a href="{{ '/blends/' | relative_url }}" class="sleek-nav-dropdown-link">Blends</a>
+          <a href="{{ '/single-origins/' | relative_url }}" class="sleek-nav-dropdown-link">Single Origins</a>
+          <a href="{{ '/seasonals/' | relative_url }}" class="sleek-nav-dropdown-link">Seasonals</a>
+          <a href="{{ '/custom/' | relative_url }}" class="sleek-nav-dropdown-link">Custom</a>
+          <div class="sleek-nav-menu-divider"></div>
+          <div class="sleek-nav-menu-header">Tasting & Gifts</div>
+          <a href="{{ '/flights/' | relative_url }}" class="sleek-nav-dropdown-link">Sample Packs (Flights)</a>
+          <a href="{{ '/gift/' | relative_url }}" class="sleek-nav-dropdown-link">Gifts</a>
+          <a href="{{ '/quiz/' | relative_url }}" class="sleek-nav-dropdown-link">Coffee Quiz ✨</a>
+        </div>
+      </div>
+
+      <a href="{{ '/subscriptions/' | relative_url }}" class="sleek-nav-link">Subscriptions</a>
+      <a href="{{ '/about/' | relative_url }}" class="sleek-nav-link">About Us</a>
+
+      <!-- Orders Dropdown (Manage Order, Manage Subscriptions) -->
+      <div class="sleek-nav-item sleek-nav-item--has-menu">
+        <button type="button" class="sleek-nav-link sleek-nav-trigger" aria-expanded="false">
+          <span>Orders</span>
+          <span class="sleek-nav-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="sleek-nav-dropdown-menu">
+          <div class="sleek-nav-menu-header">Account & Orders</div>
+          <a href="{{ '/order/manage/' | relative_url }}" class="sleek-nav-dropdown-link">Manage Order</a>
+          <a href="{{ '/subscriptions/manage/' | relative_url }}" class="sleek-nav-dropdown-link">Manage Subscription</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Right Side Actions: Cart Indicator & Mobile Toggle -->
+    <div class="sleek-nav-actions">
+      <div class="cart-indicator-wrap sleek-cart-wrap" id="ywr-cart-wrap">
+        <a href="{{ '/order/' | relative_url }}" class="sleek-nav-cart-btn" id="ywr-cart-indicator" aria-label="Shopping Cart" aria-haspopup="dialog" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="sleek-nav-cart-label">Cart</span>
+          <span class="sleek-nav-cart-count" id="ywr-cart-count">0</span>
+        </a>
+
+        <div class="cart-dropdown-pane" id="ywr-cart-pane">
+          <div class="cart-dropdown" id="ywr-cart-dropdown" role="region" aria-label="Shopping cart preview">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="sleek-nav-mobile-toggle" id="sleek-nav-mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll Listener: Elevates Floating Navbar & Reveals Inline Brand Lockup on Left
+  const navbarWrapEl = document.getElementById('sleek-sticky-navbar-wrap');
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        if (navbarWrapEl) {
+          navbarWrapEl.classList.toggle('is-stuck', window.scrollY > 80);
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Dropdown Menu Toggles for Mobile / Keyboard
+  const navTriggers = document.querySelectorAll('.sleek-nav-trigger');
+  navTriggers.forEach(trig => {
+    trig.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const parent = trig.closest('.sleek-nav-item');
+      const isOpen = parent.classList.contains('is-open');
+
+      document.querySelectorAll('.sleek-nav-item').forEach(item => item.classList.remove('is-open'));
+      if (!isOpen) {
+        parent.classList.add('is-open');
+        trig.setAttribute('aria-expanded', 'true');
+      } else {
+        trig.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Mobile Menu Toggle
+  const mobileToggle = document.getElementById('sleek-nav-mobile-toggle');
+  const navLinks = document.querySelector('.sleek-nav-links');
+  if (mobileToggle && navLinks) {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = navLinks.classList.toggle('is-mobile-open');
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  document.addEventListener('click', () => {
+    if (navLinks) navLinks.classList.remove('is-mobile-open');
+    if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'false');
+    document.querySelectorAll('.sleek-nav-item').forEach(item => {
+      item.classList.remove('is-open');
+      const trig = item.querySelector('.sleek-nav-trigger');
+      if (trig) trig.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+{% assign roasts_url = '/roasts/' | relative_url %}
+{% assign order_url = '/order/' | relative_url %}
+{% assign images_base = '/images/' | relative_url %}
+
+<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/cart.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script>
+  initYWRCart({
+    ROASTS_URL: {{ roasts_url | jsonify }},
+    ORDER_URL: {{ order_url | jsonify }},
+    IMAGES_BASE: {{ images_base | jsonify }}
+  });
+</script>

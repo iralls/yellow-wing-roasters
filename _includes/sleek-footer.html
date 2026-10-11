@@ -1,0 +1,111 @@
+<!-- Sleek Comprehensive Bottom Navigation Footer -->
+<footer class="sleek-bottom-nav-footer">
+  <div class="sleek-footer-container">
+    <div class="sleek-footer-grid">
+      <!-- Col 1: Brand & Heritage -->
+      <div class="sleek-footer-col sleek-footer-col--brand">
+        <a href="{{ '/' | relative_url }}" class="sleek-footer-brand-lockup">
+          <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-footer-feather-icon" width="231" height="800">
+          <div class="sleek-footer-brand-title brand-header-name">Yellow Wing</div>
+          <div class="sleek-footer-brand-sub brand-header-sub">Roasters</div>
+        </a>
+        <p class="sleek-footer-tagline">
+          We craft flavors we love, and hope you will too.
+        </p>
+
+        <!-- Minimal Pigeon Post Signup within Grid -->
+        <div class="sleek-footer-signup">
+          <div class="sleek-footer-signup-heading">Pigeon Post</div>
+          <p class="sleek-footer-signup-desc">
+            New micro-lots, seasonal roasts, and restocks delivered to your inbox.
+          </p>
+          <form action="{{ site.google_forms.pigeon_post.url }}" method="POST" class="sleek-footer-signup-form" id="footer-pigeon-post-form">
+            <input type="email" name="{{ site.google_forms.pigeon_post.entries.email }}" placeholder="your@email.com" aria-label="Email address for Pigeon Post" autocomplete="email" required class="sleek-footer-signup-input">
+            <button type="submit" class="sleek-footer-signup-btn" id="footer-pigeon-post-submit">Subscribe</button>
+          </form>
+          <div class="sleek-footer-signup-status" id="footer-pigeon-post-status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Col 2: Coffee & Gifts -->
+      <div class="sleek-footer-col">
+        <div class="sleek-footer-heading">Coffee & Gifts</div>
+        <ul class="sleek-footer-links-list">
+          <li><a href="{{ '/roasts/' | relative_url }}">All Roasts</a></li>
+          <li><a href="{{ '/blends/' | relative_url }}">Blends</a></li>
+          <li><a href="{{ '/single-origins/' | relative_url }}">Single Origins</a></li>
+          <li><a href="{{ '/seasonals/' | relative_url }}">Seasonal Roasts</a></li>
+          <li><a href="{{ '/flights/' | relative_url }}">Sample Packs (Flights)</a></li>
+          <li><a href="{{ '/gift/' | relative_url }}">Gift Boxes & Sets</a></li>
+          <li><a href="{{ '/custom/' | relative_url }}">Custom Blends</a></li>
+          <li><a href="{{ '/quiz/' | relative_url }}">Coffee Match Quiz ✨</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Orders & Subscriptions -->
+      <div class="sleek-footer-col">
+        <div class="sleek-footer-heading">Orders & Care</div>
+        <ul class="sleek-footer-links-list">
+          <li><a href="{{ '/subscriptions/' | relative_url }}">Coffee Subscriptions</a></li>
+          <li><a href="{{ '/subscriptions/manage/' | relative_url }}">Manage Subscriptions</a></li>
+          <li><a href="{{ '/order/manage/' | relative_url }}">Manage / Track Order</a></li>
+          <li><a href="{{ '/order/' | relative_url }}">Shopping Cart</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Community & Roastery -->
+      <div class="sleek-footer-col">
+        <div class="sleek-footer-heading">Our Roastery</div>
+        <ul class="sleek-footer-links-list">
+          <li><a href="{{ '/about/' | relative_url }}">About Us</a></li>
+          <li><a href="{{ '/partners/' | relative_url }}">Partner Roasts</a></li>
+          <li><a href="{{ '/pigeon-post/' | relative_url }}">Pigeon Post (Mailing List)</a></li>
+          <li><a href="{{ '/feedback/' | relative_url }}">Customer Feedback</a></li>
+          <li><a href="https://www.instagram.com/yellowwingroasters/" target="_blank" rel="noopener noreferrer">Instagram (@yellowwingroasters)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Classic brand feather icon & est 2026 -->
+    <div class="sleek-footer-bottom-bar">
+      <div class="site-footer-link site-footer-mark">
+        <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="site-footer-logo-icon" width="231" height="800" loading="lazy" decoding="async">
+        <div class="site-footer-est">est 2026</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('footer-pigeon-post-form');
+    if (!form) return;
+    var status = document.getElementById('footer-pigeon-post-status');
+    var submitBtn = document.getElementById('footer-pigeon-post-submit');
+
+    var iframe = document.createElement('iframe');
+    iframe.name = 'footer-pigeon-post-frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    form.target = 'footer-pigeon-post-frame';
+
+    form.addEventListener('submit', function () {
+      if (status) {
+        status.textContent = 'Sending…';
+        status.style.color = '#776558';
+      }
+      if (submitBtn) submitBtn.disabled = true;
+
+      iframe.onload = function () {
+        form.style.display = 'none';
+        var desc = form.previousElementSibling;
+        if (desc && desc.classList.contains('sleek-footer-signup-desc')) desc.style.display = 'none';
+        if (status) {
+          status.textContent = "You're subscribed! Keep an eye on your inbox. 🕊️";
+          status.style.color = '#2e7d32';
+          status.style.fontWeight = '700';
+        }
+      };
+    });
+  })();
+</script>

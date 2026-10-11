@@ -1,0 +1,22 @@
+<div class="sleek-suite-nav">
+  <div class="sleek-suite-badge">
+    <span>✨ Sleek / Minimal Redesign Lab</span>
+  </div>
+  <nav class="sleek-suite-links" aria-label="Sleek Preview Navigation">
+    <a href="{{ '/sleek-preview/' | relative_url }}" class="sleek-suite-link{% if include.active == 'studio' %} is-active{% endif %}">
+      🎛️ Design Studio
+    </a>
+    <a href="{{ '/sleek-preview/home/' | relative_url }}" class="sleek-suite-link{% if include.active == 'home' %} is-active{% endif %}">
+      🏠 Minimal Homepage
+    </a>
+    <a href="{{ '/sleek-preview/catalog/' | relative_url }}" class="sleek-suite-link{% if include.active == 'catalog' %} is-active{% endif %}">
+      ☕ Sleek Catalog
+    </a>
+    <a href="{{ '/sleek-preview/roast-detail/' | relative_url }}" class="sleek-suite-link{% if include.active == 'detail' %} is-active{% endif %}">
+      🏷️ Studio Roast Detail
+    </a>
+    <a href="{{ '/roasts/' | relative_url }}" class="sleek-suite-link sleek-suite-link--exit" title="Exit to production catalog">
+      ✕ Exit
+    </a>
+  </nav>
+</div>

@@ -137,11 +137,6 @@
     };
 
     function update() {
-      var indicator = document.getElementById('ywr-cart-indicator');
-      var el = document.getElementById('ywr-cart-count');
-      var dropdown = document.getElementById('ywr-cart-dropdown');
-      if (!indicator || !el || !dropdown) return;
-
       var cartList = Object.values(getCart());
       var total = 0;
       var items = [];
@@ -156,7 +151,7 @@
           if (it.roastLevel) metaParts.push(it.roastLevel);
           if (it.grind) metaParts.push(it.grind);
           if (it.frequency) metaParts.push(it.frequency);
-          if (it.subtitle && it.type === 'flight') metaParts.push(it.subtitle);
+          if (it.subtitle && it.type === 'flight') metaParts.push('Picks: ' + it.subtitle);
 
           items.push({
             id: it.id,
@@ -172,6 +167,16 @@
           subtotal += lineTotal;
         }
       });
+
+      var sleekEl = document.getElementById('sleek-header-cart-count');
+      if (sleekEl) {
+        sleekEl.textContent = total;
+      }
+
+      var indicator = document.getElementById('ywr-cart-indicator');
+      var el = document.getElementById('ywr-cart-count');
+      var dropdown = document.getElementById('ywr-cart-dropdown');
+      if (!indicator || !el || !dropdown) return;
 
       el.textContent = total;
       indicator.classList.toggle('cart-indicator-empty', total === 0);

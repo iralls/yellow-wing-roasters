@@ -803,6 +803,15 @@
   flex-wrap: wrap;
 }
 
+.order-cart-card-picks {
+  font-size: 0.76rem;
+  color: #705b4d;
+  margin-top: 0.25rem;
+  line-height: 1.35;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
 .order-cart-card-actions {
   display: flex;
   flex-direction: column;

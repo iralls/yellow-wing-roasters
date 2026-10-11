@@ -316,12 +316,15 @@
 .quiz-results-container {
   width: 100%;
 
+  .sleek-comparison-grid,
   .roasts-grid {
+    .sleek-roast-card,
     .roasts-entry {
       height: 100%;
     }
   }
 }
+
 
 .quiz-empty-results {
   text-align: center;

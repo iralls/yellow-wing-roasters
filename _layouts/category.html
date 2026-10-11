@@ -2,14 +2,22 @@
 layout: default
 ---
 
-<h1>{{ page.title }}</h1>
-
-{% if page.intro %}
-<p class="category-intro">{{ page.intro }}</p>
-{% endif %}
+<div class="roasts-header-row" style="margin-top: 2rem; margin-bottom: 1.5rem; align-items: flex-start;">
+  <div class="roasts-header-main" style="flex: 1; min-width: 280px;">
+    <h1 class="roasts-page-title">{{ page.title }}</h1>
+    {% if page.intro %}
+      <p class="category-intro">{{ page.intro }}</p>
+    {% endif %}
+  </div>
+  <a href="{{ '/quiz/' | relative_url }}" class="roasts-quiz-cta" title="Find your match" style="margin-top: 0.25rem;">
+    <span class="roasts-quiz-cta-icon" aria-hidden="true">✨</span>
+    <span>Find Your Match</span>
+    <span class="roasts-quiz-cta-arrow" aria-hidden="true">&rarr;</span>
+  </a>
+</div>
 
 {{ content }}
 
-<div class="roasts-grid">
+<div class="sleek-comparison-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 4rem;">
   {% include category-section.html category=page.category %}
 </div>

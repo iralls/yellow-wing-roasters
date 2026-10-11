@@ -429,7 +429,7 @@
     }
 
     // Score all roasts from the hidden pre-rendered pool
-    var poolCards = document.querySelectorAll('.quiz-pool .roasts-entry');
+    var poolCards = document.querySelectorAll('.quiz-pool .sleek-roast-card, .quiz-pool .roasts-entry');
     var scoredRoasts = [];
 
     poolCards.forEach(function(card) {

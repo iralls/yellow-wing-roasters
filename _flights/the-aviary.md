@@ -17,14 +17,15 @@ overlay_notes: "a range of four blends, from bright and floral to dark and smoky
 
 {% assign aviary_slugs = "early-bird,feather-soot,chimney-sweep,lil-sipper" | split: "," %}
 
-<div class="aviary-grid">
+<div class="sleek-comparison-grid aviary-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); text-align: left; margin-bottom: 2.5rem;">
   {% for slug in aviary_slugs %}
     {% assign r = site.roasts | where: "slug", slug | first %}
     {% if r %}
-      {% include roast-card.html roast=r card_class="aviary-card" hide_price=true hide_quick_add=true hide_overlay=true hide_badges=true %}
+      {% include roast-card.html roast=r card_class="aviary-card" hide_price=true %}
     {% endif %}
   {% endfor %}
 </div>
+
 
 <p class="roast-mv-body" style="font-size: 0.85rem; color: #8a7060; font-style: italic; margin-top: -0.5rem; margin-bottom: 2rem;">Brewing method varies by blend — click any roast for full profile and brew details.</p>
 

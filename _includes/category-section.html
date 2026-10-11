@@ -24,6 +24,7 @@
   {% assign items = cat_active | concat: cat_incubating | concat: cat_flown %}
 {% endif %}
 
-{% for item in items %}
-  {% include roast-card.html roast=item %}
+{% for r in items %}
+  {% include roast-card.html roast=r %}
 {% endfor %}
+

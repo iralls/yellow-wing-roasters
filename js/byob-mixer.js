@@ -451,6 +451,10 @@
         validateForm();
       });
 
+      if (window.initPillSelect && window.initPillSelect.enhance) {
+        window.initPillSelect.enhance(select, 'Roast');
+      }
+
       // Listen for remove button click
       var removeBtn = item.querySelector('.remove-bean-btn');
       removeBtn.addEventListener('click', function () {

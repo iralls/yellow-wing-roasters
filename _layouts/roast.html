@@ -14,106 +14,16 @@ layout: default
 {% assign first_size = sizes.first %}
 {% assign last_size = sizes.last %}
 
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-divider"></div>
-
-{% if page.mascot_grid %}
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <div class="mascot-grid mascot-grid-lg">{% for m in page.mascot_grid %}<img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">{% endfor %}</div>
-</div>
-{% elsif page.mascot_file %}
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
-  {% assign m_name = site.data.mascots[page.mascot] %}
-  {% if m_name %}<div class="roast-mv-bird-label">{{ m_name }}</div>{% endif %}
-</div>
+{% assign first_price = roast_prices[first_size] %}
+{% assign first_eff = first_price %}
+{% if page.temporary_price and page.temporary_price[first_size] %}
+  {% assign first_eff = page.temporary_price[first_size] %}
 {% endif %}
-
-<div class="roast-mv-center">
-  {% if page.best_seller %}
-  <div class="roast-mv-bestseller-wrap">
-    <span class="roast-bestseller-badge">★ Best Seller</span>
-  </div>
-  {% endif %}
-  <h1 class="roast-mv-title">{{ page.title }}</h1>
-</div>
-{% if page.subtitle %}<div class="roast-mv-subtitle">{{ page.subtitle }}</div>{% endif %}
 
 {% if page.status %}
   {% assign p_status_info = site.data.statuses[page.status] %}
   {% assign p_status_badge = p_status_info.badge %}
   {% assign p_status_text = p_status_info.banner_text %}
-{% endif %}
-
-{% if p_status_info %}
-<div class="roast-status-bar roast-status-bar--{{ page.status }}">
-  <span class="roast-status-bar-badge roast-status-bar-badge--{{ page.status }}">{{ p_status_badge }}</span>
-  <span class="roast-status-bar-text">{{ p_status_text }}</span>
-</div>
-{% endif %}
-
-{% if page.tasting_notes %}<p class="roast-mv-tasting">{{ page.tasting_notes | replace: ", ", " · " | downcase }}</p>{% endif %}
-
-{% if page.roast_level %}
-{% assign level_info = site.data.roast_levels[page.roast_level] %}
-{% assign roast_dots = level_info.dots %}
-{% assign roast_level_name = level_info.name %}
-<div class="roast-mv-roast-level-header">
-  <div class="roast-mv-meta-label">Roast Level</div>
-  {% include roast-dots.html dots=roast_dots %}
-  <div class="roast-mv-roast-level-name">{{ roast_level_name }}</div>
-</div>
-{% endif %}
-
-<div class="roast-mv-meta-row">
-  {% if page.region %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Region</div>
-    <div class="roast-mv-meta-value">{{ page.region }}</div>
-  </div>
-  {% endif %}
-  {% if page.elevation %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Elevation</div>
-    <div class="roast-mv-meta-value">{{ page.elevation }}</div>
-  </div>
-  {% endif %}
-  {% if page.processing_method %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Processing Method</div>
-    <div class="roast-mv-meta-value">{{ page.processing_method }}</div>
-  </div>
-  {% endif %}
-  {% if page.brewing_method %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Brewing</div>
-    <div class="roast-mv-meta-value">{{ page.brewing_method }}</div>
-  </div>
-  {% endif %}
-  {% if page.certification == "fair_trade_organic" %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Certification</div>
-    <div class="roast-mv-meta-value">Fair Trade Organic</div>
-  </div>
-  {% elsif page.certification == "organic" %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Certification</div>
-    <div class="roast-mv-meta-value">Organic</div>
-  </div>
-  {% endif %}
-  {% if page.roast_profile %}
-  <div class="roast-mv-meta-item">
-    <div class="roast-mv-meta-label">Profile</div>
-    <div class="roast-mv-meta-value"><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></div>
-  </div>
-  {% endif %}
-</div>
-
-<div class="roast-mv-divider"></div>
-
-{% if page.description and page.description != "" %}
-<div class="roast-mv-body">{{ page.description | markdownify }}</div>
 {% endif %}
 
 {% assign is_orderable = true %}
@@ -133,113 +43,287 @@ layout: default
   {% assign freqs = sub_config.frequencies %}
 {% endif %}
 
-<div class="roast-mv-center roast-mv-center--mt-sm">
-  <label for="order-size-select" class="roast-mv-meta-label">Roast Amount</label>
-  <select id="order-size-select" class="subscribe-select" data-label="Amount"{% unless is_orderable %} disabled{% endunless %}>
-    {% for s in sizes %}
-      <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
-    {% endfor %}
-  </select>
+<div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 700; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+    &larr; Back to All Roasts
+  </a>
 </div>
 
-<div class="roast-mv-center roast-mv-center--mt-sm">
-  <label for="order-grind-select" class="roast-mv-meta-label">Grind</label>
-  <select id="order-grind-select" class="subscribe-select" data-label="Grind"{% unless is_orderable %} disabled{% endunless %}>
-    {% include grind-options.html %}
-  </select>
-</div>
+<div class="sleek-detail-layout">
+  <!-- Left Column: Artwork Showcase & Description -->
+  <div class="sleek-detail-visual-col">
+    {% if page.mascot_grid %}
+      <div class="mascot-grid mascot-grid-lg">
+        {% for m in page.mascot_grid %}
+          <img src="{{ '/images/' | append: m | relative_url }}" alt="" class="mascot-grid-item" aria-hidden="true" fetchpriority="high" decoding="async">
+        {% endfor %}
+      </div>
+    {% elsif page.mascot_file %}
+      <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
+      {% assign m_name = site.data.mascots[page.mascot] %}
+      {% if m_name %}
+        <div class="sleek-detail-bird-label">{{ m_name }}</div>
+      {% endif %}
+    {% endif %}
 
-{% if sub_available %}
-<div class="roast-mv-center roast-mv-center--mt-sm">
-  <label class="roast-mv-meta-label">Purchase Option</label>
-  <div class="roast-purchase-toggle" role="radiogroup" aria-label="Purchase Option">
-    <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %}>One-Time Purchase</button>
-    <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %}>Subscribe</button>
-  </div>
-</div>
-{% endif %}
-
-{% if sub_available %}
-<div id="sub-details-panel" class="roast-mv-center roast-mv-center--mt-sm" style="display: none;">
-  <label for="sub-freq-select" class="roast-mv-meta-label">Frequency</label>
-  <select id="sub-freq-select" class="subscribe-select" data-label="Frequency"{% unless is_orderable %} disabled{% endunless %}>
-    {% for f in freqs %}
-      <option value="{{ f }}">{{ f }}</option>
-    {% endfor %}
-  </select>
-</div>
-{% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
-  <p class="coming-soon-footnote">{{ p_status_info.sub_footnote }}</p>
-{% endif %}
-
-<div class="roast-mv-center roast-mv-center--mt-lg">
-  {% assign first_price = roast_prices[first_size] %}
-  {% assign first_eff = first_price %}
-  {% if page.temporary_price and page.temporary_price[first_size] %}
-    {% assign first_eff = page.temporary_price[first_size] %}
-  {% endif %}
-  <div class="roast-detail-price-line" id="roast-detail-price">
-    {% if first_eff and first_eff < first_price %}
-      <s>${{ first_price }}</s> <span class="temp-val">${{ first_eff }}</span>
-    {% else %}
-      ${{ first_eff }}
+    {% if page.description and page.description != "" %}
+      <div style="font-family: Lora, serif; font-size: 0.95rem; color: #6e5e54; line-height: 1.65; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.08); padding-top: 1.5rem; text-align: left; width: 100%;">
+        {{ page.description | markdownify }}
+      </div>
     {% endif %}
   </div>
-  <button class="add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>Add to Cart</button>
-</div>
 
-{% unless is_orderable %}<p class="coming-soon-footnote">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>{% endunless %}
+  <!-- Right Column: Purchasing, Specifications & Lot History -->
+  <div class="sleek-detail-info-col">
+    <!-- Category & Status Badges -->
+    <div class="sleek-detail-category-row">
+      <span class="sleek-detail-cat-badge">{{ page.category }}</span>
+      {% if page.best_seller %}
+        <span class="sleek-detail-cat-badge sleek-detail-cat-badge--bestseller">&starf; Best Seller</span>
+      {% endif %}
+      {% if page.certification == "fair_trade_organic" %}
+        <span class="sleek-detail-cat-badge sleek-detail-cat-badge--organic">Fair Trade Organic</span>
+      {% elsif page.certification == "organic" %}
+        <span class="sleek-detail-cat-badge sleek-detail-cat-badge--organic">Organic</span>
+      {% endif %}
+    </div>
 
-{% if page.origins and page.category != 'single origin' %}
-<div class="roast-mv-divider"></div>
-<div class="roast-mv-center roast-mv-center--mb-sm">
-  <div class="roast-mv-meta-label">Component Origins</div>
-</div>
-<ul class="roast-mv-comp-list">
-  {% for o in page.origins %}
-  <li>{{ o }}</li>
-  {% endfor %}
-</ul>
-{% elsif page.components %}
-<div class="roast-mv-divider"></div>
-<div class="roast-mv-center roast-mv-center--mb-sm">
-  <div class="roast-mv-meta-label">Component Origins</div>
-</div>
-<ul class="roast-mv-comp-list">
-  {% for c in page.components %}
-  <li>{{ c.name }}{% if c.profile %} <a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>(.alog)</a>{% endif %}</li>
-  {% endfor %}
-</ul>
-{% endif %}
+    <!-- Title & Subtitle -->
+    <h1 class="sleek-detail-title">{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <div class="sleek-detail-subtitle">{{ page.subtitle }}</div>
+    {% endif %}
 
-{% if page.history and page.history.size > 0 %}
-<div class="roast-mv-center">
-  <details class="roast-mv-history">
-    <summary>{% if page.category == 'single origin' %}Lot History{% else %}Recipe History{% endif %}</summary>
-    <div class="roast-mv-history-content">
-      {% for recipe in page.history %}
-      <div class="roast-mv-history-item">
-        <div class="roast-mv-history-date">{{ recipe.date | default: recipe.version | default: recipe.season }}{% if forloop.first %} (Current){% endif %}</div>
-        {% if recipe.components %}
-        <ul class="roast-mv-comp-list">
-          {% for c in recipe.components %}
-          <li>
-            {% if c.slug %}<a href="{{ '/roasts/' | append: c.slug | append: '/' | relative_url }}" class="roast-comp-link">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ratio %} <span class="roast-comp-ratio">{{ c.ratio }}</span>{% endif %}{% if c.roast_level %} <span class="roast-comp-level">({{ c.roast_level }})</span>{% endif %}{% if c.profile %} <a href="{{ c.profile | relative_url }}" class="roast-profile-link" download>(.alog)</a>{% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-        {% if recipe.description %}
-        <p class="roast-mv-history-desc">{{ recipe.description }}</p>
+    <!-- Status Banner -->
+    {% if p_status_info %}
+      <div class="roast-status-bar roast-status-bar--{{ page.status }}" style="margin-bottom: 1.25rem;">
+        <span class="roast-status-bar-badge roast-status-bar-badge--{{ page.status }}">{{ p_status_badge }}</span>
+        <span class="roast-status-bar-text">{{ p_status_text }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Tasting Notes / Descriptor Banner -->
+    {% if page.descriptor or page.tasting_notes %}
+      <div class="sleek-detail-tasting-banner">
+        {% if page.descriptor and page.tasting_notes %}
+          "{{ page.descriptor | capitalize }} &mdash; {{ page.tasting_notes | replace: ", ", " &middot; " }}"
+        {% elsif page.descriptor %}
+          "{{ page.descriptor | capitalize }}"
+        {% elsif page.tasting_notes %}
+          "{{ page.tasting_notes | replace: ", ", " &middot; " }}"
         {% endif %}
       </div>
-      {% endfor %}
-    </div>
-  </details>
-</div>
-{% endif %}
+    {% endif %}
 
+    <!-- Roast Level Dots & Name -->
+    {% if page.roast_level %}
+      {% assign level_info = site.data.roast_levels[page.roast_level] %}
+      <div class="sleek-detail-roast-level">
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        {% include roast-dots.html dots=level_info.dots %}
+        <span class="sleek-detail-roast-name">{{ level_info.name }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Tactile Buy Box -->
+    <div class="sleek-detail-buy-box">
+      <div class="sleek-buy-price-row">
+        <div>
+          <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+          <span class="sleek-buy-price-val" id="roast-detail-price">
+            {% if first_eff and first_eff < first_price %}
+              <s>${{ first_price }}</s> <span class="temp-val">${{ first_eff }}</span>
+            {% else %}
+              ${{ first_eff }}
+            {% endif %}
+          </span>
+        </div>
+        <span class="sleek-buy-price-note">Roasted to order &middot; Ships fresh</span>
+      </div>
+
+      <div class="sleek-buy-field">
+        <label for="order-size-select">Bag Size</label>
+        <select id="order-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;"{% unless is_orderable %} disabled{% endunless %}>
+          {% for s in sizes %}
+            <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="sleek-buy-field">
+        <label for="order-grind-select">Grind Preparation</label>
+        <select id="order-grind-select" class="subscribe-select" data-label="Grind" style="width: 100%;"{% unless is_orderable %} disabled{% endunless %}>
+          {% include grind-options.html %}
+        </select>
+      </div>
+
+      {% if sub_available %}
+        <div class="sleek-buy-field">
+          <label>Purchase Option</label>
+          <div class="roast-purchase-toggle" role="radiogroup" aria-label="Purchase Option" style="display: flex; gap: 0.5rem; width: 100%;">
+            <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem;">One-Time Purchase</button>
+            <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem;">Subscribe</button>
+          </div>
+        </div>
+        <div id="sub-details-panel" class="sleek-buy-field" style="display: none;">
+          <label for="sub-freq-select">Delivery Frequency</label>
+          <select id="sub-freq-select" class="subscribe-select" data-label="Frequency" style="width: 100%;"{% unless is_orderable %} disabled{% endunless %}>
+            {% for f in freqs %}
+              <option value="{{ f }}">{{ f }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% elsif sub_config and p_status_info and p_status_info.sub_footnote %}
+        <p class="coming-soon-footnote">{{ p_status_info.sub_footnote }}</p>
+      {% endif %}
+
+      <button type="button" class="sleek-buy-add-btn add-to-order-btn" id="add-to-cart-btn"{% unless is_orderable %} disabled{% endunless %}>
+        Add to Cart
+      </button>
+      {% unless is_orderable %}
+        <p class="coming-soon-footnote" style="margin-top: 0.75rem;">{{ p_status_info.footnote | default: "This roast is currently unavailable to order." }}</p>
+      {% endunless %}
+    </div>
+
+    <!-- Specifications Grid -->
+    <div class="sleek-spec-wrap">
+      <div class="sleek-spec-section-header">
+        <h2 class="sleek-spec-heading">{% if page.category == 'blend' %}Blend Specifications{% else %}Coffee Specifications{% endif %}</h2>
+        {% if page.category == 'single origin' %}
+          <span class="sleek-spec-subheading">Crop Details &amp; Terroir</span>
+        {% endif %}
+      </div>
+
+
+      <div class="sleek-spec-grid">
+        {% if page.region %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Region</span>
+            <span class="sleek-spec-val">{{ page.region }}</span>
+          </div>
+        {% endif %}
+        {% if page.elevation %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Terroir / Elevation</span>
+            <span class="sleek-spec-val">{{ page.elevation }}</span>
+          </div>
+        {% endif %}
+        {% if page.processing_method %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Processing</span>
+            <span class="sleek-spec-val">{{ page.processing_method }}</span>
+          </div>
+        {% endif %}
+        {% if page.brewing_method %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Recommended Brew</span>
+            <span class="sleek-spec-val">{{ page.brewing_method }}</span>
+          </div>
+        {% endif %}
+        {% if page.certification == "fair_trade_organic" %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Certification</span>
+            <span class="sleek-spec-val">Fair Trade Organic</span>
+          </div>
+        {% elsif page.certification == "organic" %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Certification</span>
+            <span class="sleek-spec-val">Organic</span>
+          </div>
+        {% endif %}
+        {% if page.roast_profile %}
+          <div class="sleek-spec-tile">
+            <span class="sleek-spec-label">Roast Profile</span>
+            <span class="sleek-spec-val"><a href="{{ page.roast_profile | relative_url }}" class="roast-profile-link" download>profile.alog</a></span>
+          </div>
+        {% endif %}
+        {% if page.origins and page.category != 'single origin' %}
+          <div class="sleek-spec-tile is-full-width">
+            <span class="sleek-spec-label">Component Origins</span>
+            <span class="sleek-spec-val">{{ page.origins | join: " &middot; " }}</span>
+          </div>
+        {% elsif page.components %}
+          <div class="sleek-spec-tile is-full-width">
+            <span class="sleek-spec-label">Component Origins</span>
+            <span class="sleek-spec-val">
+              {% for c in page.components %}
+                {{ c.name }}{% if c.ratio %} ({{ c.ratio }}){% endif %}{% unless forloop.last %} &middot; {% endunless %}
+              {% endfor %}
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Lot & Harvest / Recipe History -->
+    {% if page.history and page.history.size > 0 %}
+    <div class="sleek-history-section">
+      <div class="sleek-spec-section-header">
+        <h2 class="sleek-spec-heading">{% if page.category == 'single origin' %}Lot &amp; Harvest History{% else %}Recipe History{% endif %}</h2>
+        <span class="sleek-spec-subheading">Crop Traceability</span>
+      </div>
+
+      <div class="sleek-history-list">
+        {% for h in page.history %}
+          <div class="sleek-history-card">
+            <div class="sleek-history-card-top">
+              <div class="sleek-history-lot-title">
+                {% if page.category == 'blend' %}
+                  Recipe Version {{ forloop.index }}
+                {% else %}
+                  {{ page.title }}
+                {% endif %}
+              </div>
+              <span class="sleek-history-tag-date">{{ h.date | default: h.version | default: h.season }}{% if forloop.first %} &middot; Current{% endif %}</span>
+            </div>
+
+            {% if h.components %}
+              <div class="sleek-history-chips-row">
+                {% for c in h.components %}
+                  <span class="sleek-history-chip">
+                    <span class="chip-k">
+                      {% if c.slug %}<a href="{{ '/roasts/' | append: c.slug | append: '/' | relative_url }}" style="color: inherit; text-decoration: none;">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}:
+                    </span>
+                    {% if c.ratio %}<span class="chip-v">{{ c.ratio }}</span>{% endif %}
+                    {% if c.roast_level %}<span class="chip-v" style="color: #887060;">({{ c.roast_level }})</span>{% endif %}
+                    {% if c.profile %}<a href="{{ c.profile | relative_url }}" class="roast-profile-link" download style="margin-left: 0.2rem; font-size: 0.65rem;">(.alog)</a>{% endif %}
+                  </span>
+                {% endfor %}
+              </div>
+            {% elsif page.category == 'single origin' %}
+              <div class="sleek-history-chips-row">
+                {% if page.region %}
+                  <span class="sleek-history-chip">
+                    <span class="chip-k">Region:</span>
+                    <span class="chip-v">{{ page.region }}</span>
+                  </span>
+                {% endif %}
+                {% if page.elevation %}
+                  <span class="sleek-history-chip">
+                    <span class="chip-k">Terroir:</span>
+                    <span class="chip-v">{{ page.elevation }}</span>
+                  </span>
+                {% endif %}
+                {% if page.processing_method %}
+                  <span class="sleek-history-chip">
+                    <span class="chip-k">Process:</span>
+                    <span class="chip-v">{{ page.processing_method }}</span>
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if h.description %}
+              <p class="sleek-history-desc">{{ h.description }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
+
 
 <script src="{{ '/js/roast-detail.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
@@ -281,4 +365,3 @@ layout: default
   }
 }
 </script>
-

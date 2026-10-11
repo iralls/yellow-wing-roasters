@@ -235,7 +235,7 @@ permalink: /quiz/
     </div>
 
     <div class="roasts-category">Top Coffee Matches</div>
-    <div class="roasts-grid" id="quiz-top-matches-grid"></div>
+    <div class="sleek-comparison-grid" id="quiz-top-matches-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); text-align: left; margin-bottom: 3rem;"></div>
     <div id="quiz-empty-message" class="quiz-empty-results" style="display: none;">
       <p>No exact coffee matches found for this combination.</p>
       <button type="button" class="quiz-btn quiz-btn-primary" onclick="document.getElementById('quiz-retake-btn').click();">Adjust Preferences</button>

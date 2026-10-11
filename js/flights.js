@@ -12,6 +12,8 @@
         type: 'flight',
         slug: 'the-aviary',
         title: 'The Aviary Flight',
+        subtitle: 'Early Bird, Feather Soot, Chimney Sweep, Lil\' Sipper',
+        roasts: ['Early Bird', 'Feather Soot', 'Chimney Sweep', 'Lil\' Sipper'],
         size: '4 × 8oz bags',
         grind: grindSelect.value,
         price: options.price,
@@ -79,8 +81,13 @@
         } else {
           optionsEls[i].classList.remove('is-selected');
         }
+        var ctaEl = optionsEls[i].querySelector('.pyo-card-cta');
+        if (ctaEl) {
+          ctaEl.innerHTML = isSelected ? 'Selected &check;' : 'Select &plus;';
+        }
       }
     }
+
 
     for (var i = 0; i < optionsEls.length; i++) {
       optionsEls[i].style.cursor = 'pointer';
@@ -112,6 +119,7 @@
         slug: 'peck-your-own',
         title: 'Peck Your Own',
         subtitle: titles.join(', '),
+        roasts: titles,
         size: selected.length + ' × 8oz bags',
         grind: grindSelect.value,
         price: selected.length * pricePerBag,

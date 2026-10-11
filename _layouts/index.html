@@ -9,11 +9,12 @@
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
-  {% include cart-indicator.html %}
-  {% include dropdown-menu.html %}
-  <main id="main-content" class="main-content">
-    {{ content }}
-  </main>
+  {% include sleek-header.html %}
+  <div class="container">
+    <main id="main-content" class="main-content">
+      {{ content }}
+    </main>
+  </div>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

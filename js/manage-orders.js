@@ -223,23 +223,35 @@
       var detailsStr = detailsMatch ? detailsMatch[1] : '';
       var mainPart = detailsMatch ? rest.replace(/\s*\(.*?\)$/, '').trim() : rest;
 
-      var sizeMatch = mainPart.match(/(12oz|1lb|2lb|5lb)$/);
-      var size = sizeMatch ? sizeMatch[1] : '12oz';
-      var namePart = sizeMatch ? mainPart.replace(/(12oz|1lb|2lb|5lb)$/, '').trim() : mainPart;
+      var sizeMatch = mainPart.match(/(\d+\s*[×x]\s*8oz bags|12oz|1lb|2lb|5lb)$/);
+      var size = sizeMatch ? sizeMatch[1] : '';
+      var namePart = sizeMatch ? mainPart.replace(/(\d+\s*[×x]\s*8oz bags|12oz|1lb|2lb|5lb)$/, '').trim() : mainPart;
 
       var grind = defaultGrind || 'Whole Bean';
       var roastLevel = '';
+      var picks = '';
       if (detailsStr) {
-        var grindMatch = detailsStr.match(/Grind:\s*([^,)]+)/i);
+        var picksMatch = detailsStr.match(/Picks:\s*([^;)]+)/i);
+        if (picksMatch) picks = picksMatch[1].trim();
+
+        var grindMatch = detailsStr.match(/Grind:\s*([^;)]+)/i);
         if (grindMatch) grind = grindMatch[1].trim();
 
-        var levelMatch = detailsStr.match(/Roast:\s*([^,)]+)/i);
+        var levelMatch = detailsStr.match(/Roast:\s*([^;)]+)/i);
         if (levelMatch) roastLevel = levelMatch[1].trim();
       }
 
       var roastSlug = findRoastKeyByTitle(namePart, roastsData) || namePart.toLowerCase().replace(/['’]/g, '').replace(/\s+/g, '-');
       var roastConfig = roastsData[roastSlug];
-      var unitPrice = (roastConfig && roastConfig.prices) ? roastConfig.prices[size] : 0;
+      var unitPrice = (roastConfig && roastConfig.prices && roastConfig.prices[size]) ? roastConfig.prices[size] : 0;
+      if (!unitPrice && roastConfig && roastConfig.price) {
+        unitPrice = roastConfig.price;
+      }
+      if (!unitPrice && roastConfig && roastConfig.price_per_bag) {
+        var bagCountMatch = size.match(/^(\d+)/);
+        var numBags = bagCountMatch ? parseInt(bagCountMatch[1], 10) : 4;
+        unitPrice = numBags * roastConfig.price_per_bag;
+      }
 
       result.push({
         qty: qty,
@@ -248,6 +260,7 @@
         size: size,
         grind: grind,
         roastLevel: roastLevel,
+        picks: picks,
         unitPrice: unitPrice
       });
     }
@@ -335,10 +348,16 @@
     // Items Box Display
     html += '<div class="order-items-box" id="order-items-box">';
     parsedItems.forEach(function (it) {
+      var metaParts = [];
+      if (it.size) metaParts.push(escapeHtml(it.size));
+      if (it.grind) metaParts.push(escapeHtml(it.grind));
+      if (it.roastLevel) metaParts.push(escapeHtml(it.roastLevel));
+
       html += '<div class="order-item-line">' +
         '<div class="order-item-desc">' +
         '<div class="order-item-name">' + it.qty + 'x ' + escapeHtml(it.label) + '</div>' +
-        '<div class="order-item-meta">' + escapeHtml(it.size) + ' &bull; ' + escapeHtml(it.grind) + (it.roastLevel ? ' &bull; ' + escapeHtml(it.roastLevel) : '') + '</div>' +
+        '<div class="order-item-meta">' + metaParts.join(' &bull; ') + '</div>' +
+        (it.picks ? '<div class="order-item-picks"><strong>Picks:</strong> ' + escapeHtml(it.picks) + '</div>' : '') +
         '</div>' +
         '<div class="order-item-price">$' + (it.unitPrice * it.qty).toFixed(2) + '</div>' +
         '</div>';

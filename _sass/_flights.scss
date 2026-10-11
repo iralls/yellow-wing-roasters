@@ -4,6 +4,43 @@
   user-select: none;
 }
 
+.sleek-roast-card.pyo-option {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.is-selected {
+    border-color: #f0c838;
+    box-shadow:
+      0 0 0 2px #f0c838,
+      0 12px 28px rgba(44, 30, 20, 0.08);
+    transform: translateY(-2px);
+
+    .sleek-card-visual {
+      background: #fffdf5;
+    }
+
+    .gift-type-badge {
+      display: inline-block;
+    }
+
+    .sleek-card-tag--best-seller {
+      display: none;
+    }
+
+    .pyo-card-cta {
+      color: #2c1e14;
+      font-weight: 800;
+    }
+  }
+
+  &.is-selected:hover {
+    border-color: #f0c838;
+    box-shadow:
+      0 0 0 2.5px #f0c838,
+      0 16px 36px rgba(44, 30, 20, 0.12);
+    transform: translateY(-4px);
+  }
+}
+
 .pyo-option.is-selected .roasts-entry-visual {
   background: #fffdf5;
   border-color: rgba(240, 200, 56, 0.55);
@@ -21,109 +58,9 @@
   transform: translateY(-4px);
 }
 
+
 /* ── The Aviary: Included Roasts Cards ── */
 .aviary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  max-width: 58rem;
-  margin: 1.75rem auto 2.25rem;
-  text-align: left;
+  margin: 1.75rem auto 2.5rem;
 }
 
-@media (max-width: 54rem) {
-  .aviary-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 32rem;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 32rem) {
-  .aviary-grid {
-    grid-template-columns: 1fr;
-    max-width: 18rem;
-    gap: 1rem;
-  }
-}
-
-.aviary-card {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  cursor: pointer;
-
-  .roasts-entry-visual {
-    height: 10.5rem;
-    padding: 0.9rem;
-    border-radius: 0.85rem;
-    border: none;
-    box-sizing: border-box;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    transition:
-      background-color 0.25s ease,
-      box-shadow 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  &:hover .roasts-entry-visual,
-  .roasts-entry-visual:hover,
-  .roasts-entry-visual:focus {
-    background-color: #ffffff;
-    box-shadow: 0 10px 24px rgba(44, 30, 20, 0.08);
-    transform: translateY(-3px);
-  }
-
-  .roasts-entry-mascot,
-  &[data-roast="early-bird"] .roasts-entry-mascot,
-  &[data-roast="lil-sipper"] .roasts-entry-mascot,
-  &[data-roast="feather-soot"] .roasts-entry-mascot,
-  &[data-roast="chimney-sweep"] .roasts-entry-mascot {
-    max-height: 6.25rem;
-    max-width: 78%;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover .roasts-entry-mascot,
-  .roasts-entry-visual:hover .roasts-entry-mascot,
-  .roasts-entry-visual:focus .roasts-entry-mascot {
-    transform: scale(1.05);
-  }
-
-  .roasts-entry-badge,
-  .roasts-entry-seasonal-badge,
-  .roasts-entry-fto-badge,
-  .roasts-entry-organic-badge,
-  .roasts-entry-bestseller-badge {
-    display: none !important;
-  }
-
-  .roasts-entry-overlay {
-    display: none !important;
-  }
-
-  .roasts-entry-info {
-    padding: 0.65rem 0.25rem 0;
-    text-align: left;
-  }
-
-  .roasts-entry-title {
-    font-size: 1rem;
-  }
-
-  .roasts-entry-subtitle {
-    font-size: 0.65rem;
-  }
-
-  .roasts-entry-layman {
-    font-size: 0.72rem;
-  }
-
-  .roasts-entry-descriptor {
-    font-size: 0.8rem;
-  }
-}

@@ -157,13 +157,19 @@
             mascot: it.mascot,
             dots: it.dots || 0,
             price: it.price || 0,
-            description: it.description || ''
+            description: it.description || '',
+            subtitle: it.subtitle || '',
+            roasts: it.roasts || null,
+            type: it.type || ''
           },
           key: it.id,
           qty: it.qty,
           grind: it.grind,
           roastLevel: it.roastLevel,
           frequency: it.frequency,
+          subtitle: it.subtitle || '',
+          roasts: it.roasts || null,
+          type: it.type || '',
           isSubscription: isSub
         };
       });
@@ -287,6 +293,13 @@
         metaText.textContent = metaParts.join(' · ');
         meta.appendChild(metaText);
         info.appendChild(meta);
+
+        if (item.subtitle) {
+          var picksEl = document.createElement('div');
+          picksEl.className = 'order-cart-card-picks';
+          picksEl.textContent = 'Picks: ' + item.subtitle;
+          info.appendChild(picksEl);
+        }
         card.appendChild(info);
 
         // Actions & line total
@@ -381,9 +394,10 @@
       } else {
         var itemLines = items.map(function (item) {
           var details = [];
+          if (item.subtitle) details.push('Picks: ' + item.subtitle);
           if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
           if (item.grind) details.push('Grind: ' + item.grind);
-          var detailsStr = details.length > 0 ? ' (' + details.join(', ') + ')' : '';
+          var detailsStr = details.length > 0 ? ' (' + details.join('; ') + ')' : '';
           return item.qty + 'x ' + item.data.label + ' ' + item.data.size + detailsStr;
         }).join(', ');
 
