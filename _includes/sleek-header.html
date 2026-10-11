@@ -84,10 +84,14 @@
       </div>
 
       <button type="button" class="sleek-nav-mobile-toggle" id="sleek-nav-mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <svg class="sleek-nav-mobile-icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
           <line x1="3" y1="12" x2="21" y2="12"/>
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg class="sleek-nav-mobile-icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
     </div>
@@ -137,6 +141,17 @@
       e.stopPropagation();
       const isOpen = navLinks.classList.toggle('is-mobile-open');
       mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        const cartWrap = document.getElementById('ywr-cart-wrap');
+        if (cartWrap) cartWrap.classList.remove('is-open');
+      }
+    });
+
+    // Prevent clicks inside the drawer from accidentally closing it, unless tapping a link
+    navLinks.addEventListener('click', (e) => {
+      if (!e.target.closest('a')) {
+        e.stopPropagation();
+      }
     });
   }
 
