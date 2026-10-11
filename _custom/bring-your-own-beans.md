@@ -31,28 +31,17 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
   <li>We'll order the beans, roast them, and reach out when they're ready.</li>
 </ol>
 
-<h2 class="roasts-category">Place a BYOB Order</h2>
+<h2 class="roasts-category">Configure Your Roast</h2>
 
-<form action="{{ site.google_forms.byob_beans.url }}" method="POST" class="order-form" id="byob-form">
-
-  <div class="order-field">
-    <label for="byob-name" class="roast-mv-meta-label">Name</label>
-    <input id="byob-name" type="text" name="{{ site.google_forms.byob_beans.entries.name }}" required autocomplete="name">
-  </div>
-
-  <div class="order-field">
-    <label for="byob-email" class="roast-mv-meta-label">Email</label>
-    <input id="byob-email" type="email" name="{{ site.google_forms.byob_beans.entries.email }}" required autocomplete="email">
-  </div>
-
+<div class="byob-beans-form" id="byob-beans-form" style="max-width: 32rem; margin: 0 auto;">
   <div class="order-field">
     <label for="byob-link" class="roast-mv-meta-label">Link to green beans</label>
-    <input id="byob-link" type="url" name="{{ site.google_forms.byob_beans.entries.link }}" required placeholder="https://burmancoffee.com/...">
+    <input id="byob-link" type="url" required placeholder="https://burmancoffee.com/... or https://sweetmarias.com/..." style="width: 100%; box-sizing: border-box;">
   </div>
 
-  <div class="order-field roast-mv-center">
+  <div class="order-field roast-mv-center roast-mv-center--mt-md">
     <label for="byob-roast" class="roast-mv-meta-label">Roast level</label>
-    <select id="byob-roast" name="{{ site.google_forms.byob_beans.entries.roast }}" class="subscribe-select" required>
+    <select id="byob-roast" class="subscribe-select" required style="min-width: 14rem;">
       <option value="" disabled selected>Choose a roast level</option>
       <option value="City (light)">City (light)</option>
       <option value="City+ (medium-light)">City+ (medium-light)</option>
@@ -62,64 +51,33 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
     </select>
   </div>
 
-  <div class="order-field roast-mv-center">
+  <div class="order-field roast-mv-center roast-mv-center--mt-md">
     <label for="byob-grind" class="roast-mv-meta-label">Grind level</label>
-    <select id="byob-grind" class="subscribe-select">
+    <select id="byob-grind" class="subscribe-select" style="min-width: 14rem;">
       {% include grind-options.html %}
     </select>
   </div>
 
-  <div class="order-field roast-mv-center">
-    <label for="byob-qty" class="roast-mv-meta-label">lbs</label>
-    <input id="byob-qty" type="number" name="{{ site.google_forms.byob_beans.entries.qty }}" min="1" max="10" value="1" required style="width: 5rem; display: block; margin: 0 auto; text-align: center;">
+  <div class="order-field roast-mv-center roast-mv-center--mt-md">
+    <label for="byob-qty" class="roast-mv-meta-label">Quantity (lbs)</label>
+    <input id="byob-qty" type="number" min="1" max="10" value="1" required style="width: 5rem; display: block; margin: 0 auto; text-align: center;">
     <p class="order-delivery-note">Roasting loses ~15% of the bean weight on average.</p>
   </div>
 
-  <fieldset class="order-delivery">
-    <legend class="roast-mv-meta-label">Delivery method</legend>
-    <div class="pill-radios">
-    <label class="order-radio"><input type="radio" name="{{ site.google_forms.byob_beans.entries.delivery }}" value="Pickup" checked> Pickup</label>
-    <label class="order-radio"><input type="radio" name="{{ site.google_forms.byob_beans.entries.delivery }}" value="Hand delivery"> Hand delivery</label>
-    </div>
-    <p id="byob-delivery-note" class="order-delivery-note" data-pickup-msg="Please specify in the notes how you want to coordinate pickup." data-delivery-msg="Available in {{ site.local_delivery_towns | join: ', ' }}.">Please specify in the notes how you want to coordinate pickup.</p>
-  </fieldset>
-
-  <div id="byob-shipping" class="order-shipping" style="display:none;">
-    <div class="order-field">
-      <label for="byob-address" class="roast-mv-meta-label">Street address</label>
-      <input id="byob-address" type="text" name="{{ site.google_forms.byob_beans.entries.address }}" autocomplete="street-address">
-    </div>
-    <div class="order-field">
-      <label for="byob-city" class="roast-mv-meta-label">City</label>
-      <input id="byob-city" type="text" name="{{ site.google_forms.byob_beans.entries.city }}" autocomplete="address-level2">
-    </div>
-    <div class="order-field-row">
-      <div class="order-field">
-        <label for="byob-state" class="roast-mv-meta-label">State</label>
-        <select id="byob-state" name="{{ site.google_forms.byob_beans.entries.state }}" autocomplete="address-level1">
-          {% include state-options.html %}
-        </select>
-      </div>
-      <div class="order-field">
-        <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>
-        <input id="byob-zip" type="text" name="{{ site.google_forms.byob_beans.entries.zip }}" autocomplete="postal-code">
-      </div>
-    </div>
+  <div class="order-field roast-mv-center roast-mv-center--mt-md" style="max-width: 28rem; margin-left: auto; margin-right: auto;">
+    <label for="byob-notes" class="roast-mv-meta-label">Roasting notes / instructions (optional)</label>
+    <textarea id="byob-notes" rows="2" placeholder="Any preferences — first crack, second crack, specific development time, etc." style="width: 100%; box-sizing: border-box;"></textarea>
   </div>
 
-  <div class="order-field">
-    <label for="byob-notes" class="roast-mv-meta-label">Notes (optional)</label>
-    <textarea id="byob-notes" name="{{ site.google_forms.byob_beans.entries.notes }}" rows="3" placeholder="Any preferences — first crack, second crack, specific development time, etc."></textarea>
+  <div class="roast-mv-center roast-mv-center--mt-lg" style="text-align: center; margin-bottom: 2rem;">
+    <p class="order-delivery-note" style="margin-bottom: 0.75rem; font-style: italic;">Green bean cost and roasting invoiced upon procurement.</p>
+    <button type="button" class="add-to-order-btn" id="byob-beans-add-btn">Add to Cart</button>
   </div>
+</div>
 
-  <div class="order-actions">
-    <button type="submit" class="order-submit">Submit BYOB order</button>
-  </div>
-
-  <p class="order-status" role="status" aria-live="polite"></p>
-</form>
-
-<script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/byob-beans.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  initBYOBForm({ thanksUrl: '{{ "/thanks/" | relative_url }}' });
+  initBYOBBeans({
+    mascot: {{ page.mascot_file | jsonify }}
+  });
 </script>

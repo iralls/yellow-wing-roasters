@@ -5,8 +5,9 @@ permalink: /js/cart-data.js
  * Yellow Wing Roasters - Shared Catalog Data for Cart & Orders
  * Generated at build time and cached across pages.
  */
+{% assign all_products = site.roasts | concat: site.custom | concat: site.flights %}
 window.YWR_ROASTS_DATA = {
-  {% for r in site.roasts %}
+  {% for r in all_products %}
     {% assign level_info = site.data.roast_levels[r.roast_level] %}
     {% assign r_specialty = level_info.specialty %}
     {% assign r_dots = level_info.dots %}
@@ -16,7 +17,7 @@ window.YWR_ROASTS_DATA = {
       roast_level: {{ r.roast_level | jsonify }},
       roast_level_name: {{ r_specialty | jsonify }},
       mascot: {{ r.mascot_file | jsonify }},
-      dots: {{ r_dots }},
+      dots: {{ r_dots | default: 0 }},
       description: {{ r.description | default: "" | jsonify }},
       variants: {
         {% if r.variants %}
@@ -26,15 +27,21 @@ window.YWR_ROASTS_DATA = {
         {% endif %}
       },
       prices: {
-        {% assign rp = r.price %}
-        {% for entry in rp %}
-          {% assign s = entry[0] %}
-          {% if r.sizes == nil or r.sizes contains s %}
-            {% assign p = entry[1] %}
-            {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
-            {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
-          {% endif %}
-        {% endfor %}
+        {% if r.price.first %}
+          {% assign rp = r.price %}
+          {% for entry in rp %}
+            {% assign s = entry[0] %}
+            {% if r.sizes == nil or r.sizes contains s %}
+              {% assign p = entry[1] %}
+              {% if r.temporary_price and r.temporary_price[s] %}{% assign p = r.temporary_price[s] %}{% endif %}
+              {{ s | jsonify }}: {{ p }}{% unless forloop.last %},{% endunless %}
+            {% endif %}
+          {% endfor %}
+        {% elsif r.price %}
+          "12oz": {{ r.price }}
+        {% elsif r.price_per_bag %}
+          "bag": {{ r.price_per_bag }}
+        {% endif %}
       }
     }{% unless forloop.last %},{% endunless %}
   {% endfor %}

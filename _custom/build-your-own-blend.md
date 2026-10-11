@@ -184,80 +184,29 @@ mascot_alt: "Build Your Own Blend mascot"
 
   </div>
 
-  <!-- Step 4: Checkout Form -->
+  <!-- Step 4: Add to Cart -->
   <div class="order-section" id="order-section">
-    <h2 class="roasts-category byob-step-title byob-step-title--center">4. Place Your Custom Blend Order</h2>
+    <h2 class="roasts-category byob-step-title byob-step-title--center">4. Add to Cart</h2>
     
-    <div class="roast-detail-price-line byob-price-line">
+    <div class="roast-detail-price-line byob-price-line" id="byob-price-display">
       ${{ page.price }} <span class="byob-unit-note">(one 12oz bag)</span>
     </div>
 
-    <form action="{{ site.google_forms.byob_blend.url }}" method="POST" class="order-form" id="byob-form">
-      
-      <!-- Recipe details and total price are dynamically injected here on submission -->
-      <input type="hidden" name="{{ site.google_forms.byob_blend.entries.recipe }}" id="hidden-recipe" value="">
-      <input type="hidden" name="{{ site.google_forms.byob_blend.entries.total }}" id="hidden-total" value="${{ page.price }}">
+    <div class="roast-mv-center roast-mv-center--mt-md">
+      <label for="byob-blend-grind-select" class="roast-mv-meta-label">Grind level</label>
+      <select id="byob-blend-grind-select" class="subscribe-select" style="min-width: 14rem;">
+        {% include grind-options.html %}
+      </select>
+    </div>
 
-      <div class="order-field">
-        <label for="byob-name" class="roast-mv-meta-label">Name</label>
-        <input id="byob-name" type="text" name="{{ site.google_forms.byob_blend.entries.name }}" required autocomplete="name">
-      </div>
+    <div class="roast-mv-center roast-mv-center--mt-md" style="max-width: 28rem; margin-left: auto; margin-right: auto;">
+      <label for="byob-notes" class="roast-mv-meta-label">Roasting notes / instructions (optional)</label>
+      <textarea id="byob-notes" rows="2" placeholder="Any preferences, notes, or roast instructions..." style="width: 100%; box-sizing: border-box;"></textarea>
+    </div>
 
-      <div class="order-field">
-        <label for="byob-email" class="roast-mv-meta-label">Email</label>
-        <input id="byob-email" type="email" name="{{ site.google_forms.byob_blend.entries.email }}" required autocomplete="email">
-      </div>
-
-      <div class="order-field">
-        <label for="byob-blend-grind-select" class="roast-mv-meta-label">Grind level</label>
-        <select id="byob-blend-grind-select" class="subscribe-select">
-          {% include grind-options.html %}
-        </select>
-      </div>
-
-      <fieldset class="order-delivery">
-        <legend class="roast-mv-meta-label">Delivery method</legend>
-        <div class="pill-radios">
-          <label class="order-radio"><input type="radio" name="{{ site.google_forms.byob_blend.entries.delivery }}" value="Pickup" checked> Pickup</label>
-          <label class="order-radio"><input type="radio" name="{{ site.google_forms.byob_blend.entries.delivery }}" value="Hand delivery"> Hand delivery</label>
-        </div>
-        <p id="byob-delivery-note" class="order-delivery-note" data-pickup-msg="Please specify in the notes how you want to coordinate pickup." data-delivery-msg="Available in {{ site.local_delivery_towns | join: ', ' }}.">Please specify in the notes how you want to coordinate pickup.</p>
-      </fieldset>
-
-      <div id="byob-shipping" class="order-shipping" style="display:none;">
-        <div class="order-field">
-          <label for="byob-address" class="roast-mv-meta-label">Street address</label>
-          <input id="byob-address" type="text" name="{{ site.google_forms.byob_blend.entries.address }}" autocomplete="street-address">
-        </div>
-        <div class="order-field">
-          <label for="byob-city" class="roast-mv-meta-label">City</label>
-          <input id="byob-city" type="text" name="{{ site.google_forms.byob_blend.entries.city }}" autocomplete="address-level2">
-        </div>
-        <div class="order-field-row">
-          <div class="order-field">
-            <label for="byob-state" class="roast-mv-meta-label">State</label>
-            <select id="byob-state" name="{{ site.google_forms.byob_blend.entries.state }}" autocomplete="address-level1">
-              {% include state-options.html %}
-            </select>
-          </div>
-          <div class="order-field">
-            <label for="byob-zip" class="roast-mv-meta-label">ZIP</label>
-            <input id="byob-zip" type="text" name="{{ site.google_forms.byob_blend.entries.zip }}" autocomplete="postal-code">
-          </div>
-        </div>
-      </div>
-
-      <div class="order-field">
-        <label for="byob-notes" class="roast-mv-meta-label">Notes (optional)</label>
-        <textarea id="byob-notes" name="{{ site.google_forms.byob_blend.entries.notes }}" rows="3" placeholder="Any preferences, notes, or roast instructions..."></textarea>
-      </div>
-
-      <div class="order-actions">
-        <button type="submit" class="order-submit" id="byob-submit-btn" disabled>Submit Blend Order</button>
-      </div>
-
-      <p class="order-status" role="status" aria-live="polite"></p>
-    </form>
+    <div class="roast-mv-center roast-mv-center--mt-lg" style="text-align: center;">
+      <button type="button" class="add-to-order-btn add-to-order-btn--disabled" id="byob-add-to-cart-btn" disabled>Select beans to complete blend</button>
+    </div>
   </div>
 
 </div>
@@ -289,7 +238,8 @@ mascot_alt: "Build Your Own Blend mascot"
 
   initBYOBMixer({
     rawBeans: rawBeans,
-    thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+    price: {{ page.price }},
+    mascot: {{ page.mascot_file | jsonify }}
   });
 })();
 </script>

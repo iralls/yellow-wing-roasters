@@ -121,8 +121,7 @@
   var bodyBar = document.getElementById('preview-body-bar');
   var notesTags = document.getElementById('preview-notes-tags');
 
-  var submitBtn = document.getElementById('byob-submit-btn');
-  var hiddenRecipe = document.getElementById('hidden-recipe');
+  var submitBtn = document.getElementById('byob-add-to-cart-btn') || document.getElementById('byob-submit-btn');
 
   // Populate origin filter options dynamically from available beans
   function populateOriginFilter() {
@@ -600,16 +599,20 @@
     });
   }
 
-  // Enable/disable form submission button
+  // Enable/disable Add to Order button
   function validateForm() {
     if (selectedBeans.length > 0) {
       submitBtn.disabled = false;
+      submitBtn.classList.remove('add-to-order-btn--disabled');
+      submitBtn.textContent = 'Add to Cart — $' + config.price;
     } else {
       submitBtn.disabled = true;
+      submitBtn.classList.add('add-to-order-btn--disabled');
+      submitBtn.textContent = 'Select beans to complete blend';
     }
   }
 
-  // Compile recipe details string for form submission
+  // Compile recipe details string
   function getRecipeString() {
     var parts = [];
     selectedBeans.forEach(function (name) {
@@ -617,8 +620,7 @@
       var roast = document.getElementById('roast-' + escapeId(name));
       parts.push(name + ' (' + slider.value + '% - ' + roast.value + ')');
     });
-    var grindEl = document.getElementById('byob-blend-grind-select');
-    return parts.join(', ') + ' [Grind: ' + grindEl.value + ']';
+    return parts.join(', ');
   }
 
   // Escape helpers
@@ -637,70 +639,38 @@
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
-  // 4. Form Submission and Safely Redirecting
-  var form = document.getElementById('byob-form');
-  var status = form.querySelector('.order-status');
+  // Add to Order / Cart Handler
+  submitBtn.addEventListener('click', function () {
+    if (selectedBeans.length === 0) return;
+    var grindEl = document.getElementById('byob-blend-grind-select');
+    var notesEl = document.getElementById('byob-notes');
+    var recipeStr = getRecipeString();
 
-  var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
-  var addressFields = document.getElementById('byob-shipping');
-  var deliveryNote = document.getElementById('byob-delivery-note');
-  
-  function setAddressFieldsState(isPickup) {
-    if (!addressFields) return;
-    var inputs = addressFields.querySelectorAll('input, select, textarea');
-    for (var k = 0; k < inputs.length; k++) {
-      inputs[k].disabled = isPickup;
-      if (isPickup) {
-        inputs[k].removeAttribute('required');
-      } else {
-        inputs[k].setAttribute('required', 'true');
-      }
-    }
-  }
-
-  function updateDeliveryNote(isPickup) {
-    deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
-    deliveryNote.style.display = '';
-  }
-
-  for (var di = 0; di < deliveryRadios.length; di++) {
-    deliveryRadios[di].addEventListener('change', function () {
-      var v = this.value;
-      var isPickup = (v === 'Pickup');
-      if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
-      updateDeliveryNote(isPickup);
-      setAddressFieldsState(isPickup);
-    });
-  }
-
-  var initialDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
-  var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
-  setAddressFieldsState(isInitialPickup);
-  updateDeliveryNote(isInitialPickup);
-
-  var iframe = document.createElement('iframe');
-  iframe.name = 'byob-submit-frame';
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
-  form.target = 'byob-submit-frame';
-
-  form.addEventListener('submit', function (e) {
-    // Populate hidden field with the recipe
-    hiddenRecipe.value = getRecipeString();
-
-    var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
-    setAddressFieldsState(!delivery || delivery.value === 'Pickup');
-
-    if (status) {
-      status.textContent = 'Sending…';
-      status.className = 'order-status order-status-pending';
-    }
-    if (submitBtn) submitBtn.disabled = true;
-    
-    iframe.onload = function () {
-      window.location.href = config.thanksUrl || '/thanks/';
+    var item = {
+      type: 'custom',
+      slug: 'build-your-own-blend',
+      title: 'Build Your Own Blend',
+      subtitle: recipeStr,
+      size: '12oz',
+      grind: grindEl.value,
+      price: config.price,
+      mascot: config.mascot,
+      notes: notesEl.value.trim(),
+      qty: 1
     };
+
+    var added = window.ywrAddToCart(item, 1);
+    if (added) {
+      submitBtn.textContent = 'Added to Cart!';
+      submitBtn.disabled = true;
+      setTimeout(function () {
+        validateForm();
+      }, 1200);
+    } else {
+      console.error('Failed to add Build Your Own Blend to cart:', item);
+    }
   });
 
+  validateForm();
   };
 });

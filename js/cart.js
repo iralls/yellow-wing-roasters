@@ -61,7 +61,7 @@
         return 'roast:' + item.slug + ':' + (item.variant || '') + ':' + (item.size || '') + ':' + (item.grind || '');
       }
       if (item.type === 'custom') {
-        return 'custom:' + (item.origin || item.slug) + ':' + (item.size || '') + ':' + (item.grind || '') + ':' + (item.roastLevel || '');
+        return 'custom:' + (item.origin || item.slug) + ':' + (item.size || '') + ':' + (item.grind || '') + ':' + (item.roastLevel || '') + ':' + (item.subtitle || '');
       }
       if (item.type === 'flight') {
         return 'flight:' + item.slug + ':' + (item.subtitle || '') + ':' + (item.grind || '');
@@ -151,7 +151,17 @@
           if (it.roastLevel) metaParts.push(it.roastLevel);
           if (it.grind) metaParts.push(it.grind);
           if (it.frequency) metaParts.push(it.frequency);
-          if (it.subtitle && it.type === 'flight') metaParts.push('Picks: ' + it.subtitle);
+          if (it.subtitle) {
+            if (it.slug === 'bring-your-own-beans') {
+              metaParts.push('Link: ' + it.subtitle);
+            } else if (it.slug === 'build-your-own-blend') {
+              metaParts.push('Recipe: ' + it.subtitle);
+            } else if (it.type === 'flight') {
+              metaParts.push('Picks: ' + it.subtitle);
+            } else if (it.type === 'custom') {
+              metaParts.push(it.subtitle);
+            }
+          }
 
           items.push({
             id: it.id,

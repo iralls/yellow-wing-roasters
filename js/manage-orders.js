@@ -219,25 +219,37 @@
       var qty = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
       var rest = qtyMatch ? qtyMatch[2] : part;
 
-      var detailsMatch = rest.match(/\((.*?)\)$/);
+      var detailsMatch = rest.match(/\((.*)\)$/);
       var detailsStr = detailsMatch ? detailsMatch[1] : '';
-      var mainPart = detailsMatch ? rest.replace(/\s*\(.*?\)$/, '').trim() : rest;
+      var mainPart = detailsMatch ? rest.replace(/\s*\((.*)\)$/, '').trim() : rest;
 
-      var sizeMatch = mainPart.match(/(\d+\s*[×x]\s*8oz bags|12oz|1lb|2lb|5lb)$/);
+      var sizeMatch = mainPart.match(/(\d+\s*[×x]\s*8oz bags|\d+\s*lbs?|12oz|1lb|2lb|5lb)$/);
       var size = sizeMatch ? sizeMatch[1] : '';
-      var namePart = sizeMatch ? mainPart.replace(/(\d+\s*[×x]\s*8oz bags|12oz|1lb|2lb|5lb)$/, '').trim() : mainPart;
+      var namePart = sizeMatch ? mainPart.replace(/(\d+\s*[×x]\s*8oz bags|\d+\s*lbs?|12oz|1lb|2lb|5lb)$/, '').trim() : mainPart;
 
       var grind = defaultGrind || 'Whole Bean';
       var roastLevel = '';
       var picks = '';
+      var recipe = '';
+      var link = '';
+      var notes = '';
       if (detailsStr) {
-        var picksMatch = detailsStr.match(/Picks:\s*([^;)]+)/i);
+        var recipeMatch = detailsStr.match(/Recipe:\s*([^;]+)/i);
+        if (recipeMatch) recipe = recipeMatch[1].trim();
+
+        var linkMatch = detailsStr.match(/Link:\s*([^;]+)/i);
+        if (linkMatch) link = linkMatch[1].trim();
+
+        var picksMatch = detailsStr.match(/Picks:\s*([^;]+)/i);
         if (picksMatch) picks = picksMatch[1].trim();
 
-        var grindMatch = detailsStr.match(/Grind:\s*([^;)]+)/i);
+        var notesMatch = detailsStr.match(/Notes:\s*([^;]+)/i);
+        if (notesMatch) notes = notesMatch[1].trim();
+
+        var grindMatch = detailsStr.match(/Grind:\s*([^;]+)/i);
         if (grindMatch) grind = grindMatch[1].trim();
 
-        var levelMatch = detailsStr.match(/Roast:\s*([^;)]+)/i);
+        var levelMatch = detailsStr.match(/Roast:\s*([^;]+)/i);
         if (levelMatch) roastLevel = levelMatch[1].trim();
       }
 
@@ -261,6 +273,9 @@
         grind: grind,
         roastLevel: roastLevel,
         picks: picks,
+        recipe: recipe,
+        link: link,
+        notes: notes,
         unitPrice: unitPrice
       });
     }
@@ -357,7 +372,10 @@
         '<div class="order-item-desc">' +
         '<div class="order-item-name">' + it.qty + 'x ' + escapeHtml(it.label) + '</div>' +
         '<div class="order-item-meta">' + metaParts.join(' &bull; ') + '</div>' +
+        (it.recipe ? '<div class="order-item-picks"><strong>Recipe:</strong> ' + escapeHtml(it.recipe) + '</div>' : '') +
+        (it.link ? '<div class="order-item-picks"><strong>Link:</strong> <a href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">' + escapeHtml(it.link) + '</a></div>' : '') +
         (it.picks ? '<div class="order-item-picks"><strong>Picks:</strong> ' + escapeHtml(it.picks) + '</div>' : '') +
+        (it.notes ? '<div class="order-item-picks"><em>Notes: ' + escapeHtml(it.notes) + '</em></div>' : '') +
         '</div>' +
         '<div class="order-item-price">$' + (it.unitPrice * it.qty).toFixed(2) + '</div>' +
         '</div>';

@@ -160,6 +160,7 @@
             description: it.description || '',
             subtitle: it.subtitle || '',
             roasts: it.roasts || null,
+            notes: it.notes || '',
             type: it.type || ''
           },
           key: it.id,
@@ -169,6 +170,7 @@
           frequency: it.frequency,
           subtitle: it.subtitle || '',
           roasts: it.roasts || null,
+          notes: it.notes || '',
           type: it.type || '',
           isSubscription: isSub
         };
@@ -297,8 +299,19 @@
         if (item.subtitle) {
           var picksEl = document.createElement('div');
           picksEl.className = 'order-cart-card-picks';
-          picksEl.textContent = 'Picks: ' + item.subtitle;
+          var prefix = 'Picks: ';
+          if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
+          else if (item.data.roast === 'bring-your-own-beans') prefix = 'Bean Link: ';
+          picksEl.textContent = prefix + item.subtitle;
           info.appendChild(picksEl);
+        }
+
+        if (item.notes) {
+          var notesEl = document.createElement('div');
+          notesEl.className = 'order-cart-card-picks';
+          notesEl.style.fontStyle = 'italic';
+          notesEl.textContent = 'Instructions: ' + item.notes;
+          info.appendChild(notesEl);
         }
         card.appendChild(info);
 
@@ -309,7 +322,11 @@
         var lineTotal = (item.data.price || 0) * item.qty;
         var totalEl = document.createElement('div');
         totalEl.className = 'order-cart-card-total';
-        totalEl.textContent = '$' + lineTotal;
+        if (item.data.price === 0) {
+          totalEl.innerHTML = '$0 <span style="font-size:0.7rem; font-weight:normal; color:#887465; display:block;">(Invoiced later)</span>';
+        } else {
+          totalEl.textContent = '$' + lineTotal;
+        }
         actions.appendChild(totalEl);
 
         var removeBtn = document.createElement('button');
@@ -394,9 +411,15 @@
       } else {
         var itemLines = items.map(function (item) {
           var details = [];
-          if (item.subtitle) details.push('Picks: ' + item.subtitle);
+          if (item.subtitle) {
+            var prefix = 'Picks: ';
+            if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
+            else if (item.data.roast === 'bring-your-own-beans') prefix = 'Link: ';
+            details.push(prefix + item.subtitle);
+          }
           if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
           if (item.grind) details.push('Grind: ' + item.grind);
+          if (item.notes) details.push('Notes: ' + item.notes);
           var detailsStr = details.length > 0 ? ' (' + details.join('; ') + ')' : '';
           return item.qty + 'x ' + item.data.label + ' ' + item.data.size + detailsStr;
         }).join(', ');
