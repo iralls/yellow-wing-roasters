@@ -319,7 +319,7 @@ sitemap: false
         <p class="sleek-card-descriptor" style="font-size: 0.9rem; margin-top: 0.5rem;">
           Unified warm linen card surfaces, high-level descriptor resting text, status badges ("Mid-Molt"), tasting notes on hover, and minimal horizontal filter chips.
         </p>
-        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 800; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
+        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 700; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
           Launch Catalog Prototype →
         </div>
       </a>
@@ -331,7 +331,7 @@ sitemap: false
         <p class="sleek-card-descriptor" style="font-size: 0.9rem; margin-top: 0.5rem;">
           Two-column layout: unencumbered mascot art on the left, sticky tactile buy box, tactile spec grid tiles, and rich Lot & Harvest History with terroir on the right.
         </p>
-        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 800; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
+        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 700; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
           Launch Detail Prototype →
         </div>
       </a>
@@ -343,7 +343,7 @@ sitemap: false
         <p class="sleek-card-descriptor" style="font-size: 0.9rem; margin-top: 0.5rem;">
           Airy hero, quiet typography, prominent action links (Explore Roasts / Quiz), and curated seasonal showcase cards.
         </p>
-        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 800; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
+        <div style="font-family: Montserrat, sans-serif; font-size: 0.78rem; font-weight: 700; color: #9c6d12; margin-top: auto; padding-top: 1rem;">
           Launch Homepage Prototype →
         </div>
       </a>

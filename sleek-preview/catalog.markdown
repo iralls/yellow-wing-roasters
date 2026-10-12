@@ -11,7 +11,6 @@ sitemap: false
     <p class="category-intro">Small-batch coffees, roasted fresh to order.</p>
   </div>
   <a href="{{ '/quiz/' | relative_url }}" class="roasts-quiz-cta" title="Find your match">
-    <span class="roasts-quiz-cta-icon" aria-hidden="true">✨</span>
     <span>Find Your Match</span>
     <span class="roasts-quiz-cta-arrow" aria-hidden="true">→</span>
   </a>
@@ -31,7 +30,7 @@ sitemap: false
 
 <!-- Unified Neutral Cards Grid -->
 {% assign all_roasts = site.roasts | sort: "order" %}
-<div class="sleek-comparison-grid" id="catalog-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+<div class="sleek-comparison-grid" id="catalog-grid">
   {% for r in all_roasts %}
     {% assign r_price_12 = r.price["12oz"] %}
     {% if r_price_12 == nil %}

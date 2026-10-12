@@ -1,0 +1,2073 @@
+// =============================================================================
+// Yellow Wing Roasters — Pure Folio SCSS (Experiment 04)
+// True Monastic Ultra-Minimalism: Negative Space, Serene Focus & Archival Plates
+// =============================================================================
+
+body.pure-page {
+  // Theme Variables — Default Warm Kraft Linen
+  --pure-bg: #f4efe6;
+  --pure-surface: #fbf8f2;
+  --pure-surface-sunken: #e9e2d5;
+  --pure-text: #181512;
+  --pure-text-muted: #6e6659;
+  --pure-text-subtle: #9e9484;
+  --pure-border: #dfd8cc;
+  --pure-border-light: rgba(223, 216, 204, 0.6);
+  --pure-accent: #78531b;
+  --pure-shadow: rgba(24, 21, 18, 0.06);
+
+  margin: 0;
+  padding: 0;
+  background-color: var(--pure-bg);
+  color: var(--pure-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  transition: background-color 0.25s ease, color 0.25s ease;
+
+  // Studio Gallery White Theme
+  &[data-pure-theme="white"] {
+    --pure-bg: #ffffff;
+    --pure-surface: #fbfbfa;
+    --pure-surface-sunken: #f2f2f0;
+    --pure-text: #0d0d0d;
+    --pure-text-muted: #555555;
+    --pure-text-subtle: #999999;
+    --pure-border: #e6e6e2;
+    --pure-border-light: rgba(230, 230, 226, 0.6);
+    --pure-accent: #000000;
+    --pure-shadow: rgba(0, 0, 0, 0.05);
+  }
+
+  // Soft Bone Porcelain Theme
+  &[data-pure-theme="bone"] {
+    --pure-bg: #f6f3ec;
+    --pure-surface: #fcfbf8;
+    --pure-surface-sunken: #ece6dc;
+    --pure-text: #141414;
+    --pure-text-muted: #615b52;
+    --pure-text-subtle: #8e867a;
+    --pure-border: #e0dad0;
+    --pure-border-light: rgba(224, 218, 208, 0.6);
+    --pure-accent: #4a3818;
+    --pure-shadow: rgba(20, 20, 20, 0.05);
+  }
+}
+
+.pure-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Topbar Suite Navigation (Whisper-Quiet Monospace Bar)
+// -----------------------------------------------------------------------------
+.pure-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 1.75rem;
+  background-color: var(--pure-surface-sunken);
+  border-bottom: 1px solid var(--pure-border);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--pure-text-muted);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  @media (max-width: 640px) {
+    padding: 0.35rem 1rem;
+    font-size: 0.625rem;
+    justify-content: center;
+  }
+
+  .pure-topbar-left,
+  .pure-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pure-topbar-subtle {
+    color: var(--pure-text-subtle);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+  }
+
+  .pure-topbar-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--pure-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--pure-text);
+    }
+
+    &.is-active {
+      color: var(--pure-text);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  .pure-topbar-current {
+    color: var(--pure-text);
+    font-weight: 700;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pure Header (Airy, Monograph Gallery Style)
+// -----------------------------------------------------------------------------
+.pure-header {
+  border-bottom: 1px solid var(--pure-border-light);
+  background-color: var(--pure-bg);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  .pure-header-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 640px) {
+      padding: 0.85rem 1rem;
+    }
+  }
+
+  .pure-brand-link {
+    text-decoration: none;
+    color: var(--pure-text);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 640px) {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+  }
+
+  .pure-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+
+    @media (max-width: 640px) {
+      gap: 1rem;
+
+      .pure-nav-link {
+        display: none; // Reserved for drawer on narrow mobile screens
+      }
+    }
+
+    .pure-nav-link,
+    .pure-nav-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--pure-text-muted);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: var(--pure-text);
+      }
+
+      &.is-active {
+        color: var(--pure-text);
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+
+    .pure-bag-btn {
+      font-weight: 600;
+      color: var(--pure-text);
+      border-bottom: 1px solid var(--pure-text);
+      padding-bottom: 1px;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// The Center Canvas: Serene Single-Offering Focus
+// -----------------------------------------------------------------------------
+.pure-focal-stage {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+
+  .pure-focal-container {
+    max-width: 1040px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+    align-items: center;
+
+    @media (max-width: 860px) {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      text-align: center;
+    }
+  }
+
+  // Pure Transparent Archival Plate
+  .pure-focal-artwork {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+
+    .pure-focal-img {
+      max-width: 100%;
+      width: 380px;
+      height: 380px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 28px var(--pure-shadow));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        transform: scale(1.03);
+      }
+
+      @media (max-width: 860px) {
+        width: 280px;
+        height: 280px;
+      }
+    }
+  }
+
+  // Offering Details
+  .pure-focal-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // Quick Switcher & Title
+  .pure-focal-title-wrap {
+    margin-bottom: 1rem;
+
+    .pure-focal-dropdown {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      padding: 0.35rem 0.65rem;
+      background-color: var(--pure-surface);
+      border: 1px solid var(--pure-border);
+      color: var(--pure-text-muted);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      border-radius: 0;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s ease;
+
+      &:hover,
+      &:focus {
+        border-color: var(--pure-text);
+        color: var(--pure-text);
+      }
+    }
+
+    .pure-focal-title {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--pure-text);
+    }
+  }
+
+  // Tasting Notes
+  .pure-focal-notes {
+    font-size: 1.1875rem;
+    font-style: italic;
+    color: var(--pure-text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+    max-width: 480px;
+
+    @media (max-width: 860px) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  // Origin & Elevation Metadata
+  .pure-focal-meta {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--pure-text-subtle);
+    margin-bottom: 2rem;
+  }
+
+  // Purchase Form
+  .pure-focal-purchase {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 380px;
+
+    @media (max-width: 860px) {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+
+    .pure-focal-selectors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .pure-focal-select {
+      background-color: var(--pure-surface);
+      border: 1px solid var(--pure-border);
+      color: var(--pure-text);
+      padding: 0.6rem 0.75rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      border-radius: 0;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+
+      &:focus,
+      &:hover {
+        border-color: var(--pure-text);
+      }
+    }
+
+    .pure-focal-buy-btn {
+      background-color: var(--pure-text);
+      color: var(--pure-bg);
+      border: 1px solid var(--pure-text);
+      padding: 0.85rem 1.25rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: transparent;
+        color: var(--pure-text);
+      }
+    }
+  }
+
+  // Subtle Drawer Link
+  .pure-focal-drawer-prompt {
+    margin-top: 1.75rem;
+
+    .pure-focal-browse-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--pure-text-subtle);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: var(--pure-text);
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Offerings Menu Drawer (The De-Cluttering Slide-Out Archive)
+// -----------------------------------------------------------------------------
+.pure-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(24, 21, 18, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 200;
+
+  &.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.pure-menu-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  max-width: 580px;
+  background-color: var(--pure-surface);
+  border-left: 1px solid var(--pure-border);
+  box-shadow: -10px 0 30px var(--pure-shadow);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 210;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  .pure-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--pure-border);
+
+    .pure-menu-title {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pure-text);
+    }
+
+    .pure-menu-close-btn {
+      background: none;
+      border: none;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--pure-text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+
+      &:hover {
+        color: var(--pure-text);
+      }
+    }
+  }
+
+  .pure-menu-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+
+    .pure-menu-section {
+      margin-bottom: 2.5rem;
+
+      &:last-child {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .pure-menu-section-heading {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--pure-text-subtle);
+      margin: 0 0 1rem 0;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--pure-border);
+    }
+
+    .pure-menu-items-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        border-bottom: 1px solid var(--pure-border-light);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    .pure-menu-row {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0.85rem 0.5rem;
+      display: grid;
+      grid-template-columns: 28px 1.4fr 1.6fr auto;
+      gap: 1rem;
+      align-items: baseline;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--pure-surface-sunken);
+
+        .pure-menu-row-title {
+          color: var(--pure-accent);
+        }
+      }
+
+      .pure-menu-row-num {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.6875rem;
+        color: var(--pure-text-subtle);
+      }
+
+      .pure-menu-row-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--pure-text);
+      }
+
+      .pure-menu-row-origin {
+        font-size: 0.75rem;
+        color: var(--pure-text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .pure-menu-row-price {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--pure-text);
+        text-align: right;
+      }
+    }
+
+    .pure-menu-drawer-footer-links {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--pure-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .pure-drawer-footer-link {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--pure-text);
+        text-decoration: none;
+        transition: opacity 0.15s ease;
+
+        &:hover {
+          opacity: 0.7;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Cart Drawer
+// -----------------------------------------------------------------------------
+.pure-cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(24, 21, 18, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 200;
+
+  &.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.pure-cart-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--pure-surface);
+  border-left: 1px solid var(--pure-border);
+  box-shadow: -10px 0 30px var(--pure-shadow);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 210;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  .pure-cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--pure-border);
+
+    .pure-cart-title {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pure-text);
+    }
+
+    .pure-cart-close-btn {
+      background: none;
+      border: none;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--pure-text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+
+      &:hover {
+        color: var(--pure-text);
+      }
+    }
+  }
+
+  .pure-cart-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+
+    .pure-cart-empty {
+      padding: 3rem 0;
+      text-align: center;
+      color: var(--pure-text-muted);
+      font-style: italic;
+    }
+
+    .pure-cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .pure-cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--pure-border-light);
+
+      .pure-cart-item-title {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 1.0625rem;
+        font-weight: 500;
+        color: var(--pure-text);
+      }
+
+      .pure-cart-item-meta {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.6875rem;
+        color: var(--pure-text-muted);
+        margin-top: 0.25rem;
+      }
+
+      .pure-cart-item-price {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--pure-text);
+      }
+    }
+  }
+
+  .pure-cart-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--pure-border);
+    background-color: var(--pure-surface);
+
+    .pure-cart-subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      margin-bottom: 1.25rem;
+      color: var(--pure-text);
+      font-weight: 600;
+    }
+
+    .pure-cart-checkout-btn {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      background-color: var(--pure-text);
+      color: var(--pure-bg);
+      text-decoration: none;
+      padding: 0.85rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.15s ease;
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Editorial Craft Essay (/pure/craft/)
+// -----------------------------------------------------------------------------
+.pure-essay-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 5rem 2rem 6rem;
+
+  .pure-essay-header {
+    margin-bottom: 3.5rem;
+
+    .pure-essay-title {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 0 1.5rem 0;
+      color: var(--pure-text);
+    }
+
+    .pure-essay-lead {
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--pure-text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+
+  .pure-essay-body {
+    .pure-essay-section {
+      margin-bottom: 3rem;
+
+      h2 {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.8125rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--pure-text);
+        margin: 0 0 1rem 0;
+      }
+
+      p {
+        font-size: 1.0625rem;
+        line-height: 1.75;
+        color: var(--pure-text);
+        margin: 0 0 1.25rem 0;
+      }
+    }
+  }
+
+  .pure-essay-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--pure-border-light);
+
+    .pure-essay-back-link {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--pure-text-muted);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Tasting Menu Sheet (/pure/menu/)
+// -----------------------------------------------------------------------------
+.pure-menu-page {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 4.5rem 2rem 6rem;
+
+  .pure-menu-page-header {
+    margin-bottom: 3.5rem;
+
+    .pure-menu-page-title {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.25rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem 0;
+      color: var(--pure-text);
+    }
+
+    .pure-menu-page-lead {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--pure-text-muted);
+      margin: 0;
+    }
+  }
+
+  .pure-tasting-folio {
+    .pure-folio-group {
+      margin-bottom: 3.5rem;
+
+      .pure-folio-group-title {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--pure-text-subtle);
+        margin: 0 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--pure-border);
+      }
+
+      .pure-folio-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .pure-folio-item {
+        border-bottom: 1px solid var(--pure-border-light);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .pure-folio-link {
+        display: grid;
+        grid-template-columns: 28px 1.4fr 2fr auto;
+        gap: 1.25rem;
+        align-items: baseline;
+        padding: 0.95rem 0.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: var(--pure-surface);
+
+          .pure-folio-title {
+            color: var(--pure-accent);
+          }
+        }
+
+        .pure-folio-num {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 0.6875rem;
+          color: var(--pure-text-subtle);
+        }
+
+        .pure-folio-title {
+          font-family: "Playfair Display", Georgia, serif;
+          font-size: 1.0625rem;
+          font-weight: 500;
+          color: var(--pure-text);
+        }
+
+        .pure-folio-meta {
+          font-size: 0.75rem;
+          color: var(--pure-text-muted);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .pure-folio-price {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: var(--pure-text);
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pure Single-Line Footer
+// -----------------------------------------------------------------------------
+.pure-footer {
+  border-top: 1px solid var(--pure-border-light);
+  padding: 2rem 2rem;
+  background-color: var(--pure-bg);
+
+  .pure-footer-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--pure-text-muted);
+  }
+
+  .pure-footer-links {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+
+    a,
+    .pure-footer-link-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      color: var(--pure-text-muted);
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Presentation View Switcher
+// -----------------------------------------------------------------------------
+.pure-view-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1.5rem;
+  background-color: var(--pure-surface);
+  border-bottom: 1px solid var(--pure-border-light);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--pure-text-muted);
+
+  .pure-view-switcher-label {
+    color: var(--pure-text-subtle);
+    text-transform: uppercase;
+  }
+
+  .pure-view-switcher-link {
+    color: var(--pure-text-muted);
+    text-decoration: none;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--pure-text);
+      background-color: var(--pure-surface-sunken);
+    }
+
+    &.is-active {
+      color: var(--pure-text);
+      font-weight: 700;
+      background-color: var(--pure-surface-sunken);
+      border: 1px solid var(--pure-border);
+    }
+  }
+
+  .pure-view-switcher-sep {
+    color: var(--pure-border);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Split Specimen Ledger Canvas (Stark-Inspired Radical Minimalism)
+// -----------------------------------------------------------------------------
+.pure-split-canvas {
+  display: grid;
+  grid-template-columns: 44% 56%;
+  min-height: calc(100vh - 120px);
+  border-bottom: 1px solid var(--pure-border);
+  background-color: var(--pure-bg);
+
+  @media (max-width: 960px) {
+    grid-template-columns: 100%;
+  }
+}
+
+// Left Pane: Specimen Ledger Index
+.pure-split-ledger-pane {
+  border-right: 1px solid var(--pure-border);
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+  background: var(--pure-bg);
+
+  @media (max-width: 960px) {
+    border-right: none;
+    border-bottom: 1px solid var(--pure-border);
+    max-height: none;
+    order: 2;
+  }
+}
+
+.pure-split-ledger-header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--pure-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: var(--pure-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .pure-split-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .pure-split-ledger-title {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--pure-text);
+  }
+
+  .pure-split-ledger-count {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: var(--pure-text-subtle);
+  }
+}
+
+.pure-split-filters {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+
+  .pure-split-filter-btn {
+    background: transparent;
+    border: 1px solid var(--pure-border);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10px;
+    padding: 0.25rem 0.55rem;
+    color: var(--pure-text-muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--pure-text);
+      border-color: var(--pure-text);
+    }
+
+    &.is-active {
+      background: var(--pure-text);
+      color: var(--pure-bg);
+      border-color: var(--pure-text);
+      font-weight: 600;
+    }
+  }
+}
+
+.pure-split-ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pure-split-ledger-row {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  gap: 1rem;
+  padding: 1.15rem 2rem;
+  border-bottom: 1px solid var(--pure-border);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  user-select: none;
+  background: transparent;
+  text-align: left;
+
+  &:hover {
+    background-color: var(--pure-surface-sunken);
+  }
+
+  &.is-active {
+    background-color: var(--pure-text);
+    color: var(--pure-bg);
+
+    .pure-split-row-num,
+    .pure-split-row-title,
+    .pure-split-row-specs,
+    .pure-split-row-notes,
+    .pure-split-row-price {
+      color: var(--pure-bg);
+    }
+  }
+
+  .pure-split-row-num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: var(--pure-text-subtle);
+    line-height: 1.4;
+  }
+
+  .pure-split-row-meta {
+    overflow: hidden;
+  }
+
+  .pure-split-row-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 0.2rem;
+    color: var(--pure-text);
+  }
+
+  .pure-split-row-specs {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: var(--pure-text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .pure-split-row-notes {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--pure-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pure-split-row-price {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--pure-text);
+    text-align: right;
+  }
+}
+
+// Right Pane: Specimen Stage (Living Dossier)
+.pure-split-specimen-pane {
+  padding: 3.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 40px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: var(--pure-bg);
+
+  @media (max-width: 1200px) {
+    padding: 2.5rem 2rem;
+  }
+
+  @media (max-width: 960px) {
+    position: static;
+    max-height: none;
+    order: 1;
+  }
+}
+
+.pure-split-dossier-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--pure-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pure-text-muted);
+
+  .pure-split-dossier-lot {
+    font-weight: 700;
+    color: var(--pure-text);
+  }
+}
+
+.pure-split-dossier-visual {
+  text-align: center;
+  margin: 1rem 0 2.5rem;
+  position: relative;
+
+  img {
+    max-height: 280px;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 28px var(--pure-shadow));
+    transition: opacity 0.2s ease, transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.pure-split-dossier-heading {
+  margin-bottom: 1.5rem;
+
+  .pure-split-dossier-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+    color: var(--pure-text);
+
+    @media (max-width: 768px) {
+      font-size: 2.1rem;
+    }
+  }
+
+  .pure-split-dossier-descriptor {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pure-text-muted);
+  }
+}
+
+.pure-split-dossier-notes-box {
+  margin-bottom: 2rem;
+
+  .pure-split-dossier-notes-text {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--pure-text);
+    margin: 0;
+  }
+}
+
+.pure-split-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  border-top: 1px solid var(--pure-border);
+  border-bottom: 1px solid var(--pure-border);
+  padding: 1.25rem 0;
+  margin-bottom: 2rem;
+  font-size: 11px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+
+  .pure-split-spec-label {
+    color: var(--pure-text-subtle);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    font-size: 10px;
+  }
+
+  .pure-split-spec-value {
+    color: var(--pure-text);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+.pure-split-order-interface {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .pure-split-config-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .pure-split-config-label {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pure-text-subtle);
+    min-width: 3.5rem;
+  }
+
+  .pure-split-pill-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pure-pill-btn {
+    background: transparent;
+    border: 1px solid var(--pure-border);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    padding: 0.4rem 0.85rem;
+    color: var(--pure-text);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: var(--pure-text);
+    }
+
+    &.is-selected {
+      background: var(--pure-text);
+      color: var(--pure-bg);
+      border-color: var(--pure-text);
+    }
+  }
+
+  .pure-split-add-action {
+    margin-top: 0.5rem;
+
+    .pure-split-add-btn {
+      width: 100%;
+      background: var(--pure-text);
+      color: var(--pure-bg);
+      border: 1px solid var(--pure-text);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.5rem;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+  }
+
+  .pure-split-pager-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pure-border-light);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: var(--pure-text-muted);
+
+    .pure-split-pager-link {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--pure-text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pure Expanded Folio: Broadsheet Colophon Footer & Expanded Directory Drawer
+// -----------------------------------------------------------------------------
+.pure-expanded-footer {
+  border-top: 1px solid var(--pure-border);
+  background-color: var(--pure-bg);
+
+  .pure-footer-colophon {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 4.5rem 2rem 3rem;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+      padding: 3rem 1.25rem 2rem;
+    }
+  }
+
+  .pure-colophon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--pure-border-light);
+
+    @media (max-width: 980px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
+  }
+
+  .pure-colophon-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pure-colophon-heading {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pure-text-subtle);
+    margin: 0 0 1.25rem;
+    font-weight: 700;
+  }
+
+  .pure-colophon-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li {
+      margin: 0;
+    }
+
+    a,
+    .pure-colophon-link-btn {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: var(--pure-text-muted);
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: inline-block;
+      text-align: left;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+
+    .pure-colophon-link-btn {
+      font-weight: 600;
+      color: var(--pure-text);
+    }
+  }
+
+  .pure-colophon-text {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    color: var(--pure-text-muted);
+    line-height: 1.5;
+    margin: 0 0 1.25rem;
+  }
+
+  .pure-colophon-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--pure-border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.5rem;
+
+    .pure-colophon-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      color: var(--pure-text);
+      width: 100%;
+
+      &::placeholder {
+        color: var(--pure-text-subtle);
+      }
+    }
+
+    .pure-colophon-submit {
+      background: none;
+      border: none;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      color: var(--pure-text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .pure-colophon-mark {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.65625rem;
+    letter-spacing: 0.08em;
+    color: var(--pure-text-subtle);
+    text-transform: uppercase;
+  }
+
+  .pure-colophon-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    color: var(--pure-text-subtle);
+
+    .pure-colophon-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pure-colophon-subtle-link {
+      color: var(--pure-text-muted);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--pure-text);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pure Expanded Directory Drawer Navigation Elements
+// -----------------------------------------------------------------------------
+.pure-expanded-drawer {
+  .pure-drawer-tabs {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    padding: 0.85rem 2rem;
+    background-color: var(--pure-surface-sunken);
+    border-bottom: 1px solid var(--pure-border-light);
+
+    @media (max-width: 640px) {
+      padding: 0.65rem 1.25rem;
+    }
+  }
+
+  .pure-drawer-tab-btn {
+    background: transparent;
+    border: 1px solid var(--pure-border);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.65625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    color: var(--pure-text-muted);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--pure-text);
+      border-color: var(--pure-text);
+    }
+
+    &.is-active {
+      background: var(--pure-text);
+      color: var(--pure-bg);
+      border-color: var(--pure-text);
+      font-weight: 700;
+    }
+  }
+
+  .pure-drawer-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .pure-drawer-nav-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.85rem;
+    padding: 0.65rem 0.75rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--pure-border-light);
+    border-radius: 2px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--pure-surface);
+    }
+
+    .pure-drawer-nav-name {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--pure-text);
+      letter-spacing: 0.04em;
+    }
+
+    .pure-drawer-nav-sub {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.6875rem;
+      color: var(--pure-text-subtle);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pure-drawer-nav-arrow {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      color: var(--pure-text-subtle);
+    }
+  }
+}
+
+.pure-essay-plate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0 3rem;
+
+  img {
+    max-width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 24px var(--pure-shadow));
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pure Approach B: Whisper-Quiet Header Popover Sheets
+// -----------------------------------------------------------------------------
+.pure-popovers-header {
+  position: sticky;
+  top: 0;
+  z-index: 120;
+}
+
+.pure-popover-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pure-popover-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--pure-text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover,
+  &.is-open {
+    color: var(--pure-text);
+  }
+
+  &.is-open {
+    font-weight: 700;
+
+    .pure-popover-arrow {
+      transform: rotate(180deg);
+      color: var(--pure-text);
+    }
+  }
+
+  .pure-popover-arrow {
+    display: inline-block;
+    font-size: 0.625rem;
+    color: var(--pure-text-subtle);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+.pure-popover-sheet {
+  position: absolute;
+  top: calc(100% + 1.25rem);
+  background-color: var(--pure-surface);
+  border: 1px solid var(--pure-border);
+  border-radius: 3px;
+  box-shadow: 0 16px 36px var(--pure-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.18s ease;
+  z-index: 200;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  &--wide {
+    width: 820px;
+    max-width: calc(100vw - 2.5rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+
+    &.is-open {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  &--standard {
+    width: 360px;
+    max-width: calc(100vw - 2.5rem);
+  }
+
+  &--compact {
+    width: 310px;
+    max-width: calc(100vw - 2.5rem);
+  }
+
+  &--center {
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+
+    &.is-open {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  &--right {
+    right: 0;
+    left: auto;
+    transform: translateY(-8px);
+
+    &.is-open {
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 840px) {
+    position: fixed;
+    top: 3.5rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto !important;
+    max-width: none !important;
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+    transform: translateY(-10px) !important;
+
+    &.is-open {
+      transform: translateY(0) !important;
+    }
+  }
+}
+
+.pure-popover-wide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+
+  @media (max-width: 840px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.pure-popover-col {
+  display: flex;
+  flex-direction: column;
+
+  &--accent {
+    border-left: 1px solid var(--pure-border-light);
+    padding-left: 2rem;
+
+    @media (max-width: 840px) {
+      border-left: none;
+      padding-left: 0;
+      border-top: 1px solid var(--pure-border-light);
+      padding-top: 1.5rem;
+    }
+  }
+}
+
+.pure-popover-col-header {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pure-text-subtle);
+  margin-bottom: 0.95rem;
+  font-weight: 700;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--pure-border-light);
+}
+
+.pure-popover-lot-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 380px;
+  overflow-y: auto;
+
+  @media (max-width: 840px) {
+    max-height: 240px;
+  }
+}
+
+.pure-popover-lot-row {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr auto;
+  align-items: baseline;
+  gap: 0.6rem;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.35rem 0.45rem;
+  cursor: pointer;
+  border-radius: 2px;
+  text-align: left;
+  transition: background-color 0.12s ease;
+
+  &:hover {
+    background-color: var(--pure-surface-sunken);
+  }
+
+  .pure-popover-lot-num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    color: var(--pure-text-subtle);
+  }
+
+  .pure-popover-lot-title {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--pure-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pure-popover-lot-price {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--pure-text-muted);
+  }
+}
+
+.pure-popover-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pure-popover-nav-link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding: 0.55rem 0.6rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--pure-border-light);
+  border-radius: 2px;
+  transition: background-color 0.12s ease;
+
+  &:hover {
+    background-color: var(--pure-surface-sunken);
+  }
+
+  .pure-popover-nav-name {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--pure-text);
+  }
+
+  .pure-popover-nav-sub {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    color: var(--pure-text-subtle);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pure-popover-nav-arrow {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--pure-text-subtle);
+  }
+}
+
+.pure-popover-desc {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  color: var(--pure-text-muted);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.pure-popover-form {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--pure-border);
+  padding-bottom: 0.35rem;
+  margin-bottom: 1rem;
+
+  .pure-popover-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    color: var(--pure-text);
+    width: 100%;
+
+    &::placeholder {
+      color: var(--pure-text-subtle);
+    }
+  }
+
+  .pure-popover-submit {
+    background: none;
+    border: none;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--pure-text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--pure-text);
+      text-decoration: underline;
+    }
+  }
+}
+
+.pure-popover-subtle-mark {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--pure-text-subtle);
+  text-transform: uppercase;
+}
+
+

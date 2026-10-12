@@ -131,7 +131,7 @@
   .bp-toolbar-label {
     font-family: $font-display;
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #8a7060;
@@ -179,7 +179,7 @@
     .bp-slider-val {
       font-family: $font-display;
       font-size: 0.76rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #2c1e14;
       min-width: 2.2rem;
     }
@@ -294,7 +294,7 @@
   .bp-row-label {
     font-family: $font-display;
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #8a7060;
@@ -328,7 +328,7 @@
     white-space: nowrap;
 
     .mms-label {
-      font-weight: 800;
+      font-weight: 700;
       color: #8a7060;
       font-size: 0.74rem;
       letter-spacing: 0.02em;
@@ -355,7 +355,7 @@
       color: #2c1e14;
 
       .mms-value {
-        font-weight: 800;
+        font-weight: 700;
       }
     }
   }
@@ -387,7 +387,7 @@
       background: #d4973b;
       color: #2c1e14;
       font-size: 0.65rem;
-      font-weight: 800;
+      font-weight: 700;
       width: 1.15rem;
       height: 1.15rem;
       border-radius: var(--preview-radius-badge);
@@ -510,7 +510,7 @@
       .bp-menu-title {
         font-family: $font-display;
         font-size: 0.68rem;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #8a7060;
@@ -546,7 +546,7 @@
       &.is-checked {
         background: rgba(200, 134, 39, 0.08);
         color: #2c1e14;
-        font-weight: 800;
+        font-weight: 700;
       }
 
       input[type="checkbox"] {
@@ -620,7 +620,7 @@
     background: #f0c838;
     color: #2c1e14;
     font-family: $font-display;
-    font-weight: 800;
+    font-weight: 700;
     font-size: var(--btn-font-size);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -805,7 +805,7 @@
       background: #d97706;
       color: #ffffff;
       font-size: 0.65rem;
-      font-weight: 800;
+      font-weight: 700;
       padding: 0.05rem 0.4rem;
       border-radius: var(--preview-radius-badge);
     }
@@ -940,7 +940,7 @@
     padding: var(--btn-pad-y) var(--btn-pad-x);
     font-family: $font-display;
     font-size: var(--btn-font-size);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
@@ -1021,7 +1021,7 @@
 
       .card-id {
         font-family: $font-display;
-        font-weight: 800;
+        font-weight: 700;
         font-size: 0.92rem;
         color: #2c1e14;
       }
@@ -1053,7 +1053,7 @@
       border-top: 1px solid #f7f3ee;
 
       .card-price {
-        font-weight: 800;
+        font-weight: 700;
         font-size: 0.88rem;
         color: #2c1e14;
       }
@@ -1122,7 +1122,7 @@
 
       .bp-card-price {
         font-family: $font-display;
-        font-weight: 800;
+        font-weight: 700;
         font-size: 1.05rem;
         color: #2c1e14;
       }
@@ -1169,7 +1169,7 @@
         color: #ffffff;
         font-family: $font-display;
         font-size: 0.65rem;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         padding: 0.15rem 0.55rem;
@@ -1194,7 +1194,7 @@
       .bp-gal-tag {
         font-family: $font-display;
         font-size: 0.68rem;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.06em;
         padding: 0.15rem 0.5rem;
         border-radius: 3px;
@@ -1224,7 +1224,7 @@
       .bp-gal-label {
         font-family: $font-display;
         font-size: 0.66rem;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #8a7060;
@@ -1353,7 +1353,7 @@
       padding: var(--gal-pad-btn);
       font-family: $font-display;
       font-size: var(--gal-font-btn);
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       border-radius: var(--gal-radius);
@@ -1523,7 +1523,7 @@
     .bp-comp-title {
       font-family: $font-display;
       font-size: 1.05rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #2c1e14;
       margin-bottom: 0.35rem;
       display: flex;
@@ -1534,7 +1534,7 @@
 
     .bp-comp-tag {
       font-size: 0.68rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       padding: 0.18rem 0.55rem;

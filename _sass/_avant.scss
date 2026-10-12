@@ -1,0 +1,1148 @@
+// =============================================================================
+// Yellow Wing Avant-Garde Stylesheet
+// Radical Award-Winning Minimalist Prototype (The Kinetic Monolith)
+// =============================================================================
+
+:root {
+  --avant-font-display: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Neue Haas Grotesk", Arial, sans-serif;
+  --avant-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --avant-font-serif: "Ibarra Real Nova", "Playfair Display", Georgia, serif;
+}
+
+// Default Warm Archival Kraft Theme (Tactile Parchment & Espresso)
+body.avant-page,
+body.avant-page[data-avant-theme="kraft"] {
+  --avant-bg: #ece5d8;
+  --avant-bg-surface: #f5efe4;
+  --avant-bg-elevated: #e2dac9;
+  --avant-text: #1d1813;
+  --avant-text-muted: #5e5546;
+  --avant-text-subtle: #8a7f6e;
+  --avant-border: #d4caa7;
+  --avant-border-light: #c2b691;
+  --avant-accent: #1d1813;
+  --avant-accent-contrast: #ece5d8;
+  --avant-highlight: #7a5410;
+  --avant-hud-bg: rgba(236, 229, 216, 0.94);
+  --avant-hud-border: rgba(29, 24, 19, 0.16);
+  --avant-lens-bg: rgba(245, 239, 228, 0.94);
+  --avant-lens-border: rgba(29, 24, 19, 0.2);
+  --avant-shadow: rgba(40, 30, 20, 0.15);
+}
+
+// Studio White Theme (Pure Gallery Paper & Carbon)
+body.avant-page[data-avant-theme="white"] {
+  --avant-bg: #fcfcfb;
+  --avant-bg-surface: #ffffff;
+  --avant-bg-elevated: #f2f2ef;
+  --avant-text: #0a0a0a;
+  --avant-text-muted: #4f4f4c;
+  --avant-text-subtle: #8a8a85;
+  --avant-border: #deded9;
+  --avant-border-light: #cccccc;
+  --avant-accent: #0a0a0a;
+  --avant-accent-contrast: #ffffff;
+  --avant-highlight: #0a0a0a;
+  --avant-hud-bg: rgba(255, 255, 255, 0.94);
+  --avant-hud-border: rgba(0, 0, 0, 0.14);
+  --avant-lens-bg: rgba(255, 255, 255, 0.94);
+  --avant-lens-border: rgba(0, 0, 0, 0.16);
+  --avant-shadow: rgba(0, 0, 0, 0.1);
+}
+
+// Warm Bone Porcelain Theme (Ivory & Slate)
+body.avant-page[data-avant-theme="bone"] {
+  --avant-bg: #f4f1ea;
+  --avant-bg-surface: #faf8f4;
+  --avant-bg-elevated: #ebe6dc;
+  --avant-text: #191612;
+  --avant-text-muted: #575043;
+  --avant-text-subtle: #877d6e;
+  --avant-border: #d9d2c2;
+  --avant-border-light: #c7beab;
+  --avant-accent: #191612;
+  --avant-accent-contrast: #f4f1ea;
+  --avant-highlight: #6b4d1b;
+  --avant-hud-bg: rgba(244, 241, 234, 0.94);
+  --avant-hud-border: rgba(25, 22, 18, 0.15);
+  --avant-lens-bg: rgba(250, 248, 244, 0.94);
+  --avant-lens-border: rgba(25, 22, 18, 0.18);
+  --avant-shadow: rgba(25, 22, 18, 0.12);
+}
+
+body.avant-page {
+  background-color: var(--avant-bg);
+  color: var(--avant-text);
+  font-family: var(--avant-font-mono);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  transition: background-color 0.35s ease, color 0.35s ease;
+  overflow-x: hidden;
+
+  // Kill default biscuit theme container constraints
+  .container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--avant-text);
+    margin: 0;
+  }
+}
+
+// Prototype Switcher Utility Topbar
+.avant-topbar {
+  background-color: var(--avant-bg-surface);
+  border-bottom: 1px solid var(--avant-border);
+  padding: 0.5rem 1.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  z-index: 100;
+  position: relative;
+
+  .avant-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .avant-topbar-badge {
+    background-color: var(--avant-accent);
+    color: var(--avant-accent-contrast);
+    padding: 0.15rem 0.5rem;
+    font-weight: 700;
+    font-size: 0.65rem;
+  }
+
+  .avant-topbar-link {
+    color: var(--avant-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    &:hover {
+      color: var(--avant-text);
+    }
+  }
+
+  .avant-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+// Avant Primary Header
+.avant-header {
+  border-bottom: 1px solid var(--avant-border);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 50;
+
+  .avant-wordmark {
+    font-family: var(--avant-font-display);
+    font-weight: 900;
+    font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--avant-text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .avant-status-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #00ff66;
+      box-shadow: 0 0 10px #00ff66;
+      animation: avantPulse 2s infinite;
+    }
+  }
+
+  .avant-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .avant-nav-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--avant-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover, &.is-active {
+      color: var(--avant-text);
+    }
+  }
+
+  .avant-bag-trigger {
+    background: none;
+    border: 1px solid var(--avant-border-light);
+    color: var(--avant-text);
+    padding: 0.45rem 1rem;
+    font-family: var(--avant-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--avant-accent);
+      color: var(--avant-accent-contrast);
+      border-color: var(--avant-accent);
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+
+    .avant-header-nav {
+      width: 100%;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+  }
+}
+
+@keyframes avantPulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+// Mode & Filter Ribbon
+.avant-control-ribbon {
+  border-bottom: 1px solid var(--avant-border);
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: var(--avant-bg);
+
+  .avant-filter-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .avant-filter-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--avant-text-muted);
+    font-family: var(--avant-font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--avant-text);
+    }
+
+    &.is-active {
+      border-color: var(--avant-border-light);
+      background-color: var(--avant-bg-surface);
+      color: var(--avant-text);
+      font-weight: 600;
+    }
+  }
+
+  .avant-view-group {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid var(--avant-border);
+    padding: 2px;
+    background-color: var(--avant-bg-surface);
+  }
+
+  .avant-view-btn {
+    background: transparent;
+    border: none;
+    color: var(--avant-text-muted);
+    font-family: var(--avant-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--avant-text);
+    }
+
+    &.is-active {
+      background-color: var(--avant-accent);
+      color: var(--avant-accent-contrast);
+      font-weight: 700;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+
+    .avant-filter-group {
+      justify-content: flex-start;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 0.25rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .avant-view-group {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
+
+// =============================================================================
+// VIEW 1: THE RUNWAY (Cinematic Full-Viewport Specimen Carousel)
+// =============================================================================
+.avant-runway-container {
+  min-height: calc(100vh - 180px);
+  padding: 3rem 2rem 8.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.avant-runway-stage {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.avant-runway-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.avant-runway-index-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.avant-runway-number {
+  font-family: var(--avant-font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--avant-text-muted);
+}
+
+.avant-runway-category {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--avant-accent);
+  border: 1px solid var(--avant-border-light);
+  padding: 0.2rem 0.6rem;
+}
+
+.avant-runway-title {
+  font-family: var(--avant-font-display);
+  font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--avant-text);
+  margin: 0;
+  word-break: break-word;
+}
+
+.avant-runway-descriptors {
+  font-family: var(--avant-font-mono);
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--avant-text-muted);
+  border-left: 2px solid var(--avant-accent);
+  padding-left: 1rem;
+  line-height: 1.4;
+}
+
+.avant-runway-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem;
+  border-top: 1px solid var(--avant-border);
+  border-bottom: 1px solid var(--avant-border);
+  padding: 1.25rem 0;
+
+  .avant-spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .avant-spec-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--avant-text-subtle);
+  }
+
+  .avant-spec-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--avant-text);
+  }
+
+  .avant-roast-meter {
+    font-family: var(--avant-font-mono);
+    letter-spacing: 0.2em;
+    color: var(--avant-accent);
+  }
+}
+
+.avant-runway-desc-text {
+  font-family: var(--avant-font-display);
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--avant-text-muted);
+  max-width: 600px;
+}
+
+// Runway Interactive Order Panel
+.avant-runway-order-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--avant-bg-surface);
+  border: 1px solid var(--avant-border);
+  padding: 1.5rem;
+  max-width: 600px;
+
+  .avant-panel-selectors {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .avant-panel-group {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .avant-panel-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--avant-text-subtle);
+  }
+
+  .avant-select-control {
+    background-color: var(--avant-bg);
+    border: 1px solid var(--avant-border-light);
+    color: var(--avant-text);
+    font-family: var(--avant-font-mono);
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+
+    &:focus {
+      border-color: var(--avant-accent);
+    }
+  }
+
+  .avant-panel-cta-btn {
+    background-color: var(--avant-accent);
+    color: var(--avant-accent-contrast);
+    border: 1px solid var(--avant-accent);
+    font-family: var(--avant-font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Runway Centerpiece Art Plate
+.avant-runway-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .avant-visual-stage {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avant-visual-backdrop-circle {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: 1px dashed var(--avant-border);
+    animation: avantRotate 40s linear infinite;
+    pointer-events: none;
+  }
+
+  .avant-runway-mascot-img {
+    position: relative;
+    z-index: 2;
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+  }
+
+  .avant-mascot-caption {
+    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--avant-text-subtle);
+  }
+}
+
+@keyframes avantRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Runway Navigation Controls
+.avant-runway-controls {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--avant-border);
+  padding-top: 1.5rem;
+
+  .avant-ctrl-btn {
+    background: transparent;
+    border: 1px solid var(--avant-border-light);
+    color: var(--avant-text);
+    font-family: var(--avant-font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--avant-accent);
+      color: var(--avant-accent-contrast);
+      border-color: var(--avant-accent);
+    }
+  }
+
+  .avant-progress-track {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .avant-progress-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--avant-border-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.is-active {
+      background-color: var(--avant-accent);
+      transform: scale(1.4);
+    }
+  }
+}
+
+// =============================================================================
+// VIEW 2: THE MATRIX (Kinetic Typographic List + Cursor Follower Hologram)
+// =============================================================================
+.avant-matrix-container {
+  padding: 2rem 2rem 6rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: none; // toggled via JS
+
+  &.is-active {
+    display: block;
+  }
+}
+
+.avant-matrix-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--avant-border);
+}
+
+.avant-matrix-row {
+  border-bottom: 1px solid var(--avant-border);
+  padding: 1.75rem 1rem;
+  display: grid;
+  grid-template-columns: 80px 2.5fr 1.5fr 1fr 120px 140px;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease, padding 0.25s ease;
+  position: relative;
+
+  &:hover {
+    background-color: var(--avant-bg-surface);
+    padding-left: 1.75rem;
+
+    .avant-matrix-title {
+      color: var(--avant-highlight);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 50px 1.5fr 1fr auto;
+    .avant-matrix-notes, .avant-matrix-origin {
+      display: none;
+    }
+  }
+}
+
+.avant-matrix-num {
+  font-family: var(--avant-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--avant-text-subtle);
+}
+
+.avant-matrix-title {
+  font-family: var(--avant-font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--avant-text);
+  line-height: 1.1;
+  transition: color 0.2s ease;
+}
+
+.avant-matrix-origin {
+  font-size: 0.8rem;
+  color: var(--avant-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.avant-matrix-notes {
+  font-size: 0.75rem;
+  color: var(--avant-text-subtle);
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avant-matrix-price {
+  font-family: var(--avant-font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--avant-text);
+  text-align: right;
+}
+
+.avant-matrix-action {
+  text-align: right;
+}
+
+.avant-matrix-inspect-btn {
+  background: transparent;
+  border: 1px solid var(--avant-border-light);
+  color: var(--avant-text);
+  font-family: var(--avant-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--avant-accent);
+    color: var(--avant-accent-contrast);
+  }
+}
+
+// Inline Matrix Expanded Specimen Drawer
+.avant-matrix-drawer {
+  display: none;
+  border-bottom: 1px solid var(--avant-border);
+  background-color: var(--avant-bg-surface);
+  padding: 2.5rem 2rem;
+  grid-column: 1 / -1;
+
+  &.is-open {
+    display: block;
+    animation: avantSlideDown 0.3s ease;
+  }
+}
+
+@keyframes avantSlideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.avant-matrix-drawer-grid {
+  display: grid;
+  grid-template-columns: 280px 1.5fr 1fr;
+  gap: 3rem;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+// Cursor Follower Lens (Awwwards Hall of Fame Pattern)
+#avant-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--avant-lens-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--avant-lens-border);
+  box-shadow: 0 20px 40px var(--avant-shadow);
+
+  &.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px var(--avant-shadow));
+  }
+
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+// =============================================================================
+// VIEW 3: THE SPEC SHEET (Pure Brutalist Architectural Grid)
+// =============================================================================
+.avant-specs-container {
+  padding: 2rem 2rem 6rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: none; // toggled via JS
+
+  &.is-active {
+    display: block;
+  }
+}
+
+.avant-specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--avant-font-mono);
+  font-size: 0.8rem;
+
+  th {
+    border-bottom: 2px solid var(--avant-border-light);
+    padding: 1rem 0.75rem;
+    text-align: left;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--avant-text-subtle);
+  }
+
+  td {
+    border-bottom: 1px solid var(--avant-border);
+    padding: 1.25rem 0.75rem;
+    color: var(--avant-text);
+    vertical-align: middle;
+  }
+
+  tr:hover td {
+    background-color: var(--avant-bg-surface);
+  }
+}
+
+// =============================================================================
+// FLOATING BOTTOM HUD DOCK (Heads-Up Display)
+// =============================================================================
+.avant-hud-dock {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: var(--avant-hud-bg);
+  border: 1px solid var(--avant-hud-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    bottom: 1rem;
+    width: calc(100% - 2rem);
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .avant-hud-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .avant-hud-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--avant-text-subtle);
+    margin-right: 0.25rem;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .avant-hud-btn {
+    background: transparent;
+    border: none;
+    color: var(--avant-text-muted);
+    font-family: var(--avant-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--avant-text);
+    }
+
+    &.is-active {
+      background-color: var(--avant-accent);
+      color: var(--avant-accent-contrast);
+      font-weight: 700;
+    }
+  }
+
+  .avant-hud-divider {
+    width: 1px;
+    height: 18px;
+    background-color: var(--avant-border-light);
+  }
+
+  .avant-hud-bag-btn {
+    background-color: var(--avant-accent);
+    color: var(--avant-accent-contrast);
+    border: none;
+    font-family: var(--avant-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.04);
+    }
+  }
+}
+
+// =============================================================================
+// AVANT CART DRAWER
+// =============================================================================
+.avant-cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.avant-cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 440px;
+  max-width: 100vw;
+  height: 100vh;
+  background-color: var(--avant-bg);
+  border-left: 1px solid var(--avant-border);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  .avant-drawer-header {
+    border-bottom: 1px solid var(--avant-border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-family: var(--avant-font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: var(--avant-text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      &:hover { color: var(--avant-text); }
+    }
+  }
+
+  .avant-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+  }
+
+  .avant-drawer-item {
+    border-bottom: 1px solid var(--avant-border);
+    padding: 1.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .avant-drawer-item-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+
+  .avant-drawer-item-meta {
+    font-size: 0.72rem;
+    color: var(--avant-text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .avant-drawer-item-price {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .avant-drawer-footer {
+    border-top: 1px solid var(--avant-border);
+    padding: 1.75rem 2rem;
+    background-color: var(--avant-bg-surface);
+
+    .avant-subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .avant-checkout-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background-color: var(--avant-accent);
+      color: var(--avant-accent-contrast);
+      font-family: var(--avant-font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// AVANT MANIFESTO PAGE (THE THERMODYNAMIC MANIFESTO)
+// =============================================================================
+.avant-manifesto-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+
+  .avant-man-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--avant-highlight);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .avant-man-headline {
+    font-family: var(--avant-font-display);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4rem;
+  }
+
+  .avant-man-section {
+    border-top: 1px solid var(--avant-border);
+    padding: 3rem 0;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .avant-man-sec-num {
+    font-family: var(--avant-font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--avant-text-subtle);
+    line-height: 1;
+  }
+
+  .avant-man-sec-title {
+    font-family: var(--avant-font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .avant-man-sec-body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--avant-text-muted);
+  }
+}

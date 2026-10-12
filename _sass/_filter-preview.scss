@@ -12,7 +12,7 @@
     display: inline-block;
     font-family: $font-display;
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #9c6d12;
@@ -25,7 +25,7 @@
   .preview-header-title {
     font-family: $font-display;
     font-size: 2.1rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #2c1e14;
     margin: 0 0 0.5rem;
     line-height: 1.15;
@@ -74,7 +74,7 @@
     background: rgba(44, 30, 20, 0.08);
     color: #443022;
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
   }
 
   &:hover {
@@ -124,7 +124,7 @@
   .variation-info-title {
     font-family: $font-display;
     font-size: 1.08rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #2c1e14;
     margin: 0 0 0.25rem;
   }
@@ -243,7 +243,7 @@
     &.is-active {
       background-color: rgba(200, 134, 39, 0.12);
       color: #2c1e14;
-      font-weight: 800;
+      font-weight: 700;
       border-color: rgba(200, 134, 39, 0.4);
     }
   }
@@ -318,7 +318,7 @@
       background: #d4973b;
       color: #2c1e14;
       font-size: 0.68rem;
-      font-weight: 800;
+      font-weight: 700;
       width: 1.25rem;
       height: 1.25rem;
       border-radius: 50%;
@@ -421,7 +421,7 @@
     label {
       font-family: $font-display;
       font-size: 0.72rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #8a7060;
@@ -485,7 +485,7 @@
     .v3-title {
       font-family: $font-display;
       font-size: 1.15rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #2c1e14;
       margin: 0;
     }
@@ -548,7 +548,7 @@
     .v3-category-label {
       font-family: $font-display;
       font-size: 0.72rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #8a7060;
@@ -691,7 +691,7 @@ body.preview-mode--all {
       background: #d4973b;
       color: #2c1e14;
       font-size: 0.68rem;
-      font-weight: 800;
+      font-weight: 700;
       width: 1.25rem;
       height: 1.25rem;
       border-radius: 50%;

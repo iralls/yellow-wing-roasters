@@ -53,7 +53,7 @@ permalink: /best-seller-preview/
 .bsp-section-heading {
   font-family: Montserrat, sans-serif;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
   margin: 2.5rem 0 0.5rem;
   padding-bottom: 0.5rem;
@@ -76,7 +76,7 @@ permalink: /best-seller-preview/
 }
 .bsp-option-label {
   font-family: Montserrat, sans-serif;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.9rem;
   color: #2c1e14;
   margin-bottom: 0.25rem;
@@ -86,7 +86,7 @@ permalink: /best-seller-preview/
 }
 .bsp-option-tag {
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 0.15rem 0.45rem;

@@ -78,7 +78,7 @@ sitemap: false
       {% endif %}
 
       <div class="sleek-detail-roast-level">
-        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
         {% include roast-dots.html roast=col %}
         <span class="sleek-detail-roast-name">{{ col_level.name }}</span>
       </div>
@@ -87,7 +87,7 @@ sitemap: false
       <div class="sleek-detail-buy-box">
         <div class="sleek-buy-price-row">
           <div>
-            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
             <span class="sleek-buy-price-val" id="col-price-display">${{ col.price["12oz"] }}</span>
           </div>
           <span class="sleek-buy-price-note">Roasted to order · Ships fresh</span>
@@ -168,7 +168,7 @@ sitemap: false
                   {% for c in h.components %}
                     <div class="sleek-history-lot-title">
                       {{ c.name }}
-                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 800;">({{ c.ratio }})</span>{% endif %}
+                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 700;">({{ c.ratio }})</span>{% endif %}
                     </div>
                   {% endfor %}
                 {% else %}
@@ -253,7 +253,7 @@ sitemap: false
       </div>
 
       <div class="sleek-detail-roast-level">
-        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
         {% include roast-dots.html roast=eb %}
         <span class="sleek-detail-roast-name">{{ eb_level.name }}</span>
       </div>
@@ -262,7 +262,7 @@ sitemap: false
       <div class="sleek-detail-buy-box">
         <div class="sleek-buy-price-row">
           <div>
-            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
             <span class="sleek-buy-price-val" id="eb-price-display">${{ eb.price["12oz"] }}</span>
           </div>
           <span class="sleek-buy-price-note">Dialing in this profile with each batch</span>
@@ -383,7 +383,7 @@ sitemap: false
       </div>
 
       <div class="sleek-detail-roast-level">
-        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
         {% include roast-dots.html roast=brz %}
         <span class="sleek-detail-roast-name">{{ brz_level.name }}</span>
       </div>
@@ -391,7 +391,7 @@ sitemap: false
       <div class="sleek-detail-buy-box">
         <div class="sleek-buy-price-row">
           <div>
-            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
             <span class="sleek-buy-price-val" id="brz-price-display">${{ brz.price["12oz"] }}</span>
           </div>
           <span class="sleek-buy-price-note">Roasted to order · Ships fresh</span>
@@ -459,7 +459,7 @@ sitemap: false
                   {% for c in h.components %}
                     <div class="sleek-history-lot-title">
                       {{ c.name }}
-                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 800;">({{ c.ratio }})</span>{% endif %}
+                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 700;">({{ c.ratio }})</span>{% endif %}
                     </div>
                   {% endfor %}
                 {% else %}
@@ -543,7 +543,7 @@ sitemap: false
       </div>
 
       <div class="sleek-detail-roast-level">
-        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
         {% include roast-dots.html roast=sum %}
         <span class="sleek-detail-roast-name">{{ sum_level.name }}</span>
       </div>
@@ -551,7 +551,7 @@ sitemap: false
       <div class="sleek-detail-buy-box">
         <div class="sleek-buy-price-row">
           <div>
-            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+            <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
             <span class="sleek-buy-price-val" id="sum-price-display">${{ sum.price["12oz"] }}</span>
           </div>
           <span class="sleek-buy-price-note">Roasted to order · Ships fresh</span>
@@ -623,7 +623,7 @@ sitemap: false
                   {% for c in h.components %}
                     <div class="sleek-history-lot-title">
                       {{ c.name }}
-                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 800;">({{ c.ratio }})</span>{% endif %}
+                      {% if c.ratio %}<span style="font-size: 0.85rem; color: #9c6d12; font-weight: 700;">({{ c.ratio }})</span>{% endif %}
                     </div>
                   {% endfor %}
                 {% else %}

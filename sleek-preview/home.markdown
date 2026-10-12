@@ -31,7 +31,7 @@ sitemap: false
 <section class="sleek-home-showcase-section">
   <div class="sleek-home-showcase-header">
     <div>
-      <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #9c6d12;">Current Selections</span>
+      <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #9c6d12;">Current Selections</span>
       <h2 class="sleek-home-showcase-title">Featured Offerings</h2>
     </div>
     <a href="{{ '/sleek-preview/catalog/' | relative_url }}" class="sleek-home-showcase-link">

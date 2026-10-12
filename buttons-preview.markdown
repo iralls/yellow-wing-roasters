@@ -736,7 +736,7 @@ permalink: /buttons-preview/
       <p class="bp-comp-desc">Full capsule rounded ends with generous padding.</p>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <button type="button" class="bp-btn-primary">Add to Cart &bull; $16</button>
           <button type="button" class="bp-btn-outline">Order Roast</button>
@@ -744,7 +744,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <button type="button" class="bp-drawer-toggle"><span>Filters</span><span class="bp-active-count">2</span></button>
           <button type="button" class="bp-mms-trigger is-active"><span class="mms-label">Type:</span><span class="mms-value">Blend</span></button>
@@ -752,7 +752,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <span class="bp-status-badge bp-status-badge--received">Received</span>
           <span class="bp-status-badge bp-status-badge--roasted">Roasted</span>
@@ -760,7 +760,7 @@ permalink: /buttons-preview/
       </div>
 
       <div>
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
         <div class="bp-size-group">
           <button type="button" class="bp-size-btn is-selected">12oz</button>
           <button type="button" class="bp-size-btn">2lb</button>
@@ -778,7 +778,7 @@ permalink: /buttons-preview/
       <p class="bp-comp-desc">The original pill padding with 4px corners. Why it felt "too big" &amp; bulky.</p>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <button type="button" class="bp-btn-primary">Add to Cart &bull; $16</button>
           <button type="button" class="bp-btn-outline">Order Roast</button>
@@ -786,7 +786,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <button type="button" class="bp-drawer-toggle"><span>Filters</span><span class="bp-active-count">2</span></button>
           <button type="button" class="bp-mms-trigger is-active"><span class="mms-label">Type:</span><span class="mms-value">Blend</span></button>
@@ -794,7 +794,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <span class="bp-status-badge bp-status-badge--received">Received</span>
           <span class="bp-status-badge bp-status-badge--roasted">Roasted</span>
@@ -802,7 +802,7 @@ permalink: /buttons-preview/
       </div>
 
       <div>
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
         <div class="bp-size-group">
           <button type="button" class="bp-size-btn is-selected">12oz</button>
           <button type="button" class="bp-size-btn">2lb</button>
@@ -820,7 +820,7 @@ permalink: /buttons-preview/
       <p class="bp-comp-desc">Refined 4px corners with balanced compact padding. Clean &amp; proportional.</p>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <button type="button" class="bp-btn-primary">Add to Cart &bull; $16</button>
           <button type="button" class="bp-btn-outline">Order Roast</button>
@@ -828,7 +828,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <button type="button" class="bp-drawer-toggle"><span>Filters</span><span class="bp-active-count">2</span></button>
           <button type="button" class="bp-mms-trigger is-active"><span class="mms-label">Type:</span><span class="mms-value">Blend</span></button>
@@ -836,7 +836,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <span class="bp-status-badge bp-status-badge--received">Received</span>
           <span class="bp-status-badge bp-status-badge--roasted">Roasted</span>
@@ -844,7 +844,7 @@ permalink: /buttons-preview/
       </div>
 
       <div>
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
         <div class="bp-size-group">
           <button type="button" class="bp-size-btn is-selected">12oz</button>
           <button type="button" class="bp-size-btn">2lb</button>
@@ -862,7 +862,7 @@ permalink: /buttons-preview/
       <p class="bp-comp-desc">Ultra-compact 2px micro corners with high-density spacing.</p>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Primary Actions</h4>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <button type="button" class="bp-btn-primary">Add to Cart &bull; $16</button>
           <button type="button" class="bp-btn-outline">Order Roast</button>
@@ -870,7 +870,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Filter Triggers</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <button type="button" class="bp-drawer-toggle"><span>Filters</span><span class="bp-active-count">2</span></button>
           <button type="button" class="bp-mms-trigger is-active"><span class="mms-label">Type:</span><span class="mms-value">Blend</span></button>
@@ -878,7 +878,7 @@ permalink: /buttons-preview/
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Admin Status Badges</h4>
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <span class="bp-status-badge bp-status-badge--received">Received</span>
           <span class="bp-status-badge bp-status-badge--roasted">Roasted</span>
@@ -886,7 +886,7 @@ permalink: /buttons-preview/
       </div>
 
       <div>
-        <h4 style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
+        <h4 style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a7060; margin-bottom: 0.5rem;">Bag Size Selector</h4>
         <div class="bp-size-group">
           <button type="button" class="bp-size-btn is-selected">12oz</button>
           <button type="button" class="bp-size-btn">2lb</button>
