@@ -6,8 +6,6 @@ permalink: /gift/
 
 <div class="roast-minimal-vertical">
 
-<div class="roast-mv-divider"></div>
-
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/audubon-raven-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>

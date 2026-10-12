@@ -44,7 +44,7 @@ layout: default
 {% endif %}
 
 <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 700; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
     &larr; Back to All Roasts
   </a>
 </div>
@@ -67,7 +67,7 @@ layout: default
     {% endif %}
 
     {% if page.description and page.description != "" %}
-      <div style="font-family: Lora, serif; font-size: 0.95rem; color: #6e5e54; line-height: 1.65; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.08); padding-top: 1.5rem; text-align: left; width: 100%;">
+      <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
         {{ page.description | markdownify }}
       </div>
     {% endif %}
@@ -106,11 +106,11 @@ layout: default
     {% if page.descriptor or page.tasting_notes %}
       <div class="sleek-detail-tasting-banner">
         {% if page.descriptor and page.tasting_notes %}
-          "{{ page.descriptor | capitalize }} &mdash; {{ page.tasting_notes | replace: ", ", " &middot; " }}"
+          {{ page.descriptor }} &mdash; {{ page.tasting_notes | replace: ", ", " &middot; " }}
         {% elsif page.descriptor %}
-          "{{ page.descriptor | capitalize }}"
+          {{ page.descriptor }}
         {% elsif page.tasting_notes %}
-          "{{ page.tasting_notes | replace: ", ", " &middot; " }}"
+          {{ page.tasting_notes | replace: ", ", " &middot; " }}
         {% endif %}
       </div>
     {% endif %}
@@ -119,7 +119,7 @@ layout: default
     {% if page.roast_level %}
       {% assign level_info = site.data.roast_levels[page.roast_level] %}
       <div class="sleek-detail-roast-level">
-        <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #998070;">Roast:</span>
+        <span style="font-family: Montserrat, sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8a7f6e;">Roast:</span>
         {% include roast-dots.html dots=level_info.dots %}
         <span class="sleek-detail-roast-name">{{ level_info.name }}</span>
       </div>
@@ -129,7 +129,7 @@ layout: default
     <div class="sleek-detail-buy-box">
       <div class="sleek-buy-price-row">
         <div>
-          <span style="font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #887060; display: block;">Price</span>
+          <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
           <span class="sleek-buy-price-val" id="roast-detail-price">
             {% if first_eff and first_eff < first_price %}
               <s>${{ first_price }}</s> <span class="temp-val">${{ first_eff }}</span>
@@ -161,8 +161,8 @@ layout: default
         <div class="sleek-buy-field">
           <label>Purchase Option</label>
           <div class="roast-purchase-toggle" role="radiogroup" aria-label="Purchase Option" style="display: flex; gap: 0.5rem; width: 100%;">
-            <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem;">One-Time Purchase</button>
-            <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem;">Subscribe</button>
+            <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn is-active" data-val="onetime"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem; font-weight: 500;">One-Time Purchase</button>
+            <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn" data-val="subscribe"{% unless is_orderable %} disabled{% endunless %} style="flex: 1; padding: 0.55rem; font-size: 0.76rem; font-weight: 500;">Subscribe</button>
           </div>
         </div>
         <div id="sub-details-panel" class="sleek-buy-field" style="display: none;">
@@ -281,12 +281,9 @@ layout: default
               <div class="sleek-history-chips-row">
                 {% for c in h.components %}
                   <span class="sleek-history-chip">
-                    <span class="chip-k">
-                      {% if c.slug %}<a href="{{ '/roasts/' | append: c.slug | append: '/' | relative_url }}" style="color: inherit; text-decoration: none;">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}:
-                    </span>
+                    <span class="chip-k">{{ c.name }}:</span>
                     {% if c.ratio %}<span class="chip-v">{{ c.ratio }}</span>{% endif %}
                     {% if c.roast_level %}<span class="chip-v" style="color: #887060;">({{ c.roast_level }})</span>{% endif %}
-                    {% if c.profile %}<a href="{{ c.profile | relative_url }}" class="roast-profile-link" download style="margin-left: 0.2rem; font-size: 0.65rem;">(.alog)</a>{% endif %}
                   </span>
                 {% endfor %}
               </div>

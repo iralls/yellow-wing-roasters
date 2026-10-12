@@ -10,7 +10,6 @@ layout: default
     {% endif %}
   </div>
   <a href="{{ '/quiz/' | relative_url }}" class="roasts-quiz-cta" title="Find your match" style="margin-top: 0.25rem;">
-    <span class="roasts-quiz-cta-icon" aria-hidden="true">✨</span>
     <span>Find Your Match</span>
     <span class="roasts-quiz-cta-arrow" aria-hidden="true">&rarr;</span>
   </a>
@@ -18,6 +17,6 @@ layout: default
 
 {{ content }}
 
-<div class="sleek-comparison-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 4rem;">
+<div class="sleek-comparison-grid" style="margin-bottom: 4rem;">
   {% include category-section.html category=page.category %}
 </div>

@@ -6,8 +6,6 @@ permalink: /pigeon-post/
 
 <div class="roast-minimal-vertical">
 
-<div class="roast-mv-divider"></div>
-
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/audubon-pigeon-post-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
@@ -17,8 +15,6 @@ permalink: /pigeon-post/
 </div>
 
 <p class="roast-mv-tasting">Stay in the Loop</p>
-
-<div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
   <p id="pigeon-post-intro" style="text-align: center; margin-bottom: 2rem;">Sign up to hear about new roasts, seasonal blends, and restocks.</p>

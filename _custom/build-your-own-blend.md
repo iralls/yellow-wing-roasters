@@ -1,5 +1,5 @@
 ---
-layout: detail-page
+layout: default
 title: "BYOB — Build Your Own Blend"
 card_title: "BYOB"
 subtitle: "Build Your Own Blend"
@@ -10,11 +10,100 @@ data_roast: byob-blend
 order: 1
 permalink: /roasts/build-your-own-blend/
 price: 32
-descriptor: custom blend
+descriptor: Build Your Own Blend
 overlay_notes: "craft your own custom blend from our single origin roasts"
 mascot_file: build-a-bird-transparent.png
 mascot_alt: "Build Your Own Blend mascot"
 ---
+
+<div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+    &larr; Back to All Roasts
+  </a>
+</div>
+
+<div class="sleek-detail-layout" style="margin-bottom: 3.5rem;">
+  <!-- Left Column: Artwork Showcase & Intro -->
+  <div class="sleek-detail-visual-col">
+    {% if page.mascot_file %}
+      <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
+      <div class="sleek-detail-bird-label">Build a Bird</div>
+    {% endif %}
+
+    <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
+      <p>{{ page.intro }}</p>
+
+      <div style="margin-top: 1.75rem; border-top: 1px solid rgba(44,30,20,0.08); padding-top: 1.25rem;">
+        <h3 style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7f6e; margin: 0 0 0.75rem;">Blending Philosophy</h3>
+        <p style="margin: 0; line-height: 1.7;">
+          Every custom blend is roasted component-by-component to its optimal development curve before being blended and packed fresh in a dedicated 12oz bag.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Purchasing & Specifications Summary -->
+  <div class="sleek-detail-info-col">
+    <div class="sleek-detail-category-row">
+      <span class="sleek-detail-cat-badge">CUSTOM</span>
+    </div>
+
+    <h1 class="sleek-detail-title">{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <div class="sleek-detail-subtitle">{{ page.subtitle }}</div>
+    {% endif %}
+
+    <div class="sleek-detail-tasting-banner">
+      {{ page.overlay_notes | capitalize }}
+    </div>
+
+    <!-- Summary Box -->
+    <div class="sleek-detail-buy-box">
+      <div class="sleek-buy-price-row">
+        <div>
+          <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
+          <span class="sleek-buy-price-val">${{ page.price }}</span>
+        </div>
+        <span class="sleek-buy-price-note">One 12oz bag &middot; Custom blended &amp; roasted to order</span>
+      </div>
+
+      <p style="font-family: Montserrat, sans-serif; font-size: 0.82rem; font-weight: 500; color: #5e5248; line-height: 1.6; margin: 0;">
+        Follow the 4-step mixer below to select your single origins, calibrate percentage ratios and roast levels, preview the flavor outcome, and add your blend to cart.
+      </p>
+    </div>
+
+    <!-- Specifications Grid -->
+    <div class="sleek-spec-wrap">
+      <div class="sleek-spec-section-header">
+        <h2 class="sleek-spec-heading">Blend Studio Specifications</h2>
+        <span class="sleek-spec-subheading">Mixing &amp; Roasting</span>
+      </div>
+
+      <div class="sleek-spec-grid">
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Capacity</span>
+          <span class="sleek-spec-val">Up to 3 Single Origin coffees</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Roasting Control</span>
+          <span class="sleek-spec-val">Independent roast per component</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Package Size</span>
+          <span class="sleek-spec-val">12oz custom roasted bag</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Freshness</span>
+          <span class="sleek-spec-val">Roasted to order &amp; blended fresh</span>
+        </div>
+        <div class="sleek-spec-tile is-full-width">
+          <span class="sleek-spec-label">Flavor Prediction</span>
+          <span class="sleek-spec-val">Live sensory simulation calculating acidity, body, and tasting notes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="byob-container">
 
@@ -37,13 +126,13 @@ mascot_alt: "Build Your Own Blend mascot"
   {% assign uniq_procs = active_procs | uniq | sort %}
 
   <div class="bean-selector-section">
-    <h2 class="roasts-category">1. Choose Coffee Beans</h2>
+    <h2 class="byob-step-title">1. Choose Coffee Beans</h2>
     
     <!-- Filters Row -->
     <div class="filters-row">
       <div class="filter-group">
-        <label for="filter-origin" class="roast-mv-meta-label">Origin</label>
-        <select id="filter-origin" class="subscribe-select">
+        <label for="filter-origin">Origin</label>
+        <select id="filter-origin" class="subscribe-select" data-label="Origin">
           <option value="">All Origins</option>
           {% for o in uniq_origins %}
             <option value="{{ o }}">{{ o }}</option>
@@ -52,8 +141,8 @@ mascot_alt: "Build Your Own Blend mascot"
       </div>
 
       <div class="filter-group">
-        <label for="filter-process" class="roast-mv-meta-label">Process</label>
-        <select id="filter-process" class="subscribe-select">
+        <label for="filter-process">Process</label>
+        <select id="filter-process" class="subscribe-select" data-label="Process">
           <option value="">All Processes</option>
           {% for p in uniq_procs %}
             <option value="{{ p | downcase }}">{{ p }}</option>
@@ -62,8 +151,8 @@ mascot_alt: "Build Your Own Blend mascot"
       </div>
       
       <div class="filter-group">
-        <label for="filter-notes" class="roast-mv-meta-label">Flavor Profile</label>
-        <select id="filter-notes" class="subscribe-select">
+        <label for="filter-notes">Flavor Profile</label>
+        <select id="filter-notes" class="subscribe-select" data-label="Flavors">
           <option value="">All Flavors</option>
           <option value="chocolate">Chocolate / Cocoa</option>
           <option value="fruit">Fruity (Berry, Apple, Plum)</option>
@@ -76,8 +165,8 @@ mascot_alt: "Build Your Own Blend mascot"
       </div>
 
       <div class="filter-group">
-        <label for="filter-acidity" class="roast-mv-meta-label">Acidity</label>
-        <select id="filter-acidity" class="subscribe-select">
+        <label for="filter-acidity">Acidity</label>
+        <select id="filter-acidity" class="subscribe-select" data-label="Acidity">
           <option value="">All Acidity Levels</option>
           <option value="low">Low (1-2)</option>
           <option value="medium">Medium (3)</option>
@@ -86,8 +175,8 @@ mascot_alt: "Build Your Own Blend mascot"
       </div>
 
       <div class="filter-group">
-        <label for="filter-body" class="roast-mv-meta-label">Body</label>
-        <select id="filter-body" class="subscribe-select">
+        <label for="filter-body">Body</label>
+        <select id="filter-body" class="subscribe-select" data-label="Body">
           <option value="">All Body Levels</option>
           <option value="light">Light (1-2)</option>
           <option value="medium">Medium (3)</option>
@@ -99,8 +188,8 @@ mascot_alt: "Build Your Own Blend mascot"
     <!-- Workspace: Dropdown on left, Details on right -->
     <div class="selection-workspace">
       <div class="selection-left">
-        <label for="bean-select-dropdown" class="roast-mv-meta-label">Select a Coffee Bean</label>
-        <select id="bean-select-dropdown" class="subscribe-select">
+        <label for="bean-select-dropdown">Select a Coffee Bean</label>
+        <select id="bean-select-dropdown" class="subscribe-select" data-label="Select Bean">
           <option value="" disabled selected>Select from list...</option>
           {% for r in single_origins %}
             {% assign s_meta = site.data.statuses[r.status] %}
@@ -135,7 +224,7 @@ mascot_alt: "Build Your Own Blend mascot"
     
     <!-- Mixer Panel -->
     <div class="mixer-panel">
-      <h2 class="roasts-category byob-step-title">2. Adjust Composition & Roasts</h2>
+      <h2 class="byob-step-title">2. Adjust Composition &amp; Roasts</h2>
       <div class="mixer-empty-note" id="mixer-empty-note">
         No beans added. Use the selector above to build your recipe.
       </div>
@@ -144,7 +233,7 @@ mascot_alt: "Build Your Own Blend mascot"
 
     <!-- Preview Panel -->
     <div class="preview-panel">
-      <h2 class="roasts-category byob-step-title">3. Predicted Taste Profile</h2>
+      <h2 class="byob-step-title">3. Predicted Taste Profile</h2>
       <div id="preview-content" style="display: none;">
         
         <div class="preview-stat">
@@ -186,26 +275,28 @@ mascot_alt: "Build Your Own Blend mascot"
 
   <!-- Step 4: Add to Cart -->
   <div class="order-section" id="order-section">
-    <h2 class="roasts-category byob-step-title byob-step-title--center">4. Add to Cart</h2>
+    <h2 class="byob-step-title byob-step-title--center">4. Add to Cart</h2>
     
-    <div class="roast-detail-price-line byob-price-line" id="byob-price-display">
+    <div class="byob-price-line" id="byob-price-display">
       ${{ page.price }} <span class="byob-unit-note">(one 12oz bag)</span>
     </div>
 
-    <div class="roast-mv-center roast-mv-center--mt-md">
-      <label for="byob-blend-grind-select" class="roast-mv-meta-label">Grind level</label>
-      <select id="byob-blend-grind-select" class="subscribe-select" style="min-width: 14rem;">
+    <div class="sleek-buy-field" style="max-width: 22rem; margin: 0 auto 1.25rem;">
+      <label for="byob-blend-grind-select">Grind Preparation</label>
+      <select id="byob-blend-grind-select" class="subscribe-select" data-label="Grind" style="width: 100%;">
         {% include grind-options.html %}
       </select>
     </div>
 
-    <div class="roast-mv-center roast-mv-center--mt-md" style="max-width: 28rem; margin-left: auto; margin-right: auto;">
-      <label for="byob-notes" class="roast-mv-meta-label">Roasting notes / instructions (optional)</label>
-      <textarea id="byob-notes" rows="2" placeholder="Any preferences, notes, or roast instructions..." style="width: 100%; box-sizing: border-box;"></textarea>
+    <div class="sleek-buy-field" style="max-width: 28rem; margin: 0 auto 1.5rem;">
+      <label for="byob-notes">Roasting notes / instructions (optional)</label>
+      <textarea id="byob-notes" rows="2" placeholder="Any preferences, notes, or roast instructions..." style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.85rem; font-family: Montserrat, sans-serif; font-size: 0.82rem; font-weight: 500; border: 1px solid rgba(44, 30, 20, 0.2); border-radius: 4px; background: transparent; color: #2c1e14; resize: vertical;"></textarea>
     </div>
 
-    <div class="roast-mv-center roast-mv-center--mt-lg" style="text-align: center;">
-      <button type="button" class="add-to-order-btn add-to-order-btn--disabled" id="byob-add-to-cart-btn" disabled>Select beans to complete blend</button>
+    <div style="text-align: center; max-width: 22rem; margin: 0 auto;">
+      <button type="button" class="sleek-buy-add-btn add-to-order-btn add-to-order-btn--disabled" id="byob-add-to-cart-btn" disabled>
+        Select beans to complete blend
+      </button>
     </div>
   </div>
 

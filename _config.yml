@@ -152,7 +152,7 @@ defaults:
       type: subscriptions
     values:
       layout: subscription
-      category: subscriptions
+      category: subscription
   - scope:
       path: ""
       type: flights

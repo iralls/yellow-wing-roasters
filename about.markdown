@@ -6,8 +6,6 @@ permalink: /about/
 
 <div class="roast-minimal-vertical">
 
-<div class="roast-mv-divider"></div>
-
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/audubon-duck-family-transparent.png' | relative_url }}" alt="Yellow Wing Roasters duck family" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
@@ -15,8 +13,6 @@ permalink: /about/
 <div class="roast-mv-center">
   <h1 class="roast-mv-title">About Us</h1>
 </div>
-
-<div class="roast-mv-divider"></div>
 
 <div class="roast-mv-body">
   <p style="margin-bottom: 1.25rem;">Established in 2026, Yellow Wing Roasters is a small-batch coffee roaster located in Guilford, CT.</p>

@@ -23,30 +23,3 @@ layout: index
     <img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="Osprey mascot" fetchpriority="high" decoding="async">
   </div>
 </section>
-
-<!-- Curated Seasonal / Featured Offerings Showcase -->
-<section class="sleek-home-showcase-section">
-  <div class="sleek-home-showcase-header">
-    <div>
-      <span style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #9c6d12;">Current Selections</span>
-      <h2 class="sleek-home-showcase-title">Featured Offerings</h2>
-    </div>
-    <a href="{{ '/roasts/' | relative_url }}" class="sleek-home-showcase-link">
-      <span>View all coffees</span>
-      <span aria-hidden="true">&rarr;</span>
-    </a>
-  </div>
-
-  {% assign active_roasts = site.roasts | where_exp: "r", "r.status != 'flown_south'" %}
-  {% assign showcase_roasts = active_roasts | where: "best_seller", true %}
-  {% if showcase_roasts.size < 3 %}
-    {% assign showcase_roasts = active_roasts %}
-  {% endif %}
-
-  <div class="sleek-comparison-grid">
-    {% for r in showcase_roasts limit:3 %}
-      {% include roast-card.html roast=r %}
-    {% endfor %}
-
-  </div>
-</section>

@@ -16,6 +16,7 @@ certification: organic
 mascot: baltimore-oriole
 mascot_file: audubon-baltimore-oriole-transparent.png
 rotating: true
+published: false
 price:
   12oz: 14
   1lb: 16

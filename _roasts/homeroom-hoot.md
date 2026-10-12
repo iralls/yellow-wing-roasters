@@ -12,6 +12,7 @@ mascot: barred-owl
 mascot_file: audubon-barred-owl-transparent.png
 bg_pattern: /images/patterns/school-pattern.svg
 bg_pattern_size: 380px 380px
+published: false
 price:
   12oz: 12
   1lb: 15

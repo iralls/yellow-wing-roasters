@@ -15,6 +15,7 @@ origins:
 mascot: black-capped-chickadee
 mascot_file: black-capped-chickadee-transparent.png
 rotating: true
+published: false
 price:
   12oz: 12
   1lb: 14

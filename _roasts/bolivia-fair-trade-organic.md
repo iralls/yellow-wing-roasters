@@ -16,6 +16,7 @@ certification: fair_trade_organic
 mascot: red-tailed-hawk
 mascot_file: audubon-red-tailed-hawk-transparent.png
 status: flown_south
+published: false
 price:
   12oz: 12
   1lb: 15

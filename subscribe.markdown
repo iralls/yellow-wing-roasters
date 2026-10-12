@@ -2,7 +2,7 @@
 layout: category
 title: Subscriptions
 permalink: /subscriptions/
-category: subscriptions
+category: subscription
 intro: "Enjoy freshly roasted coffee delivered straight to your door on your schedule, from curated rotating flights to everyday favorites."
 ---
 

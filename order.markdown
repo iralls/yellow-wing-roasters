@@ -6,13 +6,9 @@ permalink: /order/
 
 <div class="roast-minimal-vertical">
 
-<div class="roast-mv-divider"></div>
-
 <div class="roast-mv-center">
   <h1 class="roast-mv-title" id="order-page-title">Order</h1>
 </div>
-
-<div class="roast-mv-divider"></div>
 
 <div id="order-cart-empty" class="order-empty" style="display:none;">
   <p>Your cart is empty.</p>

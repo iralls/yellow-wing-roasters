@@ -9,6 +9,7 @@ tasting_notes: cinnamon, spiced chocolate, dark fruit
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: american-woodcock
 mascot_file: american-woodcock-transparent.png
+published: false
 price:
   12oz: 12
   1lb: 15

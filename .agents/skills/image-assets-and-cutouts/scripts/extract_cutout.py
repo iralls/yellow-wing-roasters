@@ -35,6 +35,7 @@ def extract_cutout(
     plumage_box=None,
     wash_low=10.0,
     wash_high=28.0,
+    aliases=None,
 ):
     if not os.path.exists(source_path):
         raise FileNotFoundError(f"Source file not found: {source_path}")
@@ -137,11 +138,15 @@ def extract_cutout(
     alpha[is_ink & envelope] = 255.0
 
     # 6. Solid interior protection (plumage hole-filling)
+    # 6. Solid interior protection (plumage hole-filling)
     if fill_plumage:
         p_box = np.zeros((h, w), dtype=bool)
         if plumage_box:
-            p_box[plumage_box[1]:plumage_box[3], plumage_box[0]:plumage_box[2]] = True
+            pb_left, pb_top, pb_right, pb_bottom = plumage_box
+            p_box[pb_top:pb_bottom, pb_left:pb_right] = True
         else:
+            pb_top, pb_bottom = r_top, r_bottom
+            pb_left, pb_right = r_left, r_right
             p_box[r_top:r_bottom, r_left:r_right] = True
 
         body_outline = (gray < 190) & p_box
@@ -149,8 +154,8 @@ def extract_cutout(
         body_ext = np.zeros((h, w), dtype=bool)
         q_ext = deque()
         # Flood fill outside the outline
-        for r in [r_top, r_bottom - 1]:
-            for c in range(r_left, r_right):
+        for r in [pb_top, pb_bottom - 1]:
+            for c in range(pb_left, pb_right):
                 if not body_closed[r, c] and not body_ext[r, c]:
                     body_ext[r, c] = True
                     q_ext.append((r, c))
@@ -158,7 +163,7 @@ def extract_cutout(
             r, c = q_ext.popleft()
             for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 nr, nc = r + dr, c + dc
-                if r_top <= nr < r_bottom and r_left <= nc < r_right and not body_closed[nr, nc] and not body_ext[nr, nc]:
+                if pb_top <= nr < pb_bottom and pb_left <= nc < pb_right and not body_closed[nr, nc] and not body_ext[nr, nc]:
                     body_ext[nr, nc] = True
                     q_ext.append((nr, nc))
         body_solid = envelope & p_box & ~body_ext
@@ -188,26 +193,33 @@ def extract_cutout(
     os.makedirs(master_dir, exist_ok=True)
     os.makedirs(web_dir, exist_ok=True)
 
-    master_path = os.path.join(master_dir, f"{output_name}-transparent.png")
-    master_alias = os.path.join(master_dir, f"audubon-{output_name}-transparent.png")
-    master.save(master_path, format="PNG")
-    master.save(master_alias, format="PNG")
-    print(f"✓ Saved master cutouts: {master_path} and {master_alias}")
+    all_names = [output_name, f"audubon-{output_name}"]
+    if aliases:
+        for alias in aliases:
+            if alias not in all_names:
+                all_names.append(alias)
+
+    for name in all_names:
+        master_path = os.path.join(master_dir, f"{name}-transparent.png")
+        master.save(master_path, format="PNG")
+        print(f"✓ Saved master cutout: {master_path}")
 
     # Web optimization
     web_im = master.copy()
     web_im.thumbnail(MAX_WEB_DIM, Image.Resampling.LANCZOS)
     web_quant = web_im.quantize(colors=256, method=Image.Quantize.FASTOCTREE)
-    web_path = os.path.join(web_dir, f"{output_name}-transparent.png")
-    web_alias = os.path.join(web_dir, f"audubon-{output_name}-transparent.png")
-    web_quant.save(web_path, format="PNG", optimize=True)
-    web_quant.save(web_alias, format="PNG", optimize=True)
-    print(f"✓ Saved web cutouts: {web_path} and {web_alias} ({web_im.size[0]}x{web_im.size[1]})")
+    for name in all_names:
+        web_path = os.path.join(web_dir, f"{name}-transparent.png")
+        web_quant.save(web_path, format="PNG", optimize=True)
+        print(f"✓ Saved web cutout: {web_path} ({web_im.size[0]}x{web_im.size[1]})")
 
     # Archival copy of source plate
-    archive_path = os.path.join("assets/source-plates", f"{output_name}.jpg")
-    if not os.path.exists(archive_path) and source_path.endswith(".jpg"):
-        im.save(archive_path, quality=95)
+    _, ext = os.path.splitext(source_path)
+    ext = ext.lower()
+    archive_path = os.path.join("assets/source-plates", f"{output_name}{ext}")
+    if not os.path.exists(archive_path) and os.path.abspath(source_path) != os.path.abspath(archive_path):
+        import shutil
+        shutil.copy2(source_path, archive_path)
         print(f"✓ Archived source plate: {archive_path}")
 
 
@@ -221,6 +233,8 @@ if __name__ == "__main__":
     parser.add_argument("--roi-right", type=float, default=0.95, help="ROI right fraction (default: 0.95)")
     parser.add_argument("--wash-low", type=float, default=10.0, help="Wash low distance threshold (default: 10.0)")
     parser.add_argument("--wash-high", type=float, default=28.0, help="Wash high distance threshold (default: 28.0)")
+    parser.add_argument("--plumage-box", nargs=4, type=int, default=None, metavar=("LEFT", "TOP", "RIGHT", "BOTTOM"), help="Plumage hole-fill box (pixel coordinates)")
+    parser.add_argument("--aliases", nargs="+", default=None, help="Additional output name aliases")
     args = parser.parse_args()
     extract_cutout(
         args.source,
@@ -229,6 +243,8 @@ if __name__ == "__main__":
         roi_bottom=args.roi_bottom,
         roi_left=args.roi_left,
         roi_right=args.roi_right,
+        plumage_box=tuple(args.plumage_box) if args.plumage_box else None,
         wash_low=args.wash_low,
         wash_high=args.wash_high,
+        aliases=args.aliases,
     )

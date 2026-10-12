@@ -17,19 +17,19 @@ overlay_notes: "a range of four blends, from bright and floral to dark and smoky
 
 {% assign aviary_slugs = "early-bird,feather-soot,chimney-sweep,lil-sipper" | split: "," %}
 
-<div class="sleek-comparison-grid aviary-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); text-align: left; margin-bottom: 2.5rem;">
-  {% for slug in aviary_slugs %}
-    {% assign r = site.roasts | where: "slug", slug | first %}
-    {% if r %}
-      {% include roast-card.html roast=r card_class="aviary-card" hide_price=true %}
-    {% endif %}
-  {% endfor %}
+<div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 0 auto;">
+  <div class="roast-trans-grid sleek-comparison-grid aviary-grid">
+    {% for slug in aviary_slugs %}
+      {% assign r = site.roasts | where: "slug", slug | first %}
+      {% if r %}
+        {% include roast-card.html roast=r card_class="aviary-card" hide_price=true %}
+      {% endif %}
+    {% endfor %}
+  </div>
 </div>
 
 
 <p class="roast-mv-body" style="font-size: 0.85rem; color: #8a7060; font-style: italic; margin-top: -0.5rem; margin-bottom: 2rem;">Brewing method varies by blend — click any roast for full profile and brew details.</p>
-
-<div class="roast-mv-divider"></div>
 
 <div class="roast-mv-center" style="margin-bottom:1rem;">
   <label for="aviary-grind-select" class="roast-mv-meta-label">Grind</label>

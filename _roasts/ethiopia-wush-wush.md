@@ -15,6 +15,7 @@ origins:
 mascot: rose-breasted-grosbeak
 mascot_file: audubon-rose-breasted-grosbeak-transparent.png
 featured: true
+published: false
 price:
   12oz: 14
   1lb: 18

@@ -2,7 +2,7 @@
 title: Runt's Rations
 slug: runts-rations
 subtitle: Test Beans
-category: subscriptions
+category: subscription
 order: 5
 permalink: /subscriptions/runts-rations/
 mascot_file: audubon-runt-transparent.png

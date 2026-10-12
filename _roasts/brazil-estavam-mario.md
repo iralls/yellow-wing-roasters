@@ -15,6 +15,7 @@ origins:
 mascot: great-horned-owl
 mascot_file: audubon-great-horned-owl-transparent.png
 status: flown_south
+published: false
 price:
   12oz: 12
   1lb: 15

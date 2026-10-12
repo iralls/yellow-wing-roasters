@@ -9,7 +9,7 @@ descriptor: balanced and smooth
 tasting_notes: milk chocolate, caramel, smooth body
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: robin
-mascot_file: audubon-robin-transparent.png
+mascot_file: american-robin-transparent.png
 status: mid_molt
 price:
   12oz: 12

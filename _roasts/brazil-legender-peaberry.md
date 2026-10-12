@@ -15,6 +15,7 @@ origins:
 mascot: goldfinch
 mascot_file: audubon-goldfinch-transparent.png
 status: low_stock
+published: false
 price:
   12oz: 12
   1lb: 14

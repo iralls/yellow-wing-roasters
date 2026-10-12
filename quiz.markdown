@@ -4,8 +4,6 @@ title: "Coffee Quiz — Find Your Roast"
 permalink: /quiz/
 ---
 
-<div class="roast-mv-divider"></div>
-
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/question-mark-transparent.png' | relative_url }}" alt="" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
@@ -234,11 +232,13 @@ permalink: /quiz/
       </div>
     </div>
 
-    <div class="roasts-category">Top Coffee Matches</div>
-    <div class="sleek-comparison-grid" id="quiz-top-matches-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); text-align: left; margin-bottom: 3rem;"></div>
-    <div id="quiz-empty-message" class="quiz-empty-results" style="display: none;">
-      <p>No exact coffee matches found for this combination.</p>
-      <button type="button" class="quiz-btn quiz-btn-primary" onclick="document.getElementById('quiz-retake-btn').click();">Adjust Preferences</button>
+    <div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 0 auto;">
+      <h2 class="roasts-category">Top Coffee Matches</h2>
+      <div class="roast-trans-grid sleek-comparison-grid" id="quiz-top-matches-grid" style="margin-bottom: 3rem;"></div>
+      <div id="quiz-empty-message" class="quiz-empty-results" style="display: none;">
+        <p>No exact coffee matches found for this combination.</p>
+        <button type="button" class="quiz-btn quiz-btn-primary" onclick="document.getElementById('quiz-retake-btn').click();">Adjust Preferences</button>
+      </div>
     </div>
   </div>
 

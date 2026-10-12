@@ -361,7 +361,7 @@
       html += '<span class="order-admin-stat-pill">Delivered: ' + stats.delivered + '</span>';
 
       if (isMockModeActive) {
-        html += '<span class="order-admin-stat-pill" style="color: #92400e; background: #fde68a; font-weight: 800;">MOCK MODE</span>';
+        html += '<span class="order-admin-stat-pill" style="color: #92400e; background: #fde68a; font-weight: 700;">MOCK MODE</span>';
       }
 
       statsContainer.innerHTML = html;

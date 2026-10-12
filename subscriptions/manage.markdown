@@ -7,8 +7,6 @@ permalink: /subscriptions/manage/
 <div class="roast-minimal-vertical">
 <div class="byob-container">
   
-  <div class="roast-mv-divider"></div>
-
   <div class="roast-mv-center roast-mv-bird-wrap">
     <img src="{{ '/images/cuckoo-transparent.png' | relative_url }}" alt="" class="roast-mv-bird roast-mv-bird--lg" aria-hidden="true" fetchpriority="high" decoding="async">
   </div>
@@ -18,8 +16,6 @@ permalink: /subscriptions/manage/
   </div>
 
   <p class="roast-mv-tasting">Look up your active subscriptions, and temporarily pause, resume, or cancel your deliveries.</p>
-
-  <div class="roast-mv-divider"></div>
 
   <!-- Phase 1: Lookup Form -->
   <div id="lookup-section" class="lookup-container lookup-container--narrow">

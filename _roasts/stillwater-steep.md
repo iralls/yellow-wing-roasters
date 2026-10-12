@@ -11,6 +11,7 @@ brewing_method: Cold Brew
 mascot: heron
 mascot_file: audubon-heron-transparent.png
 status: flown_south
+published: false
 price:
   12oz: 12
   1lb: 15

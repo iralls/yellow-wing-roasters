@@ -16,6 +16,7 @@ certification: organic
 mascot: kingfisher
 mascot_file: audubon-kingfisher-transparent.png
 status: just_hatched
+published: false
 price:
   12oz: 12
   1lb: 15

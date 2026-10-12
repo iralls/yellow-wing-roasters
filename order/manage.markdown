@@ -7,8 +7,6 @@ permalink: /order/manage/
 <div class="roast-minimal-vertical">
 <div class="byob-container">
   
-  <div class="roast-mv-divider"></div>
-
   <div class="roast-mv-center roast-mv-bird-wrap">
     <img src="{{ '/images/delivery-box-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Delivery Box" class="roast-mv-bird roast-mv-bird--lg" fetchpriority="high" decoding="async">
   </div>
@@ -18,8 +16,6 @@ permalink: /order/manage/
   </div>
 
   <p class="roast-mv-tasting">Look up your order, check roasting and delivery progress, or cancel your order.</p>
-
-  <div class="roast-mv-divider"></div>
 
   <!-- Phase 1: Unauthenticated Lookup Form (Magic Link Request) -->
   <div id="order-mock-preview-banner" class="order-preview-helper" style="display: none;">

@@ -1,46 +1,166 @@
 ---
-layout: detail-page
+layout: default
 ---
-
-<div class="roast-mv-body">
-  {{ content }}
-</div>
-
-<div class="roast-mv-center" style="margin-top: 1rem;">
-  <label for="sub-grind-select" class="roast-mv-meta-label">Grind</label>
-  <select id="sub-grind-select" class="subscribe-select" data-label="Grind">
-    {% include grind-options.html %}
-  </select>
-</div>
 
 {% assign default_size = page.sizes.first %}
 {% assign default_freq = page.frequencies.first %}
 {% assign default_price = page.price[default_size] %}
 
-<div class="roast-mv-center" style="margin-top: 1.25rem;">
-  <div class="roast-detail-price-line">${{ default_price }}</div>
-  <button type="button" class="add-to-order-btn" id="sub-add-btn">Add to Cart</button>
+<div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+  <a href="{{ '/subscriptions/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+    &larr; Back to Coffee Subscriptions
+  </a>
+</div>
+
+<div class="sleek-detail-layout">
+  <!-- Left Column: Artwork Showcase & Description -->
+  <div class="sleek-detail-visual-col">
+    {% if page.mascot_file %}
+      <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
+      {% assign m_name = site.data.mascots[page.mascot] %}
+      {% if m_name %}
+        <div class="sleek-detail-bird-label">{{ m_name }}</div>
+      {% endif %}
+    {% endif %}
+
+    <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
+      {{ content }}
+    </div>
+  </div>
+
+  <!-- Right Column: Purchasing & Specifications -->
+  <div class="sleek-detail-info-col">
+    <!-- Category Badge -->
+    <div class="sleek-detail-category-row">
+      <span class="sleek-detail-cat-badge">SUBSCRIPTION</span>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <h1 class="sleek-detail-title">{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <div class="sleek-detail-subtitle">{{ page.subtitle }}</div>
+    {% endif %}
+
+    <!-- Tasting Notes / Descriptor Banner -->
+    {% if page.descriptor %}
+      <div class="sleek-detail-tasting-banner">
+        {{ page.descriptor }}
+      </div>
+    {% endif %}
+
+    <!-- Tactile Unboxed Buy Box -->
+    <div class="sleek-detail-buy-box">
+      <div class="sleek-buy-price-row">
+        <div>
+          <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
+          <span class="sleek-buy-price-val" id="sub-detail-price">${{ default_price }}</span>
+        </div>
+        <span class="sleek-buy-price-note">Roasted to order &middot; Ships fresh on your schedule</span>
+      </div>
+
+      {% if page.sizes.size > 1 %}
+        <div class="sleek-buy-field">
+          <label for="sub-size-select">Bag Size</label>
+          <select id="sub-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;">
+            {% for s in page.sizes %}
+              <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% else %}
+        <div class="sleek-buy-field">
+          <label for="sub-size-select">Bag Size</label>
+          <select id="sub-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;">
+            <option value="{{ default_size }}" selected>{{ default_size }}</option>
+          </select>
+        </div>
+      {% endif %}
+
+      <div class="sleek-buy-field">
+        <label for="sub-grind-select">Grind Preparation</label>
+        <select id="sub-grind-select" class="subscribe-select" data-label="Grind" style="width: 100%;">
+          {% include grind-options.html %}
+        </select>
+      </div>
+
+      <div class="sleek-buy-field">
+        <label for="sub-freq-select">Delivery Frequency</label>
+        <select id="sub-freq-select" class="subscribe-select" data-label="Frequency" style="width: 100%;">
+          {% for f in page.frequencies %}
+            <option value="{{ f }}"{% if forloop.first %} selected{% endif %}>{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="button" class="sleek-buy-add-btn add-to-order-btn" id="sub-add-btn">
+        Add to Cart
+      </button>
+    </div>
+
+    <!-- Specifications Grid -->
+    <div class="sleek-spec-wrap">
+      <div class="sleek-spec-section-header">
+        <h2 class="sleek-spec-heading">Subscription Specifications</h2>
+        <span class="sleek-spec-subheading">Plan &amp; Delivery Details</span>
+      </div>
+
+      <div class="sleek-spec-grid">
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Plan Type</span>
+          <span class="sleek-spec-val">{{ page.subtitle }}</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Delivery Schedule</span>
+          <span class="sleek-spec-val">{{ page.frequencies | join: ", " }}</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Bag Size</span>
+          <span class="sleek-spec-val">{{ page.sizes | join: ", " }}</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Roast Freshness</span>
+          <span class="sleek-spec-val">Roasted fresh to order and shipped immediately</span>
+        </div>
+        <div class="sleek-spec-tile is-full-width">
+          <span class="sleek-spec-label">Flexibility &amp; Management</span>
+          <span class="sleek-spec-val">Pause, resume, skip, or cancel anytime in <a href="{{ '/subscriptions/manage/' | relative_url }}" style="color: #9c6d12; text-decoration: underline;">Manage Subscriptions</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
   (function () {
     var btn = document.getElementById('sub-add-btn');
+    var grindEl = document.getElementById('sub-grind-select');
+    var freqEl = document.getElementById('sub-freq-select');
+    var sizeEl = document.getElementById('sub-size-select');
+    var priceDisplay = document.getElementById('sub-detail-price');
+    var prices = {{ page.price | jsonify }};
+
+    sizeEl.addEventListener('change', function () {
+      priceDisplay.textContent = '$' + prices[sizeEl.value];
+    });
+
     btn.addEventListener('click', function () {
-      var grindEl = document.getElementById('sub-grind-select');
       var item = {
         type: 'subscription',
         slug: '{{ page.slug }}',
         title: '{{ page.title }}',
         subtitle: '{{ page.subtitle }}',
-        size: {{ default_size | jsonify }},
+        size: sizeEl.value,
         grind: grindEl.value,
-        frequency: {{ default_freq | jsonify }},
-        price: {{ default_price | jsonify }},
+        frequency: freqEl.value,
+        price: prices[sizeEl.value],
         mascot: '{{ page.mascot_file }}',
         qty: 1
       };
       var added = window.ywrAddToCart(item, 1);
       if (added) {
+        if (typeof window.ywrOpenCartDrawer === 'function') {
+          window.ywrOpenCartDrawer();
+        }
         btn.textContent = 'Added!';
         btn.disabled = true;
         setTimeout(function () {
@@ -59,18 +179,17 @@ layout: detail-page
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": {{ page.title | jsonify }},
-  {% if page.mascot_file %}"image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},{% endif %}
-  "description": {{ page.subtitle | default: page.description | jsonify }},
+  "image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},
+  "description": {{ page.intro | default: page.descriptor | default: page.title | jsonify }},
   "brand": {
     "@type": "Brand",
     "name": "Yellow Wing Roasters"
   },
   "offers": {
     "@type": "Offer",
+    "price": {{ default_price | jsonify }},
     "priceCurrency": "USD",
-    "price": "{{ default_price }}",
     "availability": "https://schema.org/InStock"
   }
 }
 </script>
-

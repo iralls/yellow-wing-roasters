@@ -1,0 +1,37 @@
+<!-- Slide-out Cart Drawer (from Minimalist Atelier) -->
+<div class="ywr-cart-drawer-backdrop" id="ywr-cart-backdrop" aria-hidden="true"></div>
+
+<aside class="ywr-cart-drawer" id="ywr-cart-drawer" aria-label="Cart" role="dialog" aria-modal="true">
+  <div class="ywr-drawer-header">
+    <div class="ywr-drawer-title-wrap">
+      <h2 class="ywr-drawer-title">Cart</h2>
+      <span class="ywr-drawer-count-badge" id="ywr-drawer-count-badge">0</span>
+    </div>
+    <button type="button" class="ywr-drawer-close" id="ywr-drawer-close" aria-label="Close Cart">✕</button>
+  </div>
+
+  <div class="ywr-drawer-body">
+    <div class="ywr-drawer-empty" id="ywr-drawer-empty-msg" style="display: none;">
+      <div class="ywr-drawer-empty-icon">
+        <img src="{{ '/images/bean-transparent.png' | relative_url }}" alt="" class="ywr-drawer-empty-img" width="56" height="56" loading="lazy">
+      </div>
+      <p class="ywr-drawer-empty-title">Your cart is empty.</p>
+      <p class="ywr-drawer-empty-sub">Explore our small-batch single-origins and signature blends.</p>
+      <a href="{{ '/roasts/' | relative_url }}" class="ywr-drawer-browse-btn" id="ywr-drawer-browse-btn">Browse Coffees &rarr;</a>
+    </div>
+
+    <div class="ywr-drawer-items-list" id="ywr-drawer-items-list">
+      <!-- Populated dynamically by js/cart.js -->
+    </div>
+  </div>
+
+  <div class="ywr-drawer-footer" id="ywr-drawer-footer" style="display: none;">
+    <div class="ywr-drawer-subtotal-row">
+      <span class="ywr-drawer-subtotal-label">Subtotal</span>
+      <span class="ywr-drawer-subtotal-val" id="ywr-drawer-subtotal-val">$0.00</span>
+    </div>
+    <a href="{{ '/order/' | relative_url }}" class="ywr-drawer-checkout-btn">
+      Proceed to Checkout &rarr;
+    </a>
+  </div>
+</aside>

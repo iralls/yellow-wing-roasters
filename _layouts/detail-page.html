@@ -4,8 +4,6 @@ layout: default
 
 <div class="roast-minimal-vertical">
 
-<div class="roast-mv-divider"></div>
-
 {% if page.mascot_file %}
 <div class="roast-mv-center roast-mv-bird-wrap">
   <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="roast-mv-bird" fetchpriority="high" decoding="async">
@@ -25,8 +23,6 @@ layout: default
 {% elsif page.card_title == nil and page.subtitle %}
 <p class="roast-mv-tasting">{{ page.subtitle }}</p>
 {% endif %}
-
-<div class="roast-mv-divider"></div>
 
 {{ content }}
 

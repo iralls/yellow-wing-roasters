@@ -2,7 +2,7 @@
 title: Rubber Duck Club
 slug: rubber-duck-club
 subtitle: The Debugging Roast
-category: subscriptions
+category: subscription
 order: 6
 permalink: /subscriptions/rubber-duck-club/
 mascot_file: audubon-rubber-duck-transparent.png

@@ -9,7 +9,7 @@
   justify-content: center;
   border-radius: 999px;
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
@@ -38,12 +38,26 @@
 
 html,
 body {
+  margin: 0;
+  padding: 0;
   font-family: $font-body;
   background: #faf8f5;
 }
 
+body {
+  margin: 0;
+}
+
+@media (min-width: 30rem) {
+  body {
+    margin-top: 0;
+  }
+}
+
 .container {
   max-width: 81.5rem;
+  box-sizing: border-box;
+  padding: 5rem 2rem 6rem;
 }
 
 h1,
@@ -53,7 +67,7 @@ h4,
 h5,
 h6 {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .logo-link,
@@ -76,7 +90,7 @@ h6 {
 
 .brand-header-name {
   font-family: $font-display;
-  font-weight: 900;
+  font-weight: 500;
   font-size: 1.2rem;
   color: #f0c838;
   letter-spacing: 0.1em;
@@ -90,7 +104,7 @@ select,
   padding: 0.38rem 2rem 0.38rem 0.95rem;
   font-family: $font-display;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   border: 1px solid #bbb;
   border-radius: 999px;
   box-sizing: border-box;
@@ -123,7 +137,7 @@ select,
 
   optgroup {
     color: #2c1e14;
-    font-weight: 700;
+    font-weight: 500;
     font-style: normal;
     background: #fff;
   }
@@ -179,7 +193,7 @@ select,
   border-radius: 999px;
   font-family: $font-display;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #2c1e14;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -189,7 +203,7 @@ select,
   text-align: left;
 
   .ps-label {
-    font-weight: 800;
+    font-weight: 500;
     color: #8a7060;
     font-size: 0.76rem;
     letter-spacing: 0.02em;
@@ -198,7 +212,7 @@ select,
   }
 
   .ps-value {
-    font-weight: 700;
+    font-weight: 500;
     color: #2c1e14;
     flex: 1;
     text-align: left;
@@ -277,7 +291,7 @@ select,
   padding: 0.45rem 1rem;
   font-family: $font-display;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #3a2a1d;
   cursor: pointer;
   transition: all 0.1s ease;
@@ -294,13 +308,13 @@ select,
   &.is-selected {
     background: rgba(200, 134, 39, 0.12);
     color: #2c1e14;
-    font-weight: 800;
+    font-weight: 500;
 
     &::after {
       content: "✓";
       font-size: 0.75rem;
       color: #d4973b;
-      font-weight: 900;
+      font-weight: 500;
       margin-left: auto;
     }
   }
@@ -375,7 +389,7 @@ input.order-cart-qty {
 .order-field > label:not(.order-radio) {
   display: block;
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -395,7 +409,7 @@ input.order-cart-qty {
 
 .order-delivery legend {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -411,7 +425,7 @@ input.order-cart-qty {
   color: #fff;
   padding: 0.5rem 1rem;
   font-family: $font-display;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.9rem;
   border-radius: 0 0 4px 4px;
   z-index: 99999;
@@ -427,11 +441,17 @@ input.order-cart-qty {
 
 /* ── Utility Classes & Common Form Modifiers ── */
 .u-sr-only {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 1px;
-  height: 1px;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .pill-radios--center {

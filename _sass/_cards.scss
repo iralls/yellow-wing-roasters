@@ -8,7 +8,7 @@
   flex-wrap: wrap;
 
   .category-intro {
-    margin-top: -0.25rem;
+    margin-top: 0.5rem;
     margin-bottom: 0;
   }
 }
@@ -18,29 +18,35 @@
 }
 
 .roasts-quiz-cta {
-  @include pill-button(#2c1e14, #ffffff, #443022);
-  gap: 0.5rem;
-  padding: 0.45rem 1.15rem;
-  font-size: 0.78rem;
-  box-shadow: 0 2px 8px rgba(44, 30, 20, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(44, 30, 20, 0.12);
+  font-family: $font-display;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #443022;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
   white-space: nowrap;
 
   &:hover {
-    box-shadow: 0 4px 14px rgba(44, 30, 20, 0.2);
+    border-color: #2c1e14;
+    color: #2c1e14;
+    text-decoration: none;
   }
 }
 
-.roasts-quiz-cta-icon {
-  font-size: 0.95rem;
-  line-height: 1;
-}
-
 .roasts-quiz-cta-arrow {
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .roasts-quiz-cta:hover .roasts-quiz-cta-arrow {
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
 
 /* ── Catalog filter bar ── */
@@ -92,7 +98,7 @@
     padding: 0.36rem 0.95rem;
     font-family: $font-display;
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
 
@@ -108,7 +114,7 @@
       background: #d4973b;
       color: #2c1e14;
       font-size: 0.68rem;
-      font-weight: 800;
+      font-weight: 500;
       width: 1.25rem;
       height: 1.25rem;
       border-radius: 50%;
@@ -143,7 +149,7 @@
     padding: 0.2rem 0.65rem;
     font-family: $font-display;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 500;
     color: #2c1e14;
 
     .chip-remove {
@@ -164,7 +170,7 @@
   .filters-clear-all {
     font-family: $font-display;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 500;
     color: #c0392b;
     border: none;
     background: transparent;
@@ -261,21 +267,21 @@
     border-radius: 999px;
     font-family: $font-display;
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 500;
     color: #6e5e54;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
 
     .mms-label {
-      font-weight: 800;
+      font-weight: 500;
       color: #8a7060;
       font-size: 0.76rem;
       letter-spacing: 0.02em;
     }
 
     .mms-value {
-      font-weight: 700;
+      font-weight: 500;
       color: #2c1e14;
     }
 
@@ -307,7 +313,7 @@
 
       .mms-value {
         color: #2c1e14;
-        font-weight: 800;
+        font-weight: 500;
       }
     }
   }
@@ -349,7 +355,7 @@
     .mms-menu-title {
       font-family: $font-display;
       font-size: 0.7rem;
-      font-weight: 800;
+      font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #8a7060;
@@ -358,7 +364,7 @@
     .mms-menu-clear {
       font-family: $font-display;
       font-size: 0.7rem;
-      font-weight: 700;
+      font-weight: 500;
       color: #c0392b;
       border: none;
       background: transparent;
@@ -385,7 +391,7 @@
     padding: 0.42rem 0.85rem;
     font-family: $font-display;
     font-size: 0.82rem;
-    font-weight: 700;
+    font-weight: 500;
     color: #3a2a1d;
     cursor: pointer;
     transition: background 0.1s ease;
@@ -406,7 +412,7 @@
     &.is-checked {
       background: rgba(200, 134, 39, 0.08);
       color: #2c1e14;
-      font-weight: 800;
+      font-weight: 500;
     }
   }
 }
@@ -517,7 +523,7 @@
 
 .roasts-category {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -569,7 +575,7 @@
 .roasts-section-break-title {
   font-family: $font-display;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #8a7060;
@@ -582,7 +588,7 @@
   font-size: 1.15rem;
   color: #786252;
   line-height: 1.55;
-  margin-top: -1rem;
+  margin-top: 0.5rem;
   margin-bottom: 2.75rem;
 }
 
@@ -664,6 +670,7 @@ $category-colors: (
 [data-roast="feather-soot"] .roasts-entry-mascot,
 [data-roast="morning-meep"] .roasts-entry-mascot,
 .roasts-entry-mascot[src*="audubon-robin"],
+.roasts-entry-mascot[src*="american-robin"],
 .roasts-entry-mascot[src*="audubon-hummingbird"],
 .roasts-entry-mascot[src*="audubon-canary"],
 .roasts-entry-mascot[src*="american-woodcock"] {
@@ -979,7 +986,7 @@ $category-colors: (
 .roasts-entry-overlay-origins,
 .roasts-entry-overlay-brewing {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.72rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1014,7 +1021,7 @@ $category-colors: (
 
 .roasts-entry-overlay-specialty {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1027,7 +1034,7 @@ $category-colors: (
   left: 0;
   right: 0;
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.65rem;
   letter-spacing: 0.03em;
   line-height: 1.35;
@@ -1107,7 +1114,7 @@ $category-colors: (
   .price-val {
     font-family: $font-display;
     font-size: 0.8rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #9c6d12;
     white-space: nowrap;
 
@@ -1176,7 +1183,7 @@ $category-colors: (
 
 .roasts-entry-title {
   font-family: $font-display;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 1rem;
   line-height: 1.25;
   color: #2c1e14;
@@ -1200,7 +1207,7 @@ $category-colors: (
 
 .roasts-entry-subtitle {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1213,7 +1220,7 @@ $category-colors: (
 .roasts-entry-prices {
   font-family: $font-display;
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 500;
   color: #9c6d12;
   margin-top: 0.35rem;
   text-align: left;
@@ -1222,13 +1229,13 @@ $category-colors: (
 .roasts-entry-prices s {
   color: #bfa15c;
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 400;
   margin-right: 0.35rem;
 }
 
 .roasts-entry-temp-price {
   color: #c0392b;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .roasts-entry-sub-price {
@@ -1246,7 +1253,7 @@ $category-colors: (
 
 .roasts-entry-layman {
   font-family: $font-display;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.82rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1287,7 +1294,7 @@ $category-colors: (
     border: 1.5px solid #2c1e14;
     padding: 0.42rem 1.25rem;
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 500;
   }
 }
 
@@ -1332,6 +1339,7 @@ $category-colors: (
   [data-roast="feather-soot"] .roasts-entry-mascot,
   [data-roast="morning-meep"] .roasts-entry-mascot,
   .roasts-entry-mascot[src*="audubon-robin"],
+  .roasts-entry-mascot[src*="american-robin"],
   .roasts-entry-mascot[src*="audubon-hummingbird"],
   .roasts-entry-mascot[src*="audubon-canary"],
   .roasts-entry-mascot[src*="american-woodcock"] {

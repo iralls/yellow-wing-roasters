@@ -15,14 +15,16 @@ overlay_notes: "pick at least 4 of our available roasts in 8oz bags"
 
 <p class="roast-mv-center" id="pyo-count" style="font-weight:600; margin-bottom:0.5rem;">Select at least {{ page.min_bags }} roasts:</p>
 
-<div class="sleek-comparison-grid" id="pyo-picker" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); text-align: left; margin-bottom: 2.5rem;">
-  {% assign roasts = site.roasts | sort: "order" %}
-  {% for r in roasts %}
-    {% assign s_meta = site.data.statuses[r.status] %}
-    {% if s_meta == nil or s_meta.orderable != false %}
-      {% include roast-card.html roast=r card_class="pyo-option" is_picker=true hide_price=true %}
-    {% endif %}
-  {% endfor %}
+<div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 0 auto;">
+  <div class="roast-trans-grid sleek-comparison-grid" id="pyo-picker">
+    {% assign roasts = site.roasts | sort: "order" %}
+    {% for r in roasts %}
+      {% assign s_meta = site.data.statuses[r.status] %}
+      {% if s_meta == nil or s_meta.orderable != false %}
+        {% include roast-card.html roast=r card_class="pyo-option" is_picker=true hide_price=true %}
+      {% endif %}
+    {% endfor %}
+  </div>
 </div>
 
 

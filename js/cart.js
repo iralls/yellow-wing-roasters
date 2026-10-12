@@ -185,61 +185,107 @@
 
       var indicator = document.getElementById('ywr-cart-indicator');
       var el = document.getElementById('ywr-cart-count');
+      if (el) el.textContent = total;
+      if (indicator) indicator.classList.toggle('cart-indicator-empty', total === 0);
+
+      // Render Slide-Out Cart Drawer (Popout from right)
+      var drawerList = document.getElementById('ywr-drawer-items-list');
+      var drawerEmpty = document.getElementById('ywr-drawer-empty-msg');
+      var drawerFooter = document.getElementById('ywr-drawer-footer');
+      var drawerSubtotal = document.getElementById('ywr-drawer-subtotal-val');
+      var drawerCountBadge = document.getElementById('ywr-drawer-count-badge');
+
+      if (drawerCountBadge) {
+        drawerCountBadge.textContent = total;
+      }
+
+      if (drawerList) {
+        if (items.length === 0) {
+          if (drawerEmpty) drawerEmpty.style.display = 'block';
+          if (drawerFooter) drawerFooter.style.display = 'none';
+          drawerList.innerHTML = '';
+        } else {
+          if (drawerEmpty) drawerEmpty.style.display = 'none';
+          if (drawerFooter) drawerFooter.style.display = 'block';
+          if (drawerSubtotal) drawerSubtotal.textContent = '$' + subtotal.toFixed(2);
+
+          var drawerHtml = '';
+          for (var j = 0; j < items.length; j++) {
+            var dItem = items[j];
+            var dMascotUrl = getMascotUrl(dItem.mascot);
+            drawerHtml += '<div class="ywr-drawer-item">' +
+              (dMascotUrl
+                ? '<img src="' + escapeHtml(dMascotUrl) + '" alt="" class="ywr-drawer-item-img">'
+                : '<div class="ywr-drawer-item-ph">&#9749;</div>') +
+              '<div class="ywr-drawer-item-info">' +
+                '<div class="ywr-drawer-item-title">' +
+                  escapeHtml(dItem.title) +
+                  (dItem.isSubscription ? ' <span class="ywr-sub-badge">Sub</span>' : '') +
+                '</div>' +
+                '<div class="ywr-drawer-item-meta">' + escapeHtml(dItem.meta) + ' &times; ' + dItem.qty + '</div>' +
+                '<div class="ywr-drawer-item-price">$' + dItem.lineTotal.toFixed(2) + '</div>' +
+              '</div>' +
+              '<div class="ywr-drawer-item-actions">' +
+                '<button type="button" class="ywr-drawer-item-remove" data-key="' + escapeHtml(dItem.id) + '" title="Remove item" aria-label="Remove ' + escapeHtml(dItem.title) + '">&times;</button>' +
+              '</div>' +
+            '</div>';
+          }
+          drawerList.innerHTML = drawerHtml;
+        }
+      }
+
+      // Legacy dropdown support (if present)
       var dropdown = document.getElementById('ywr-cart-dropdown');
-      if (!indicator || !el || !dropdown) return;
-
-      el.textContent = total;
-      indicator.classList.toggle('cart-indicator-empty', total === 0);
-
-      if (items.length === 0) {
-        dropdown.innerHTML =
-          '<div class="cart-dropdown-empty">' +
-            '<p class="cart-dropdown-empty-msg">Your cart is empty</p>' +
-            '<a href="' + escapeHtml(ROASTS_URL) + '" class="cart-dropdown-empty-btn">Explore Roasts &rarr;</a>' +
+      if (dropdown) {
+        if (items.length === 0) {
+          dropdown.innerHTML =
+            '<div class="cart-dropdown-empty">' +
+              '<p class="cart-dropdown-empty-msg">Your cart is empty</p>' +
+              '<a href="' + escapeHtml(ROASTS_URL) + '" class="cart-dropdown-empty-btn">Explore Roasts &rarr;</a>' +
+            '</div>';
+        } else {
+          var html = '<div class="cart-dropdown-header">' +
+            '<span class="cart-dropdown-heading">Your Cart</span>' +
+            '<span class="cart-dropdown-badge">' + total + (total === 1 ? ' item' : ' items') + '</span>' +
           '</div>';
-        return;
-      }
 
-      var html = '<div class="cart-dropdown-header">' +
-        '<span class="cart-dropdown-heading">Your Cart</span>' +
-        '<span class="cart-dropdown-badge">' + total + (total === 1 ? ' item' : ' items') + '</span>' +
-      '</div>';
+          html += '<div class="cart-dropdown-list">';
+          for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            var mascotUrl = getMascotUrl(it.mascot);
+            html += '<div class="cart-dropdown-item">' +
+              '<div class="cart-dropdown-item-thumb">' +
+                (mascotUrl
+                  ? '<img src="' + escapeHtml(mascotUrl) + '" alt="" class="cart-dropdown-item-img" onerror="this.onerror=null;this.style.display=\'none\';">'
+                  : '<span class="cart-dropdown-item-ph" aria-hidden="true">&#9749;</span>') +
+              '</div>' +
+              '<div class="cart-dropdown-item-info">' +
+                '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' +
+                  escapeHtml(it.title) +
+                  (it.isSubscription ? ' <span class="cart-dropdown-item-badge" style="font-size:0.65rem; padding:0.15rem 0.45rem; background:#ebe7df; border-radius:999px; text-transform:uppercase; font-weight:700; margin-left:0.3rem;">Sub</span>' : '') +
+                '</div>' +
+                '<div class="cart-dropdown-item-meta">' + escapeHtml(it.meta) + '</div>' +
+                '<div class="cart-dropdown-item-qty-price">' + it.qty + ' &times; $' + it.unitPrice + '</div>' +
+              '</div>' +
+              '<div class="cart-dropdown-item-actions">' +
+                '<div class="cart-dropdown-item-total">$' + it.lineTotal + '</div>' +
+                '<button type="button" class="cart-dropdown-item-remove" data-key="' + escapeHtml(it.id) + '" title="Remove item" aria-label="Remove ' + escapeHtml(it.title) + '">&times;</button>' +
+              '</div>' +
+            '</div>';
+          }
+          html += '</div>';
 
-      html += '<div class="cart-dropdown-list">';
-      for (var i = 0; i < items.length; i++) {
-        var it = items[i];
-        var mascotUrl = getMascotUrl(it.mascot);
-        html += '<div class="cart-dropdown-item">' +
-          '<div class="cart-dropdown-item-thumb">' +
-            (mascotUrl
-              ? '<img src="' + escapeHtml(mascotUrl) + '" alt="" class="cart-dropdown-item-img" onerror="this.onerror=null;this.style.display=\'none\';">'
-              : '<span class="cart-dropdown-item-ph" aria-hidden="true">&#9749;</span>') +
-          '</div>' +
-          '<div class="cart-dropdown-item-info">' +
-            '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' +
-              escapeHtml(it.title) +
-              (it.isSubscription ? ' <span class="cart-dropdown-item-badge" style="font-size:0.65rem; padding:0.15rem 0.45rem; background:#ebe7df; border-radius:999px; text-transform:uppercase; font-weight:700; margin-left:0.3rem;">Sub</span>' : '') +
+          html += '<div class="cart-dropdown-footer">' +
+            '<div class="cart-dropdown-subtotal-row">' +
+              '<span class="cart-dropdown-subtotal-label">Total</span>' +
+              '<span class="cart-dropdown-subtotal-val">$' + subtotal + '</span>' +
             '</div>' +
-            '<div class="cart-dropdown-item-meta">' + escapeHtml(it.meta) + '</div>' +
-            '<div class="cart-dropdown-item-qty-price">' + it.qty + ' &times; $' + it.unitPrice + '</div>' +
-          '</div>' +
-          '<div class="cart-dropdown-item-actions">' +
-            '<div class="cart-dropdown-item-total">$' + it.lineTotal + '</div>' +
-            '<button type="button" class="cart-dropdown-item-remove" data-key="' + escapeHtml(it.id) + '" title="Remove item" aria-label="Remove ' + escapeHtml(it.title) + '">&times;</button>' +
-          '</div>' +
-        '</div>';
+            '<a href="' + escapeHtml(ORDER_URL) + '" class="cart-dropdown-checkout-btn">View cart &amp; checkout &rarr;</a>' +
+          '</div>';
+
+          dropdown.innerHTML = html;
+        }
       }
-      html += '</div>';
-
-      html += '<div class="cart-dropdown-footer">' +
-        '<div class="cart-dropdown-subtotal-row">' +
-          '<span class="cart-dropdown-subtotal-label">Total</span>' +
-          '<span class="cart-dropdown-subtotal-val">$' + subtotal + '</span>' +
-        '</div>' +
-        '<a href="' + escapeHtml(ORDER_URL) + '" class="cart-dropdown-checkout-btn">View cart &amp; checkout &rarr;</a>' +
-      '</div>';
-
-      dropdown.innerHTML = html;
     }
 
     update();
@@ -247,79 +293,96 @@
     window.addEventListener('ywr-cart-changed', update);
     window.addEventListener('storage', update);
 
-    // Dropdown controller: handles hover grace period, click toggling, click-outside, and keyboard dismissal
-    var wrap = document.getElementById('ywr-cart-wrap');
+    // Slide-out Drawer Controller (Popout from the right)
+    var drawerEl = document.getElementById('ywr-cart-drawer');
+    var backdropEl = document.getElementById('ywr-cart-backdrop');
+    var drawerCloseBtn = document.getElementById('ywr-drawer-close');
     var indicator = document.getElementById('ywr-cart-indicator');
-    var closeTimer = null;
 
-    function openDropdown() {
-      if (closeTimer) {
-        clearTimeout(closeTimer);
-        closeTimer = null;
-      }
-      if (wrap) {
-        wrap.classList.add('is-open');
+    function openCartDrawer() {
+      if (drawerEl && backdropEl) {
+        update();
+        drawerEl.classList.add('is-open');
+        backdropEl.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
         if (indicator) indicator.setAttribute('aria-expanded', 'true');
       }
     }
 
-    function closeDropdownImmediately() {
-      if (closeTimer) {
-        clearTimeout(closeTimer);
-        closeTimer = null;
-      }
-      if (wrap) {
-        wrap.classList.remove('is-open');
+    function closeCartDrawer() {
+      if (drawerEl && backdropEl) {
+        drawerEl.classList.remove('is-open');
+        backdropEl.classList.remove('is-open');
+        document.body.style.overflow = '';
         if (indicator) indicator.setAttribute('aria-expanded', 'false');
       }
     }
 
-    function scheduleClose() {
-      if (closeTimer) clearTimeout(closeTimer);
-      closeTimer = setTimeout(function () {
-        if (wrap) {
-          wrap.classList.remove('is-open');
-          if (indicator) indicator.setAttribute('aria-expanded', 'false');
-        }
-      }, 300);
-    }
+    window.ywrOpenCartDrawer = openCartDrawer;
+    window.ywrCloseCartDrawer = closeCartDrawer;
 
     if (indicator) {
       indicator.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var willOpen = !wrap || !wrap.classList.contains('is-open');
-        if (willOpen) {
-          openDropdown();
+        var isOpen = drawerEl && drawerEl.classList.contains('is-open');
+        if (isOpen) {
+          closeCartDrawer();
         } else {
-          closeDropdownImmediately();
+          openCartDrawer();
         }
       });
     }
 
-    if (wrap) {
-      wrap.addEventListener('mouseenter', openDropdown);
-      wrap.addEventListener('mouseleave', scheduleClose);
-      wrap.addEventListener('focusin', openDropdown);
-      wrap.addEventListener('focusout', function (e) {
-        if (!wrap.contains(e.relatedTarget)) {
-          scheduleClose();
-        }
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeCartDrawer();
       });
     }
 
-    document.addEventListener('click', function (e) {
-      if (wrap && !wrap.contains(e.target)) {
-        closeDropdownImmediately();
-      }
-    });
+    if (backdropEl) {
+      backdropEl.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeCartDrawer();
+      });
+    }
+
+    var drawerBrowseBtn = document.getElementById('ywr-drawer-browse-btn');
+    if (drawerBrowseBtn) {
+      drawerBrowseBtn.addEventListener('click', function () {
+        closeCartDrawer();
+      });
+    }
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && wrap && wrap.classList.contains('is-open')) {
-        closeDropdownImmediately();
-        if (indicator) indicator.focus();
+      if (e.key === 'Escape' && drawerEl && drawerEl.classList.contains('is-open')) {
+        closeCartDrawer();
       }
     });
+
+    // Remove item listener for the drawer
+    if (drawerEl) {
+      drawerEl.addEventListener('click', function (e) {
+        var removeBtn = e.target.closest('.ywr-drawer-item-remove');
+        if (!removeBtn) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var key = removeBtn.getAttribute('data-key');
+        if (!key) return;
+
+        try {
+          var raw = localStorage.getItem('ywr_cart');
+          var cart = raw ? JSON.parse(raw) : {};
+          delete cart[key];
+          localStorage.setItem('ywr_cart', JSON.stringify(cart));
+        } catch (err) {
+          console.error('ywrCart: Failed to remove item from cart drawer:', err);
+        }
+        window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
+      });
+    }
 
     var dropdownEl = document.getElementById('ywr-cart-dropdown');
     if (dropdownEl) {
@@ -360,22 +423,39 @@
       if (!slug) return;
 
       var size = btn.getAttribute('data-size');
-      var rData = getRoastsData();
-      var r = rData[slug] || {};
-      var price = r.prices[size];
-      var added = window.ywrAddToCart({
-        type: 'roast',
-        slug: slug,
-        title: r.title || slug,
-        size: size,
-        grind: (window.YWR_DEFAULT_GRIND || 'Whole Bean'),
-        price: price,
-        mascot: r.mascot || null,
-        qty: 1
-      }, 1);
+      var subData = window.YWR_SUBSCRIPTIONS_DATA;
+      var added = false;
+
+      if (subData && subData[slug]) {
+        var s = subData[slug];
+        added = window.ywrAddToCart({
+          type: 'subscription',
+          slug: slug,
+          title: s.title,
+          subtitle: s.subtitle,
+          size: size,
+          grind: window.YWR_DEFAULT_GRIND,
+          frequency: s.frequencies[0],
+          price: s.prices[size],
+          mascot: s.mascot,
+          qty: 1
+        }, 1);
+      } else {
+        var r = getRoastsData()[slug];
+        added = window.ywrAddToCart({
+          type: 'roast',
+          slug: slug,
+          title: r.title,
+          size: size,
+          grind: window.YWR_DEFAULT_GRIND,
+          price: r.prices[size],
+          mascot: r.mascot,
+          qty: 1
+        }, 1);
+      }
 
       if (!added) {
-        console.error('Failed to quick-add roast to cart:', slug);
+        console.error('Failed to quick-add item to cart:', slug);
         return;
       }
 
@@ -407,11 +487,12 @@
 
           if (cardQuickAdd) {
             cardQuickAdd.classList.remove('is-added');
-            cardQuickAdd.textContent = 'Quick Add';
+            cardQuickAdd.textContent = '+ Add';
             cardQuickAdd.disabled = false;
           }
         }, 1200);
       } else {
+        var origQuickAddText = quickAddBtn.textContent;
         quickAddBtn.classList.add('is-added');
         quickAddBtn.textContent = 'Added!';
         quickAddBtn.disabled = true;
@@ -429,7 +510,7 @@
 
         setTimeout(function () {
           quickAddBtn.classList.remove('is-added');
-          quickAddBtn.textContent = 'Quick Add';
+          quickAddBtn.textContent = origQuickAddText;
           quickAddBtn.disabled = false;
 
           if (matchingPriceBtn) {

@@ -48,7 +48,7 @@
 .roast-mv-title {
   font-family: $font-display;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.02em;
   color: #2c1e14;
@@ -162,10 +162,7 @@
 }
 
 .roast-mv-divider {
-  width: 3rem;
-  height: 2px;
-  background: #ddd;
-  margin: 2rem auto;
+  display: none;
 }
 
 .roast-mv-body {
@@ -333,27 +330,16 @@
   min-height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #e8e0d5;
+  background: rgba(44, 30, 20, 0.2);
 }
 
-.roast-dot-1 {
-  background: #d4b896;
-}
-
-.roast-dot-2 {
-  background: #b8944a;
-}
-
-.roast-dot-3 {
-  background: #8a6830;
-}
-
-.roast-dot-4 {
-  background: #5c3d1a;
-}
-
+.roast-dot[class*="roast-dot-"],
+.roast-dot-1,
+.roast-dot-2,
+.roast-dot-3,
+.roast-dot-4,
 .roast-dot-5 {
-  background: #2c1e14;
+  background: #9c6d12;
 }
 
 .order-form {
@@ -700,7 +686,7 @@
 .order-summary-title {
   font-family: $font-display;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
   margin: 0;
   text-transform: uppercase;
@@ -824,7 +810,7 @@
 .order-cart-card-total {
   font-family: $font-display;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
 }
 
@@ -1115,7 +1101,7 @@
 .roast-detail-price-line {
   font-family: $font-display;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
   margin-bottom: 0.85rem;
   line-height: 1.2;

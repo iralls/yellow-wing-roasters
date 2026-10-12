@@ -450,8 +450,8 @@
       return b.score - a.score;
     });
 
-    // List ONLY the top 4 matching choices
-    var topMatches = scoredRoasts.slice(0, 4);
+    // List top 3 matching choices to adhere to the 3-column layout
+    var topMatches = scoredRoasts.slice(0, 3);
 
     topGrid.innerHTML = '';
 

@@ -17,12 +17,12 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.38rem 0.75rem;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: transparent;
+  border: 1px solid rgba(44, 30, 20, 0.15);
   border-radius: 999px;
-  color: #222;
+  color: #2c1e14;
   text-decoration: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
   font: inherit;
@@ -31,8 +31,8 @@
   appearance: none;
 
   &:hover {
-    border-color: #888;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-color: #2c1e14;
+    box-shadow: 0 2px 6px rgba(44, 30, 20, 0.06);
     text-decoration: none;
   }
 
@@ -58,41 +58,337 @@
   display: none;
 }
 
-/* ── Cart Dropdown ── */
+/* ── Cart Dropdown (Superseded by Slide-out Drawer) ── */
 
 .cart-dropdown-pane {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  padding-top: 0.5rem;
-  width: 20.5rem;
-  max-width: calc(100vw - 2rem);
+  display: none !important;
+}
+
+/* ── Slide-Out Cart Drawer (from Minimalist Atelier) ── */
+
+.ywr-cart-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2200;
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-4px);
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-  z-index: 1000;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
-/* Hit-bridge covering the entire top row up to the pill top, preventing diagonal cursor drop */
-.cart-dropdown-pane::before {
-  content: "";
-  position: absolute;
-  top: -1.75rem;
-  left: 0;
+.ywr-cart-drawer {
+  position: fixed;
+  top: 0;
   right: 0;
-  height: 1.75rem;
-  pointer-events: auto;
+  bottom: 0;
+  width: 25.5rem;
+  max-width: 90vw;
+  background: #faf8f5;
+  z-index: 2250;
+  box-shadow: -10px 0 35px rgba(44, 30, 20, 0.16);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+  font-family: $font-display;
+  text-align: left;
+
+  &.is-open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
-.cart-indicator-wrap:hover .cart-dropdown-pane,
-.cart-indicator-wrap.is-open .cart-dropdown-pane,
-.cart-indicator-wrap:focus-within .cart-dropdown-pane {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
+.ywr-drawer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #eee7de;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+}
+
+.ywr-drawer-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ywr-drawer-title {
+  font-family: $font-body;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: $color-dark;
+  margin: 0;
+}
+
+.ywr-drawer-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: #d97706;
+  color: #ffffff;
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.ywr-drawer-close {
+  background: transparent;
+  border: 1px solid #e0d8cf;
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-dark;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #f0ebe1;
+    border-color: $color-dark;
+  }
+}
+
+.ywr-drawer-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.ywr-drawer-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #786b5e;
+
+  .ywr-drawer-empty-icon {
+    margin-bottom: 0.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ywr-drawer-empty-img {
+    width: 3.75rem;
+    height: 3.75rem;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    opacity: 0.85;
+    filter: drop-shadow(0 2px 8px rgba(44, 30, 20, 0.1));
+  }
+
+  .ywr-drawer-empty-title {
+    font-family: $font-body;
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-style: italic;
+    color: $color-dark;
+    margin: 0 0 0.5rem;
+  }
+
+  .ywr-drawer-empty-sub {
+    font-size: 0.85rem;
+    color: #8c7e70;
+    margin: 0 0 1.25rem;
+  }
+
+  .ywr-drawer-browse-btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    background: $color-dark;
+    color: #faf8f5;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: #b45309;
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}
+
+.ywr-drawer-items-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ywr-drawer-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid #eee7de;
+  align-items: flex-start;
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.ywr-drawer-item-img {
+  width: 3.8rem;
+  height: 3.8rem;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid #eee7de;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  flex-shrink: 0;
+}
+
+.ywr-drawer-item-ph {
+  width: 3.8rem;
+  height: 3.8rem;
+  background: #f0ebe1;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.ywr-drawer-item-info {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.ywr-drawer-item-title {
+  font-family: $font-body;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $color-dark;
+  margin: 0 0 0.25rem;
+  line-height: 1.25;
+
+  .ywr-sub-badge {
+    display: inline-block;
+    font-family: $font-display;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #e6dfd3;
+    color: $color-dark;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    margin-left: 0.35rem;
+    vertical-align: middle;
+  }
+}
+
+.ywr-drawer-item-meta {
+  font-size: 0.78rem;
+  color: #786b5e;
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+
+.ywr-drawer-item-price {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: $color-dark;
+}
+
+.ywr-drawer-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ywr-drawer-item-remove {
+  background: transparent;
+  border: none;
+  color: #a89f91;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #dc2626;
+  }
+}
+
+.ywr-drawer-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #eee7de;
+  background: #ffffff;
+}
+
+.ywr-drawer-subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+}
+
+.ywr-drawer-subtotal-label {
+  font-family: $font-display;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #786b5e;
+}
+
+.ywr-drawer-subtotal-val {
+  font-family: $font-body;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $color-dark;
+}
+
+.ywr-drawer-checkout-btn {
+  display: block;
+  width: 100%;
+  padding: 0.95rem;
+  text-align: center;
+  border-radius: 999px;
+  background: $color-dark;
+  color: #faf8f5;
+  font-family: $font-display;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #b45309;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+  }
 }
 
 .cart-dropdown {
@@ -227,7 +523,7 @@
 
 .cart-dropdown-item-total {
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
 }
 
@@ -271,7 +567,7 @@
 
 .cart-dropdown-subtotal-val {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2c1e14;
 }
 

@@ -74,170 +74,139 @@
 {% endfor %}
 {% assign flavor_list = card_profiles | join: "," %}
 
-{% if include.is_picker or include.is_link == false %}
-<div
-{% else %}
-<a href="{{ r_url | relative_url }}"
-{% endif %}
-   class="sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} sleek-roast-card--dimmed sleek-roast-card--{{ r.status }}{% endif %}"
-   data-surface="linen"
-   data-category="{{ r.category }}"
-   data-type="{{ r.category | slugify }}"
-   data-origins="{{ origin_list }}"
-   data-process="{{ process_list }}"
-   data-beans="{{ bean_list }}"
-   data-has-fto="{{ is_100_fto }}"
-   data-has-organic="{{ is_100_organic }}"
-   data-certification="{{ r.certification }}"
-   {% if r_dots %}data-roast-dots="{{ r_dots }}"{% endif %}
-   {% if r.brewing_method %}data-brewing="{{ r.brewing_method }}"{% endif %}
-   {% if r.roast_level %}data-roast-level="{{ r.roast_level }}"{% endif %}
-   {% if r.tasting_notes %}data-tasting-notes="{{ r.tasting_notes | escape }}"{% endif %}
-   {% if r.descriptor %}data-descriptor="{{ r.descriptor | escape }}"{% endif %}
-   data-flavors="{{ flavor_list }}"
-   {% if r.status %}data-status="{{ r.status }}"{% endif %}
-   data-roast="{{ r.data_roast | default: r.slug }}"
-   data-slug="{{ r.slug }}"
-   data-title="{{ r.title | escape }}">
-  <div class="sleek-card-visual">
-    {% unless include.hide_badges %}
-      <!-- Top-left: Category tag pill -->
-      <div class="sleek-card-tags-left">
-        {% if r.category %}
-          <span class="sleek-card-tag">{{ r.category | upcase }}</span>
-        {% endif %}
-        {% if is_100_fto %}
-          <span class="sleek-card-tag" title="Fair Trade Organic">FTO</span>
-        {% elsif is_100_organic %}
-          <span class="sleek-card-tag" title="Organic">Organic</span>
-        {% endif %}
-      </div>
+<div class="roast-trans-card sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} roast-trans-card--dimmed sleek-roast-card--dimmed{% endif %}"
+     data-surface="linen"
+     data-category="{{ r.category }}"
+     data-type="{{ r.category | slugify }}"
+     data-origins="{{ origin_list }}"
+     data-process="{{ process_list }}"
+     data-beans="{{ bean_list }}"
+     data-has-fto="{{ is_100_fto }}"
+     data-has-organic="{{ is_100_organic }}"
+     data-certification="{{ r.certification }}"
+     {% if r_dots %}data-roast-dots="{{ r_dots }}"{% endif %}
+     {% if r.brewing_method %}data-brewing="{{ r.brewing_method }}"{% endif %}
+     {% if r.roast_level %}data-roast-level="{{ r.roast_level }}"{% endif %}
+     {% if r.tasting_notes %}data-tasting-notes="{{ r.tasting_notes | escape }}"{% endif %}
+     {% if r.descriptor %}data-descriptor="{{ r.descriptor | escape }}"{% endif %}
+     data-flavors="{{ flavor_list }}"
+     {% if r.status %}data-status="{{ r.status }}"{% endif %}
+     data-roast="{{ r.data_roast | default: r.slug }}"
+     data-slug="{{ r.slug }}"
+     data-title="{{ r.title | escape }}">
 
-      {% if r.best_seller %}
-        <span class="sleek-card-tag--best-seller">&starf; Best Seller</span>
-      {% elsif r.featured %}
-        <span class="sleek-card-tag--best-seller" style="background:#fef08a; color:#854d0e;">Featured</span>
-      {% endif %}
+  <!-- Artwork Plate -->
+  {% if include.is_picker or include.is_link == false %}
+  <div class="roast-trans-plate sleek-card-visual">
+  {% else %}
+  <a href="{{ r_url | relative_url }}" class="roast-trans-plate sleek-card-visual" aria-label="{{ r.title }} details">
+  {% endif %}
+    {% unless include.hide_badges %}
+      <!-- Upper-Left: Category Tag Pill (Rectangle with rounded edges) -->
+      <span class="roast-trans-cat-badge sleek-card-tag">
+        {% if r.category == "subscriptions" %}SUBSCRIPTION{% else %}{{ r.category | upcase }}{% endif %}
+        {% if is_100_fto %}
+          <span style="opacity: 0.7; margin-left: 0.2rem;">· FTO</span>
+        {% elsif is_100_organic %}
+          <span style="opacity: 0.7; margin-left: 0.2rem;">· Organic</span>
+        {% endif %}
+      </span>
     {% endunless %}
 
     {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "gift-option" %}
       <span class="gift-type-badge">&#10003; Selected</span>
     {% endif %}
 
-    {% if r.mascot_file %}
-      <img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="{{ r.mascot_alt | default: r.title | escape }}" class="sleek-card-mascot" loading="lazy" decoding="async">
+    <!-- Upper-Right: Roast Level Dots Meter (NO "Best Seller" pill) -->
+    {% if r.roast_level %}
+      <div class="roast-trans-roast-meter" title="Roast Level: {{ r.roast_level }}/5">
+        {% include roast-dots.html roast=r %}
+      </div>
     {% endif %}
 
-    {% unless include.hide_reveal or r.category == 'subscriptions' or page.category == 'subscriptions' %}
-      {% if r.tasting_notes or r.overlay_notes or r.intro or r.brewing_method %}
-        <!-- Hover reveal bar -->
-        <div class="sleek-card-reveal-bar">
-          {% if r.tasting_notes %}
-            <span>{{ r.tasting_notes | replace: ", ", " &middot; " | downcase }}</span>
-          {% elsif r.overlay_notes %}
-            <span>{{ r.overlay_notes | downcase }}</span>
-          {% elsif r.intro %}
-            <span>{{ r.intro | downcase }}</span>
-          {% elsif r.brewing_method %}
-            <span>{{ r.brewing_method | replace: ", ", " &middot; " }}</span>
+    {% if r.mascot_file %}
+      <img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="{{ r.mascot_alt | default: r.title | escape }}" class="roast-trans-img sleek-card-mascot" loading="lazy" decoding="async">
+    {% endif %}
+  {% if include.is_picker or include.is_link == false %}
+  </div>
+  {% else %}
+  </a>
+  {% endif %}
+
+  <!-- Card Body -->
+  <div class="roast-trans-body sleek-card-body">
+    <!-- Title & Price Row (Price on the right side) -->
+    <div class="roast-trans-title-row">
+      <h3 class="roast-trans-title sleek-card-title">
+        {% if include.is_picker or include.is_link == false %}
+          <span>{{ r.card_title | default: r.title }}</span>
+        {% else %}
+          <a href="{{ r_url | relative_url }}">{{ r.card_title | default: r.title }}</a>
+        {% endif %}
+      </h3>
+
+      {% unless include.hide_price %}
+        <div class="roast-trans-price sleek-card-price">
+          {% if r.temporary_price and r.temporary_price["12oz"] %}
+            <s>${{ r.price["12oz"] }}</s> <span style="color:#b45309;">${{ r.temporary_price["12oz"] }}</span>
+          {% elsif r.price and r.price["12oz"] %}
+            ${{ r.price["12oz"] }}
+          {% elsif r.price and r.price.first %}
+            ${{ r.price.first[1] }}
+          {% elsif r.price %}
+            ${{ r.price }}
+          {% elsif r.price_per_bag %}
+            ${{ r.price_per_bag }}
           {% endif %}
         </div>
-      {% endif %}
-    {% endunless %}
-  </div>
-
-  <!-- Status / Divider line -->
-  {% unless include.hide_divider %}
-    {% if r.status and site.data.statuses[r.status].badge %}
-      <div class="sleek-card-divider-status sleek-card-divider-status--{{ r.status }}">
-        <span class="sleek-status-pip"></span>
-        <span class="sleek-status-text">{{ s_info.badge }}</span>
-        {% if r.status == 'mid_molt' %}
-          <span class="sleek-status-note">&middot; in flux</span>
-        {% elsif r.status == 'low_stock' %}
-          <span class="sleek-status-note">&middot; limited</span>
-        {% elsif r.status == 'flown_south' %}
-          <span class="sleek-status-note">&middot; unavailable</span>
-        {% elsif r.status == 'incubating' %}
-          <span class="sleek-status-note">&middot; coming soon</span>
+      {% else %}
+        {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "aviary-card" %}
+          <div class="roast-trans-price sleek-card-price" style="font-size:0.82rem; font-weight:500; color:#887060;">8oz bag</div>
         {% endif %}
-      </div>
-    {% elsif r.featured %}
-      <div class="sleek-card-divider-status sleek-card-divider-status--featured">
-        <span class="sleek-status-pip"></span>
-        <span class="sleek-status-text">Featured Selection</span>
-      </div>
-    {% else %}
-      <div class="sleek-card-divider-status sleek-card-divider-status--none"></div>
-    {% endif %}
-  {% endunless %}
-
-  <div class="sleek-card-body">
-    <div class="sleek-card-eyebrow">
-      <div class="sleek-card-dots">
-        {% if r.roast_level %}
-          {% include roast-dots.html roast=r %}
-        {% endif %}
-      </div>
+      {% endunless %}
     </div>
 
-    <h3 class="sleek-card-title">{{ r.card_title | default: r.title }}</h3>
-    {% if r.subtitle %}
-      <div class="sleek-card-subtitle">{{ r.subtitle }}</div>
-    {% endif %}
-
+    <!-- Descriptor / Notes Summary -->
     {% if r.descriptor %}
-      <p class="sleek-card-descriptor">{{ r.descriptor | downcase }}</p>
+      <p class="roast-trans-descriptor sleek-card-descriptor">{{ r.descriptor }}</p>
     {% endif %}
 
-    {% unless include.hide_footer %}
-      <div class="sleek-card-footer">
-        {% unless include.hide_price %}
-          <div class="sleek-card-price">
-            {% if r.temporary_price and r.temporary_price["12oz"] %}
-              <s>${{ r.price["12oz"] }}</s> <span style="color:#b45309;">${{ r.temporary_price["12oz"] }}</span><span class="sleek-card-price-sub">/ 12oz</span>
-            {% elsif r.price and r.price["12oz"] %}
-              ${{ r.price["12oz"] }}<span class="sleek-card-price-sub">/ 12oz</span>
-            {% elsif r.price and r.price.first %}
-              ${{ r.price.first[1] }}<span class="sleek-card-price-sub">/ {{ r.price.first[0] }}</span>
-            {% elsif r.price %}
-              ${{ r.price }}
-            {% elsif r.price_per_bag and r.min_bags %}
-              ${{ r.price_per_bag }} <span class="sleek-card-price-sub">/ bag</span>
-            {% endif %}
-          </div>
+    <!-- Tasting Note Pills (Mimicking minimal/coffees/ notes tags) -->
+    {% if r.tasting_notes %}
+      {% assign notes_arr = r.tasting_notes | replace: ", ", " · " | split: " · " %}
+      <div class="roast-trans-notes">
+        {% for n in notes_arr limit:3 %}
+          <span class="roast-trans-note-tag">{{ n }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Bottom Action Area: "+ Add" Button / Actions -->
+    {% unless include.hide_cta %}
+      <div class="roast-trans-actions">
+        {% if include.cta_text %}
+          <span class="roast-trans-archived-label">{{ include.cta_text }}</span>
+        {% elsif include.is_picker or include.card_class contains "pyo-option" %}
+          <span class="roast-trans-add-btn pyo-card-cta">Select &plus;</span>
+        {% elsif r.status == 'flown_south' %}
+          <span class="roast-trans-archived-label">Seasonal Archive</span>
+        {% elsif r.status == 'incubating' or s_info.dim_card %}
+          <span class="roast-trans-archived-label">Coming Soon</span>
+        {% elsif include.card_class contains "aviary-card" %}
+          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Details &rarr;</a>
+        {% elsif r.category == 'custom' %}
+          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">Customize</a>
+        {% elsif r.category == 'flight' %}
+          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Sampler</a>
         {% else %}
-          {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "aviary-card" %}
-            <div class="sleek-card-price">
-              <span class="sleek-card-price-sub" style="margin-left:0; font-size:0.82rem; font-weight:600; color:#887060;">8oz bag</span>
-            </div>
-
-          {% else %}
-            <div></div>
-          {% endif %}
-        {% endunless %}
-
-        {% unless include.hide_cta %}
-          {% if include.cta_text %}
-            <span class="sleek-card-cta">{{ include.cta_text }}</span>
-          {% elsif include.is_picker or include.card_class contains "pyo-option" %}
-            <span class="sleek-card-cta pyo-card-cta">Select &plus;</span>
-          {% elsif r.status == 'flown_south' %}
-            <span class="sleek-card-cta sleek-card-cta--dimmed">Seasonal Archive &rarr;</span>
-          {% elsif s_info.dim_card %}
-            <span class="sleek-card-cta sleek-card-cta--dimmed">Coming Soon &rarr;</span>
-          {% elsif r.category == 'custom' %}
-            <span class="sleek-card-cta">Customize &rarr;</span>
-          {% elsif r.category == 'flight' %}
-            <span class="sleek-card-cta">View Sampler &rarr;</span>
-          {% endif %}
-        {% endunless %}
+          <button type="button"
+                  class="roast-trans-add-btn roasts-entry-quick-add"
+                  data-slug="{{ r.slug }}"
+                  data-size="12oz">
+            + Add
+          </button>
+        {% endif %}
       </div>
     {% endunless %}
   </div>
-
-{% if include.is_picker or include.is_link == false %}
 </div>
-{% else %}
-</a>
-{% endif %}

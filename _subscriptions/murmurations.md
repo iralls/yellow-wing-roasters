@@ -2,7 +2,7 @@
 title: Murmurations
 slug: murmurations
 subtitle: Leftover Beans
-category: subscriptions
+category: subscription
 order: 4
 permalink: /subscriptions/murmurations/
 mascot_file: flock-transparent.png

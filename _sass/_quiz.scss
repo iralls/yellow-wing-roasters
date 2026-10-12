@@ -259,8 +259,9 @@
 }
 
 .quiz-results-summary {
-  background: #f6f1eb;
-  border-radius: 1rem;
+  background: transparent;
+  border: 1px solid rgba(44, 30, 20, 0.12);
+  border-radius: 4px;
   padding: 1.5rem;
   max-width: 44rem;
   margin: 0 auto 2.5rem;
@@ -269,8 +270,8 @@
 
 .quiz-results-summary-title {
   font-family: $font-display;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: #8c796c;
@@ -287,20 +288,22 @@
 }
 
 .quiz-result-chip {
-  background: #ffffff;
-  border: 1px solid #dfd4c9;
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(44, 30, 20, 0.16);
+  border-radius: 2px;
+  padding: 0.25rem 0.65rem;
   font-family: $font-display;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #3b2c22;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #2c1e14;
 }
 
 .quiz-retake-btn {
   font-family: $font-display;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   background: none;
   border: none;
   color: #8c796c;
@@ -317,8 +320,10 @@
   width: 100%;
 
   .sleek-comparison-grid,
+  .roast-trans-grid,
   .roasts-grid {
     .sleek-roast-card,
+    .roast-trans-card,
     .roasts-entry {
       height: 100%;
     }
