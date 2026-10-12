@@ -11,7 +11,7 @@
       var item = {
         type: 'flight',
         slug: 'the-aviary',
-        title: 'The Aviary Flight',
+        title: 'The Aviary',
         subtitle: 'Early Bird, Feather Soot, Chimney Sweep, Lil\' Sipper',
         roasts: ['Early Bird', 'Feather Soot', 'Chimney Sweep', 'Lil\' Sipper'],
         size: '4 × 8oz bags',

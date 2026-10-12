@@ -411,6 +411,9 @@
       } else {
         var itemLines = items.map(function (item) {
           var details = [];
+          if (typeof item.data.price === 'number' || (item.data.price && !isNaN(parseFloat(item.data.price)))) {
+            details.push('Price: $' + parseFloat(item.data.price).toFixed(2));
+          }
           if (item.subtitle) {
             var prefix = 'Picks: ';
             if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
@@ -421,7 +424,7 @@
           if (item.grind) details.push('Grind: ' + item.grind);
           if (item.notes) details.push('Notes: ' + item.notes);
           var detailsStr = details.length > 0 ? ' (' + details.join('; ') + ')' : '';
-          return item.qty + 'x ' + item.data.label + ' ' + item.data.size + detailsStr;
+          return item.qty + 'x ' + item.data.label + (item.data.size ? ' ' + item.data.size : '') + detailsStr;
         }).join(', ');
 
         if (itemsHidden) itemsHidden.value = itemLines;

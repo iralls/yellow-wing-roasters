@@ -19,6 +19,9 @@ window.YWR_ROASTS_DATA = {
       mascot: {{ r.mascot_file | jsonify }},
       dots: {{ r_dots | default: 0 }},
       description: {{ r.description | default: "" | jsonify }},
+      price: {% if r.price.first %}{{ r.price | jsonify }}{% elsif r.price %}{{ r.price | jsonify }}{% else %}null{% endif %},
+      price_per_bag: {{ r.price_per_bag | default: null | jsonify }},
+      min_bags: {{ r.min_bags | default: null | jsonify }},
       variants: {
         {% if r.variants %}
           {% for v in r.variants %}

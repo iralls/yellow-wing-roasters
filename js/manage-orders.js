@@ -139,6 +139,40 @@
       status: "Cancelled",
       statusDetails: "Customer requested cancellation.",
       timestamp: "10/02/2026, 10:00:00 AM"
+    },
+    "1008": {
+      orderId: "1008",
+      token: "mock-token-8",
+      name: "Alex River",
+      email: "alex@test.com",
+      items: "1x The Aviary 4 × 8oz bags (Price: $38.00; Grind: Whole Bean; Picks: Early Bird, Feather Soot, Chimney Sweep, Lil' Sipper)",
+      total: "$38.00",
+      deliveryMethod: "Pickup",
+      address: "",
+      city: "",
+      state: "",
+      zip: "",
+      notes: "",
+      status: "Received",
+      statusDetails: "Packaging your sampler box.",
+      timestamp: "10/12/2026, 09:00:00 AM"
+    },
+    "1009": {
+      orderId: "1009",
+      token: "mock-token-9",
+      name: "Casey Stone",
+      email: "casey@test.com",
+      items: "1x Peck Your Own 4 × 8oz bags (Price: $40.00; Grind: Whole Bean; Picks: Early Bird, Colombia Supremo, Feather Soot, Morning Meep)",
+      total: "$40.00",
+      deliveryMethod: "Pickup",
+      address: "",
+      city: "",
+      state: "",
+      zip: "",
+      notes: "",
+      status: "Received",
+      statusDetails: "Packing custom sample selection.",
+      timestamp: "10/12/2026, 09:30:00 AM"
     }
   };
 
@@ -149,6 +183,7 @@
       localStorage.removeItem('ywr_mock_orders_v2');
       localStorage.removeItem('ywr_mock_orders_v3');
       localStorage.removeItem('ywr_mock_orders_v4');
+      localStorage.removeItem('ywr_mock_orders_v5');
     } catch (e) {}
   }
 
@@ -233,7 +268,11 @@
       var recipe = '';
       var link = '';
       var notes = '';
+      var explicitPrice = null;
       if (detailsStr) {
+        var priceMatch = detailsStr.match(/Price:\s*\$?([\d.]+)/i);
+        if (priceMatch) explicitPrice = parseFloat(priceMatch[1]);
+
         var recipeMatch = detailsStr.match(/Recipe:\s*([^;]+)/i);
         if (recipeMatch) recipe = recipeMatch[1].trim();
 
@@ -253,16 +292,34 @@
         if (levelMatch) roastLevel = levelMatch[1].trim();
       }
 
-      var roastSlug = findRoastKeyByTitle(namePart, roastsData) || namePart.toLowerCase().replace(/['’]/g, '').replace(/\s+/g, '-');
-      var roastConfig = roastsData[roastSlug];
-      var unitPrice = (roastConfig && roastConfig.prices && roastConfig.prices[size]) ? roastConfig.prices[size] : 0;
-      if (!unitPrice && roastConfig && roastConfig.price) {
-        unitPrice = roastConfig.price;
+      if (explicitPrice === null) {
+        var inlinePriceMatch = mainPart.match(/(?:—|-|@)\s*\$?([\d.]+)/);
+        if (inlinePriceMatch) explicitPrice = parseFloat(inlinePriceMatch[1]);
       }
-      if (!unitPrice && roastConfig && roastConfig.price_per_bag) {
-        var bagCountMatch = size.match(/^(\d+)/);
-        var numBags = bagCountMatch ? parseInt(bagCountMatch[1], 10) : 4;
-        unitPrice = numBags * roastConfig.price_per_bag;
+
+      var cleanName = namePart.replace(/\s+Flight$/i, '').trim();
+      var roastSlug = (roastsData && findRoastKeyByTitle(namePart, roastsData)) ||
+                      (roastsData && findRoastKeyByTitle(cleanName, roastsData)) ||
+                      namePart.toLowerCase().replace(/['’]/g, '').replace(/\s+/g, '-');
+      if ((!roastsData || !roastsData[roastSlug]) && cleanName) {
+        var cleanSlug = cleanName.toLowerCase().replace(/['’]/g, '').replace(/\s+/g, '-');
+        if (roastsData && roastsData[cleanSlug]) roastSlug = cleanSlug;
+      }
+      var roastConfig = (roastsData && roastsData[roastSlug]) ? roastsData[roastSlug] : null;
+
+      var unitPrice = 0;
+      if (explicitPrice !== null && !isNaN(explicitPrice)) {
+        unitPrice = explicitPrice;
+      } else {
+        unitPrice = (roastConfig && roastConfig.prices && roastConfig.prices[size]) ? roastConfig.prices[size] : 0;
+        if (!unitPrice && roastConfig && roastConfig.price) {
+          unitPrice = typeof roastConfig.price === 'number' ? roastConfig.price : (roastConfig.price[size] || 0);
+        }
+        if (!unitPrice && roastConfig && roastConfig.price_per_bag) {
+          var bagCountMatch = size.match(/^(\d+)/);
+          var numBags = bagCountMatch ? parseInt(bagCountMatch[1], 10) : (roastConfig.min_bags || 4);
+          unitPrice = numBags * roastConfig.price_per_bag;
+        }
       }
 
       result.push({
