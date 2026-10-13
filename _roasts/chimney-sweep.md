@@ -1,6 +1,5 @@
 ---
 title: Chimney Sweep
-subtitle: Espresso Blend
 slug: chimney-sweep
 category: blend
 order: 3

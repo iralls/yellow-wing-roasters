@@ -1084,7 +1084,8 @@
 }
 
 .sleek-detail-big-bird {
-  max-height: 18rem;
+  max-height: 27rem;
+  max-width: 100%;
   width: auto;
   object-fit: contain;
 }
@@ -1138,12 +1139,16 @@
 
 .sleek-detail-title {
   font-family: $font-display;
-  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+  font-size: 4rem;
   font-weight: 500;
   color: #2c1e14;
-  line-height: 1.12;
+  line-height: 1.05;
   letter-spacing: -0.01em;
   margin: 0 0 0.5rem;
+
+  @media (max-width: 900px) {
+    font-size: clamp(2.25rem, 6vw, 3.25rem);
+  }
 }
 
 .sleek-detail-subtitle {
@@ -1172,7 +1177,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   padding: 0.25rem 0;
 }
 
@@ -1181,6 +1186,23 @@
   font-size: 0.78rem;
   font-weight: 500;
   color: #2c1e14;
+}
+
+.sleek-detail-description {
+  font-family: Lora, serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #5e5248;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+
+  p {
+    margin: 0 0 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 /* Studio Buy Card (Unboxed) */

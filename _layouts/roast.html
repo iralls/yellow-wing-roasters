@@ -43,14 +43,8 @@ layout: default
   {% assign freqs = sub_config.frequencies %}
 {% endif %}
 
-<div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-    &larr; Back to All Roasts
-  </a>
-</div>
-
 <div class="sleek-detail-layout">
-  <!-- Left Column: Artwork Showcase & Description -->
+  <!-- Left Column: Artwork Showcase -->
   <div class="sleek-detail-visual-col">
     {% if page.mascot_grid %}
       <div class="mascot-grid mascot-grid-lg">
@@ -64,12 +58,6 @@ layout: default
       {% if m_name %}
         <div class="sleek-detail-bird-label">{{ m_name }}</div>
       {% endif %}
-    {% endif %}
-
-    {% if page.description and page.description != "" %}
-      <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
-        {{ page.description | markdownify }}
-      </div>
     {% endif %}
   </div>
 
@@ -122,6 +110,13 @@ layout: default
         <span style="font-family: Montserrat, sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8a7f6e;">Roast:</span>
         {% include roast-dots.html dots=level_info.dots %}
         <span class="sleek-detail-roast-name">{{ level_info.name }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Roast Description -->
+    {% if page.description and page.description != "" %}
+      <div class="sleek-detail-description">
+        {{ page.description | markdownify }}
       </div>
     {% endif %}
 
