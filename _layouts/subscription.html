@@ -13,7 +13,7 @@ layout: default
 </div>
 
 <div class="sleek-detail-layout">
-  <!-- Left Column: Artwork Showcase & Description -->
+  <!-- Left Column: Artwork Showcase -->
   <div class="sleek-detail-visual-col">
     {% if page.mascot_file %}
       <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
@@ -22,10 +22,6 @@ layout: default
         <div class="sleek-detail-bird-label">{{ m_name }}</div>
       {% endif %}
     {% endif %}
-
-    <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
-      {{ content }}
-    </div>
   </div>
 
   <!-- Right Column: Purchasing & Specifications -->
@@ -41,10 +37,17 @@ layout: default
       <div class="sleek-detail-subtitle">{{ page.subtitle }}</div>
     {% endif %}
 
-    <!-- Tasting Notes / Descriptor Banner -->
-    {% if page.descriptor %}
+    <!-- Tasting Notes Banner -->
+    {% if page.tasting_notes %}
       <div class="sleek-detail-tasting-banner">
-        {{ page.descriptor }}
+        {{ page.tasting_notes | replace: ", ", " &middot; " }}
+      </div>
+    {% endif %}
+
+    <!-- Subscription Description -->
+    {% if content and content != "" %}
+      <div class="sleek-detail-description">
+        {{ content }}
       </div>
     {% endif %}
 
