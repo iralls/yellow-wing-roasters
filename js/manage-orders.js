@@ -498,6 +498,7 @@
           fetch(apiUrl, {
             method: 'POST',
             mode: 'cors',
+            credentials: 'omit',
             body: JSON.stringify({
               action: 'cancel',
               orderId: order.orderId,
@@ -598,6 +599,7 @@
           fetch(API_URL, {
             method: 'POST',
             mode: 'cors',
+            credentials: 'omit',
             body: JSON.stringify({
               action: 'request_link',
               email: email,
@@ -642,7 +644,9 @@
         orderContent.innerHTML = '<p class="order-msg-loading">Loading order details…</p>';
         var fetchUrl = API_URL + '?orderId=' + encodeURIComponent(urlOrderId) + '&token=' + encodeURIComponent(urlToken);
 
-        fetch(fetchUrl)
+        fetch(fetchUrl, {
+          credentials: 'omit'
+        })
           .then(function (res) { return res.json(); })
           .then(function (data) {
             if (data.error) {

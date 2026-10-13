@@ -719,7 +719,9 @@
       var fetchUrl = apiUrl + (apiUrl.indexOf('?') === -1 ? '?' : '&') +
         'action=admin_list&adminKey=' + encodeURIComponent(passcode);
 
-      fetch(fetchUrl)
+      fetch(fetchUrl, {
+        credentials: 'omit'
+      })
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (data.error) {
@@ -754,6 +756,7 @@
       fetch(apiUrl, {
         method: 'POST',
         mode: 'cors',
+        credentials: 'omit',
         body: JSON.stringify({
           action: 'admin_update_status',
           adminKey: currentKey,
