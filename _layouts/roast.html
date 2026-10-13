@@ -90,16 +90,10 @@ layout: default
       </div>
     {% endif %}
 
-    <!-- Tasting Notes / Descriptor Banner -->
-    {% if page.descriptor or page.tasting_notes %}
+    <!-- Tasting Notes Banner -->
+    {% if page.tasting_notes %}
       <div class="sleek-detail-tasting-banner">
-        {% if page.descriptor and page.tasting_notes %}
-          {{ page.descriptor }} &mdash; {{ page.tasting_notes | replace: ", ", " &middot; " }}
-        {% elsif page.descriptor %}
-          {{ page.descriptor }}
-        {% elsif page.tasting_notes %}
-          {{ page.tasting_notes | replace: ", ", " &middot; " }}
-        {% endif %}
+        {{ page.tasting_notes | replace: ", ", " &middot; " }}
       </div>
     {% endif %}
 
