@@ -20,10 +20,7 @@ price:
 
 origins:
   - Brazil Natural
-  - Bolivia Washed
-beans:
-  - Brazil Estavam Mario
-  - Bolivia Fair Trade Organic
+  - Guatemala Washed
 description: >-
   A seasonal blend crafted from two distinct beans roasted to different levels, creating a delicious Reese's effect—layering rich chocolate with warm, toasted nuts.
 ---
