@@ -148,18 +148,18 @@ def extract_cutout(
             pb_left, pb_right = r_left, r_right
             p_box[r_top:r_bottom, r_left:r_right] = True
 
-        body_outline = (gray < 190) & p_box
+        body_outline = ((gray < 212) | (diff > 24.0)) & roi
         body_closed = np.array(Image.fromarray((body_outline.astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(3))) > 0
         body_ext = np.zeros((h, w), dtype=bool)
         q_ext = deque()
-        # Flood fill outside the outline from all 4 box edges
-        for r in [pb_top, pb_bottom - 1]:
-            for c in range(pb_left, pb_right):
+        # Flood fill outside the outline from the ROI outer boundary so p_box edges never seed inside the subject
+        for r in [r_top, r_bottom - 1]:
+            for c in range(r_left, r_right):
                 if not body_closed[r, c] and not body_ext[r, c]:
                     body_ext[r, c] = True
                     q_ext.append((r, c))
-        for r in range(pb_top, pb_bottom):
-            for c in [pb_left, pb_right - 1]:
+        for r in range(r_top, r_bottom):
+            for c in [r_left, r_right - 1]:
                 if not body_closed[r, c] and not body_ext[r, c]:
                     body_ext[r, c] = True
                     q_ext.append((r, c))
@@ -167,15 +167,15 @@ def extract_cutout(
             r, c = q_ext.popleft()
             for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 nr, nc = r + dr, c + dc
-                if pb_top <= nr < pb_bottom and pb_left <= nc < pb_right and not body_closed[nr, nc] and not body_ext[nr, nc]:
+                if r_top <= nr < r_bottom and r_left <= nc < r_right and not body_closed[nr, nc] and not body_ext[nr, nc]:
                     body_ext[nr, nc] = True
                     q_ext.append((nr, nc))
 
-        # Check enclosed pockets: keep true interior pockets (mean_diff >= 12.0), discard enclosed background gaps
-        interior_pockets = np.zeros((h, w), dtype=bool)
-        pocket_visited = body_ext | body_closed
-        for r in range(pb_top, pb_bottom):
-            for c in range(pb_left, pb_right):
+        # Discard small enclosed background loops (e.g. between dark talons/twigs) where dark outlines (gray < 140) enclose pure paper (mean diff < 12)
+        dark_wall = np.array(Image.fromarray((((gray < 140) & roi).astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(3))) > 0
+        pocket_visited = body_ext | dark_wall
+        for r in range(r_top, r_bottom):
+            for c in range(r_left, r_right):
                 if not pocket_visited[r, c]:
                     comp = []
                     q_p = deque([(r, c)])
@@ -185,18 +185,18 @@ def extract_cutout(
                         comp.append((cr, cc))
                         for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                             nr, nc = cr + dr, cc + dc
-                            if pb_top <= nr < pb_bottom and pb_left <= nc < pb_right and not pocket_visited[nr, nc]:
+                            if r_top <= nr < r_bottom and r_left <= nc < r_right and not pocket_visited[nr, nc]:
                                 pocket_visited[nr, nc] = True
                                 q_p.append((nr, nc))
                     comp_arr = np.array(comp)
-                    if diff[comp_arr[:, 0], comp_arr[:, 1]].mean() >= 12.0:
-                        interior_pockets[comp_arr[:, 0], comp_arr[:, 1]] = True
-                    else:
+                    if diff[comp_arr[:, 0], comp_arr[:, 1]].mean() < 12.0:
                         body_ext[comp_arr[:, 0], comp_arr[:, 1]] = True
 
-        body_solid = (envelope & p_box & ~body_ext) | interior_pockets
+        # Erode interior by MinFilter(5) (undoes MaxFilter(3) expansion + 1px inset for clean edge unblending)
+        interior_mask = p_box & ~body_ext
+        body_solid = np.array(Image.fromarray((interior_mask.astype(np.uint8) * 255)).filter(ImageFilter.MinFilter(5))) > 0
         alpha[body_solid] = 255.0
-        alpha[~envelope & ~interior_pockets] = 0.0
+        alpha[~envelope & ~body_solid] = 0.0
 
     # 7. Edge smoothing & unblending
     alpha_im = Image.fromarray(alpha.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))
@@ -245,7 +245,7 @@ def extract_cutout(
     _, ext = os.path.splitext(source_path)
     ext = ext.lower()
     archive_path = os.path.join("assets/source-plates", f"{output_name}{ext}")
-    if not os.path.exists(archive_path) and os.path.abspath(source_path) != os.path.abspath(archive_path):
+    if os.path.abspath(source_path) != os.path.abspath(archive_path):
         import shutil
         shutil.copy2(source_path, archive_path)
         print(f"✓ Archived source plate: {archive_path}")
