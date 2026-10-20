@@ -61,7 +61,7 @@
         return 'roast:' + item.slug + ':' + (item.variant || '') + ':' + (item.size || '') + ':' + (item.grind || '');
       }
       if (item.type === 'custom') {
-        return 'custom:' + (item.origin || item.slug) + ':' + (item.size || '') + ':' + (item.grind || '') + ':' + (item.roastLevel || '') + ':' + (item.subtitle || '');
+        return 'custom:' + item.slug + ':' + (item.origin || '') + ':' + (item.size || '') + ':' + (item.grind || '') + ':' + (item.roastLevel || '') + ':' + (item.subtitle || '');
       }
       if (item.type === 'flight') {
         return 'flight:' + item.slug + ':' + (item.subtitle || '') + ':' + (item.grind || '');

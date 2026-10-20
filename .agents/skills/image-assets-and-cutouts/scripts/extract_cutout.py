@@ -137,8 +137,7 @@ def extract_cutout(
     alpha[~envelope] = 0.0
     alpha[is_ink & envelope] = 255.0
 
-    # 6. Solid interior protection (plumage hole-filling)
-    # 6. Solid interior protection (plumage hole-filling)
+    # 6. Solid interior protection (plumage & enclosed board hole-filling)
     if fill_plumage:
         p_box = np.zeros((h, w), dtype=bool)
         if plumage_box:
@@ -153,9 +152,14 @@ def extract_cutout(
         body_closed = np.array(Image.fromarray((body_outline.astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(3))) > 0
         body_ext = np.zeros((h, w), dtype=bool)
         q_ext = deque()
-        # Flood fill outside the outline
+        # Flood fill outside the outline from all 4 box edges
         for r in [pb_top, pb_bottom - 1]:
             for c in range(pb_left, pb_right):
+                if not body_closed[r, c] and not body_ext[r, c]:
+                    body_ext[r, c] = True
+                    q_ext.append((r, c))
+        for r in range(pb_top, pb_bottom):
+            for c in [pb_left, pb_right - 1]:
                 if not body_closed[r, c] and not body_ext[r, c]:
                     body_ext[r, c] = True
                     q_ext.append((r, c))
@@ -166,9 +170,33 @@ def extract_cutout(
                 if pb_top <= nr < pb_bottom and pb_left <= nc < pb_right and not body_closed[nr, nc] and not body_ext[nr, nc]:
                     body_ext[nr, nc] = True
                     q_ext.append((nr, nc))
-        body_solid = envelope & p_box & ~body_ext
+
+        # Check enclosed pockets: keep true interior pockets (mean_diff >= 12.0), discard enclosed background gaps
+        interior_pockets = np.zeros((h, w), dtype=bool)
+        pocket_visited = body_ext | body_closed
+        for r in range(pb_top, pb_bottom):
+            for c in range(pb_left, pb_right):
+                if not pocket_visited[r, c]:
+                    comp = []
+                    q_p = deque([(r, c)])
+                    pocket_visited[r, c] = True
+                    while q_p:
+                        cr, cc = q_p.popleft()
+                        comp.append((cr, cc))
+                        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                            nr, nc = cr + dr, cc + dc
+                            if pb_top <= nr < pb_bottom and pb_left <= nc < pb_right and not pocket_visited[nr, nc]:
+                                pocket_visited[nr, nc] = True
+                                q_p.append((nr, nc))
+                    comp_arr = np.array(comp)
+                    if diff[comp_arr[:, 0], comp_arr[:, 1]].mean() >= 12.0:
+                        interior_pockets[comp_arr[:, 0], comp_arr[:, 1]] = True
+                    else:
+                        body_ext[comp_arr[:, 0], comp_arr[:, 1]] = True
+
+        body_solid = (envelope & p_box & ~body_ext) | interior_pockets
         alpha[body_solid] = 255.0
-        alpha[~envelope] = 0.0
+        alpha[~envelope & ~interior_pockets] = 0.0
 
     # 7. Edge smoothing & unblending
     alpha_im = Image.fromarray(alpha.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))

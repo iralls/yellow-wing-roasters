@@ -302,6 +302,7 @@
           var prefix = 'Picks: ';
           if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
           else if (item.data.roast === 'bring-your-own-beans') prefix = 'Bean Link: ';
+          else if (item.data.roast === 'book-your-own-bootcamp') prefix = 'Session: ';
           picksEl.textContent = prefix + item.subtitle;
           info.appendChild(picksEl);
         }
@@ -418,6 +419,7 @@
             var prefix = 'Picks: ';
             if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
             else if (item.data.roast === 'bring-your-own-beans') prefix = 'Link: ';
+            else if (item.data.roast === 'book-your-own-bootcamp') prefix = 'Session: ';
             details.push(prefix + item.subtitle);
           }
           if (item.roastLevel) details.push('Roast: ' + item.roastLevel);

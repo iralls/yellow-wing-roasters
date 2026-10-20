@@ -326,6 +326,7 @@ Like subscriptions and roasts, items in the `_flights` and `_custom` collections
   * `_custom/build-your-own-blend.md` (`order: 1`)
   * `_custom/bring-your-own-beans.md` (`order: 2`)
   * `_custom/bring-your-own-burner.md` (`order: 3`)
+  * `_custom/book-your-own-bootcamp.md` (`order: 4`, configures `max_guests` and `session_fees` by guest count)
 * Template: `_includes/category-section.html` iterates over `site.custom | sort: "order"`.
 * Changing `order:` in frontmatter will immediately update display order on `/custom/` and in the Custom section of `/roasts/`.
 
