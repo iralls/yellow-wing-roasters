@@ -1,17 +1,17 @@
 ---
 layout: default
-title: "BYOB — Bring Your Own Burner"
+title: "BYOB — Bank Your Own Burner"
 card_title: "BYOB"
-subtitle: "Bring your own burner"
+subtitle: "Bank your own burner"
 intro: "Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order."
-slug: bring-your-own-burner
+slug: bank-your-own-burner
 category: custom
 data_roast: byob-burner
 order: 3
-permalink: /roasts/bring-your-own-burner/
+permalink: /roasts/bank-your-own-burner/
 mascot_file: bird-on-spit-transparent.png
 mascot_alt: "BYOB mascot"
-descriptor: Bring Your Own Burner
+descriptor: Bank Your Own Burner
 overlay_notes: "pick any single origin and customize your roast level"
 ---
 

@@ -1,5 +1,5 @@
 /**
- * Yellow Wing Roasters - BYOB: Bring Your Own Burner
+ * Yellow Wing Roasters - BYOB: Bank Your Own Burner
  * Handles single-origin bean selection, interactive roast level dots, size/grind options, and cart addition.
  */
 (function (root, factory) {

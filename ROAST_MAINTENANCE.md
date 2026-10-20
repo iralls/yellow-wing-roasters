@@ -155,9 +155,9 @@ Use integer numbers `1` through `5` (defined in `_data/roast_levels.yml`):
 * `4`: Full City+ (Medium-Dark)
 * `5`: Vienna (Dark)
 
-### Custom Roast Levels (BYOB — Bring Your Own Burner)
+### Custom Roast Levels (BYOB — Bank Your Own Burner)
 Standard single-origin offerings showcase our prescribed roast recommendation. For customers who want to customize the roast level on a single-origin coffee:
-* Customers visit **BYOB — Bring Your Own Burner** (`/roasts/bring-your-own-burner/`), accessible via the Custom catalog (`/custom/`) and the Custom section of the main catalog (`/roasts/`).
+* Customers visit **BYOB — Bank Your Own Burner** (`/roasts/bank-your-own-burner/`), accessible via the Custom catalog (`/custom/`) and the Custom section of the main catalog (`/roasts/`).
 * Customers can select any in-stock single-origin bean, alter the roast level (City through Vienna), choose bag size and grind, and add it directly to their order.
 * Orders appear in the cart and Google Forms intake as `1x BYOB: [Origin Title] [Size] (Roast: [Level], Grind: [Grind])`.
 
@@ -325,7 +325,7 @@ Like subscriptions and roasts, items in the `_flights` and `_custom` collections
 * Items:
   * `_custom/build-your-own-blend.md` (`order: 1`)
   * `_custom/bring-your-own-beans.md` (`order: 2`)
-  * `_custom/bring-your-own-burner.md` (`order: 3`)
+  * `_custom/bank-your-own-burner.md` (`order: 3`)
   * `_custom/book-your-own-bootcamp.md` (`order: 4`, configures `max_guests` and `session_fees` by guest count)
 * Template: `_includes/category-section.html` iterates over `site.custom | sort: "order"`.
 * Changing `order:` in frontmatter will immediately update display order on `/custom/` and in the Custom section of `/roasts/`.
