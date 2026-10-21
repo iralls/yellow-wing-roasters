@@ -15,6 +15,16 @@ origins:
   - Guatemala Washed
   - Ethiopia Natural
 history:
+  - date: "2026-10"
+    components:
+      - name: Brazil Cerrado Mineiro
+        ratio: 50%
+      - name: Guatemala Antigua
+        slug: guatemala-antigua
+        ratio: 30%
+      - name: Ethiopia Guji
+        slug: ethiopia-guji
+        ratio: 20%
   - date: "2026-06"
     components:
       - name: Brazil Estavam Mario
