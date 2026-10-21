@@ -177,11 +177,14 @@ exclude:
   - README.md
   - ROAST_MAINTENANCE.md
   - DRY_OPTIMIZATION_RECOMMENDATIONS.md
+  - NODE_24_COMPATIBILITY.md
   - Gemfile
   - Gemfile.lock
   - AGENTS.md
   - IMPLEMENTATION_PLAN.md
+  - TODO.md
   - TODO.txt
+  - docs
   - run.sh
   - agy.sh
   - scripts
@@ -189,6 +192,19 @@ exclude:
   - "*.bak"
   - "*-preview.html"
   - "preview-*.html"
+  - "*-preview.markdown"
+  - "preview.markdown"
+  - order/preview.markdown
+  - roasts/cards-preview.markdown
+  - roasts/detail-preview.markdown
+  - roasts/early-bird-preview.markdown
+  - roasts/filters-preview.markdown
+  - roasts/preview.markdown
+  - sleek-preview
+  - avant
+  - pure
+  - minimal
+  - stark
   - social-preview-generator.html
   - roastmasters_beans.csv
   - assets/source-plates
