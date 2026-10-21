@@ -21,7 +21,6 @@
     var emptyEl = document.getElementById('order-cart-empty');
     var itemsEl = document.getElementById('order-cart-items');
     var totalsEl = document.getElementById('order-summary-totals');
-    var pageTitleEl = document.getElementById('order-page-title');
     var summaryCountEl = document.getElementById('order-summary-count');
     var submitBtn = document.getElementById('order-submit-btn');
     var discountSection = document.getElementById('discount-code-section');
@@ -188,12 +187,8 @@
 
       currentMode = hasSubscriptions ? 'subscribe' : 'order';
 
-      // Adapt header and form mode
+      // Adapt form mode
       if (currentMode === 'subscribe') {
-        if (pageTitleEl) pageTitleEl.textContent = 'Subscribe';
-        document.title = 'Subscribe · Yellow Wing Roasters';
-        if (submitBtn) submitBtn.textContent = 'Subscribe';
-
         form.action = SUB_FORM_ACTION;
         if (emailInput) emailInput.name = 'entry.65766604';
         if (phoneInput) phoneInput.name = 'entry.1484480937';
@@ -208,10 +203,6 @@
         // Subscriptions do not support discount codes
         appliedDiscount = null;
       } else {
-        if (pageTitleEl) pageTitleEl.textContent = 'Order';
-        document.title = 'Order · Yellow Wing Roasters';
-        if (submitBtn) submitBtn.textContent = 'Place order';
-
         form.action = ORDER_FORM_ACTION;
         if (emailInput) emailInput.name = 'entry.40149380';
         if (phoneInput) phoneInput.name = 'entry.1852073865';
