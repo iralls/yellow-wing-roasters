@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Hatched: <?= title ?> — Yellow Wing Roasters</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #faf8f5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2c1e14; -webkit-font-smoothing: antialiased;">
+    <div style="background-color: #faf8f5; padding: 40px 20px; text-align: center;">
+      <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+
+        <!-- Minimal Brand Lockup -->
+        <div style="margin-bottom: 32px;">
+          <a href="<?= siteUrl ?>" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">
+            <img src="<?= siteUrl ?>/images/audubon-feather-transparent.png"
+                 height="52"
+                 alt="Yellow Wing Roasters"
+                 style="height: 52px; width: auto; display: block; margin: 0 auto 8px;" />
+            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #f0c838; line-height: 1.2;">
+              Yellow Wing
+            </div>
+            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #8a7f6e; margin-top: 2px;">
+              Roasters
+            </div>
+          </a>
+        </div>
+
+        <!-- Audubon Mascot Illustration -->
+        <div style="margin: 0 auto 24px;">
+          <a href="<?= roastUrl ?>" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">
+            <img src="<?= mascotUrl ?>"
+                 alt="<?= title ?>"
+                 height="185"
+                 style="height: 185px; max-width: 240px; width: auto; display: block; margin: 0 auto;" />
+          </a>
+          <? if (mascotName) { ?>
+            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7060; margin-top: 10px;">
+              <?= mascotName ?>
+            </div>
+          <? } ?>
+        </div>
+
+        <!-- Status & Category -->
+        <div style="margin-bottom: 10px;">
+          <span style="display: inline-block; background-color: <?= justHatchedBg ?>; color: <?= justHatchedColor ?>; font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 999px; vertical-align: middle;">
+            <?= justHatchedBadge ?>
+          </span>
+          <span style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7f6e; margin-left: 8px; vertical-align: middle;">
+            <?= category ?><? if (certificationLabel) { ?> &middot; <?= certificationLabel ?><? } ?>
+          </span>
+        </div>
+
+        <!-- Roast Title & Optional Subtitle -->
+        <h1 style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 34px; font-weight: 600; color: #2c1e14; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 6px;">
+          <?= title ?>
+        </h1>
+        <? if (subtitle) { ?>
+          <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #8a7f6e; margin-bottom: 8px;">
+            <?= subtitle ?>
+          </div>
+        <? } ?>
+
+        <!-- Descriptor & Tasting Notes -->
+        <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 14px; color: #3a2a1d; margin: 10px 0 4px;">
+          <?= descriptor ?>
+        </div>
+        <div style="font-family: Georgia, 'Lora', serif; font-style: italic; font-size: 16px; color: #8a7060; line-height: 1.55; margin: 0 auto 18px; max-width: 400px;">
+          <?= tastingNotesFormatted ?>
+        </div>
+
+        <!-- Roast Level Dots & Name -->
+        <div style="margin: 0 auto 28px;">
+          <div style="letter-spacing: 3px; font-size: 12px; line-height: 1;">
+            <?!= roastDotsHtml ?>
+          </div>
+          <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 10px; color: #998070; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px;">
+            <?= roastLevelName ?>
+          </div>
+        </div>
+
+        <!-- Optional Personal Intro Note -->
+        <? if (introNote) { ?>
+          <p style="max-width: 420px; margin: 0 auto 16px; font-family: Georgia, 'Lora', serif; font-size: 15px; line-height: 1.75; color: #2c1e14;">
+            <?= introNote ?>
+          </p>
+        <? } ?>
+
+        <!-- Roast Description -->
+        <p style="max-width: 420px; margin: 0 auto 32px; font-family: Georgia, 'Lora', serif; font-size: 15px; line-height: 1.75; color: #4a3b32;">
+          <?= description ?>
+        </p>
+
+        <!-- Unboxed Metadata Row -->
+        <div style="max-width: 460px; margin: 0 auto 34px; text-align: center;">
+          <div style="display: inline-block; vertical-align: top; padding: 8px 16px; text-align: center;">
+            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #998070; margin-bottom: 4px;">
+              <?= originLabel ?>
+            </div>
+            <div style="font-size: 13px; font-weight: 600; color: #2c1e14; line-height: 1.4;">
+              <?= originValue ?>
+            </div>
+          </div>
+
+          <? if (terroirValue) { ?>
+            <div style="display: inline-block; vertical-align: top; padding: 8px 16px; text-align: center;">
+              <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #998070; margin-bottom: 4px;">
+                <?= terroirLabel ?>
+              </div>
+              <div style="font-size: 13px; font-weight: 600; color: #2c1e14; line-height: 1.4;">
+                <?= terroirValue ?>
+              </div>
+            </div>
+          <? } ?>
+
+          <div style="display: inline-block; vertical-align: top; padding: 8px 16px; text-align: center;">
+            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #998070; margin-bottom: 4px;">
+              Recommended Brew
+            </div>
+            <div style="font-size: 13px; font-weight: 600; color: #2c1e14; line-height: 1.4;">
+              <?= brewingMethod ?>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Pill CTA -->
+        <div style="margin-bottom: 40px;">
+          <a href="<?= roastUrl ?>"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 13px 30px; border-radius: 999px;">
+            Explore <?= title ?> &rarr;
+          </a>
+        </div>
+
+        <!-- Minimal Footer Sign-off -->
+        <div>
+          <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; color: #f0c838; line-height: 1.5; margin-bottom: 14px;">
+            Chirp,<br>
+            <strong style="color: #f0c838;">Yellow Wing Roasters</strong>
+          </div>
+          <p style="font-size: 11px; color: #998070; line-height: 1.6; margin: 0 auto; max-width: 360px;">
+            Sent via Pigeon Post from <a href="<?= siteUrl ?>" style="color: #8a7060; text-decoration: underline;">yellowwingroasters.com</a>. Reply to <a href="mailto:<?= roasterEmail ?>" style="color: #8a7060; text-decoration: underline;"><?= roasterEmail ?></a> anytime with questions or to unsubscribe.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
