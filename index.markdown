@@ -6,7 +6,7 @@ layout: index
 <section class="sleek-home-hero">
   <h1 class="sleek-home-headline">Small-Batch<br>Coffee Roasting</h1>
   <p class="sleek-home-sub">
-    We craft flavors we love, and hope you will too.
+    {{ site.slogan }}
   </p>
 
   <div class="sleek-home-cta-row">
