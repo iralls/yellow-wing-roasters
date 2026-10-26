@@ -7,7 +7,7 @@ order: 10
 roast_level: 4
 descriptor: sweet and indulgent
 tasting_notes: rich chocolate, toasted nuts
-brewing_method: Pour-over, Espresso, Drip, French Press
+brewing_method: French Press, Drip, Espresso
 mascot: potoo
 mascot_file: audubon-potoo-transparent.png
 bg_pattern: /images/patterns/halloween-pattern.svg
