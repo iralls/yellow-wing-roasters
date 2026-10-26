@@ -279,7 +279,8 @@
         var meta = document.createElement('div');
         meta.className = 'order-cart-card-meta';
         var metaText = document.createElement('span');
-        var metaParts = [item.data.size];
+        var metaParts = [];
+        if (item.data.size) metaParts.push(item.data.size);
         if (item.roastLevel) metaParts.push(item.roastLevel);
         if (item.grind) metaParts.push(item.grind);
         if (item.isSubscription && item.frequency) metaParts.push(item.frequency);
@@ -293,7 +294,7 @@
           var prefix = 'Picks: ';
           if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
           else if (item.data.roast === 'bring-your-own-beans') prefix = 'Bean Link: ';
-          else if (item.data.roast === 'book-your-own-bootcamp') prefix = 'Session: ';
+          else if (item.data.roast === 'book-your-own-bootcamp' || item.data.roast === 'bib-your-own-bath') prefix = 'Session: ';
           picksEl.textContent = prefix + item.subtitle;
           info.appendChild(picksEl);
         }
@@ -410,7 +411,7 @@
             var prefix = 'Picks: ';
             if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
             else if (item.data.roast === 'bring-your-own-beans') prefix = 'Link: ';
-            else if (item.data.roast === 'book-your-own-bootcamp') prefix = 'Session: ';
+            else if (item.data.roast === 'book-your-own-bootcamp' || item.data.roast === 'bib-your-own-bath') prefix = 'Session: ';
             details.push(prefix + item.subtitle);
           }
           if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
