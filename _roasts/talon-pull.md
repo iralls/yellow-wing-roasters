@@ -29,5 +29,5 @@ history:
         slug: ethiopia-yirgacheffe
         ratio: 50%
 description: >-
-  A clean, smooth blend crafted from two washed coffees with warm, subdued spices and rich cocoa. While it performs exceptionally as an espresso—and shines best in milk-based drinks—it also brews wonderfully as drip coffee or in a French press.
+  A clean, smooth blend crafted from two washed coffees with warm, subdued spices and rich cocoa.
 ---
