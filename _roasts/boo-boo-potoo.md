@@ -20,7 +20,7 @@ price:
 
 origins:
   - Brazil Natural
-  - Guatemala Washed
+  - Bolivia Washed
 description: >-
   A seasonal blend crafted from two distinct beans roasted to different levels, creating a delicious Reese's effect—layering rich chocolate with warm, toasted nuts.
 ---
