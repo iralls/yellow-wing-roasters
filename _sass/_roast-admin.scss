@@ -1,0 +1,477 @@
+// ----------------------------------------------------
+// Yellow Wing Roasters - Roast & Inventory Admin Styles
+// Option 1: The Compact Data Terminal with Collapsible Drawers
+// ----------------------------------------------------
+
+.roast-minimal-vertical {
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: #2c1e14;
+
+  .order-admin-topbar {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #e5ddd3;
+  }
+
+  .order-admin-stats {
+    font-size: 0.74rem;
+    color: #6e5e54;
+  }
+
+  .order-admin-btn-sm {
+    padding: 0.22rem 0.55rem;
+    font-size: 0.7rem;
+    border-radius: 3px;
+  }
+
+  .order-admin-search-input {
+    padding: 0.28rem 0.6rem;
+    font-size: 0.74rem;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid #d0c4b6;
+  }
+}
+
+.roast-admin-header-compact {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+
+  .order-admin-bird-icon {
+    height: 2.2rem;
+    width: auto;
+    margin-bottom: 0.35rem;
+  }
+
+  .order-admin-page-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+}
+
+.roast-admin-tabs {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.roast-admin-tab-btn {
+  background: #ffffff;
+  border: 1px solid #d5cbc0;
+  border-radius: 4px;
+  padding: 0.25rem 0.65rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #554439;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #f4ede4;
+    color: #2c1e14;
+    border-color: #baa795;
+  }
+
+  &--active {
+    background: #2c1e14;
+    color: #fdfbf7;
+    border-color: #2c1e14;
+
+    &:hover {
+      background: #402c1d;
+      color: #fdfbf7;
+    }
+  }
+}
+
+.roast-admin-panel {
+  display: none;
+
+  &--active {
+    display: block;
+  }
+}
+
+.roast-admin-grid {
+  display: grid;
+  grid-template-columns: 23rem 1fr;
+  gap: 1.15rem;
+  align-items: start;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roast-admin-card {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 4px;
+  padding: 0.75rem 0.95rem;
+  box-shadow: none;
+}
+
+.roast-admin-card-title {
+  margin: 0 0 0.55rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid #ece4da;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2c1e14;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roast-admin-toggle-drawer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #ffffff;
+  border: 1px solid #cbbaa8;
+  border-radius: 4px;
+  padding: 0.28rem 0.7rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #2c1e14;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  span {
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &:hover {
+    background: #f5eee5;
+    border-color: #2c1e14;
+  }
+
+  &.is-open {
+    background: #2c1e14;
+    color: #fdfbf7;
+    border-color: #2c1e14;
+
+    &:hover {
+      background: #402c1d;
+    }
+  }
+}
+
+.roast-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.roast-admin-entry-card {
+  background: #fbf9f6;
+  border: 1px solid #dcd3c8;
+  border-left: 3px solid #d4a359;
+  border-radius: 4px;
+}
+
+.roast-admin-entry-form {
+  gap: 0.5rem;
+}
+
+.roast-admin-entry-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.roast-admin-entry-actions {
+  display: flex;
+  align-items: flex-end;
+
+  .order-admin-save-btn {
+    white-space: nowrap;
+    padding: 0.32rem 0.85rem;
+    font-size: 0.74rem;
+    height: 28px;
+    border-radius: 3px;
+    line-height: 1;
+    background: #2c1e14;
+    color: #fdfbf7;
+    border: 1px solid #2c1e14;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      background: #402c1d;
+    }
+  }
+}
+
+.roast-admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+
+  label {
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6e5e54;
+  }
+}
+
+.roast-admin-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roast-admin-input,
+.roast-admin-select {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  height: 28px;
+  border: 1px solid #cbbaa8;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: #2c1e14;
+  background: #ffffff;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #2c1e14;
+    background: #ffffff;
+  }
+}
+
+.roast-admin-calc-preview {
+  background: #f4ede3;
+  border: 1px dashed #cfc2b2;
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
+  height: 28px;
+  box-sizing: border-box;
+  font-size: 0.71rem;
+  color: #554439;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+
+  strong {
+    color: #2c1e14;
+    font-family: "SF Mono", Menlo, Monaco, monospace;
+    font-size: 0.71rem;
+  }
+}
+
+.roast-admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.roast-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.73rem;
+  color: #2c1e14;
+
+  th,
+  td {
+    padding: 0.34rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ede5dc;
+    vertical-align: middle;
+  }
+
+  th {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #736254;
+    background: #fbf9f6;
+    border-bottom: 1px solid #d8cec1;
+    white-space: nowrap;
+  }
+
+  tbody tr:hover {
+    background: #f8f5f0;
+  }
+
+  td.mono,
+  .mono {
+    font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.roast-admin-id-chip {
+  display: inline-block;
+  font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 600;
+  font-size: 0.69rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: #f0eae1;
+  border: 1px solid #ded5c9;
+  color: #2c1e14;
+  white-space: nowrap;
+  text-decoration: none;
+
+  &--clickable {
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: #e2d7c9;
+      border-color: #baa795;
+      color: #1a100a;
+      text-decoration: none;
+    }
+  }
+}
+
+.roast-admin-row-highlight {
+  animation: roastRowFlash 2.5s ease-out;
+}
+
+@keyframes roastRowFlash {
+  0% {
+    background-color: rgba(212, 163, 89, 0.45);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.roast-admin-adjust-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  input {
+    width: 4.8rem;
+    height: 24px;
+    padding: 0.15rem 0.35rem;
+    border: 1px solid #cbbaa8;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-family: "SF Mono", Menlo, Monaco, monospace;
+    background: #ffffff;
+    color: #2c1e14;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.68rem;
+    height: 24px;
+    border-radius: 3px;
+  }
+}
+
+.roast-admin-component-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.roast-admin-component-row {
+  display: grid;
+  grid-template-columns: 1fr 6rem auto;
+  gap: 0.35rem;
+  align-items: center;
+
+  .roast-admin-select,
+  .roast-admin-input {
+    height: 26px;
+    padding: 0.2rem 0.45rem;
+    font-size: 0.73rem;
+  }
+}
+
+.roast-admin-remove-btn {
+  background: transparent;
+  border: 1px solid #e2d7cc;
+  border-radius: 3px;
+  padding: 0.2rem 0.45rem;
+  color: #c0392b;
+  font-weight: 700;
+  font-size: 0.7rem;
+  cursor: pointer;
+  height: 26px;
+  line-height: 1;
+
+  &:hover {
+    background: #c0392b;
+    color: #ffffff;
+    border-color: #c0392b;
+  }
+}
+
+.roast-admin-totals-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #ede5dc;
+}
+
+.roast-admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+.roast-admin-kpi-box {
+  background: #fbf9f6;
+  border: 1px solid #ded5c9;
+  border-radius: 4px;
+  padding: 0.55rem 0.75rem;
+
+  .roast-admin-kpi-label {
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #736254;
+    margin-bottom: 0.15rem;
+  }
+
+  .roast-admin-kpi-value {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c1e14;
+  }
+
+  .roast-admin-kpi-sub {
+    font-size: 0.69rem;
+    color: #786557;
+    margin-top: 0.15rem;
+  }
+}

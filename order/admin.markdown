@@ -8,7 +8,7 @@ sitemap: false
 <script>
   (function () {
     try {
-      if (sessionStorage.getItem('ywr_admin_passcode')) {
+      if (localStorage.getItem('ywr_admin_passcode')) {
         document.documentElement.classList.add('ywr-admin-authenticated');
       }
     } catch (e) {}
@@ -22,10 +22,9 @@ sitemap: false
 <div class="roast-minimal-vertical">
 <div class="order-admin-container">
 
-  <div class="order-admin-header-compact">
-    <img src="{{ '/images/delivery-box-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Delivery Box" class="order-admin-bird-icon" fetchpriority="high" decoding="async">
+  <div class="order-admin-header-compact roast-admin-header-compact">
+    <img src="{{ '/images/bean-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Order Manager" class="order-admin-bird-icon" fetchpriority="high" decoding="async">
     <h1 class="order-admin-page-title">Roaster Order Manager</h1>
-    <p class="order-admin-page-desc">Private management console to view, track, and update all customer coffee orders.</p>
   </div>
 
   <!-- Passcode Gate View -->
@@ -52,6 +51,8 @@ sitemap: false
       <div class="order-admin-header-row">
         <div id="order-admin-stats" class="order-admin-stats"></div>
         <div class="order-admin-actions">
+          <a href="{{ '/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Admin Portal</a>
+          <a href="{{ '/roasts/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Roast Log</a>
           <button type="button" id="order-admin-refresh-btn" class="order-admin-btn-sm" title="Refresh order queue">Refresh</button>
           <button type="button" id="order-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out of order manager">Log Out</button>
         </div>

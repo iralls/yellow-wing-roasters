@@ -25,6 +25,7 @@
   var DEFAULT_MOCK_PASSCODE = 'yellowwing-roaster-secret';
   var DEFAULT_SALT = 'yellow-wing-roasters-auth-v1';
   var DEFAULT_MOCK_HASH = '35ad8e83336a3fd0137981caaaa1e2c0d63260378aab3a1d3c4dc2b372f2d7f3';
+  var ADMIN_PASSWORD_HASH = 'fe65aec7e9795f3d9f4d55755b8c3bc82818e8955ac270c5ab5ebc09e28b3de9';
 
   function computeBrowserHash(key, salt) {
     salt = salt || DEFAULT_SALT;
@@ -284,7 +285,7 @@
 
     function getStoredKey() {
       try {
-        return sessionStorage.getItem(STORAGE_KEY) || '';
+        return localStorage.getItem(STORAGE_KEY) || '';
       } catch (e) {
         return '';
       }
@@ -292,7 +293,7 @@
 
     function saveKey(key) {
       try {
-        sessionStorage.setItem(STORAGE_KEY, key);
+        localStorage.setItem(STORAGE_KEY, key);
         if (typeof document !== 'undefined') {
           document.documentElement.classList.add('ywr-admin-authenticated');
         }
@@ -301,7 +302,6 @@
 
     function clearStoredKey() {
       try {
-        sessionStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(STORAGE_KEY);
         if (typeof document !== 'undefined') {
           document.documentElement.classList.remove('ywr-admin-authenticated');
@@ -698,24 +698,6 @@
     }
 
     function loadOrders(passcode, callback) {
-      var isMockPasscode = (passcode === 'test-admin' || passcode === DEFAULT_MOCK_PASSCODE);
-      var isMockModeIntended = isMockPasscode || hasMockParam || !apiUrl || apiUrl.indexOf('YOUR_ORDER_API_DEPLOYMENT_ID') !== -1;
-
-      if (isMockModeIntended) {
-        computeBrowserHash(passcode).then(function (computedHash) {
-          if (computedHash === DEFAULT_MOCK_HASH || isMockPasscode) {
-            isMockModeActive = true;
-            setTimeout(function () {
-              currentOrders = JSON.parse(JSON.stringify(CANONICAL_MOCK_ORDERS));
-              callback(null, currentOrders);
-            }, 200);
-          } else {
-            callback("Unauthorized: Invalid Admin Key. (Use 'test-admin' to access Mock Mode)");
-          }
-        });
-        return;
-      }
-
       var fetchUrl = apiUrl + (apiUrl.indexOf('?') === -1 ? '?' : '&') +
         'action=admin_list&adminKey=' + encodeURIComponent(passcode);
 
@@ -735,7 +717,7 @@
           }
         })
         .catch(function (err) {
-          callback("Could not connect to live order API (" + (err.message || 'Network error') + "). If testing offline, enter 'test-admin' for Mock Mode.");
+          callback("Could not connect to live order API (" + (err.message || 'Network error') + ").");
         });
     }
 
@@ -786,24 +768,24 @@
         var key = passcodeInput.value.trim();
         if (!key) return;
 
-        gateBtn.disabled = true;
-        gateBtn.textContent = 'Verifying...';
         gateError.style.display = 'none';
 
-        loadOrders(key, function (err, orders) {
-          gateBtn.disabled = false;
-          gateBtn.textContent = 'Unlock Dashboard';
-
-          if (err) {
+        computeBrowserHash(key).then(function (hash) {
+          if (hash !== ADMIN_PASSWORD_HASH) {
             clearStoredKey();
-            gateError.textContent = typeof err === 'string' ? err : 'Invalid roaster passcode. Please check your credentials.';
+            gateError.textContent = 'Unauthorized: Invalid Admin Key.';
             gateError.style.display = 'block';
-          } else {
-            saveKey(key);
-            showDashboard();
-            renderStats();
-            renderQueue();
+            return;
           }
+          saveKey(key);
+          showDashboard();
+          queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">Loading orders...</div>';
+          loadOrders(key, function (err) {
+            if (!err) {
+              renderStats();
+              renderQueue();
+            }
+          });
         });
       });
     }
@@ -865,6 +847,20 @@
       });
     }
 
+    // Check URL parameters for ?search= or ?id=
+    if (typeof window !== 'undefined' && window.location && window.location.search) {
+      try {
+        var qParams = new URLSearchParams(window.location.search);
+        var qSearch = qParams.get('search') || qParams.get('id');
+        if (qSearch) {
+          currentSearch = qSearch.trim();
+          if (searchInput) {
+            searchInput.value = currentSearch;
+          }
+        }
+      } catch (paramErr) {}
+    }
+
     // Check stored key on init
     var storedKey = getStoredKey();
     if (storedKey) {
@@ -890,6 +886,19 @@
         } else {
           renderStats();
           renderQueue();
+          if (currentSearch) {
+            var targetId = currentSearch.replace(/^#/, '');
+            var matchOrder = currentOrders.find(function (o) { return o.orderId === targetId; });
+            if (matchOrder) {
+              selectedOrderId = matchOrder.orderId;
+              var matchingCard = queueContainer.querySelector('[data-order-id="' + selectedOrderId + '"]');
+              if (matchingCard) {
+                matchingCard.click();
+              } else {
+                renderInspector(matchOrder);
+              }
+            }
+          }
         }
       });
     } else {

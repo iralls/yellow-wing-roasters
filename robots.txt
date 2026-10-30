@@ -1,5 +1,8 @@
 User-agent: *
+Disallow: /admin/
 Disallow: /order/admin/
+Disallow: /roasts/admin/
+Disallow: /pigeon-post/email-composer/
 Allow: /
 
 Sitemap: https://yellowwingroasters.com/sitemap.xml
