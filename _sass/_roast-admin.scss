@@ -318,6 +318,18 @@
     background: #f8f5f0;
   }
 
+  tbody tr.roast-admin-row--depleted {
+    background: rgba(192, 57, 43, 0.08);
+
+    td {
+      border-bottom-color: rgba(192, 57, 43, 0.18);
+    }
+
+    &:hover {
+      background: rgba(192, 57, 43, 0.14);
+    }
+  }
+
   td.mono,
   .mono {
     font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

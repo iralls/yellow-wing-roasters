@@ -827,7 +827,9 @@
           ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(b.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(b.name) + '</strong>';
 
-        html += '<tr>' +
+        var rowClass = b.activeStockGrams <= 0 ? ' class="roast-admin-row--depleted"' : '';
+
+        html += '<tr' + rowClass + '>' +
           '<td>' + nameCell + '</td>' +
           '<td>' + escapeHtml(b.supplier) + '</td>' +
           '<td class="mono"><strong>' + b.activeStockGrams.toLocaleString() + ' g</strong></td>' +
