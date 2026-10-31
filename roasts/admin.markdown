@@ -19,7 +19,7 @@ sitemap: false
   .ywr-admin-authenticated #roast-admin-dashboard-section { display: block !important; }
 </style>
 
-<div class="roast-minimal-vertical">
+<div class="roast-admin-terminal">
 <div class="order-admin-container">
 
   <div class="order-admin-header-compact roast-admin-header-compact">
