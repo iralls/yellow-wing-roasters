@@ -192,22 +192,8 @@ exclude:
   - scripts
   - scratch
   - "*.bak"
-  - "*-preview.html"
-  - "preview-*.html"
-  - "*-preview.markdown"
-  - "preview.markdown"
-  - order/preview.markdown
-  - roasts/cards-preview.markdown
-  - roasts/detail-preview.markdown
-  - roasts/early-bird-preview.markdown
-  - roasts/filters-preview.markdown
-  - roasts/preview.markdown
-  - sleek-preview
-  - avant
-  - pure
-  - minimal
-  - stark
-  - social-preview-generator.html
+  - "*-preview.*"
+  - "preview-*"
   - roastmasters_beans.csv
   - assets/source-plates
   - .agents

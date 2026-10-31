@@ -40,3 +40,114 @@
   height: 2.5rem;
   width: auto;
 }
+
+/* ── Sleek Homepage Hero & Showcase ── */
+.sleek-home-hero {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem 4rem;
+  position: relative;
+}
+
+.sleek-home-headline {
+  font-family: $font-display;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #2c1e14;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.85rem;
+  max-width: 42rem;
+}
+
+.sleek-home-sub {
+  font-family: $font-body;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #8a7060;
+  line-height: 1.5;
+  max-width: 28rem;
+  margin: 0 auto 2.25rem;
+}
+
+.sleek-home-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.sleek-home-btn-primary {
+  @include pill-button(#2c1e14, #ffffff, #443022);
+  padding: 0.85rem 2.25rem;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 14px rgba(44, 30, 20, 0.12);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+    color: #ffffff;
+  }
+}
+
+.sleek-home-birds {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  opacity: 0.2;
+  flex-wrap: wrap;
+
+  img {
+    height: 2.5rem;
+    width: auto;
+  }
+}
+
+.sleek-home-showcase-section {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 4rem 0 6rem;
+}
+
+.sleek-home-showcase-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(44, 30, 20, 0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sleek-home-showcase-title {
+  font-family: $font-display;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #2c1e14;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.sleek-home-showcase-link {
+  font-family: $font-display;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #2c1e14;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  &:hover {
+    color: #9c6d12;
+    text-decoration: none;
+  }
+}
+

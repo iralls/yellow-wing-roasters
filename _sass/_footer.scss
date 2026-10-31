@@ -13,11 +13,11 @@
   align-items: center;
   text-decoration: none;
   color: inherit;
-}
 
-.site-footer-link:hover {
-  text-decoration: none;
-  color: inherit;
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 .site-footer-logo-icon {
@@ -25,39 +25,6 @@
   width: auto;
   display: block;
   margin: 0 auto 0.5rem;
-}
-
-.mailing-list-form {
-  display: flex;
-  gap: 0.5rem;
-  max-width: 24rem;
-  margin: 0.5rem auto;
-}
-
-.mailing-list-input {
-  flex: 1;
-  padding: 0.5rem 0.75rem;
-  font-family: $font-body;
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-}
-
-.mailing-list-btn {
-  padding: 0.5rem 1rem;
-  font-family: $font-display;
-  font-weight: 500;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-  background: #f0c838;
-  color: #302010;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
-
-.mailing-list-btn:hover {
-  background: #e0b828;
 }
 
 .site-footer-est {
@@ -68,3 +35,258 @@
   text-transform: uppercase;
   color: #999;
 }
+
+/* ── Sleek Comprehensive Bottom Navigation Footer ── */
+.sleek-bottom-nav-footer {
+  background: #fbf9f5;
+  border-top: 1px solid rgba(44, 30, 20, 0.1);
+  padding: 4rem 1.5rem 2.5rem;
+  margin-top: 5rem;
+}
+
+.sleek-footer-container {
+  max-width: 81.5rem;
+  margin: 0 auto;
+}
+
+/* Minimal Pigeon Post Signup within Col 1 */
+.sleek-footer-signup {
+  margin-top: 1.35rem;
+  max-width: 21rem;
+}
+
+.sleek-footer-signup-heading {
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #2c1e14;
+  margin-bottom: 0.25rem;
+}
+
+.sleek-footer-signup-desc {
+  font-family: $font-body;
+  font-size: 0.82rem;
+  color: #776558;
+  line-height: 1.45;
+  margin: 0 0 0.65rem;
+}
+
+.sleek-footer-signup-form {
+  display: flex;
+  align-items: stretch;
+  gap: 0.45rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+
+  .sleek-footer-signup-input {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid rgba(44, 30, 20, 0.2);
+    border-radius: 4px;
+    padding: 0.55rem 0.85rem;
+    outline: none;
+    font-family: $font-body;
+    font-size: 0.85rem;
+    color: #2c1e14;
+    min-width: 0;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.15s ease;
+
+    &:focus {
+      border-color: #2c1e14;
+      box-shadow: 0 0 0 2px rgba(44, 30, 20, 0.08);
+    }
+
+    &::placeholder {
+      color: #a89484;
+      font-size: 0.82rem;
+    }
+  }
+
+  .sleek-footer-signup-btn,
+  #footer-pigeon-post-submit {
+    background: #2c1e14;
+    color: #ffffff;
+    border: 1px solid #2c1e14;
+    border-radius: 4px;
+    padding: 0.55rem 1rem;
+    font-family: $font-display;
+    font-weight: 500;
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover {
+      background: #443022;
+      border-color: #443022;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+.sleek-footer-signup-status {
+  font-family: $font-display;
+  font-size: 0.74rem;
+  margin-top: 0.45rem;
+  min-height: 1.1rem;
+}
+
+.sleek-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sleek-footer-brand-lockup {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 1.25rem;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.sleek-footer-feather-icon {
+  height: 3.8rem;
+  width: auto;
+  max-width: fit-content;
+  aspect-ratio: 231 / 800;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 0.4rem;
+}
+
+.sleek-footer-brand-title {
+  font-family: $font-display;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: $color-gold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.sleek-footer-brand-sub {
+  font-family: $font-display;
+  font-weight: 500;
+  font-size: 0.7rem;
+  color: #302010;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.sleek-footer-tagline {
+  font-family: $font-body;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #6e5e54;
+  line-height: 1.55;
+  max-width: 20rem;
+  margin: 0 0 1rem;
+}
+
+.sleek-footer-contact-line a {
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #9c6d12;
+  text-decoration: underline;
+}
+
+.sleek-footer-heading {
+  font-family: $font-display;
+  font-size: 0.74rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #887060;
+  margin-bottom: 1.15rem;
+}
+
+.sleek-footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+
+  li a {
+    font-family: $font-display;
+    font-size: 0.82rem;
+    font-weight: normal;
+    color: #443022;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: #9c6d12;
+      text-decoration: underline;
+    }
+  }
+}
+
+.sleek-footer-bottom-bar {
+  border-top: 1px solid rgba(44, 30, 20, 0.08);
+  padding-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .site-footer-logo-icon {
+    height: 2.6rem;
+    width: auto;
+    aspect-ratio: 231 / 800;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 0.45rem;
+  }
+}
+
+.sleek-footer-est-tag {
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+

@@ -1171,3 +1171,509 @@
   text-align: center;
   font-style: italic;
 }
+
+/* ── Sleek Product Detail & Specs ── */
+/* ── Full-Page Prototype: Two-Column Studio Product Detail ── */
+.sleek-detail-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3.5rem;
+  align-items: flex-start;
+  margin: 2rem 0 5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.sleek-detail-visual-col {
+  position: sticky;
+  top: 4.5rem;
+  padding: 4.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 900px) {
+    position: static;
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+.sleek-detail-big-bird {
+  max-height: 34rem;
+  max-width: min(100%, 27rem);
+  width: auto;
+  object-fit: contain;
+}
+
+.sleek-detail-bird-label {
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #998070;
+  margin-top: 1.25rem;
+}
+
+.sleek-detail-info-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.sleek-detail-category-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.sleek-detail-cat-badge {
+  font-family: $font-display;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a7f6e;
+  background: transparent;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  border: 1px solid rgba(44, 30, 20, 0.18);
+
+  &--bestseller {
+    background: #fbf0cb;
+    color: #523e02;
+    border-color: rgba(184, 148, 74, 0.4);
+  }
+
+  &--organic {
+    background: #eaf1e9;
+    color: #275629;
+    border-color: rgba(39, 86, 41, 0.2);
+  }
+}
+
+.sleek-detail-title {
+  font-family: $font-display;
+  font-size: 4rem;
+  font-weight: 500;
+  color: #2c1e14;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+
+  @media (max-width: 900px) {
+    font-size: clamp(2.25rem, 6vw, 3.25rem);
+  }
+}
+
+.sleek-detail-subtitle {
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a7f6e;
+  margin-bottom: 1.25rem;
+}
+
+.sleek-detail-tasting-banner {
+  font-family: Lora, serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 400;
+  color: #5e5248;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 1.5px solid #9c6d12;
+}
+
+.sleek-detail-roast-level {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding: 0.25rem 0;
+}
+
+.sleek-detail-roast-name {
+  font-family: $font-display;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #2c1e14;
+}
+
+.sleek-detail-description {
+  font-family: Lora, serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #5e5248;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+
+  p {
+    margin: 0 0 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* Studio Buy Card (Unboxed) */
+.sleek-detail-buy-box {
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(44, 30, 20, 0.14);
+  border-bottom: 1px solid rgba(44, 30, 20, 0.14);
+  border-radius: 0;
+  padding: 1.75rem 0;
+  margin-bottom: 2.25rem;
+  box-shadow: none;
+}
+
+.sleek-buy-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(44, 30, 20, 0.08);
+}
+
+.sleek-buy-price-val {
+  font-family: $font-display;
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: #2c1e14;
+  line-height: 1;
+
+  s {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #998070;
+    margin-right: 0.35rem;
+  }
+
+  .temp-val {
+    color: #2c1e14;
+  }
+}
+
+.sleek-buy-price-note {
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #8a7f6e;
+  letter-spacing: 0.03em;
+}
+
+.sleek-buy-field {
+  margin-bottom: 1rem;
+
+  &:has(.pill-select-wrap.is-open) {
+    position: relative;
+    z-index: 1100;
+  }
+
+  label {
+    display: block;
+    font-family: $font-display;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a7f6e;
+    margin-bottom: 0.4rem;
+  }
+
+  .pill-select-wrap {
+    display: block;
+    width: 100%;
+    margin: 0;
+
+    .pill-select-trigger {
+      width: 100%;
+      min-width: 0;
+      padding: 0.55rem 1.15rem 0.55rem 1rem;
+      border: 1px solid rgba(44, 30, 20, 0.2);
+      background: transparent;
+      box-shadow: none;
+
+      .ps-label {
+        font-family: $font-display;
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8a7f6e;
+      }
+
+      .ps-value {
+        font-family: $font-display;
+        font-weight: 500;
+        font-size: 0.82rem;
+        color: #2c1e14;
+      }
+    }
+
+    .pill-select-menu {
+      width: 100%;
+      left: 0;
+      transform: none;
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+  }
+}
+
+.sleek-buy-add-btn {
+  @include pill-button(#2c1e14, #ffffff, #443022);
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  box-shadow: none;
+  border: 1px solid rgba(44, 30, 20, 0.2);
+}
+
+/* ── Rich Coffee Specifications: Crisp Architectural Spec Grid (Unboxed) ── */
+.sleek-spec-wrap {
+  margin-top: 1.5rem;
+  background: transparent;
+}
+
+.sleek-spec-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(44, 30, 20, 0.12);
+}
+
+.sleek-spec-heading {
+  font-family: $font-display;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2c1e14;
+  margin: 0;
+}
+
+.sleek-spec-subheading {
+  font-family: $font-display;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: #8a7f6e;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sleek-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(44, 30, 20, 0.12);
+  border-radius: 0;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.sleek-spec-tile {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: none;
+  transition: none;
+
+  &:hover {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  &.is-full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+.sleek-spec-label {
+  font-family: $font-display;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a7f6e;
+  display: block;
+}
+
+.sleek-spec-val {
+  font-family: $font-display;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #2c1e14;
+  line-height: 1.4;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    &:hover {
+      color: #9c6d12;
+    }
+  }
+}
+
+/* ── Rich Lot & Harvest History Component (Unboxed) ── */
+.sleek-history-section {
+  margin-top: 1.5rem;
+  background: transparent;
+  border-top: 1px solid rgba(44, 30, 20, 0.12);
+  padding-top: 1.5rem;
+}
+
+.sleek-history-toggle {
+  font-family: $font-display;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #2c1e14;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  user-select: none;
+}
+
+.sleek-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0.5rem;
+  background: transparent;
+}
+
+.sleek-history-card {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(44, 30, 20, 0.1);
+  border-radius: 0;
+  padding: 1.25rem 0;
+  box-shadow: none;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.sleek-history-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sleek-history-lot-title {
+  font-family: $font-display;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #2c1e14;
+  letter-spacing: -0.01em;
+}
+
+.sleek-history-tag-date {
+  font-family: $font-display;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a7f6e;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.sleek-history-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.65rem;
+}
+
+.sleek-history-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.2rem 0.55rem;
+  background: transparent;
+  border: 1px solid rgba(44, 30, 20, 0.16);
+  border-radius: 2px;
+  font-family: $font-display;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #2c1e14;
+
+  .chip-k {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: #6e5e54;
+    letter-spacing: 0.04em;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .chip-v {
+    font-weight: 500;
+    color: #2c1e14;
+  }
+}
+
+.sleek-history-desc {
+  font-family: $font-body;
+  font-size: 0.85rem;
+  color: #6e5e54;
+  line-height: 1.55;
+  margin: 0.75rem 0 0;
+}
+
+
+
+.roast-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: underline;
+
+  &::before {
+    content: "↓";
+    font-weight: 700;
+  }
+}
