@@ -7,7 +7,7 @@ roast_level: 3
 region: Apolo, Franz Tamayo, La Paz
 elevation: 1,200 – 1,700m
 descriptor: sweet and creamy
-tasting_notes: sweet dark chocolate, citric acidity, creamy body
+tasting_notes: dark chocolate, citrus, brown sugar
 brewing_method: Pour-over, Drip, French Press
 processing_method: Washed
 origins:
@@ -26,5 +26,5 @@ subscription:
     - Every 2 weeks
     - Monthly
 description: >-
-  High-grown in the biodiverse buffer zone of Madidi National Park in northwestern Bolivia. Featuring notes of sweet dark chocolate, bright citric acidity, and a smooth, creamy body with subtle savory undertones.
+  A smooth, creamy cup featuring sweet dark chocolate with a touch of citrus brightness and a clean finish.
 ---

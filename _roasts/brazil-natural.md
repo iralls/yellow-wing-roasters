@@ -7,7 +7,7 @@ roast_level: 3
 region: Mogiana
 elevation: 850 – 1,100m
 descriptor: creamy and nutty
-tasting_notes: baker's chocolate, toasted walnut, sweet cream
+tasting_notes: dark chocolate, toasted walnut, sweet cream
 brewing_method: Espresso, French Press, Drip
 processing_method: Natural
 origins:
@@ -43,5 +43,5 @@ history:
       Smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. A well-structured natural espresso from Sul de Minas, now flown south as supplies have run out.
 
 description: >-
-  A classic, heavy-bodied Brazilian natural roasted to a balanced Full City profile. Smooth, thick, and creamy in the cup, with sweet notes of baker's chocolate and toasted walnut over low acidity. Exceptionally well-suited for a rich, syrupy single-origin espresso or a comforting morning drip brew.
+  Heavy-bodied, smooth, and low in acidity. Rich chocolate and toasted walnut make it a comforting morning drip or a thick espresso.
 ---

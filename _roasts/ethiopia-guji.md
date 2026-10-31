@@ -7,7 +7,7 @@ roast_level: 2
 region: Shakiso, Guji Zone
 elevation: 1,900 – 2,200m
 descriptor: juicy and aromatic
-tasting_notes: stone fruit, citrus, spiced chocolate
+tasting_notes: berries, peach, chocolate, warm spice
 brewing_method: Pour-over, Drip, Espresso
 processing_method: Natural (Dry Process)
 origins:
@@ -43,5 +43,5 @@ history:
       Juicy fruits, spiced sweetness, and convincing acidity with chocolate-driven profiles, orange highlights, and chicory tea. Dry process lot from Uraga, Guji.
 
 description: >-
-  Clean, bright, and sweet with a wonderfully diverse flavor set. Expect vibrant notes of ripe stone fruit, dark berries, and subtle florals, grounded by a rich, spiced chocolate base and a sweet, jammy body.
+  Bright and naturally sweet with flavors of dark berries and ripe peach, grounded by chocolate and a hint of spice.
 ---

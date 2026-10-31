@@ -42,5 +42,5 @@ history:
       Clean and bright with intense aroma, light acidity, and generous sweetness. Classic Supremo preparation from Huila, Colombia.
 
 description: >-
-  Bright, sweet, and remarkably clean with inviting aromas of cocoa. Features vibrant flavors of stone fruit—notably ripe peach—with transparent notes of apricot, grapefruit brightness, and a sweet, balanced finish.
+  A crisp, sweet Colombian coffee with a cocoa aroma. Easy to drink, with flavors of fresh peach and apricot and a bright, clean finish.
 ---

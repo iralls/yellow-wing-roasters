@@ -7,7 +7,7 @@ roast_level: 2
 region: Kaffa
 elevation: 1,800 – 2,100m
 descriptor: bold and fruit-forward
-tasting_notes: blueberries, chocolate, pronounced fruit
+tasting_notes: blueberry, dark cherry, chocolate, pecan
 brewing_method: Pour-over, Drip
 processing_method: Natural
 origins:
@@ -27,5 +27,5 @@ subscription:
     - Every 2 weeks
     - Monthly
 description: >-
-  A vibrant and complex coffee for those who love bold, fruity flavors. Expect a sweet mix of blueberry and chocolate, with a smooth finish of cherry and pecan. A must-try if you're a fan of intense natural roasts.
+  A bold, fruit-forward coffee packed with rich flavors of blueberry and sweet cherry, rounded out by chocolate and toasted pecan.
 ---
