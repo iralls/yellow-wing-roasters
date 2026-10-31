@@ -5,17 +5,18 @@ category: blend
 order: 4
 roast_level: 1
 descriptor: vibrant and complex
-tasting_notes: rosewater, lemon, maple, toasted nut
+tasting_notes: peach, brown sugar, maple, cocoa
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
 origins:
-  - Costa Rica Washed
+  - Colombia Washed
   - Ethiopia Washed
 history:
   - date: "2026-06"
     components:
-      - name: Costa Rica Tarrazu Villa Sarchi
+      - name: Colombia Supremo Santander
+        slug: colombia-supremo
         ratio: 50%
       - name: Ethiopia Yirgacheffe
         slug: ethiopia-yirgacheffe
