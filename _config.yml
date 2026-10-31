@@ -210,3 +210,4 @@ exclude:
   - social-preview-generator.html
   - roastmasters_beans.csv
   - assets/source-plates
+  - .agents

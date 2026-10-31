@@ -98,34 +98,48 @@ def extract_cutout(
     r_left, r_right = int(w * roi_left), int(w * roi_right)
     roi[r_top:r_bottom, r_left:r_right] = True
 
-    # 3. Structural ink strokes
+    # 3. Structural ink strokes & fine feature zone
+    sat = arr.max(axis=2) - arr.min(axis=2)
     is_ink = (gray < 195) & roi
+    dark_ink = (gray < 130) & roi
+    feature_zone = (
+        np.array(Image.fromarray((is_ink.astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(5))) > 0
+    ) & roi
 
     # 4. Watercolor wash core & envelope
     diff_u8 = np.clip(diff, 0, 255).astype(np.uint8)
     diff_blur = np.array(Image.fromarray(diff_u8, mode="L").filter(ImageFilter.GaussianBlur(3.0)), dtype=float)
     core_wash = (diff_blur > 20.0) & roi
-    combined_seed = core_wash | is_ink
+    combined_seed = core_wash | feature_zone
 
-    # Find connected components containing the subject
-    visited = np.zeros((h, w), dtype=bool)
-    seed_r, seed_c = h // 2, w // 2
-    if not combined_seed[seed_r, seed_c]:
-        # Locate strongest ink coordinate near center
-        coords = np.argwhere(is_ink)
+    # Find connected components containing the subject (bridging small air gaps for droplets, motion lines, pebbles)
+    scale = 4
+    small_h, small_w = max(1, h // scale), max(1, w // scale)
+    seed_small = np.array(
+        Image.fromarray((combined_seed.astype(np.uint8) * 255))
+        .resize((small_w, small_h), Image.Resampling.NEAREST)
+        .filter(ImageFilter.MaxFilter(25))
+    ) > 0
+    vis_small = np.zeros((small_h, small_w), dtype=bool)
+    sr, sc = small_h // 2, small_w // 2
+    if not seed_small[sr, sc]:
+        coords = np.argwhere(seed_small)
         if len(coords) > 0:
-            center_dists = np.sum((coords - [seed_r, seed_c]) ** 2, axis=1)
-            seed_r, seed_c = coords[np.argmin(center_dists)]
-
-    q = deque([(seed_r, seed_c)])
-    visited[seed_r, seed_c] = True
-    while q:
-        r, c = q.popleft()
+            center_dists = np.sum((coords - [sr, sc]) ** 2, axis=1)
+            sr, sc = coords[np.argmin(center_dists)]
+    q_s = deque([(sr, sc)])
+    vis_small[sr, sc] = True
+    while q_s:
+        r, c = q_s.popleft()
         for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nr, nc = r + dr, c + dc
-            if 0 <= nr < h and 0 <= nc < w and roi[nr, nc] and combined_seed[nr, nc] and not visited[nr, nc]:
-                visited[nr, nc] = True
-                q.append((nr, nc))
+            if 0 <= nr < small_h and 0 <= nc < small_w and seed_small[nr, nc] and not vis_small[nr, nc]:
+                vis_small[nr, nc] = True
+                q_s.append((nr, nc))
+    near_subject = np.array(
+        Image.fromarray((vis_small.astype(np.uint8) * 255)).resize((w, h), Image.Resampling.NEAREST)
+    ) > 0
+    visited = combined_seed & near_subject & roi
 
     env_im = Image.fromarray((visited.astype(np.uint8) * 255)).filter(
         ImageFilter.MaxFilter(11)
@@ -133,11 +147,13 @@ def extract_cutout(
     envelope = (np.array(env_im) > 10) & roi
 
     # 5. Continuous alpha ramp
-    alpha = np.clip((diff - wash_low) / (wash_high - wash_low), 0.0, 1.0) * 255.0
+    alpha = np.clip((diff - wash_low) / (max(wash_high, 160.0) - wash_low), 0.0, 1.0) * 255.0
+    alpha[sat > 22] = np.maximum(alpha[sat > 22], np.clip((diff[sat > 22] - wash_low) / (wash_high - wash_low), 0.0, 1.0) * 255.0)
+    alpha[feature_zone] = np.maximum(alpha[feature_zone], np.clip((225.0 - gray[feature_zone]) / 85.0, 0.0, 1.0) * 255.0)
     alpha[~envelope] = 0.0
-    alpha[is_ink & envelope] = 255.0
+    alpha[dark_ink & envelope] = 255.0
 
-    # 6. Solid interior protection (plumage & enclosed board hole-filling)
+    # 6. Solid interior protection (plumage & enclosed body hole-filling)
     if fill_plumage:
         p_box = np.zeros((h, w), dtype=bool)
         if plumage_box:
@@ -148,7 +164,7 @@ def extract_cutout(
             pb_left, pb_right = r_left, r_right
             p_box[r_top:r_bottom, r_left:r_right] = True
 
-        body_outline = ((gray < 212) | (diff > 24.0)) & roi
+        body_outline = ((gray < 130) | (sat > 28)) & roi & near_subject
         body_closed = np.array(Image.fromarray((body_outline.astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(3))) > 0
         body_ext = np.zeros((h, w), dtype=bool)
         q_ext = deque()
@@ -171,9 +187,8 @@ def extract_cutout(
                     body_ext[nr, nc] = True
                     q_ext.append((nr, nc))
 
-        # Discard small enclosed background loops (e.g. between dark talons/twigs) where dark outlines (gray < 140) enclose pure paper (mean diff < 12)
-        dark_wall = np.array(Image.fromarray((((gray < 140) & roi).astype(np.uint8) * 255)).filter(ImageFilter.MaxFilter(3))) > 0
-        pocket_visited = body_ext | dark_wall
+        # Discard small enclosed background loops (e.g. between dark talons/legs/twigs) where outlines enclose paper
+        pocket_visited = body_ext | body_closed
         for r in range(r_top, r_bottom):
             for c in range(r_left, r_right):
                 if not pocket_visited[r, c]:
@@ -189,11 +204,11 @@ def extract_cutout(
                                 pocket_visited[nr, nc] = True
                                 q_p.append((nr, nc))
                     comp_arr = np.array(comp)
-                    if diff[comp_arr[:, 0], comp_arr[:, 1]].mean() < 12.0:
+                    if np.median(diff[comp_arr[:, 0], comp_arr[:, 1]]) < 15.0:
                         body_ext[comp_arr[:, 0], comp_arr[:, 1]] = True
 
         # Erode interior by MinFilter(5) (undoes MaxFilter(3) expansion + 1px inset for clean edge unblending)
-        interior_mask = p_box & ~body_ext
+        interior_mask = p_box & near_subject & ~body_ext
         body_solid = np.array(Image.fromarray((interior_mask.astype(np.uint8) * 255)).filter(ImageFilter.MinFilter(5))) > 0
         alpha[body_solid] = 255.0
         alpha[~envelope & ~body_solid] = 0.0
