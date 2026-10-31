@@ -1533,6 +1533,7 @@
       var s = result.summary;
       var roastedLbs = (s.greenWeightRoastedGrams / GRAMS_PER_LB).toFixed(2);
       var endLbs = (s.endWeightGrams / GRAMS_PER_LB).toFixed(2);
+      var packagedLbs = (s.packagedGramsUsed / GRAMS_PER_LB).toFixed(2);
 
       totalsKpisWrap.innerHTML =
         '<div class="roast-admin-kpi-box">' +
@@ -1547,7 +1548,7 @@
         '</div>' +
         '<div class="roast-admin-kpi-box">' +
         '<div class="roast-admin-kpi-label">Packaged / Orders Output</div>' +
-        '<div class="roast-admin-kpi-value">' + s.packagedGramsUsed.toLocaleString() + ' g</div>' +
+        '<div class="roast-admin-kpi-value">' + packagedLbs + ' lbs / ' + s.packagedGramsUsed.toLocaleString() + ' g</div>' +
         '<div class="roast-admin-kpi-sub">' + s.packagedCount + ' packaging logs</div>' +
         '</div>';
 
@@ -1559,27 +1560,29 @@
       var html = '<table class="roast-admin-table">' +
         '<thead><tr>' +
         '<th>Group</th>' +
-        '<th>Bean Orders</th>' +
-        '<th>Ordered (lbs)</th>' +
-        '<th>Ordered (g)</th>' +
+        '<th>Orders</th>' +
+        '<th>Ordered</th>' +
         '<th>Spend ($)</th>' +
         '<th>Roasts</th>' +
-        '<th>Green Roasted (g)</th>' +
-        '<th>End Weight (g)</th>' +
-        '<th>Packaged (g)</th>' +
+        '<th>Green Roasted</th>' +
+        '<th>End Weight</th>' +
+        '<th>Packaged</th>' +
         '</tr></thead><tbody>';
 
       result.rows.forEach(function (r) {
+        var greenLbs = (r.greenWeightRoastedGrams / GRAMS_PER_LB).toFixed(2);
+        var endLbs = (r.endWeightGrams / GRAMS_PER_LB).toFixed(2);
+        var pkgLbs = (r.packagedGramsUsed / GRAMS_PER_LB).toFixed(2);
+
         html += '<tr>' +
           '<td><strong>' + escapeHtml(r.label) + '</strong></td>' +
           '<td class="mono">' + r.ordersCount + '</td>' +
-          '<td class="mono">' + r.orderedWeightLbs.toFixed(2) + ' lbs</td>' +
-          '<td class="mono">' + r.orderedWeightGrams.toLocaleString() + ' g</td>' +
+          '<td class="mono">' + r.orderedWeightLbs.toFixed(2) + ' lbs / ' + r.orderedWeightGrams.toLocaleString() + ' g</td>' +
           '<td class="mono">$' + r.totalSpend.toFixed(2) + '</td>' +
           '<td class="mono">' + r.roastCount + '</td>' +
-          '<td class="mono">' + r.greenWeightRoastedGrams.toLocaleString() + ' g</td>' +
-          '<td class="mono">' + r.endWeightGrams.toLocaleString() + ' g</td>' +
-          '<td class="mono"><strong>' + r.packagedGramsUsed.toLocaleString() + ' g</strong></td>' +
+          '<td class="mono">' + greenLbs + ' lbs / ' + r.greenWeightRoastedGrams.toLocaleString() + ' g</td>' +
+          '<td class="mono">' + endLbs + ' lbs / ' + r.endWeightGrams.toLocaleString() + ' g</td>' +
+          '<td class="mono"><strong>' + pkgLbs + ' lbs / ' + r.packagedGramsUsed.toLocaleString() + ' g</strong></td>' +
           '</tr>';
       });
 
