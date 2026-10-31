@@ -1,10 +1,6 @@
----
-published: false
-sitemap: false
----
 /**
  * Yellow Wing Roasters - Pigeon Post Email Composer
- * Builds and previews Google Workspace / Gmail-ready HTML emails (New Roast Dispatch & Welcome to the Flock)
+ * Builds and previews Google Workspace / Gmail-ready HTML emails (New Roast, Custom Roast & Welcome to the Flock)
  * in the site's unboxed, centered .roast-minimal-vertical aesthetic.
  */
 (function (root, factory) {
@@ -45,6 +41,7 @@ sitemap: false
 
   return function initPigeonPostEmailComposer(config) {
     var roasts = config.roasts;
+    var customRoasts = config.customRoasts;
     var badgeColors = config.badgeColors;
     var statuses = config.statuses;
     var siteUrl = config.siteUrl;
@@ -53,7 +50,9 @@ sitemap: false
 
     var modeBtns = document.querySelectorAll('.pp-mode-btn');
     var roastFieldWrap = document.getElementById('pp-roast-field-wrap');
+    var customFieldWrap = document.getElementById('pp-custom-field-wrap');
     var roastSelect = document.getElementById('pp-roast-select');
+    var customSelect = document.getElementById('pp-custom-select');
     var subjectInput = document.getElementById('pp-subject-input');
     var introInput = document.getElementById('pp-intro-input');
     var previewContainer = document.getElementById('pp-email-preview-container');
@@ -269,6 +268,71 @@ sitemap: false
       );
     }
 
+    function renderCustomRoastBodyHtml(customItem, introText) {
+      var justHatchedBadge = statuses.just_hatched.badge;
+      var justHatchedStyle = badgeColors.just_hatched;
+      var trimmedIntro = introText.trim();
+
+      var introHtml = '';
+      if (trimmedIntro) {
+        introHtml =
+          '<p style="max-width: 420px; margin: 0 auto 16px; font-family: Georgia, \'Lora\', serif; font-size: 15px; line-height: 1.75; color: #2c1e14;">' +
+            escapeHtml(trimmedIntro).replace(/\n/g, '<br>') +
+          '</p>';
+      }
+
+      return (
+        '<div style="background-color: #faf8f5; padding: 40px 20px; font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; color: #2c1e14; text-align: center;">' +
+          '<div style="max-width: 500px; margin: 0 auto; text-align: center;">' +
+            renderBrandLockupHtml() +
+
+            '<!-- Audubon Mascot Illustration -->' +
+            '<div style="margin: 0 auto 24px;">' +
+              '<a href="' + escapeHtml(customItem.customUrl) + '" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">' +
+                '<img src="' + escapeHtml(customItem.mascotUrl) + '" alt="' + escapeHtml(customItem.title) + '" height="185" style="height: 185px; max-width: 240px; width: auto; display: block; margin: 0 auto;" />' +
+              '</a>' +
+            '</div>' +
+
+            '<!-- Status & Category -->' +
+            '<div style="margin-bottom: 10px;">' +
+              '<span style="display: inline-block; background-color: ' + justHatchedStyle.background + '; color: ' + justHatchedStyle.color + '; font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 999px; vertical-align: middle;">' +
+                escapeHtml(justHatchedBadge) +
+              '</span>' +
+              '<span style="font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7f6e; margin-left: 8px; vertical-align: middle;">' +
+                escapeHtml(customItem.category) +
+              '</span>' +
+            '</div>' +
+
+            '<!-- Custom Offering Title -->' +
+            '<h1 style="font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 32px; font-weight: 600; color: #2c1e14; line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 10px;">' +
+              escapeHtml(customItem.title) +
+            '</h1>' +
+
+            '<!-- Italic Tagline (overlay_notes) -->' +
+            '<div style="font-family: Georgia, \'Lora\', serif; font-style: italic; font-size: 16px; color: #8a7060; line-height: 1.55; margin: 0 auto 24px; max-width: 400px;">' +
+              escapeHtml(customItem.overlayNotes) +
+            '</div>' +
+
+            introHtml +
+
+            '<!-- Editorial Intro Description -->' +
+            '<p style="max-width: 420px; margin: 0 auto 34px; font-family: Georgia, \'Lora\', serif; font-size: 15px; line-height: 1.75; color: #4a3b32;">' +
+              escapeHtml(customItem.intro) +
+            '</p>' +
+
+            '<!-- Primary Pill CTA -->' +
+            '<div style="margin-bottom: 40px;">' +
+              '<a href="' + escapeHtml(customItem.customUrl) + '" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 13px 30px; border-radius: 999px;">' +
+                'Explore ' + escapeHtml(customItem.descriptor) + ' &rarr;' +
+              '</a>' +
+            '</div>' +
+
+            renderFooterHtml() +
+          '</div>' +
+        '</div>'
+      );
+    }
+
     function renderWelcomeBodyHtml(introText) {
       var trimmedIntro = introText.trim();
       var introHtml = '';
@@ -412,6 +476,28 @@ sitemap: false
       return lines.join('\n');
     }
 
+    function renderCustomRoastPlainText(customItem, introText) {
+      var trimmedIntro = introText.trim();
+      var lines = [
+        statuses.just_hatched.badge.toUpperCase() + ' · ' + customItem.category.toUpperCase(),
+        customItem.title,
+        customItem.overlayNotes,
+        ''
+      ];
+      if (trimmedIntro) {
+        lines.push(trimmedIntro, '');
+      }
+      lines.push(
+        customItem.intro,
+        '',
+        'Explore ' + customItem.descriptor + ': ' + customItem.customUrl,
+        '',
+        'Chirp,',
+        siteTitle
+      );
+      return lines.join('\n');
+    }
+
     function renderWelcomePlainText(introText) {
       var trimmedIntro = introText.trim();
       var lines = [
@@ -457,6 +543,16 @@ sitemap: false
         };
       }
 
+      if (currentMode === 'custom_roast') {
+        var customSlug = customSelect.value;
+        var customItem = customRoasts[customSlug];
+        return {
+          defaultSubject: statuses.just_hatched.badge + ': ' + customItem.title + ' — ' + siteTitle,
+          bodyHtml: renderCustomRoastBodyHtml(customItem, introInput.value),
+          plainText: renderCustomRoastPlainText(customItem, introInput.value)
+        };
+      }
+
       var slug = roastSelect.value;
       var roast = roasts[slug];
       var emailData = buildEmailData(roast, introInput.value);
@@ -468,7 +564,8 @@ sitemap: false
     }
 
     function updateComposer() {
-      roastFieldWrap.style.display = currentMode === 'welcome' ? 'none' : 'block';
+      roastFieldWrap.style.display = currentMode === 'new_roast' ? 'block' : 'none';
+      customFieldWrap.style.display = currentMode === 'custom_roast' ? 'block' : 'none';
       var out = buildCurrentOutput();
 
       if (!subjectInput.value || subjectInput.value === lastAutoSubject) {
@@ -498,6 +595,7 @@ sitemap: false
     });
 
     roastSelect.addEventListener('change', updateComposer);
+    customSelect.addEventListener('change', updateComposer);
     introInput.addEventListener('input', updateComposer);
     subjectInput.addEventListener('input', function () {
       var out = buildCurrentOutput();

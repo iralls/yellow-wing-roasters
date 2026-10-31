@@ -2,26 +2,27 @@
 layout: default
 title: "Pigeon Post Email Composer"
 permalink: /pigeon-post/email-composer/
-published: false
 sitemap: false
 ---
 
 <div class="roast-minimal-vertical">
-  <div class="roast-mv-center">
-    <h1 class="roast-mv-title">Pigeon Post Composer</h1>
+  <div class="order-admin-header-compact roast-admin-header-compact">
+    <img src="{{ '/images/bean-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Email Composer" class="order-admin-bird-icon" fetchpriority="high" decoding="async">
+    <h1 class="order-admin-page-title">Pigeon Post Composer</h1>
   </div>
-
-  <p class="roast-mv-tasting">Preview &amp; copy subscriber dispatches for Google Workspace</p>
 
   <!-- Minimal Unboxed Composer Controls -->
   <div style="max-width: 34rem; margin: 1.5rem auto 2.5rem; padding: 0 1rem; text-align: center;">
     <div style="margin-bottom: 1.25rem;">
-      <div class="roast-purchase-toggle" role="radiogroup" aria-label="Email Template Type" style="display: inline-flex; gap: 0.5rem; width: 100%; max-width: 24rem;">
-        <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn pp-mode-btn is-active" data-mode="new_roast" style="flex: 1; padding: 0.55rem 0.85rem; font-size: 0.75rem; font-weight: 500;">
-          New Roast Dispatch
+      <div class="roast-purchase-toggle" role="radiogroup" aria-label="Email Template Type" style="display: inline-flex; gap: 0.5rem; width: 100%; max-width: 30rem;">
+        <button type="button" role="radio" aria-checked="true" class="roast-purchase-toggle-btn pp-mode-btn is-active" data-mode="new_roast" style="flex: 1; padding: 0.55rem 0.75rem; font-size: 0.74rem; font-weight: 500;">
+          New Roast
         </button>
-        <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn pp-mode-btn" data-mode="welcome" style="flex: 1; padding: 0.55rem 0.85rem; font-size: 0.75rem; font-weight: 500;">
-          Welcome to the Flock
+        <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn pp-mode-btn" data-mode="custom_roast" style="flex: 1; padding: 0.55rem 0.75rem; font-size: 0.74rem; font-weight: 500;">
+          Custom Roast
+        </button>
+        <button type="button" role="radio" aria-checked="false" class="roast-purchase-toggle-btn pp-mode-btn" data-mode="welcome" style="flex: 1; padding: 0.55rem 0.75rem; font-size: 0.74rem; font-weight: 500;">
+          Welcome
         </button>
       </div>
     </div>
@@ -32,6 +33,16 @@ sitemap: false
         {% assign published_roasts = site.roasts | where_exp: "r", "r.published != false" | sort: "order" %}
         {% for r in published_roasts %}
           <option value="{{ r.slug }}"{% if r.status == 'just_hatched' %} selected{% endif %}>{{ r.title }} ({{ r.category | capitalize }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="pp-custom-field-wrap" style="margin-bottom: 1rem; display: none;">
+      <label for="pp-custom-select" class="roast-mv-meta-label roast-mv-meta-label--center">Custom Offering</label>
+      <select id="pp-custom-select" class="subscribe-select" data-label="Custom Offering" style="width: 100%;">
+        {% assign sorted_custom = site.custom | sort: "order" %}
+        {% for c in sorted_custom %}
+          <option value="{{ c.slug }}">{{ c.title }}</option>
         {% endfor %}
       </select>
     </div>
@@ -107,6 +118,22 @@ sitemap: false
           mascotUrl: {{ site.url | append: '/images/' | append: r.mascot_file | jsonify }},
           roastUrl: {{ site.url | append: r.url | jsonify }},
           description: {{ r.description | strip | jsonify }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    },
+    customRoasts: {
+      {% assign sorted_custom = site.custom | sort: "order" %}
+      {% for c in sorted_custom %}
+        {{ c.slug | jsonify }}: {
+          slug: {{ c.slug | jsonify }},
+          title: {{ c.title | jsonify }},
+          subtitle: {{ c.subtitle | jsonify }},
+          category: {{ c.category | jsonify }},
+          descriptor: {{ c.descriptor | jsonify }},
+          overlayNotes: {{ c.overlay_notes | capitalize | jsonify }},
+          intro: {{ c.intro | strip | jsonify }},
+          mascotUrl: {{ site.url | append: '/images/' | append: c.mascot_file | jsonify }},
+          customUrl: {{ site.url | append: c.url | jsonify }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     }

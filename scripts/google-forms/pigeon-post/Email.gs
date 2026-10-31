@@ -9,7 +9,7 @@ function buildRoastDotsHtml(dotsCount) {
   var html = "";
   for (var i = 1; i <= 5; i++) {
     var color = i <= dotsCount ? "#9c6d12" : "#dfd6c9";
-    html += '<span style="color: ' + color + '; font-size: 13px; margin-right: 2px;">&#9679;</span>';
+    html += '<span style="color: ' + color + '; font-size: 12px; margin: 0 2px;">&#9679;</span>';
   }
   return html;
 }
@@ -49,16 +49,12 @@ function sendWelcomeEmail(subscriberEmail, welcomeData) {
   var plainText =
     "WELCOME TO THE FLOCK — " + siteTitle.toUpperCase() + "\n\n" +
     (data.introNote ? data.introNote + "\n\n" : "") +
-    "Thanks for joining Pigeon Post, our small-batch roastery dispatch! Every bag we offer is roasted fresh to order in small batches, and you are now first in line to hear when something new lands in the roost.\n\n" +
-    "WHAT FLIES YOUR WAY:\n" +
-    "- Just Hatched Roasts: First word when new single-origin micro-lots and signature blends come off the drum.\n" +
-    "- Seasonal Releases: Limited-run holiday and seasonal blends crafted in small batches.\n" +
-    "- Rotating Lots & Restocks: Fresh harvest arrivals and roastery updates.\n\n" +
-    "Browse All Roasts: " + siteUrl + "/roasts/\n\n" +
-    "POPULAR WAYS TO EXPLORE:\n" +
-    "- Take the Coffee Quiz: " + siteUrl + "/quiz/\n" +
-    "- Sample Packs (Flights): " + siteUrl + "/flights/\n" +
-    "- Coffee Subscriptions: " + siteUrl + "/subscriptions/\n\n" +
+    "Thanks for joining our small-batch roastery dispatch. Every bag we offer is roasted fresh to order, and you're now first in line to hear when new single-origin lots, seasonal blends, and fresh restocks land in the roost.\n\n" +
+    "- Just Hatched: New micro-lots & signature blends\n" +
+    "- Seasonals: Limited-run holiday & seasonal roasts\n" +
+    "- Restocks: Fresh harvests & rotating lots\n\n" +
+    "Browse All Roasts: " + siteUrl + "/roasts/\n" +
+    "Coffee Quiz: " + siteUrl + "/quiz/ · Sample Flights: " + siteUrl + "/flights/ · Subscriptions: " + siteUrl + "/subscriptions/\n\n" +
     "Chirp,\n" +
     siteTitle + "\n";
 
@@ -131,6 +127,56 @@ function sendNewRoastAnnouncement(subscriberEmail, roastData) {
     name: "Yellow Wing Roasters",
     from: roastData.roasterEmail,
     replyTo: roastData.roasterEmail,
+    htmlBody: htmlBody
+  });
+}
+
+/**
+ * Renders the HTML email body for introducing a custom roast offering to Pigeon Post subscribers.
+ *
+ * @param {Object} customData - Custom offering metadata and site configuration values.
+ * @return {string} Evaluated HTML email string.
+ */
+function renderCustomRoastEmailHtml(customData) {
+  var template = HtmlService.createTemplateFromFile('custom-roast-template');
+
+  template.siteUrl = customData.siteUrl;
+  template.roasterEmail = customData.roasterEmail;
+  template.title = customData.title;
+  template.category = customData.category;
+  template.descriptor = customData.descriptor;
+  template.overlayNotes = customData.overlayNotes;
+  template.intro = customData.intro;
+  template.introNote = customData.introNote;
+  template.customUrl = customData.customUrl;
+  template.mascotUrl = customData.mascotUrl;
+  template.justHatchedBadge = customData.justHatchedBadge;
+  template.justHatchedBg = customData.justHatchedBg;
+  template.justHatchedColor = customData.justHatchedColor;
+
+  return template.evaluate().getContent();
+}
+
+/**
+ * Sends a custom roast offering announcement email to a subscriber email address.
+ *
+ * @param {string} subscriberEmail - Recipient email address.
+ * @param {Object} customData - Custom offering metadata and site configuration values.
+ */
+function sendCustomRoastAnnouncement(subscriberEmail, customData) {
+  var htmlBody = renderCustomRoastEmailHtml(customData);
+  var subject = "Just Hatched: " + customData.title + " — Yellow Wing Roasters";
+  var plainText =
+    "Just Hatched at Yellow Wing Roasters: " + customData.title + "\n" +
+    customData.overlayNotes + "\n\n" +
+    (customData.introNote ? customData.introNote + "\n\n" : "") +
+    customData.intro + "\n\n" +
+    "Explore " + customData.descriptor + ": " + customData.customUrl + "\n";
+
+  GmailApp.sendEmail(subscriberEmail, subject, plainText, {
+    name: "Yellow Wing Roasters",
+    from: customData.roasterEmail,
+    replyTo: customData.roasterEmail,
     htmlBody: htmlBody
   });
 }
