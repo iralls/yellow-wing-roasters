@@ -267,6 +267,8 @@
       var b = beanMap[name];
       b.activeStockGrams = Math.round(b.orderedGrams - b.roastedGrams);
       return b;
+    }).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
     });
 
     return state.greenBeans;
@@ -806,6 +808,8 @@
       var rows = state.greenBeans.filter(function (b) {
         if (!showDepleted && b.activeStockGrams <= 0) return false;
         return matchesSearch([b.name, b.supplier, b.url]);
+      }).slice().sort(function (a, b) {
+        return a.name.localeCompare(b.name);
       });
 
       if (rows.length === 0) {
@@ -967,6 +971,7 @@
         '<th>Date</th>' +
         '<th>Bean Name</th>' +
         '<th>Supplier</th>' +
+        '<th>Supplier Order #</th>' +
         '<th>Cost</th>' +
         '<th>Weight (lbs)</th>' +
         '<th>Adj (g)</th>' +
@@ -987,16 +992,14 @@
         var beanLink = o.url
           ? '<a href="' + escapeHtml(o.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(o.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(o.name) + '</strong>';
-        var suppMeta = o.supplierOrderId
-          ? ' <span style="color:#8a7060;font-size:0.75rem;">(#' + escapeHtml(o.supplierOrderId) + ')</span>'
-          : '';
         var rowStyle = editingOrderId === o.orderId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(o.orderId) + '"' + rowStyle + '>' +
           '<td><span class="roast-admin-id-chip">' + escapeHtml(o.orderId) + '</span></td>' +
           '<td class="mono">' + escapeHtml(o.date) + '</td>' +
           '<td>' + beanLink + '</td>' +
-          '<td>' + escapeHtml(o.supplier) + suppMeta + '</td>' +
+          '<td>' + escapeHtml(o.supplier) + '</td>' +
+          '<td class="mono">' + escapeHtml(o.supplierOrderId || '') + '</td>' +
           '<td class="mono">$' + Number(o.cost).toFixed(2) + '</td>' +
           '<td class="mono">' + Number(o.weightLbs).toFixed(2) + ' lbs</td>' +
           '<td class="mono">' + adjStr + '</td>' +
