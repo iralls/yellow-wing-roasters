@@ -55,37 +55,52 @@ layout: default
         <span class="sleek-buy-price-note">Roasted to order &middot; Ships fresh on your schedule</span>
       </div>
 
-      {% if page.sizes.size > 1 %}
-        <div class="sleek-buy-field">
-          <label for="sub-size-select">Bag Size</label>
-          <select id="sub-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;">
-            {% for s in page.sizes %}
-              <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
-            {% endfor %}
-          </select>
+      {% if page.sizes.size == 1 and page.frequencies.size == 1 %}
+        <!-- Fixed Plan Summary Chips -->
+        <div class="sub-plan-summary-chips" aria-label="Subscription Details">
+          <span class="sub-plan-chip">
+            <span class="sub-plan-chip-label">Size:</span>
+            <strong>{{ default_size }}</strong>
+          </span>
+          <span class="sub-plan-chip">
+            <span class="sub-plan-chip-label">Frequency:</span>
+            <strong>{{ default_freq }}</strong>
+          </span>
         </div>
+        <input type="hidden" id="sub-size-select" value="{{ default_size }}">
+        <input type="hidden" id="sub-freq-select" value="{{ default_freq }}">
       {% else %}
-        <div class="sleek-buy-field">
-          <label for="sub-size-select">Bag Size</label>
-          <select id="sub-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;">
-            <option value="{{ default_size }}" selected>{{ default_size }}</option>
-          </select>
-        </div>
+        {% if page.sizes.size > 1 %}
+          <div class="sleek-buy-field">
+            <label for="sub-size-select">Bag Size</label>
+            <select id="sub-size-select" class="subscribe-select" data-label="Bag Size" style="width: 100%;">
+              {% for s in page.sizes %}
+                <option value="{{ s }}"{% if forloop.first %} selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% else %}
+          <input type="hidden" id="sub-size-select" value="{{ default_size }}">
+        {% endif %}
+
+        {% if page.frequencies.size > 1 %}
+          <div class="sleek-buy-field">
+            <label for="sub-freq-select">Delivery Frequency</label>
+            <select id="sub-freq-select" class="subscribe-select" data-label="Frequency" style="width: 100%;">
+              {% for f in page.frequencies %}
+                <option value="{{ f }}"{% if forloop.first %} selected{% endif %}>{{ f }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% else %}
+          <input type="hidden" id="sub-freq-select" value="{{ default_freq }}">
+        {% endif %}
       {% endif %}
 
       <div class="sleek-buy-field">
         <label for="sub-grind-select">Grind Preparation</label>
         <select id="sub-grind-select" class="subscribe-select" data-label="Grind" style="width: 100%;">
           {% include grind-options.html %}
-        </select>
-      </div>
-
-      <div class="sleek-buy-field">
-        <label for="sub-freq-select">Delivery Frequency</label>
-        <select id="sub-freq-select" class="subscribe-select" data-label="Frequency" style="width: 100%;">
-          {% for f in page.frequencies %}
-            <option value="{{ f }}"{% if forloop.first %} selected{% endif %}>{{ f }}</option>
-          {% endfor %}
         </select>
       </div>
 
