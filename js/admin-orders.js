@@ -18,6 +18,8 @@
     root.extractOrderDate = exp.extractOrderDate;
     root.parseOrderLineItems = exp.parseOrderLineItems;
     root.parseCurrency = exp.parseCurrency;
+    root.bagSizeToLbs = exp.bagSizeToLbs;
+    root.formatSizeCounts = exp.formatSizeCounts;
     root.computeOrderTotals = exp.computeOrderTotals;
     root.DEFAULT_MOCK_HASH = exp.DEFAULT_MOCK_HASH;
     root.DEFAULT_MOCK_PASSCODE = exp.DEFAULT_MOCK_PASSCODE;
@@ -306,7 +308,34 @@
     return isNaN(num) ? 0 : num;
   }
 
-  function parseOrderLineItems(itemsStr) {
+  function bagSizeToLbs(bagSizeId, bagSizes) {
+    if (!bagSizeId) return 0;
+    if (Array.isArray(bagSizes)) {
+      var match = bagSizes.find(function (b) { return b.id === bagSizeId; });
+      if (match && match.weight_oz) {
+        return Number((Number(match.weight_oz) / 16).toFixed(4));
+      }
+    }
+    var str = String(bagSizeId).trim().toLowerCase();
+    var flightMatch = str.match(/^(\d+)\s*[×x]\s*(\d+(?:\.\d+)?)\s*(oz|lb)/i);
+    if (flightMatch) {
+      var count = parseInt(flightMatch[1], 10);
+      var perBagVal = parseFloat(flightMatch[2]);
+      var unit = flightMatch[3].toLowerCase();
+      var perBagLbs = (unit === 'lb') ? perBagVal : (perBagVal / 16);
+      return Number((count * perBagLbs).toFixed(4));
+    }
+    var m = str.match(/^(\d+(?:\.\d+)?)\s*(oz|lb)s?$/i);
+    if (m) {
+      var val = parseFloat(m[1]);
+      var unit = m[2].toLowerCase();
+      if (unit === 'lb') return val;
+      if (unit === 'oz') return Number((val / 16).toFixed(4));
+    }
+    return 0;
+  }
+
+  function parseOrderLineItems(itemsStr, bagSizes) {
     var raw = String(itemsStr || '').trim();
     if (!raw) return [];
     var parts = raw.split(/,\s*(?=\d+x\s)/i);
@@ -315,21 +344,62 @@
       var qtyMatch = clean.match(/^(\d+)x\s+/i);
       var qty = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
       var withoutQty = clean.replace(/^\d+x\s+/i, '').trim();
-      var sizeMatch = withoutQty.match(/\s+(\d+(?:oz|lb))$/i);
-      var bagSize = sizeMatch ? sizeMatch[1].toLowerCase() : '';
-      var product = sizeMatch
-        ? withoutQty.slice(0, withoutQty.length - sizeMatch[0].length).trim()
-        : withoutQty;
+
+      var bagSize = '';
+      var product = withoutQty;
+      var bagsPerUnit = 1;
+
+      var flightSizeMatch = withoutQty.match(/\s+(\d+\s*[×x]\s*\d+(?:oz|lb)(?:\s*bags?)?)$/i);
+      if (flightSizeMatch) {
+        bagSize = flightSizeMatch[1].trim();
+        product = withoutQty.slice(0, withoutQty.length - flightSizeMatch[0].length).trim();
+        var numBagsMatch = bagSize.match(/^(\d+)/);
+        if (numBagsMatch) {
+          bagsPerUnit = parseInt(numBagsMatch[1], 10);
+        }
+      } else {
+        var sizeMatch = withoutQty.match(/\s+(\d+(?:oz|lb)s?)$/i);
+        if (sizeMatch) {
+          bagSize = sizeMatch[1].toLowerCase();
+          product = withoutQty.slice(0, withoutQty.length - sizeMatch[0].length).trim();
+        }
+      }
+
+      // Aggregate "Peck Your Own" flights under "Peck Your Own" without breaking down individual roasts
+      if (/^peck your own/i.test(product)) {
+        product = 'Peck Your Own';
+      } else if (/^the aviary/i.test(product)) {
+        product = 'The Aviary';
+      }
+
+      var weightLbs = bagSizeToLbs(bagSize, bagSizes);
+      if (!weightLbs && product === 'Peck Your Own') {
+        var detailsMatch = part.match(/\((.*)\)$/);
+        if (detailsMatch) {
+          var picksMatch = detailsMatch[1].match(/Picks:\s*([^;]+)/i);
+          if (picksMatch) {
+            var picksCount = picksMatch[1].split(',').filter(Boolean).length;
+            if (picksCount > 0) {
+              bagsPerUnit = picksCount;
+              weightLbs = Number((picksCount * 0.5).toFixed(4));
+            }
+          }
+        }
+      }
+
       return {
         qty: qty,
+        bagsPerUnit: bagsPerUnit,
+        bagsCount: qty * bagsPerUnit,
         label: clean,
         product: product,
-        bagSize: bagSize
+        bagSize: bagSize,
+        weightLbs: weightLbs
       };
     });
   }
 
-  function computeOrderTotals(orders, filters) {
+  function computeOrderTotals(orders, filters, bagSizes) {
     orders = orders || [];
     filters = filters || {};
     var groupBy = filters.groupBy || 'month';
@@ -337,6 +407,7 @@
     var summary = {
       totalOrders: 0,
       totalBags: 0,
+      totalLbs: 0,
       totalRevenue: 0,
       avgOrderValue: 0,
       pickupCount: 0,
@@ -355,6 +426,7 @@
           label: label || key,
           ordersCount: 0,
           bagsCount: 0,
+          weightLbs: 0,
           revenue: groupBy === 'product' ? null : 0,
           avgOrderValue: null,
           pickupCount: 0,
@@ -368,10 +440,13 @@
     for (var i = 0; i < orders.length; i++) {
       var ord = orders[i];
       var ym = extractOrderDate(ord.timestamp);
-      var lineItems = parseOrderLineItems(ord.items);
+      var lineItems = parseOrderLineItems(ord.items, bagSizes);
       var totalBagsInOrder = 0;
+      var totalLbsInOrder = 0;
       for (var b = 0; b < lineItems.length; b++) {
-        totalBagsInOrder += lineItems[b].qty;
+        var li = lineItems[b];
+        totalBagsInOrder += (li.bagsCount || li.qty);
+        totalLbsInOrder += li.qty * (li.weightLbs || bagSizeToLbs(li.bagSize, bagSizes));
       }
       var orderCost = parseCurrency(ord.total);
 
@@ -390,6 +465,7 @@
       // Summary accumulation
       summary.totalOrders += 1;
       summary.totalBags += totalBagsInOrder;
+      summary.totalLbs = Number((summary.totalLbs + totalLbsInOrder).toFixed(2));
       summary.totalRevenue = Number((summary.totalRevenue + orderCost).toFixed(2));
       if (ord.deliveryMethod === 'Pickup') summary.pickupCount += 1;
       if (ord.deliveryMethod === 'Hand delivery') summary.deliveryCount += 1;
@@ -416,10 +492,12 @@
           if (!productsInOrder[item.product]) {
             productsInOrder[item.product] = {
               product: item.product,
-              bagsCount: 0
+              bagsCount: 0,
+              weightLbs: 0
             };
           }
-          productsInOrder[item.product].bagsCount += item.qty;
+          productsInOrder[item.product].bagsCount += (item.bagsCount || item.qty);
+          productsInOrder[item.product].weightLbs += item.qty * (item.weightLbs || bagSizeToLbs(item.bagSize, bagSizes));
         }
 
         Object.keys(productsInOrder).forEach(function (prodName) {
@@ -427,6 +505,7 @@
           var grpProd = ensureGroup(prodName, prodName);
           grpProd.ordersCount += 1;
           grpProd.bagsCount += pData.bagsCount;
+          grpProd.weightLbs = Number((grpProd.weightLbs + pData.weightLbs).toFixed(2));
           if (ord.deliveryMethod === 'Pickup') grpProd.pickupCount += 1;
           if (ord.deliveryMethod === 'Hand delivery') grpProd.deliveryCount += 1;
           if (normStatus === 'delivered') grpProd.deliveredCount += 1;
@@ -455,6 +534,7 @@
         var grp = ensureGroup(gKey, gLabel);
         grp.ordersCount += 1;
         grp.bagsCount += totalBagsInOrder;
+        grp.weightLbs = Number((grp.weightLbs + totalLbsInOrder).toFixed(2));
         grp.revenue = Number((grp.revenue + orderCost).toFixed(2));
         if (ord.deliveryMethod === 'Pickup') grp.pickupCount += 1;
         if (ord.deliveryMethod === 'Hand delivery') grp.deliveryCount += 1;
@@ -491,6 +571,7 @@
     options = options || {};
     var apiUrl = options.apiUrl || '';
     var manageBaseUrl = options.manageBaseUrl || '/order/manage/';
+    var bagSizes = options.bagSizes || [];
 
     var hasMockParam = typeof window !== 'undefined' &&
       (window.location.search.indexOf('mock=1') !== -1 || window.location.search.indexOf('demo=1') !== -1);
@@ -1000,7 +1081,7 @@
 
       var coffeesSet = {};
       currentOrders.forEach(function (o) {
-        var items = parseOrderLineItems(o.items);
+        var items = parseOrderLineItems(o.items, bagSizes);
         items.forEach(function (it) {
           if (it.product) {
             coffeesSet[it.product] = true;
@@ -1029,7 +1110,7 @@
         status: totalsFilterStatus ? totalsFilterStatus.value : 'all',
         deliveryMethod: totalsFilterDelivery ? totalsFilterDelivery.value : 'all',
         coffee: totalsFilterCoffee ? totalsFilterCoffee.value : 'all'
-      });
+      }, bagSizes);
 
       var s = result.summary;
       var deliveryPct = s.totalOrders > 0 ? ((s.deliveryCount / s.totalOrders) * 100).toFixed(0) : '0';
@@ -1042,7 +1123,7 @@
         '</div>' +
         '<div class="roast-admin-kpi-box">' +
         '<div class="roast-admin-kpi-label">Total Volume</div>' +
-        '<div class="roast-admin-kpi-value">' + s.totalOrders + ' Orders</div>' +
+        '<div class="roast-admin-kpi-value">' + s.totalOrders + ' Orders · ' + s.totalLbs.toFixed(2) + ' lbs</div>' +
         '<div class="roast-admin-kpi-sub">' + s.totalBags + ' total bags ordered</div>' +
         '</div>' +
         '<div class="roast-admin-kpi-box">' +
@@ -1069,6 +1150,7 @@
         '<th>' + escapeHtml(colHeader) + '</th>' +
         '<th style="text-align: right;">Orders</th>' +
         '<th style="text-align: right;">Bags</th>' +
+        '<th style="text-align: right;">Weight (lbs)</th>' +
         '<th style="text-align: right;">Revenue</th>' +
         '<th style="text-align: right;">Avg Order</th>' +
         '<th style="text-align: right;">Pickup</th>' +
@@ -1083,6 +1165,7 @@
           '<td><strong>' + escapeHtml(r.label) + '</strong></td>' +
           '<td class="mono" style="text-align: right;">' + r.ordersCount + '</td>' +
           '<td class="mono" style="text-align: right;">' + r.bagsCount + '</td>' +
+          '<td class="mono" style="text-align: right;">' + r.weightLbs.toFixed(2) + ' lbs</td>' +
           '<td class="mono" style="text-align: right;">' + revStr + '</td>' +
           '<td class="mono" style="text-align: right;">' + avgStr + '</td>' +
           '<td class="mono" style="text-align: right;">' + r.pickupCount + '</td>' +
@@ -1096,6 +1179,7 @@
         '<td>Total</td>' +
         '<td class="mono" style="text-align: right;">' + s.totalOrders + '</td>' +
         '<td class="mono" style="text-align: right;">' + s.totalBags + '</td>' +
+        '<td class="mono" style="text-align: right;">' + s.totalLbs.toFixed(2) + ' lbs</td>' +
         '<td class="mono" style="text-align: right;">$' + s.totalRevenue.toFixed(2) + '</td>' +
         '<td class="mono" style="text-align: right;">$' + s.avgOrderValue.toFixed(2) + '</td>' +
         '<td class="mono" style="text-align: right;">' + s.pickupCount + '</td>' +
@@ -1347,6 +1431,7 @@
     extractOrderDate: extractOrderDate,
     parseOrderLineItems: parseOrderLineItems,
     parseCurrency: parseCurrency,
+    bagSizeToLbs: bagSizeToLbs,
     computeOrderTotals: computeOrderTotals,
     DEFAULT_MOCK_HASH: DEFAULT_MOCK_HASH,
     DEFAULT_MOCK_PASSCODE: DEFAULT_MOCK_PASSCODE,

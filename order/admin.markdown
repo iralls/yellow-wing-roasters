@@ -105,7 +105,7 @@ sitemap: false
             <select id="order-totals-group-by" class="roast-admin-select">
               <option value="month">Month (YYYY-MM)</option>
               <option value="year">Year (YYYY)</option>
-              <option value="product">Coffee / Product</option>
+              <option value="size">Bag Size (12oz, 1lb...)</option>
               <option value="deliveryMethod">Delivery Method</option>
               <option value="status">Fulfillment Status</option>
               <option value="city">Town / City</option>
@@ -156,10 +156,10 @@ sitemap: false
               <option value="Hand delivery">Hand delivery</option>
             </select>
           </div>
-          <div class="roast-admin-field" style="min-width: 11rem;">
-            <label for="order-totals-filter-coffee">Filter Coffee</label>
-            <select id="order-totals-filter-coffee" class="roast-admin-select">
-              <option value="all">All Coffees</option>
+          <div class="roast-admin-field" style="min-width: 9rem;">
+            <label for="order-totals-filter-size">Filter Size</label>
+            <select id="order-totals-filter-size" class="roast-admin-select">
+              <option value="all">All Sizes</option>
             </select>
           </div>
         </div>
@@ -177,6 +177,7 @@ sitemap: false
 <script>
   initAdminOrders({
     apiUrl: {{ site.order_api_url | jsonify }},
-    manageBaseUrl: {{ '/order/manage/' | relative_url | jsonify }}
+    manageBaseUrl: {{ '/order/manage/' | relative_url | jsonify }},
+    bagSizes: {{ site.data.bag_sizes | jsonify }}
   });
 </script>

@@ -181,32 +181,37 @@
       </div>
     {% endif %}
 
-    <!-- Bottom Action Area: "+ Add" Button / Actions -->
+    <!-- Bottom Action Area / Actions -->
     {% unless include.hide_cta %}
-      <div class="roast-trans-actions">
-        {% if include.cta_text %}
+      {% if include.cta_text %}
+        <div class="roast-trans-actions">
           <span class="roast-trans-archived-label">{{ include.cta_text }}</span>
-        {% elsif include.is_picker or include.card_class contains "pyo-option" %}
+        </div>
+      {% elsif include.is_picker or include.card_class contains "pyo-option" %}
+        <div class="roast-trans-actions">
           <span class="roast-trans-add-btn pyo-card-cta">Select &plus;</span>
-        {% elsif r.status == 'flown_south' %}
+        </div>
+      {% elsif r.status == 'flown_south' %}
+        <div class="roast-trans-actions">
           <span class="roast-trans-archived-label">Seasonal Archive</span>
-        {% elsif r.status == 'incubating' or s_info.dim_card %}
+        </div>
+      {% elsif r.status == 'incubating' or s_info.dim_card %}
+        <div class="roast-trans-actions">
           <span class="roast-trans-archived-label">Coming Soon</span>
-        {% elsif include.card_class contains "aviary-card" %}
+        </div>
+      {% elsif include.card_class contains "aviary-card" %}
+        <div class="roast-trans-actions">
           <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Details &rarr;</a>
-        {% elsif r.category == 'custom' %}
+        </div>
+      {% elsif r.category == 'custom' %}
+        <div class="roast-trans-actions">
           <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">Customize</a>
-        {% elsif r.category == 'flight' %}
+        </div>
+      {% elsif r.category == 'flight' %}
+        <div class="roast-trans-actions">
           <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Sampler</a>
-        {% else %}
-          <button type="button"
-                  class="roast-trans-add-btn roasts-entry-quick-add"
-                  data-slug="{{ r.slug }}"
-                  data-size="12oz">
-            + Add
-          </button>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
     {% endunless %}
   </div>
 </div>
