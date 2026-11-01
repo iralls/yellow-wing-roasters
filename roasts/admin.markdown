@@ -274,7 +274,7 @@ sitemap: false
               <label for="pkg-bag-size">Bag Size</label>
               <select id="pkg-bag-size" class="roast-admin-select">
                 {% for s in site.data.bag_sizes %}
-                <option value="{{ s.id }}" {% if s.default %}selected{% endif %}>{{ s.label }}</option>
+                <option value="{{ s.id }}" data-weight-oz="{{ s.weight_oz }}" data-weight-grams="{{ s.weight_oz | times: 453.592 | divided_by: 16 | round }}" {% if s.default %}selected{% endif %}>{{ s.label }}</option>
                 {% endfor %}
                 <option value="Custom">Custom / Loose</option>
               </select>
@@ -283,10 +283,15 @@ sitemap: false
 
           <div class="roast-admin-field" style="margin-top: 0.35rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-              <label>Roast IDs &amp; Amount Used (g)</label>
+              <label>Roast IDs, Blend % &amp; Amount Used (g)</label>
               <button type="button" id="pkg-add-component-btn" class="order-admin-btn-sm" style="padding: 0.15rem 0.55rem; font-size: 0.72rem;">+ Add Roast ID</button>
             </div>
             <div id="pkg-components-container" class="roast-admin-component-list"></div>
+            <div id="pkg-blend-preview" class="roast-admin-calc-preview" style="margin-top: 0.35rem;">
+              <span>Total Weight: <strong>0 g</strong></span>
+              <span>Total Blend: <strong>0.0%</strong></span>
+              <span>Target: <strong>340 g (12oz)</strong></span>
+            </div>
           </div>
 
           <div class="roast-admin-entry-row" style="margin-top: 0.35rem; align-items: flex-end;">
@@ -370,6 +375,7 @@ sitemap: false
   initAdminRoasts({
     apiUrl: {{ site.roast_inventory_api_url | jsonify }},
     orderApiUrl: {{ site.order_api_url | jsonify }},
-    roastLevels: {{ site.data.roast_levels | jsonify }}
+    roastLevels: {{ site.data.roast_levels | jsonify }},
+    bagSizes: {{ site.data.bag_sizes | jsonify }}
   });
 </script>

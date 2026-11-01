@@ -21,6 +21,9 @@
     root.makeSemanticCode = exp.makeSemanticCode;
     root.recomputeActiveBeanStocks = exp.recomputeActiveBeanStocks;
     root.computeTotals = exp.computeTotals;
+    root.calculateBagSizeGrams = exp.calculateBagSizeGrams;
+    root.calculateGramsFromPercentage = exp.calculateGramsFromPercentage;
+    root.calculatePercentageFromGrams = exp.calculatePercentageFromGrams;
   }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
@@ -54,6 +57,39 @@
     var e = Number(endWeightGrams) || 0;
     if (g <= 0) return 0;
     return Number((((g - e) / g) * 100).toFixed(2));
+  }
+
+  function calculateBagSizeGrams(bagSizeId, bagSizes) {
+    if (!bagSizeId || bagSizeId === 'Custom') return 0;
+    if (Array.isArray(bagSizes)) {
+      var match = bagSizes.find(function (b) { return b.id === bagSizeId; });
+      if (match && match.weight_oz) {
+        return Math.round((Number(match.weight_oz) / 16) * GRAMS_PER_LB);
+      }
+    }
+    var numMatch = String(bagSizeId).match(/^(\d+)(oz|lb)$/i);
+    if (numMatch) {
+      var val = Number(numMatch[1]);
+      var unit = numMatch[2].toLowerCase();
+      if (unit === 'lb') return lbsToGrams(val);
+      if (unit === 'oz') return Math.round((val / 16) * GRAMS_PER_LB);
+    }
+    return 0;
+  }
+
+  function calculateGramsFromPercentage(percentage, totalBagGrams) {
+    var pct = Number(percentage);
+    var total = Number(totalBagGrams);
+    if (isNaN(pct) || isNaN(total) || total <= 0) return 0;
+    return Math.round((pct / 100) * total);
+  }
+
+  function calculatePercentageFromGrams(grams, totalBagGrams) {
+    var g = Number(grams);
+    var total = Number(totalBagGrams);
+    if (isNaN(g) || isNaN(total) || total <= 0) return 0;
+    var p = (g / total) * 100;
+    return Number(p % 1 === 0 ? p : Number(p.toFixed(1)));
   }
 
   function formatDateCompact(val) {
@@ -621,6 +657,7 @@
     var apiUrl = options.apiUrl;
     var orderApiUrl = options.orderApiUrl;
     var roastLevels = options.roastLevels;
+    var bagSizes = options.bagSizes || [];
 
     var gateSection = document.getElementById('roast-admin-gate-section');
     var gateForm = document.getElementById('roast-admin-gate-form');
@@ -685,6 +722,7 @@
     var pkgProduct = document.getElementById('pkg-product');
     var pkgAddCompBtn = document.getElementById('pkg-add-component-btn');
     var pkgCompsContainer = document.getElementById('pkg-components-container');
+    var pkgBlendPreview = document.getElementById('pkg-blend-preview');
     var pkgBagSize = document.getElementById('pkg-bag-size');
     var pkgNotes = document.getElementById('pkg-notes');
     var pkgSubmitBtn = document.getElementById('pkg-submit-btn');
@@ -831,7 +869,14 @@
           ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(b.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(b.name) + '</strong>';
 
-        var rowClass = b.activeStockGrams <= 0 ? ' class="roast-admin-row--depleted"' : '';
+        var rowClass = '';
+        if (b.activeStockGrams <= 0) {
+          rowClass = ' class="roast-admin-row--depleted"';
+        } else if (b.activeStockGrams < GRAMS_PER_LB) {
+          rowClass = ' class="roast-admin-row--under-1lb"';
+        } else if (b.activeStockGrams < 2 * GRAMS_PER_LB) {
+          rowClass = ' class="roast-admin-row--under-2lb"';
+        }
 
         html += '<tr' + rowClass + '>' +
           '<td>' + nameCell + '</td>' +
@@ -882,6 +927,11 @@
       orderBeanUrl.value = ord.url;
       updateOrderWeightPreview();
       setDrawerState('order-entry-drawer', true);
+      var drawer = document.getElementById('order-entry-drawer');
+      if (drawer) {
+        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      orderAdjustGrams.focus();
       renderGreenBeanOrdersTable();
     }
 
@@ -977,8 +1027,6 @@
         '<th>Adj (g)</th>' +
         '<th>Total (g)</th>' +
         '<th>Available (g)</th>' +
-        '<th>Adjust (+/- g)</th>' +
-        '<th>Actions</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (o) {
@@ -995,7 +1043,7 @@
         var rowStyle = editingOrderId === o.orderId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(o.orderId) + '"' + rowStyle + '>' +
-          '<td><span class="roast-admin-id-chip">' + escapeHtml(o.orderId) + '</span></td>' +
+          '<td><button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-edit-order="' + escapeHtml(o.orderId) + '" title="Edit order ' + escapeHtml(o.orderId) + '">' + escapeHtml(o.orderId) + '</button></td>' +
           '<td class="mono">' + escapeHtml(o.date) + '</td>' +
           '<td>' + beanLink + '</td>' +
           '<td>' + escapeHtml(o.supplier) + '</td>' +
@@ -1005,40 +1053,11 @@
           '<td class="mono">' + adjStr + '</td>' +
           '<td class="mono">' + orderGrams.toLocaleString() + ' g</td>' +
           '<td class="mono">' + availCell + '</td>' +
-          '<td>' +
-          '<div class="roast-admin-adjust-form">' +
-          '<input type="number" step="1" placeholder="+/- g" data-adjust-order-input="' + escapeHtml(o.orderId) + '">' +
-          '<button type="button" class="order-admin-btn-sm" data-adjust-order-btn="' + escapeHtml(o.orderId) + '">Apply</button>' +
-          '</div>' +
-          '</td>' +
-          '<td><button type="button" class="order-admin-btn-sm" data-edit-order="' + escapeHtml(o.orderId) + '">Edit</button></td>' +
           '</tr>';
       });
 
       html += '</tbody></table>';
       ordersTableWrap.innerHTML = html;
-
-      var adjOrderBtns = ordersTableWrap.querySelectorAll('[data-adjust-order-btn]');
-      adjOrderBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var ordId = btn.getAttribute('data-adjust-order-btn');
-          var input = ordersTableWrap.querySelector('[data-adjust-order-input="' + ordId + '"]');
-          var delta = parseInt(input.value, 10);
-          if (isNaN(delta) || delta === 0) return;
-
-          btn.disabled = true;
-          submitAction({
-            action: 'adjust_order_weight',
-            orderId: ordId,
-            deltaGrams: delta
-          }, function (err) {
-            btn.disabled = false;
-            if (!err) {
-              renderAll();
-            }
-          });
-        });
-      });
 
       var editOrderBtns = ordersTableWrap.querySelectorAll('[data-edit-order]');
       editOrderBtns.forEach(function (btn) {
@@ -1278,6 +1297,51 @@
       return html;
     }
 
+    function getSelectedBagSizeGrams() {
+      if (!pkgBagSize) return 0;
+      var opt = pkgBagSize.options[pkgBagSize.selectedIndex];
+      if (opt && opt.getAttribute('data-weight-grams')) {
+        return Number(opt.getAttribute('data-weight-grams')) || 0;
+      }
+      return calculateBagSizeGrams(pkgBagSize.value, bagSizes);
+    }
+
+    function updatePackagingPreview() {
+      if (!pkgBlendPreview || !pkgBagSize) return;
+      var totalBagGrams = getSelectedBagSizeGrams();
+      var sumGrams = 0;
+      var sumPct = 0;
+      var rows = pkgCompsContainer.querySelectorAll('.roast-admin-component-row');
+      rows.forEach(function (row) {
+        var g = Number(row.querySelector('.pkg-comp-grams').value) || 0;
+        var p = Number(row.querySelector('.pkg-comp-pct').value) || 0;
+        sumGrams += g;
+        sumPct += p;
+      });
+
+      var targetText = totalBagGrams > 0
+        ? (totalBagGrams + ' g (' + escapeHtml(pkgBagSize.value) + ')')
+        : 'Custom / Loose';
+
+      var pctText = totalBagGrams > 0
+        ? (sumPct.toFixed(1) + '%')
+        : '—';
+
+      var statusColor = '';
+      if (totalBagGrams > 0) {
+        if (sumGrams === totalBagGrams) {
+          statusColor = 'color: #27ae60;';
+        } else if (sumGrams > totalBagGrams) {
+          statusColor = 'color: #c0392b;';
+        }
+      }
+
+      pkgBlendPreview.innerHTML =
+        '<span>Total Weight: <strong style="' + statusColor + '">' + sumGrams.toLocaleString() + ' g</strong></span>' +
+        '<span>Total Blend: <strong style="' + statusColor + '">' + pctText + '</strong></span>' +
+        '<span>Target: <strong>' + targetText + '</strong></span>';
+    }
+
     function syncComponentRowMax(row) {
       var sel = row.querySelector('.pkg-comp-roast');
       var gramsInput = row.querySelector('.pkg-comp-grams');
@@ -1290,28 +1354,63 @@
     }
 
     function addPkgComponentRow(defaultRoastId, defaultGrams) {
+      var totalBagGrams = getSelectedBagSizeGrams();
+      var defaultPct = '';
+      if (defaultGrams && totalBagGrams > 0) {
+        var p = (Number(defaultGrams) / totalBagGrams) * 100;
+        defaultPct = p % 1 === 0 ? p.toFixed(0) : p.toFixed(1);
+      }
+
       var row = document.createElement('div');
       row.className = 'roast-admin-component-row';
       row.innerHTML = '<select class="roast-admin-select pkg-comp-roast" required>' +
         buildRoastOptionsHtml(defaultRoastId) +
         '</select>' +
+        '<input type="number" class="roast-admin-input pkg-comp-pct" step="0.5" min="0" max="100" placeholder="%" value="' + defaultPct + '" title="Blend percentage (%)">' +
         '<input type="number" class="roast-admin-input pkg-comp-grams" step="1" min="1" placeholder="Grams (g)" value="' + (defaultGrams || '') + '" required>' +
         '<button type="button" class="roast-admin-remove-btn" title="Remove component">&times;</button>';
 
       var sel = row.querySelector('.pkg-comp-roast');
+      var pctInput = row.querySelector('.pkg-comp-pct');
+      var gramsInput = row.querySelector('.pkg-comp-grams');
+
       sel.addEventListener('change', function () {
         syncComponentRowMax(row);
       });
       syncComponentRowMax(row);
 
+      pctInput.addEventListener('input', function () {
+        var total = getSelectedBagSizeGrams();
+        var pctVal = parseFloat(pctInput.value);
+        if (total > 0 && !isNaN(pctVal)) {
+          var calcG = Math.round((pctVal / 100) * total);
+          gramsInput.value = calcG > 0 ? calcG : '';
+        }
+        updatePackagingPreview();
+      });
+
+      gramsInput.addEventListener('input', function () {
+        var total = getSelectedBagSizeGrams();
+        var gVal = parseFloat(gramsInput.value);
+        if (total > 0 && !isNaN(gVal)) {
+          var calcP = (gVal / total) * 100;
+          pctInput.value = calcP % 1 === 0 ? calcP.toFixed(0) : calcP.toFixed(1);
+        } else if (!gramsInput.value) {
+          pctInput.value = '';
+        }
+        updatePackagingPreview();
+      });
+
       var removeBtn = row.querySelector('.roast-admin-remove-btn');
       removeBtn.addEventListener('click', function () {
         if (pkgCompsContainer.children.length > 1) {
           row.remove();
+          updatePackagingPreview();
         }
       });
 
       pkgCompsContainer.appendChild(row);
+      updatePackagingPreview();
     }
 
     function refreshPkgComponentDropdowns() {
@@ -1403,6 +1502,7 @@
       }
       setDrawerState('pkg-entry-drawer', true);
       renderBlendPackagingTable();
+      updatePackagingPreview();
     }
 
     function cancelEditPkg() {
@@ -1417,10 +1517,12 @@
       pkgOrderId.value = '';
       pkgProduct.value = '';
       pkgNotes.value = '';
+      pkgBagSize.value = '12oz';
       pkgCompsContainer.innerHTML = '';
       addPkgComponentRow();
       setDrawerState('pkg-entry-drawer', false);
       renderBlendPackagingTable();
+      updatePackagingPreview();
     }
 
     function renderBlendPackagingTable() {
@@ -1630,6 +1732,7 @@
       renderRoastLogsTable();
       renderBlendPackagingTable();
       renderTotalsTab();
+      updatePackagingPreview();
     }
 
     function loadCustomerOrders(passcode) {
@@ -1856,6 +1959,23 @@
     pkgPurpose.addEventListener('change', syncPkgPurposeVisibility);
     syncPkgPurposeVisibility();
 
+    function syncPkgBagSizeChange() {
+      var total = getSelectedBagSizeGrams();
+      var rows = pkgCompsContainer.querySelectorAll('.roast-admin-component-row');
+      rows.forEach(function (row) {
+        var pctInput = row.querySelector('.pkg-comp-pct');
+        var gramsInput = row.querySelector('.pkg-comp-grams');
+        var pctVal = parseFloat(pctInput.value);
+        if (total > 0 && !isNaN(pctVal)) {
+          var calcG = Math.round((pctVal / 100) * total);
+          gramsInput.value = calcG > 0 ? calcG : '';
+        }
+      });
+      updatePackagingPreview();
+    }
+
+    pkgBagSize.addEventListener('change', syncPkgBagSizeChange);
+
     pkgOrderSelect.addEventListener('change', function () {
       var selectedOpt = pkgOrderSelect.options[pkgOrderSelect.selectedIndex];
       var ordId = selectedOpt.getAttribute('data-order-id') || '';
@@ -1869,6 +1989,7 @@
       }
       if (bagSz && Array.from(pkgBagSize.options).some(function (o) { return o.value === bagSz; })) {
         pkgBagSize.value = bagSz;
+        syncPkgBagSizeChange();
       }
     });
 
@@ -2123,6 +2244,9 @@
     makeSemanticCode: makeSemanticCode,
     recomputeActiveBeanStocks: recomputeActiveBeanStocks,
     computeTotals: computeTotals,
+    calculateBagSizeGrams: calculateBagSizeGrams,
+    calculateGramsFromPercentage: calculateGramsFromPercentage,
+    calculatePercentageFromGrams: calculatePercentageFromGrams,
     parseOrderLineItems: parseOrderLineItems,
     computeBrowserHash: computeBrowserHash,
     ADMIN_PASSWORD_HASH: ADMIN_PASSWORD_HASH,

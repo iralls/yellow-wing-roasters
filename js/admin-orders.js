@@ -15,6 +15,10 @@
     root.computeStats = exp.computeStats;
     root.getStatusBadgeClass = exp.getStatusBadgeClass;
     root.computeBrowserHash = exp.computeBrowserHash;
+    root.extractOrderDate = exp.extractOrderDate;
+    root.parseOrderLineItems = exp.parseOrderLineItems;
+    root.parseCurrency = exp.parseCurrency;
+    root.computeOrderTotals = exp.computeOrderTotals;
     root.DEFAULT_MOCK_HASH = exp.DEFAULT_MOCK_HASH;
     root.DEFAULT_MOCK_PASSCODE = exp.DEFAULT_MOCK_PASSCODE;
   }
@@ -252,6 +256,237 @@
     return result;
   }
 
+  function extractOrderDate(timestampStr) {
+    var raw = String(timestampStr || '').trim();
+    if (!raw) return { year: 'Unknown', month: '00', yearMonth: 'Unknown' };
+
+    // Try MM/DD/YYYY format first (common Google Sheets & mock format)
+    var mdyMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (mdyMatch) {
+      var mm = mdyMatch[1].padStart(2, '0');
+      var yyyy = mdyMatch[3];
+      return {
+        year: yyyy,
+        month: mm,
+        yearMonth: yyyy + '-' + mm
+      };
+    }
+
+    // Try ISO YYYY-MM-DD
+    var isoMatch = raw.match(/^(\d{4})-(\d{1,2})/);
+    if (isoMatch) {
+      var y = isoMatch[1];
+      var m = isoMatch[2].padStart(2, '0');
+      return {
+        year: y,
+        month: m,
+        yearMonth: y + '-' + m
+      };
+    }
+
+    // Fallback: Date parse
+    var d = new Date(raw);
+    if (!isNaN(d.getTime())) {
+      var parsedY = String(d.getFullYear());
+      var parsedM = String(d.getMonth() + 1).padStart(2, '0');
+      return {
+        year: parsedY,
+        month: parsedM,
+        yearMonth: parsedY + '-' + parsedM
+      };
+    }
+
+    return { year: 'Unknown', month: '00', yearMonth: 'Unknown' };
+  }
+
+  function parseCurrency(val) {
+    if (typeof val === 'number') return isNaN(val) ? 0 : val;
+    if (!val) return 0;
+    var num = parseFloat(String(val).replace(/[^0-9.-]+/g, ''));
+    return isNaN(num) ? 0 : num;
+  }
+
+  function parseOrderLineItems(itemsStr) {
+    var raw = String(itemsStr || '').trim();
+    if (!raw) return [];
+    var parts = raw.split(/,\s*(?=\d+x\s)/i);
+    return parts.map(function (part) {
+      var clean = part.replace(/\s*\([^)]*\)\s*$/, '').trim();
+      var qtyMatch = clean.match(/^(\d+)x\s+/i);
+      var qty = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
+      var withoutQty = clean.replace(/^\d+x\s+/i, '').trim();
+      var sizeMatch = withoutQty.match(/\s+(\d+(?:oz|lb))$/i);
+      var bagSize = sizeMatch ? sizeMatch[1].toLowerCase() : '';
+      var product = sizeMatch
+        ? withoutQty.slice(0, withoutQty.length - sizeMatch[0].length).trim()
+        : withoutQty;
+      return {
+        qty: qty,
+        label: clean,
+        product: product,
+        bagSize: bagSize
+      };
+    });
+  }
+
+  function computeOrderTotals(orders, filters) {
+    orders = orders || [];
+    filters = filters || {};
+    var groupBy = filters.groupBy || 'month';
+
+    var summary = {
+      totalOrders: 0,
+      totalBags: 0,
+      totalRevenue: 0,
+      avgOrderValue: 0,
+      pickupCount: 0,
+      deliveryCount: 0,
+      deliveredCount: 0,
+      readyCount: 0,
+      inProgressCount: 0,
+      cancelledCount: 0
+    };
+
+    var groups = {};
+    function ensureGroup(key, label) {
+      if (!groups[key]) {
+        groups[key] = {
+          key: key,
+          label: label || key,
+          ordersCount: 0,
+          bagsCount: 0,
+          revenue: groupBy === 'product' ? null : 0,
+          avgOrderValue: null,
+          pickupCount: 0,
+          deliveryCount: 0,
+          deliveredCount: 0
+        };
+      }
+      return groups[key];
+    }
+
+    for (var i = 0; i < orders.length; i++) {
+      var ord = orders[i];
+      var ym = extractOrderDate(ord.timestamp);
+      var lineItems = parseOrderLineItems(ord.items);
+      var totalBagsInOrder = 0;
+      for (var b = 0; b < lineItems.length; b++) {
+        totalBagsInOrder += lineItems[b].qty;
+      }
+      var orderCost = parseCurrency(ord.total);
+
+      // Filters
+      if (filters.year && filters.year !== 'all' && ym.year !== filters.year) continue;
+      if (filters.month && filters.month !== 'all' && ym.month !== filters.month) continue;
+      if (filters.status && filters.status !== 'all' && ord.status !== filters.status) continue;
+      if (filters.deliveryMethod && filters.deliveryMethod !== 'all' && ord.deliveryMethod !== filters.deliveryMethod) continue;
+      if (filters.coffee && filters.coffee !== 'all') {
+        var matchesCoffee = lineItems.some(function (li) {
+          return li.product.toLowerCase() === filters.coffee.toLowerCase();
+        });
+        if (!matchesCoffee) continue;
+      }
+
+      // Summary accumulation
+      summary.totalOrders += 1;
+      summary.totalBags += totalBagsInOrder;
+      summary.totalRevenue = Number((summary.totalRevenue + orderCost).toFixed(2));
+      if (ord.deliveryMethod === 'Pickup') summary.pickupCount += 1;
+      if (ord.deliveryMethod === 'Hand delivery') summary.deliveryCount += 1;
+
+      var normStatus = (ord.status || '').toLowerCase();
+      if (normStatus === 'delivered') {
+        summary.deliveredCount += 1;
+      } else if (normStatus === 'ready for pickup' || normStatus === 'ready to deliver' || normStatus === 'out for delivery') {
+        summary.readyCount += 1;
+      } else if (normStatus === 'cancelled') {
+        summary.cancelledCount += 1;
+      } else {
+        summary.inProgressCount += 1;
+      }
+
+      // Grouping
+      if (groupBy === 'product') {
+        var productsInOrder = {};
+        for (var p = 0; p < lineItems.length; p++) {
+          var item = lineItems[p];
+          if (filters.coffee && filters.coffee !== 'all' && item.product.toLowerCase() !== filters.coffee.toLowerCase()) {
+            continue;
+          }
+          if (!productsInOrder[item.product]) {
+            productsInOrder[item.product] = {
+              product: item.product,
+              bagsCount: 0
+            };
+          }
+          productsInOrder[item.product].bagsCount += item.qty;
+        }
+
+        Object.keys(productsInOrder).forEach(function (prodName) {
+          var pData = productsInOrder[prodName];
+          var grpProd = ensureGroup(prodName, prodName);
+          grpProd.ordersCount += 1;
+          grpProd.bagsCount += pData.bagsCount;
+          if (ord.deliveryMethod === 'Pickup') grpProd.pickupCount += 1;
+          if (ord.deliveryMethod === 'Hand delivery') grpProd.deliveryCount += 1;
+          if (normStatus === 'delivered') grpProd.deliveredCount += 1;
+        });
+      } else {
+        var gKey = ym.yearMonth;
+        var gLabel = ym.yearMonth;
+        if (groupBy === 'year') {
+          gKey = ym.year;
+          gLabel = ym.year;
+        } else if (groupBy === 'deliveryMethod') {
+          gKey = ord.deliveryMethod || 'Other';
+          gLabel = ord.deliveryMethod || 'Other';
+        } else if (groupBy === 'status') {
+          gKey = ord.status || 'Unknown';
+          gLabel = ord.status || 'Unknown';
+        } else if (groupBy === 'city') {
+          var cityVal = (ord.city || '').trim();
+          if (!cityVal) {
+            cityVal = ord.deliveryMethod === 'Pickup' ? 'Pickup (No City)' : 'Unspecified';
+          }
+          gKey = cityVal;
+          gLabel = cityVal;
+        }
+
+        var grp = ensureGroup(gKey, gLabel);
+        grp.ordersCount += 1;
+        grp.bagsCount += totalBagsInOrder;
+        grp.revenue = Number((grp.revenue + orderCost).toFixed(2));
+        if (ord.deliveryMethod === 'Pickup') grp.pickupCount += 1;
+        if (ord.deliveryMethod === 'Hand delivery') grp.deliveryCount += 1;
+        if (normStatus === 'delivered') grp.deliveredCount += 1;
+      }
+    }
+
+    summary.avgOrderValue = summary.totalOrders > 0
+      ? Number((summary.totalRevenue / summary.totalOrders).toFixed(2))
+      : 0;
+
+    var rows = Object.keys(groups).map(function (k) {
+      var row = groups[k];
+      if (row.revenue !== null && row.ordersCount > 0) {
+        row.avgOrderValue = Number((row.revenue / row.ordersCount).toFixed(2));
+      }
+      return row;
+    });
+
+    rows.sort(function (a, b) {
+      if (groupBy === 'month' || groupBy === 'year') {
+        return b.key.localeCompare(a.key);
+      }
+      return b.ordersCount - a.ordersCount || a.label.localeCompare(b.label);
+    });
+
+    return {
+      summary: summary,
+      rows: rows
+    };
+  }
+
   function initAdminOrders(options) {
     options = options || {};
     var apiUrl = options.apiUrl || '';
@@ -275,8 +510,22 @@
     var queueContainer = document.getElementById('order-admin-queue');
     var inspectorContainer = document.getElementById('order-admin-inspector');
 
+    var tabsContainer = document.getElementById('order-admin-tabs');
+    var queuePanel = document.getElementById('order-admin-panel-queue');
+    var totalsPanel = document.getElementById('order-admin-panel-totals');
+
+    var totalsGroupBy = document.getElementById('order-totals-group-by');
+    var totalsFilterYear = document.getElementById('order-totals-filter-year');
+    var totalsFilterMonth = document.getElementById('order-totals-filter-month');
+    var totalsFilterStatus = document.getElementById('order-totals-filter-status');
+    var totalsFilterDelivery = document.getElementById('order-totals-filter-delivery');
+    var totalsFilterCoffee = document.getElementById('order-totals-filter-coffee');
+    var totalsKpisWrap = document.getElementById('order-totals-kpis');
+    var totalsTableWrap = document.getElementById('order-totals-table-wrap');
+
     var currentOrders = [];
     var activeFilter = 'all';
+    var activeTab = 'queue';
     var currentSearch = '';
     var selectedOrderId = null;
     var isMockModeActive = false;
@@ -558,6 +807,8 @@
               renderStats();
               renderQueue();
               renderInspector(order);
+              populateOrderTotalsFilters();
+              if (activeTab === 'totals') renderOrderTotalsTab();
 
               var newFeedbackDiv = document.getElementById('admin-status-feedback');
               newFeedbackDiv.className = 'order-admin-feedback order-admin-feedback--success';
@@ -697,6 +948,164 @@
       renderInspector(currentSelected);
     }
 
+    function switchToTab(targetTab) {
+      activeTab = targetTab;
+      if (tabsContainer) {
+        var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
+        tabBtns.forEach(function (b) {
+          var isTarget = b.getAttribute('data-tab') === targetTab;
+          if (isTarget) {
+            b.classList.add('roast-admin-tab-btn--active');
+            b.setAttribute('aria-selected', 'true');
+          } else {
+            b.classList.remove('roast-admin-tab-btn--active');
+            b.setAttribute('aria-selected', 'false');
+          }
+        });
+      }
+
+      if (queuePanel && totalsPanel) {
+        if (targetTab === 'queue') {
+          queuePanel.classList.add('roast-admin-panel--active');
+          totalsPanel.classList.remove('roast-admin-panel--active');
+          renderQueue();
+        } else if (targetTab === 'totals') {
+          queuePanel.classList.remove('roast-admin-panel--active');
+          totalsPanel.classList.add('roast-admin-panel--active');
+          renderOrderTotalsTab();
+        }
+      }
+    }
+
+    function populateOrderTotalsFilters() {
+      if (!totalsFilterYear || !totalsFilterCoffee) return;
+
+      var yearsSet = {};
+      currentOrders.forEach(function (o) {
+        var d = extractOrderDate(o.timestamp);
+        if (d.year && d.year !== 'Unknown') {
+          yearsSet[d.year] = true;
+        }
+      });
+      var years = Object.keys(yearsSet).sort().reverse();
+      var prevYear = totalsFilterYear.value || 'all';
+      var yearHtml = '<option value="all">All Years</option>';
+      years.forEach(function (y) {
+        yearHtml += '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
+      });
+      totalsFilterYear.innerHTML = yearHtml;
+      if (years.indexOf(prevYear) !== -1) {
+        totalsFilterYear.value = prevYear;
+      }
+
+      var coffeesSet = {};
+      currentOrders.forEach(function (o) {
+        var items = parseOrderLineItems(o.items);
+        items.forEach(function (it) {
+          if (it.product) {
+            coffeesSet[it.product] = true;
+          }
+        });
+      });
+      var coffees = Object.keys(coffeesSet).sort();
+      var prevCoffee = totalsFilterCoffee.value || 'all';
+      var coffeeHtml = '<option value="all">All Coffees</option>';
+      coffees.forEach(function (c) {
+        coffeeHtml += '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
+      });
+      totalsFilterCoffee.innerHTML = coffeeHtml;
+      if (coffees.indexOf(prevCoffee) !== -1) {
+        totalsFilterCoffee.value = prevCoffee;
+      }
+    }
+
+    function renderOrderTotalsTab() {
+      if (!totalsKpisWrap || !totalsTableWrap) return;
+
+      var result = computeOrderTotals(currentOrders, {
+        groupBy: totalsGroupBy ? totalsGroupBy.value : 'month',
+        year: totalsFilterYear ? totalsFilterYear.value : 'all',
+        month: totalsFilterMonth ? totalsFilterMonth.value : 'all',
+        status: totalsFilterStatus ? totalsFilterStatus.value : 'all',
+        deliveryMethod: totalsFilterDelivery ? totalsFilterDelivery.value : 'all',
+        coffee: totalsFilterCoffee ? totalsFilterCoffee.value : 'all'
+      });
+
+      var s = result.summary;
+      var deliveryPct = s.totalOrders > 0 ? ((s.deliveryCount / s.totalOrders) * 100).toFixed(0) : '0';
+
+      totalsKpisWrap.innerHTML =
+        '<div class="roast-admin-kpi-box">' +
+        '<div class="roast-admin-kpi-label">Order Revenue</div>' +
+        '<div class="roast-admin-kpi-value">$' + s.totalRevenue.toFixed(2) + '</div>' +
+        '<div class="roast-admin-kpi-sub">Avg Order: $' + s.avgOrderValue.toFixed(2) + '</div>' +
+        '</div>' +
+        '<div class="roast-admin-kpi-box">' +
+        '<div class="roast-admin-kpi-label">Total Volume</div>' +
+        '<div class="roast-admin-kpi-value">' + s.totalOrders + ' Orders</div>' +
+        '<div class="roast-admin-kpi-sub">' + s.totalBags + ' total bags ordered</div>' +
+        '</div>' +
+        '<div class="roast-admin-kpi-box">' +
+        '<div class="roast-admin-kpi-label">Fulfillment Method</div>' +
+        '<div class="roast-admin-kpi-value">' + s.pickupCount + ' Pickup · ' + s.deliveryCount + ' Delivery</div>' +
+        '<div class="roast-admin-kpi-sub">' + deliveryPct + '% hand delivered</div>' +
+        '</div>' +
+        '<div class="roast-admin-kpi-box">' +
+        '<div class="roast-admin-kpi-label">Fulfillment Status</div>' +
+        '<div class="roast-admin-kpi-value">' + s.deliveredCount + ' Completed</div>' +
+        '<div class="roast-admin-kpi-sub">' + s.readyCount + ' ready · ' + s.inProgressCount + ' in progress' + (s.cancelledCount > 0 ? ' · ' + s.cancelledCount + ' cancelled' : '') + '</div>' +
+        '</div>';
+
+      if (result.rows.length === 0) {
+        totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No orders match the selected period/filters.</div>';
+        return;
+      }
+
+      var currentGroupBy = totalsGroupBy ? totalsGroupBy.value : 'month';
+      var colHeader = currentGroupBy === 'product' ? 'Coffee / Product' : 'Group';
+
+      var html = '<table class="roast-admin-table">' +
+        '<thead><tr>' +
+        '<th>' + escapeHtml(colHeader) + '</th>' +
+        '<th style="text-align: right;">Orders</th>' +
+        '<th style="text-align: right;">Bags</th>' +
+        '<th style="text-align: right;">Revenue</th>' +
+        '<th style="text-align: right;">Avg Order</th>' +
+        '<th style="text-align: right;">Pickup</th>' +
+        '<th style="text-align: right;">Delivery</th>' +
+        '<th style="text-align: right;">Completed</th>' +
+        '</tr></thead><tbody>';
+
+      result.rows.forEach(function (r) {
+        var revStr = r.revenue !== null ? ('$' + r.revenue.toFixed(2)) : '—';
+        var avgStr = r.avgOrderValue !== null ? ('$' + r.avgOrderValue.toFixed(2)) : '—';
+        html += '<tr>' +
+          '<td><strong>' + escapeHtml(r.label) + '</strong></td>' +
+          '<td class="mono" style="text-align: right;">' + r.ordersCount + '</td>' +
+          '<td class="mono" style="text-align: right;">' + r.bagsCount + '</td>' +
+          '<td class="mono" style="text-align: right;">' + revStr + '</td>' +
+          '<td class="mono" style="text-align: right;">' + avgStr + '</td>' +
+          '<td class="mono" style="text-align: right;">' + r.pickupCount + '</td>' +
+          '<td class="mono" style="text-align: right;">' + r.deliveryCount + '</td>' +
+          '<td class="mono" style="text-align: right;">' + r.deliveredCount + '</td>' +
+          '</tr>';
+      });
+
+      html += '</tbody><tfoot>' +
+        '<tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+        '<td>Total</td>' +
+        '<td class="mono" style="text-align: right;">' + s.totalOrders + '</td>' +
+        '<td class="mono" style="text-align: right;">' + s.totalBags + '</td>' +
+        '<td class="mono" style="text-align: right;">$' + s.totalRevenue.toFixed(2) + '</td>' +
+        '<td class="mono" style="text-align: right;">$' + s.avgOrderValue.toFixed(2) + '</td>' +
+        '<td class="mono" style="text-align: right;">' + s.pickupCount + '</td>' +
+        '<td class="mono" style="text-align: right;">' + s.deliveryCount + '</td>' +
+        '<td class="mono" style="text-align: right;">' + s.deliveredCount + '</td>' +
+        '</tr></tfoot></table>';
+
+      totalsTableWrap.innerHTML = html;
+    }
+
     function loadOrders(passcode, callback) {
       var fetchUrl = apiUrl + (apiUrl.indexOf('?') === -1 ? '?' : '&') +
         'action=admin_list&adminKey=' + encodeURIComponent(passcode);
@@ -811,6 +1220,8 @@
           } else {
             renderStats();
             renderQueue();
+            populateOrderTotalsFilters();
+            if (activeTab === 'totals') renderOrderTotalsTab();
           }
         });
       });
@@ -825,6 +1236,25 @@
         showGate();
       });
     }
+
+    // Tab switching
+    if (tabsContainer) {
+      var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var t = btn.getAttribute('data-tab');
+          switchToTab(t);
+        });
+      });
+    }
+
+    // Totals filter change events
+    if (totalsGroupBy) totalsGroupBy.addEventListener('change', renderOrderTotalsTab);
+    if (totalsFilterYear) totalsFilterYear.addEventListener('change', renderOrderTotalsTab);
+    if (totalsFilterMonth) totalsFilterMonth.addEventListener('change', renderOrderTotalsTab);
+    if (totalsFilterStatus) totalsFilterStatus.addEventListener('change', renderOrderTotalsTab);
+    if (totalsFilterDelivery) totalsFilterDelivery.addEventListener('change', renderOrderTotalsTab);
+    if (totalsFilterCoffee) totalsFilterCoffee.addEventListener('change', renderOrderTotalsTab);
 
     // Filter pills
     if (filtersContainer) {
@@ -886,6 +1316,8 @@
         } else {
           renderStats();
           renderQueue();
+          populateOrderTotalsFilters();
+          if (activeTab === 'totals') renderOrderTotalsTab();
           if (currentSearch) {
             var targetId = currentSearch.replace(/^#/, '');
             var matchOrder = currentOrders.find(function (o) { return o.orderId === targetId; });
@@ -912,6 +1344,10 @@
     computeStats: computeStats,
     getStatusBadgeClass: getStatusBadgeClass,
     computeBrowserHash: computeBrowserHash,
+    extractOrderDate: extractOrderDate,
+    parseOrderLineItems: parseOrderLineItems,
+    parseCurrency: parseCurrency,
+    computeOrderTotals: computeOrderTotals,
     DEFAULT_MOCK_HASH: DEFAULT_MOCK_HASH,
     DEFAULT_MOCK_PASSCODE: DEFAULT_MOCK_PASSCODE,
     DEFAULT_SALT: DEFAULT_SALT,

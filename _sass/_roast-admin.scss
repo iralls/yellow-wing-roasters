@@ -330,6 +330,30 @@
     }
   }
 
+  tbody tr.roast-admin-row--under-1lb {
+    background: rgba(211, 84, 0, 0.09);
+
+    td {
+      border-bottom-color: rgba(211, 84, 0, 0.18);
+    }
+
+    &:hover {
+      background: rgba(211, 84, 0, 0.15);
+    }
+  }
+
+  tbody tr.roast-admin-row--under-2lb {
+    background: rgba(220, 165, 30, 0.12);
+
+    td {
+      border-bottom-color: rgba(220, 165, 30, 0.22);
+    }
+
+    &:hover {
+      background: rgba(220, 165, 30, 0.18);
+    }
+  }
+
   td.mono,
   .mono {
     font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -350,6 +374,8 @@
   color: #2c1e14;
   white-space: nowrap;
   text-decoration: none;
+  line-height: 1.25;
+  box-sizing: border-box;
 
   &--clickable {
     cursor: pointer;
@@ -362,6 +388,11 @@
       text-decoration: none;
     }
   }
+}
+
+button.roast-admin-id-chip {
+  cursor: pointer;
+  margin: 0;
 }
 
 .roast-admin-row-highlight {
@@ -420,6 +451,14 @@
     height: 26px;
     padding: 0.2rem 0.45rem;
     font-size: 0.73rem;
+  }
+}
+
+#pkg-components-container .roast-admin-component-row {
+  grid-template-columns: 1fr 4.2rem 5.8rem auto;
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr 3.8rem 4.8rem auto;
   }
 }
 
