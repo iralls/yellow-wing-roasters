@@ -186,12 +186,13 @@
   }
 
   .ywr-drawer-empty-img {
-    width: 3.75rem;
-    height: 3.75rem;
+    width: 6rem;
+    height: auto;
+    max-height: 5.5rem;
     object-fit: contain;
     display: block;
     margin: 0 auto;
-    opacity: 0.85;
+    opacity: 0.9;
     filter: drop-shadow(0 2px 8px rgba(44, 30, 20, 0.1));
   }
 

@@ -240,7 +240,7 @@
         if (items.length === 0) {
           dropdown.innerHTML =
             '<div class="cart-dropdown-empty">' +
-              '<p class="cart-dropdown-empty-msg">Your cart is empty</p>' +
+              '<p class="cart-dropdown-empty-msg">Your nest is empty</p>' +
               '<a href="' + escapeHtml(ROASTS_URL) + '" class="cart-dropdown-empty-btn">Explore Roasts &rarr;</a>' +
             '</div>';
         } else {

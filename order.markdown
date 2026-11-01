@@ -11,7 +11,7 @@ permalink: /order/
 </div>
 
 <div id="order-cart-empty" class="order-empty" style="display:none;">
-  <p>Your cart is empty.</p>
+  <p>Your nest is empty.</p>
   <a href="{{ '/roasts/' | relative_url }}" class="order-browse-link">Browse coffees &rarr;</a>
 </div>
 
