@@ -3,7 +3,7 @@ title: Bolivia Organic de Apolo
 slug: bolivia-organic-de-apolo
 category: single origin
 order: 8
-roast_level: 3
+roast_level: 4
 region: Apolo, Franz Tamayo, La Paz
 elevation: 1,200 – 1,700m
 descriptor: sweet and creamy
