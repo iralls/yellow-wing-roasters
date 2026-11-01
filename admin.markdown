@@ -23,7 +23,6 @@ sitemap: false
 <div class="order-admin-container" style="max-width: 42rem;">
 
   <div class="order-admin-header-compact roast-admin-header-compact">
-    <img src="{{ '/images/bean-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Admin" class="order-admin-bird-icon" fetchpriority="high" decoding="async">
     <h1 class="order-admin-page-title">Roaster Admin Portal</h1>
   </div>
 

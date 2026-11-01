@@ -7,7 +7,6 @@ sitemap: false
 
 <div class="roast-minimal-vertical">
   <div class="order-admin-header-compact roast-admin-header-compact">
-    <img src="{{ '/images/bean-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Email Composer" class="order-admin-bird-icon" fetchpriority="high" decoding="async">
     <h1 class="order-admin-page-title">Pigeon Post Composer</h1>
   </div>
 
