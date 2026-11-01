@@ -1478,6 +1478,7 @@
       var pkg = state.blendPackagingLogs.find(function (p) { return p.logId === logId; });
       editingPkgId = pkg.logId;
       pkgFormTitle.textContent = 'Edit Master Blend & Packaging (' + pkg.logId + ')';
+      pkgCancelEditBtn.textContent = 'Cancel Edit';
       pkgCancelEditBtn.style.display = 'inline-block';
       pkgSubmitBtn.textContent = 'Update Packaging Log ' + pkg.logId;
       pkgFeedback.style.display = 'none';
@@ -1505,9 +1506,49 @@
       updatePackagingPreview();
     }
 
+    function copyPackagingLog(logId) {
+      var pkg = state.blendPackagingLogs.find(function (p) { return p.logId === logId; });
+      if (!pkg) return;
+      editingPkgId = null;
+      pkgFormTitle.textContent = 'Record Master Blend & Packaging (Copy of ' + pkg.logId + ')';
+      pkgCancelEditBtn.textContent = 'Cancel';
+      pkgCancelEditBtn.style.display = 'inline-block';
+      pkgSubmitBtn.textContent = 'Save Blend / Packaging Log';
+      pkgFeedback.style.display = 'none';
+
+      pkgDate.value = todayIso();
+      pkgPurpose.value = pkg.purpose || 'Order';
+      syncPkgPurposeVisibility();
+      pkgOrderSelect.value = '';
+      pkgOrderId.value = '';
+      pkgProduct.value = pkg.product;
+      pkgBagSize.value = pkg.bagSize;
+      pkgNotes.value = '';
+
+      pkgCompsContainer.innerHTML = '';
+      var comps = pkg.roastComponents || [];
+      if (comps.length === 0) {
+        addPkgComponentRow();
+      } else {
+        comps.forEach(function (c) {
+          addPkgComponentRow(c.roastId, c.weightGrams);
+        });
+      }
+      setDrawerState('pkg-entry-drawer', true);
+      renderBlendPackagingTable();
+      updatePackagingPreview();
+
+      if (pkgPurpose.value === 'Order') {
+        pkgOrderSelect.focus();
+      } else {
+        pkgProduct.focus();
+      }
+    }
+
     function cancelEditPkg() {
       editingPkgId = null;
       pkgFormTitle.textContent = 'Record Master Blend & Packaging';
+      pkgCancelEditBtn.textContent = 'Cancel Edit';
       pkgCancelEditBtn.style.display = 'none';
       pkgSubmitBtn.textContent = 'Save Blend / Packaging Log';
       pkgDate.value = todayIso();
@@ -1577,7 +1618,10 @@
           '<td class="mono"><strong>' + totalGrams.toLocaleString() + ' g</strong></td>' +
           '<td>' + escapeHtml(p.bagSize) + '</td>' +
           '<td>' + escapeHtml(p.notes || '') + '</td>' +
-          '<td><button type="button" class="order-admin-btn-sm" data-edit-pkg="' + escapeHtml(p.logId) + '">Edit</button></td>' +
+          '<td style="white-space: nowrap;">' +
+          '<button type="button" class="order-admin-btn-sm" data-edit-pkg="' + escapeHtml(p.logId) + '">Edit</button> ' +
+          '<button type="button" class="order-admin-btn-sm" data-copy-pkg="' + escapeHtml(p.logId) + '" title="Copy blend and bag size to new packaging log">Copy</button>' +
+          '</td>' +
           '</tr>';
       });
 
@@ -1597,6 +1641,13 @@
       editPkgBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           startEditPkg(btn.getAttribute('data-edit-pkg'));
+        });
+      });
+
+      var copyPkgBtns = packagingTableWrap.querySelectorAll('[data-copy-pkg]');
+      copyPkgBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          copyPackagingLog(btn.getAttribute('data-copy-pkg'));
         });
       });
     }
