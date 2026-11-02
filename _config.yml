@@ -19,6 +19,7 @@ local_delivery_towns:
   - "Durham"
   - "Killingworth"
   - "East Haven"
+  - "Northford"
 
 # Centralized Google Forms Endpoints & Form Entries
 google_forms:
