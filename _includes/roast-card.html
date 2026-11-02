@@ -74,7 +74,11 @@
 {% endfor %}
 {% assign flavor_list = card_profiles | join: "," %}
 
+{% if include.is_picker or include.is_link == false %}
 <div class="roast-trans-card sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} roast-trans-card--dimmed sleek-roast-card--dimmed{% endif %}"
+{% else %}
+<a href="{{ r_url | relative_url }}" class="roast-trans-card sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} roast-trans-card--dimmed sleek-roast-card--dimmed{% endif %}"
+{% endif %}
      data-surface="linen"
      data-category="{{ r.category }}"
      data-type="{{ r.category | slugify }}"
@@ -96,11 +100,7 @@
      data-title="{{ r.title | escape }}">
 
   <!-- Artwork Plate -->
-  {% if include.is_picker or include.is_link == false %}
   <div class="roast-trans-plate sleek-card-visual">
-  {% else %}
-  <a href="{{ r_url | relative_url }}" class="roast-trans-plate sleek-card-visual" aria-label="{{ r.title }} details">
-  {% endif %}
     {% unless include.hide_badges %}
       <!-- Upper-Left: Category Tag Pill (Rectangle with rounded edges) -->
       <span class="roast-trans-cat-badge sleek-card-tag">
@@ -127,22 +127,14 @@
     {% if r.mascot_file %}
       <img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="{{ r.mascot_alt | default: r.title | escape }}" class="roast-trans-img sleek-card-mascot" loading="lazy" decoding="async">
     {% endif %}
-  {% if include.is_picker or include.is_link == false %}
   </div>
-  {% else %}
-  </a>
-  {% endif %}
 
   <!-- Card Body -->
   <div class="roast-trans-body sleek-card-body">
     <!-- Title & Price Row (Price on the right side) -->
     <div class="roast-trans-title-row">
       <h3 class="roast-trans-title sleek-card-title">
-        {% if include.is_picker or include.is_link == false %}
-          <span>{{ r.card_title | default: r.title }}</span>
-        {% else %}
-          <a href="{{ r_url | relative_url }}">{{ r.card_title | default: r.title }}</a>
-        {% endif %}
+        <span>{{ r.card_title | default: r.title }}</span>
       </h3>
 
       {% unless include.hide_price %}
@@ -199,19 +191,11 @@
         <div class="roast-trans-actions">
           <span class="roast-trans-archived-label">Coming Soon</span>
         </div>
-      {% elsif include.card_class contains "aviary-card" %}
-        <div class="roast-trans-actions">
-          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Details &rarr;</a>
-        </div>
-      {% elsif r.category == 'custom' %}
-        <div class="roast-trans-actions">
-          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">Customize</a>
-        </div>
-      {% elsif r.category == 'flight' %}
-        <div class="roast-trans-actions">
-          <a href="{{ r_url | relative_url }}" class="roast-trans-add-btn" style="text-decoration:none;">View Sampler</a>
-        </div>
       {% endif %}
     {% endunless %}
   </div>
+{% if include.is_picker or include.is_link == false %}
 </div>
+{% else %}
+</a>
+{% endif %}
