@@ -61,6 +61,10 @@ permalink: /roasts/
         <a href="{{ r_url | relative_url }}" class="min-cellar-name">{{ r.card_title | default: r.title }}</a>
         <span class="min-cellar-sub">{{ r.category }} · {{ r.descriptor | default: r.subtitle }}</span>
       </div>
+      <div class="min-cellar-level" title="Roast Level: {{ r.roast_level }}/5">
+        {% include roast-dots.html roast=r class="roast-dots-sm" %}
+        <span class="min-cellar-level-text">{{ site.data.roast_levels[r.roast_level].layman }}</span>
+      </div>
       <span class="min-cellar-origin">
         {% if r.origins %}
           {{ r.origins | join: ", " }}
