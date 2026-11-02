@@ -6,7 +6,14 @@ subtitle: "Book your own bootcamp"
 intro: "Want to step behind the roaster yourself? Pick any 12oz single-origin coffee, bring up to three people total, and join us for a personalized, hands-on roasting session."
 slug: book-your-own-bootcamp
 category: custom
-price: "$27 + $15/guest"
+price: "$30 + $15/guest"
+base_price: 30
+guest_fee: 15
+max_guests: 3
+session_fees:
+  1: 0
+  2: 15
+  3: 30
 data_roast: byob-bootcamp
 order: 4
 permalink: /roasts/book-your-own-bootcamp/
@@ -14,22 +21,12 @@ mascot_file: teacher-transparent.png
 mascot_alt: "Book Your Own Bootcamp mascot"
 descriptor: Book Your Own Bootcamp
 overlay_notes: "pick any 12oz single origin and book a personalized roasting session"
-max_guests: 3
-session_fees:
-  1: 15
-  2: 20
-  3: 25
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
 {% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
 {% assign first_so = active_so.first %}
-{% assign first_so_price = first_so.price["12oz"] %}
-{% if first_so.temporary_price and first_so.temporary_price["12oz"] %}
-  {% assign first_so_price = first_so.temporary_price["12oz"] %}
-{% endif %}
-{% assign first_fee = page.session_fees[1] %}
-{% assign initial_total = first_so_price | plus: first_fee %}
+{% assign initial_total = page.base_price | plus: page.session_fees[1] %}
 
 <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
   <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
@@ -80,7 +77,6 @@ session_fees:
           <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
           <span class="sleek-buy-price-val" id="byob-price-display">${{ initial_total }}</span>
         </div>
-        <span class="sleek-buy-price-note" id="byob-price-breakdown">${{ first_so_price }} (12oz bean) + ${{ first_fee }} (1 guest) &middot; Scheduled after checkout</span>
       </div>
 
       <div class="byob-burner-form" id="byob-bootcamp-form">
@@ -108,11 +104,11 @@ session_fees:
               {% assign g_num = entry[0] %}
               {% assign g_fee = entry[1] %}
               <option value="{{ g_num }}"{% if forloop.first %} selected{% endif %}>
-                {{ g_num }} {% if g_num == 1 %}Guest{% else %}Guests{% endif %} (+${{ g_fee }} session)
+                {{ g_num }} {% if g_num == 1 %}Guest (included){% else %}Guests (+${{ g_fee }}){% endif %}
               </option>
             {% endfor %}
           </select>
-          <span style="display: block; font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 400; color: #8a7f6e; margin-top: 0.35rem;">Sessions accommodate up to {{ page.max_guests }} guests maximum ($15 for 1, $20 for 2, $25 for 3).</span>
+          <span style="display: block; font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 400; color: #8a7f6e; margin-top: 0.35rem;">Sessions accommodate up to {{ page.max_guests }} guests maximum ($30 for 1 guest, +$15 for each additional guest).</span>
         </div>
 
         <!-- Step 3: Optional Notes -->
@@ -149,8 +145,8 @@ session_fees:
           <span class="sleek-spec-val">1 &ndash; {{ page.max_guests }} guests maximum</span>
         </div>
         <div class="sleek-spec-tile">
-          <span class="sleek-spec-label">Session Add-On</span>
-          <span class="sleek-spec-val">${{ page.session_fees[1] }} (1) &middot; ${{ page.session_fees[2] }} (2) &middot; ${{ page.session_fees[3] }} (3)</span>
+          <span class="sleek-spec-label">Pricing</span>
+          <span class="sleek-spec-val">${{ page.base_price }} (1 guest) &middot; ${{ page.base_price | plus: page.session_fees[2] }} (2 guests) &middot; ${{ page.base_price | plus: page.session_fees[3] }} (3 guests)</span>
         </div>
         <div class="sleek-spec-tile is-full-width">
           <span class="sleek-spec-label">Scheduling</span>
@@ -180,6 +176,7 @@ session_fees:
   };
 
   initBYOBBootcamp({
+    basePrice: {{ page.base_price }},
     origins: originsData,
     sessionFees: {{ page.session_fees | jsonify }},
     mascot: {{ page.mascot_file | jsonify }}

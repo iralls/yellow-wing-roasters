@@ -14,6 +14,7 @@
   'use strict';
 
   return function initBYOBBootcamp(config) {
+    var basePrice = config.basePrice;
     var origins = config.origins;
     var sessionFees = config.sessionFees;
     var mascot = config.mascot;
@@ -24,7 +25,6 @@
     var guestsSelect = document.getElementById('byob-guests-select');
     var notesTextarea = document.getElementById('byob-bootcamp-notes');
     var priceDisplay = document.getElementById('byob-price-display');
-    var priceBreakdown = document.getElementById('byob-price-breakdown');
     var addBtn = document.getElementById('byob-add-to-cart-btn');
 
     function getCurrentOrigin() {
@@ -35,13 +35,11 @@
       var orig = getCurrentOrigin();
       var guests = guestsSelect.value;
       var fee = sessionFees[guests];
-      var totalPrice = orig.price12oz + fee;
-      var guestWord = (guests === '1') ? 'guest' : 'guests';
+      var totalPrice = basePrice + fee;
 
       notesEl.textContent = 'Notes: ' + orig.tasting_notes;
       prescribedEl.textContent = 'Prescribed baseline: ' + orig.prescribed_level;
       priceDisplay.textContent = '$' + totalPrice;
-      priceBreakdown.innerHTML = '$' + orig.price12oz + ' (12oz bean) + $' + fee + ' (' + guests + ' ' + guestWord + ') &middot; Scheduled after checkout';
     }
 
     originSelect.addEventListener('change', updateState);
@@ -62,7 +60,7 @@
         title: 'BYOB: ' + orig.title,
         subtitle: 'Roasting Bootcamp (' + guestsLabel + ')',
         size: '12oz',
-        price: orig.price12oz + fee,
+        price: basePrice + fee,
         mascot: mascot,
         notes: notesTextarea.value.trim(),
         qty: 1
