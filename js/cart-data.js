@@ -41,7 +41,7 @@ window.YWR_ROASTS_DATA = {
             {% endif %}
           {% endfor %}
         {% elsif r.price %}
-          "12oz": {{ r.price }}
+          "12oz": {{ r.price | jsonify }}
         {% elsif r.price_per_bag %}
           "bag": {{ r.price_per_bag }}
         {% endif %}

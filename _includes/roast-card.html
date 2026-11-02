@@ -147,7 +147,14 @@
           {% elsif r.price and r.price.first %}
             ${{ r.price.first[1] }}
           {% elsif r.price %}
-            ${{ r.price }}
+            {% assign p_str = r.price | append: "" %}
+            {% assign p_num = p_str | plus: 0 %}
+            {% assign p_num_str = p_num | append: "" %}
+            {% if p_str == p_num_str and p_num > 0 %}
+              ${{ r.price }}
+            {% else %}
+              {{ r.price }}
+            {% endif %}
           {% elsif r.price_per_bag %}
             ${{ r.price_per_bag }}
           {% endif %}

@@ -6,6 +6,7 @@ subtitle: "Bank your own burner"
 intro: "Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order."
 slug: bank-your-own-burner
 category: custom
+price: "Cost of Selected Bean"
 data_roast: byob-burner
 order: 3
 permalink: /roasts/bank-your-own-burner/

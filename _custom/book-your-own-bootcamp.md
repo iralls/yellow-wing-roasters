@@ -6,6 +6,7 @@ subtitle: "Book your own bootcamp"
 intro: "Want to step behind the roaster yourself? Pick any 12oz single-origin coffee, bring up to three people total, and join us for a personalized, hands-on roasting session."
 slug: book-your-own-bootcamp
 category: custom
+price: "$27 + $15/guest"
 data_roast: byob-bootcamp
 order: 4
 permalink: /roasts/book-your-own-bootcamp/

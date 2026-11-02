@@ -6,6 +6,7 @@ subtitle: "Bring your own beans"
 intro: "Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest."
 slug: bring-your-own-beans
 category: custom
+price: "Custom Quote"
 data_roast: byob
 order: 2
 permalink: /roasts/bring-your-own-beans/
