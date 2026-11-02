@@ -47,10 +47,10 @@ def get_feather_source():
 
 def get_fonts(title_size, sub_size, tag_size):
     f_title = ImageFont.truetype(FONT_MONTSERRAT, title_size)
-    f_title.set_variation_by_axes([900])  # Montserrat Black / 900
+    f_title.set_variation_by_axes([500])  # Montserrat Medium / 500 (matches .brand-header-name)
     
     f_sub = ImageFont.truetype(FONT_MONTSERRAT, sub_size)
-    f_sub.set_variation_by_axes([600])    # Montserrat Medium-SemiBold
+    f_sub.set_variation_by_axes([500])    # Montserrat Medium / 500 (matches .brand-header-sub)
     
     f_tag = ImageFont.truetype(FONT_LORA, tag_size)
     return f_title, f_sub, f_tag
@@ -104,7 +104,7 @@ def create_portrait_post(feather, output_path, bg_color=BG_CREAM, dark_mode=Fals
     text_y = start_y + target_h + 50
     render_spaced_text(draw, "YELLOW WING", 540, text_y, f_title, gold_col, tracking=10)
     render_spaced_text(draw, "ROASTERS", 540, text_y + 75, f_sub, sub_col, tracking=16)
-    draw.text((540, text_y + 140), "Small-batch coffee roasting.", font=f_tag, fill=tag_col, anchor="mt")
+    draw.text((540, text_y + 140), "Wake up with a chirp", font=f_tag, fill=tag_col, anchor="mt")
     
     img.save(output_path, "PNG", optimize=True)
     print(f"  ✓ {output_path} (1080x1350)")
@@ -128,7 +128,7 @@ def create_square_post(feather, output_path, bg_color=BG_CREAM, dark_mode=False)
     text_y = start_y + target_h + 40
     render_spaced_text(draw, "YELLOW WING", 540, text_y, f_title, gold_col, tracking=8)
     render_spaced_text(draw, "ROASTERS", 540, text_y + 64, f_sub, sub_col, tracking=14)
-    draw.text((540, text_y + 118), "Small-batch coffee roasting.", font=f_tag, fill=tag_col, anchor="mt")
+    draw.text((540, text_y + 118), "Wake up with a chirp", font=f_tag, fill=tag_col, anchor="mt")
     
     img.save(output_path, "PNG", optimize=True)
     print(f"  ✓ {output_path} (1080x1080)")
@@ -152,7 +152,7 @@ def create_story(feather, output_path, bg_color=BG_CREAM, dark_mode=False):
     text_y = start_y + target_h + 60
     render_spaced_text(draw, "YELLOW WING", 540, text_y, f_title, gold_col, tracking=10)
     render_spaced_text(draw, "ROASTERS", 540, text_y + 80, f_sub, sub_col, tracking=16)
-    draw.text((540, text_y + 148), "Small-batch coffee roasting.", font=f_tag, fill=tag_col, anchor="mt")
+    draw.text((540, text_y + 148), "Wake up with a chirp", font=f_tag, fill=tag_col, anchor="mt")
     
     img.save(output_path, "PNG", optimize=True)
     print(f"  ✓ {output_path} (1080x1920)")
@@ -176,7 +176,7 @@ def create_og_card(feather, output_path, bg_color=BG_CREAM, dark_mode=False):
     text_y = start_y + target_h + 28
     render_spaced_text(draw, "YELLOW WING", 600, text_y, f_title, gold_col, tracking=7)
     render_spaced_text(draw, "ROASTERS", 600, text_y + 52, f_sub, sub_col, tracking=13)
-    draw.text((600, text_y + 98), "Small-batch coffee roasting.", font=f_tag, fill=tag_col, anchor="mt")
+    draw.text((600, text_y + 98), "Wake up with a chirp", font=f_tag, fill=tag_col, anchor="mt")
     
     img.save(output_path, "PNG", optimize=True)
     print(f"  ✓ {output_path} (1200x630)")

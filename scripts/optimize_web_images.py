@@ -4,7 +4,7 @@ Optimizes web images in images/ directory:
 - Constrains dimensions to max 800x800 bounding box using high-quality Lanczos resampling
 - Quantizes RGBA to 256 colors using Fast Octree algorithm with alpha preservation
 - Saves with optimize=True
-- Excludes favicon.png, social-preview-v2.png, and non-image directories
+- Excludes favicon.png, social/ directory, and non-image directories
 """
 
 import os
@@ -12,7 +12,7 @@ import sys
 from PIL import Image
 
 IMAGES_DIR = "images"
-EXCLUDED = {"favicon.png", "social-preview-v2.png"}
+EXCLUDED = {"favicon.png", "social"}
 MAX_DIM = (800, 800)
 
 def main():
