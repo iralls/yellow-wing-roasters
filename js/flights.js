@@ -69,10 +69,6 @@
         } else {
           optionsEls[i].classList.remove('is-selected');
         }
-        var ctaEl = optionsEls[i].querySelector('.pyo-card-cta');
-        if (ctaEl) {
-          ctaEl.innerHTML = isSelected ? 'Selected &check;' : 'Select &plus;';
-        }
       }
     }
 

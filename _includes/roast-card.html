@@ -115,6 +115,7 @@
 
     {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "gift-option" %}
       <span class="gift-type-badge">&#10003; Selected</span>
+      <span class="pyo-hover-overlay">Select</span>
     {% endif %}
 
     <!-- Upper-Right: Roast Level Dots Meter (NO "Best Seller" pill) -->
@@ -178,10 +179,6 @@
       {% if include.cta_text %}
         <div class="roast-trans-actions">
           <span class="roast-trans-archived-label">{{ include.cta_text }}</span>
-        </div>
-      {% elsif include.is_picker or include.card_class contains "pyo-option" %}
-        <div class="roast-trans-actions">
-          <span class="roast-trans-add-btn pyo-card-cta">Select &plus;</span>
         </div>
       {% elsif r.status == 'flown_south' %}
         <div class="roast-trans-actions">

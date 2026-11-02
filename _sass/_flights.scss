@@ -2,6 +2,7 @@
 .pyo-option {
   cursor: pointer;
   user-select: none;
+  position: relative;
 }
 
 .roast-trans-card.pyo-option,
@@ -23,13 +24,6 @@
     .gift-type-badge {
       display: inline-block;
     }
-
-    .pyo-card-cta {
-      background: #f0c838;
-      border-color: #f0c838;
-      color: #2c1e14;
-      font-weight: 700;
-    }
   }
 
   &.is-selected:hover {
@@ -38,6 +32,36 @@
       0 0 0 2.5px #f0c838,
       0 16px 36px rgba(44, 30, 20, 0.12);
     transform: translateY(-4px);
+  }
+}
+
+.pyo-hover-overlay {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 5;
+  font-family: $font-display;
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(44, 30, 20, 0.85);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: translateY(2px);
+
+  .pyo-option:hover:not(.is-selected) & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pyo-option.is-selected & {
+    display: none;
   }
 }
 
