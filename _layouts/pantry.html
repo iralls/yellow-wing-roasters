@@ -1,0 +1,138 @@
+---
+layout: default
+---
+
+<div class="sleek-detail-layout">
+  <!-- Left Column: Artwork Showcase -->
+  <div class="sleek-detail-visual-col">
+    {% if page.mascot_file %}
+      <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" alt="{{ page.mascot_alt | default: page.title | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
+      {% assign m_name = site.data.mascots[page.mascot] %}
+      {% if m_name %}
+        <div class="sleek-detail-bird-label">{{ m_name }}</div>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <!-- Right Column: Purchasing & Specifications -->
+  <div class="sleek-detail-info-col">
+    <!-- Category Badge -->
+    <div class="sleek-detail-category-row">
+      <span class="sleek-detail-cat-badge">PANTRY &amp; TREATS</span>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <h1 class="sleek-detail-title">{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <div class="sleek-detail-subtitle">{{ page.subtitle }}</div>
+    {% endif %}
+
+    <!-- Product Description -->
+    <div class="sleek-detail-description">
+      {% if page.intro %}
+        <p>{{ page.intro }}</p>
+      {% endif %}
+      {{ content }}
+    </div>
+
+    <!-- Tactile Unboxed Buy Box -->
+    <div class="sleek-detail-buy-box">
+      <div class="sleek-buy-price-row">
+        <div>
+          <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
+          <span class="sleek-buy-price-val">${{ page.price }}</span>
+        </div>
+        {% if page.size %}
+          <span class="sleek-buy-price-note">{{ page.size }}</span>
+        {% else %}
+          <span class="sleek-buy-price-note">Craft Pantry Offering</span>
+        {% endif %}
+      </div>
+
+      <button type="button" class="sleek-buy-add-btn add-to-order-btn" id="pantry-add-btn">
+        Add to Cart
+      </button>
+    </div>
+
+    <!-- Specifications Grid -->
+    <div class="sleek-spec-wrap">
+      <div class="sleek-spec-section-header">
+        <h2 class="sleek-spec-heading">Item Specifications</h2>
+        <span class="sleek-spec-subheading">Product &amp; Craft Details</span>
+      </div>
+
+      <div class="sleek-spec-grid">
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Item</span>
+          <span class="sleek-spec-val">{{ page.title }}</span>
+        </div>
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Type</span>
+          <span class="sleek-spec-val">{{ page.subtitle }}</span>
+        </div>
+        {% if page.size %}
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Size</span>
+          <span class="sleek-spec-val">{{ page.size }}</span>
+        </div>
+        {% endif %}
+        <div class="sleek-spec-tile">
+          <span class="sleek-spec-label">Category</span>
+          <span class="sleek-spec-val">Pantry &amp; Treats</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('pantry-add-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+      var item = {
+        type: 'pantry',
+        slug: {{ page.slug | jsonify }},
+        title: {{ page.title | jsonify }},
+        subtitle: {{ page.subtitle | jsonify }},
+        {% if page.size %}size: {{ page.size | jsonify }},{% endif %}
+        price: {{ page.price }},
+        mascot: {{ page.mascot_file | jsonify }},
+        qty: 1
+      };
+
+      var added = window.ywrAddToCart(item, 1);
+      if (added) {
+        btn.textContent = 'Added!';
+        btn.disabled = true;
+        setTimeout(function () {
+          btn.textContent = 'Add to Cart';
+          btn.disabled = false;
+        }, 1200);
+      } else {
+        console.error('Failed to add pantry item to cart:', item);
+      }
+    });
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ page.title | jsonify }},
+  "image": {{ page.mascot_file | prepend: '/images/' | absolute_url | jsonify }},
+  "description": {{ page.intro | jsonify }},
+  "brand": {
+    "@type": "Brand",
+    "name": "Yellow Wing Roasters"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "{{ page.price }}",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>

@@ -172,7 +172,7 @@
     {% endif %}
 
     <!-- Tasting Note Pills (Mimicking minimal/coffees/ notes tags) -->
-    {% if r.tasting_notes %}
+    {% if r.tasting_notes and r.category != "pantry" %}
       {% assign notes_arr = r.tasting_notes | replace: ", ", " · " | split: " · " %}
       <div class="roast-trans-notes">
         {% for n in notes_arr limit:3 %}

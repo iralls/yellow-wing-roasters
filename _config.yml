@@ -139,6 +139,9 @@ collections:
   custom:
     output: true
     permalink: /roasts/:path/
+  pantry:
+    output: true
+    permalink: /pantry/:path/
 
 # Default layouts per collection
 defaults:
@@ -168,6 +171,12 @@ defaults:
     values:
       layout: default
       category: custom
+  - scope:
+      path: ""
+      type: pantry
+    values:
+      layout: pantry
+      category: pantry
 
 category_order:
   - blend
