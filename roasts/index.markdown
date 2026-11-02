@@ -85,13 +85,6 @@ permalink: /roasts/
           <span class="roast-trans-archived-label">Seasonal Archive</span>
         {% elsif r.status == 'incubating' or s_info.dim_card %}
           <span class="roast-trans-archived-label">Coming Soon</span>
-        {% else %}
-          <button type="button"
-                  class="min-cellar-quick-add roasts-entry-quick-add"
-                  data-slug="{{ r.slug }}"
-                  data-size="12oz">
-            + Add
-          </button>
         {% endif %}
       </div>
     </div>
