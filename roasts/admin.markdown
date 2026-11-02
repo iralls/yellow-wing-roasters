@@ -308,7 +308,14 @@ sitemap: false
       </div>
 
       <div class="roast-admin-card">
-        <h3 class="roast-admin-card-title">Master Blend &amp; Packaging Log</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.85rem;">
+          <h3 class="roast-admin-card-title" style="margin: 0;">Master Blend &amp; Packaging Log</h3>
+          <div id="pkg-filter-pills" class="order-admin-filters">
+            <button type="button" class="order-admin-filter-pill order-admin-filter-pill--active" data-pkg-filter="all">All Logs</button>
+            <button type="button" class="order-admin-filter-pill" data-pkg-filter="orders">Customer Orders Only</button>
+            <button type="button" class="order-admin-filter-pill" data-pkg-filter="non-orders">Sample / Personal Only</button>
+          </div>
+        </div>
         <div id="roast-admin-packaging-table-wrap" class="roast-admin-table-wrap"></div>
       </div>
     </div>
@@ -317,16 +324,19 @@ sitemap: false
     <div id="roast-admin-panel-totals" class="roast-admin-panel">
       <div class="roast-admin-card">
         <h3 class="roast-admin-card-title">Totals &amp; Historical Rollups</h3>
+        <div id="roast-totals-mode-pills" class="order-admin-filters" style="margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #ebd9c8;">
+          <button type="button" class="order-admin-filter-pill order-admin-filter-pill--active" data-totals-mode="roasting">Roasting Totals</button>
+          <button type="button" class="order-admin-filter-pill" data-totals-mode="orders">Green Bean Orders</button>
+        </div>
         <div class="roast-admin-totals-bar">
-          <div class="roast-admin-field" style="min-width: 9rem;">
-            <label for="totals-group-by">Group By</label>
-            <select id="totals-group-by" class="roast-admin-select">
-              <option value="month">Month (YYYY-MM)</option>
-              <option value="year">Year (YYYY)</option>
-              <option value="bean">Green Bean</option>
-              <option value="supplier">Supplier</option>
-              <option value="purpose">Purpose (Order / Sample / Personal)</option>
-            </select>
+          <div class="roast-admin-field" style="flex: 1 1 100%; margin-bottom: 0.5rem;">
+            <label style="display: block; margin-bottom: 0.35rem; font-size: 0.8rem; font-weight: 600; color: #6e5e54;">Group By (select any combination):</label>
+            <div id="roast-totals-group-pills" class="order-admin-filters">
+              <button type="button" class="order-admin-filter-pill order-admin-filter-pill--active" data-group="month">Month</button>
+              <button type="button" class="order-admin-filter-pill" data-group="year">Year</button>
+              <button type="button" class="order-admin-filter-pill" data-group="bean">Green Bean</button>
+              <button type="button" class="order-admin-filter-pill" data-group="supplier">Supplier</button>
+            </div>
           </div>
           <div class="roast-admin-field" style="min-width: 8rem;">
             <label for="totals-filter-year">Filter Year</label>
@@ -356,6 +366,15 @@ sitemap: false
             <label for="totals-filter-bean">Filter Bean</label>
             <select id="totals-filter-bean" class="roast-admin-select">
               <option value="all">All Beans</option>
+            </select>
+          </div>
+          <div id="totals-filter-purpose-wrap" class="roast-admin-field" style="min-width: 11rem; display: none;">
+            <label for="totals-filter-purpose">Filter Order / Purpose</label>
+            <select id="totals-filter-purpose" class="roast-admin-select">
+              <option value="all">All Purposes</option>
+              <option value="Order">Customer Orders Only</option>
+              <option value="Sample">Sample Only</option>
+              <option value="Personal">Personal Only</option>
             </select>
           </div>
         </div>

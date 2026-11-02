@@ -100,16 +100,17 @@ sitemap: false
       <div class="roast-admin-card">
         <h3 class="roast-admin-card-title">Order Totals &amp; Historical Rollups</h3>
         <div class="roast-admin-totals-bar">
-          <div class="roast-admin-field" style="min-width: 9rem;">
-            <label for="order-totals-group-by">Group By</label>
-            <select id="order-totals-group-by" class="roast-admin-select">
-              <option value="month">Month (YYYY-MM)</option>
-              <option value="year">Year (YYYY)</option>
-              <option value="size">Bag Size (12oz, 1lb...)</option>
-              <option value="deliveryMethod">Delivery Method</option>
-              <option value="status">Fulfillment Status</option>
-              <option value="city">Town / City</option>
-            </select>
+          <div class="roast-admin-field" style="flex: 1 1 100%; margin-bottom: 0.5rem;">
+            <label style="display: block; margin-bottom: 0.35rem; font-size: 0.8rem; font-weight: 600; color: #6e5e54;">Group By (select any combination):</label>
+            <div id="order-totals-group-pills" class="order-admin-filters">
+              <button type="button" class="order-admin-filter-pill order-admin-filter-pill--active" data-group="month">Month</button>
+              <button type="button" class="order-admin-filter-pill" data-group="year">Year</button>
+              <button type="button" class="order-admin-filter-pill" data-group="roast">Roast</button>
+              <button type="button" class="order-admin-filter-pill" data-group="size">Bag Size</button>
+              <button type="button" class="order-admin-filter-pill" data-group="deliveryMethod">Delivery Method</button>
+              <button type="button" class="order-admin-filter-pill" data-group="status">Status</button>
+              <button type="button" class="order-admin-filter-pill" data-group="city">City</button>
+            </div>
           </div>
           <div class="roast-admin-field" style="min-width: 8rem;">
             <label for="order-totals-filter-year">Filter Year</label>
@@ -135,10 +136,23 @@ sitemap: false
               <option value="12">12 — Dec</option>
             </select>
           </div>
+          <div class="roast-admin-field" style="min-width: 10rem;">
+            <label for="order-totals-filter-roast">Filter Roast</label>
+            <select id="order-totals-filter-roast" class="roast-admin-select">
+              <option value="all">All Roasts</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="order-totals-filter-size">Filter Size</label>
+            <select id="order-totals-filter-size" class="roast-admin-select">
+              <option value="all">All Sizes</option>
+            </select>
+          </div>
           <div class="roast-admin-field" style="min-width: 9rem;">
             <label for="order-totals-filter-status">Filter Status</label>
             <select id="order-totals-filter-status" class="roast-admin-select">
-              <option value="all">All Statuses</option>
+              <option value="all">Active Orders (Non-Cancelled)</option>
+              <option value="all_with_cancelled">All Orders (Inc. Cancelled)</option>
               <option value="Received">Received</option>
               <option value="Delayed">Delayed</option>
               <option value="Roasted">Roasted</option>
@@ -154,12 +168,6 @@ sitemap: false
               <option value="all">All Methods</option>
               <option value="Pickup">Pickup</option>
               <option value="Hand delivery">Hand delivery</option>
-            </select>
-          </div>
-          <div class="roast-admin-field" style="min-width: 9rem;">
-            <label for="order-totals-filter-size">Filter Size</label>
-            <select id="order-totals-filter-size" class="roast-admin-select">
-              <option value="all">All Sizes</option>
             </select>
           </div>
         </div>

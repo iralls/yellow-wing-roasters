@@ -71,7 +71,7 @@ overlay_notes: "pick any single origin and customize your roast level"
           <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
           <span class="sleek-buy-price-val" id="byob-price-display">${{ first_so_price }}</span>
         </div>
-        <span class="sleek-buy-price-note">Roasted to order &middot; Ships fresh</span>
+        <span class="sleek-buy-price-note">Roasted to order</span>
       </div>
 
       <div class="byob-burner-form" id="byob-burner-form">

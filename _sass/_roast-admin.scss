@@ -312,6 +312,40 @@
     background: #fbf9f6;
     border-bottom: 1px solid #d8cec1;
     white-space: nowrap;
+
+    &.roast-admin-th-sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        background: #f1eae0;
+        color: #2c1e14;
+
+        .roast-admin-sort-icon {
+          opacity: 0.85;
+          color: #6e5e54;
+        }
+      }
+
+      &.is-sorted {
+        color: #9c4129;
+        background: #f4eee5;
+
+        .roast-admin-sort-icon {
+          color: #9c4129;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .roast-admin-sort-icon {
+    display: inline-block;
+    margin-left: 0.3rem;
+    font-size: 0.65rem;
+    opacity: 0.35;
+    vertical-align: middle;
   }
 
   tbody tr:hover {

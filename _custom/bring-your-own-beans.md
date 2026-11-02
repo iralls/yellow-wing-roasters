@@ -46,7 +46,7 @@ overlay_notes: "send us your green beans and we'll roast them to perfection"
         <ol style="margin: 0; padding-left: 1.2rem; font-family: Lora, serif; font-size: 0.9rem; line-height: 1.7; color: #5e5248;">
           <li style="margin-bottom: 0.4rem;">Browse green coffee beans from any of our approved suppliers above.</li>
           <li style="margin-bottom: 0.4rem;">Paste the direct link, specify your target roast profile, and choose quantity.</li>
-          <li>We procure the lot, custom-fire the batch, and ship it freshly rested.</li>
+          <li>We procure the lot, custom-fire the batch, and prepare it freshly rested.</li>
         </ol>
       </div>
     </div>
