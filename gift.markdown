@@ -399,6 +399,8 @@ permalink: /gift/
     Total: <span id="gift-price-display">$0</span>
   </div>
 
+  <p class="gift-payment-note">We will reach out to you directly via email to coordinate payment details.</p>
+
   <div class="order-actions gift-actions">
     <button type="submit" class="order-submit">Order Corvid care packages</button>
   </div>
