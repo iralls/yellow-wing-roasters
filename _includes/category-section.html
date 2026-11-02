@@ -13,6 +13,8 @@
   {% assign items = site.custom | sort: "order" %}
 {% elsif cat == "flight" or cat == "flights" %}
   {% assign items = site.flights | sort: "order" %}
+{% elsif cat == "pantry" %}
+  {% assign items = site.pantry | sort: "order" %}
 {% elsif cat == "subscriptions" or cat == "subscription" %}
   {% assign items = site.subscriptions | sort: "order" %}
 {% else %}
