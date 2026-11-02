@@ -599,12 +599,12 @@
     });
   }
 
-  // Enable/disable Add to Order button
+  // Enable/disable Add to Cart button
   function validateForm() {
     if (selectedBeans.length > 0) {
       submitBtn.disabled = false;
       submitBtn.classList.remove('add-to-order-btn--disabled');
-      submitBtn.textContent = 'Add to Cart — $' + config.price;
+      submitBtn.textContent = 'Add to Cart';
     } else {
       submitBtn.disabled = true;
       submitBtn.classList.add('add-to-order-btn--disabled');

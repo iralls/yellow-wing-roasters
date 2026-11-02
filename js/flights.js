@@ -25,7 +25,7 @@
         addBtn.textContent = 'Added!';
         addBtn.disabled = true;
         setTimeout(function () {
-          addBtn.textContent = 'Add to Order — $' + options.price;
+          addBtn.textContent = 'Add to Cart';
           addBtn.disabled = false;
         }, 1200);
       } else {
@@ -56,7 +56,7 @@
         addBtn.classList.add('add-to-order-btn--disabled');
       } else {
         countEl.textContent = 'Your picks (' + count + '):';
-        addBtn.textContent = 'Add to order — $' + price;
+        addBtn.textContent = 'Add to Cart';
         addBtn.disabled = false;
         addBtn.classList.remove('add-to-order-btn--disabled');
       }

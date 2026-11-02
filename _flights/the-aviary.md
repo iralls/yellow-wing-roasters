@@ -39,7 +39,7 @@ descriptor: "a sample pack of our most popular blends"
 </div>
 
 <div class="roast-mv-center" id="add-to-cart-wrap" style="text-align:center;">
-  <button class="add-to-order-btn" id="aviary-add-btn">Add to Order — ${{ page.price }}</button>
+  <button class="add-to-order-btn" id="aviary-add-btn">Add to Cart</button>
 </div>
 
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
