@@ -28,4 +28,6 @@ subscription:
     - Monthly
 description: >-
   This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.
+fun_fact: >-
+  A great horned owl's feather edges are lined with microscopic comb-like fringes that break up air turbulence, making its flight virtually silent.
 ---

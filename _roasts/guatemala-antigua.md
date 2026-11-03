@@ -27,4 +27,6 @@ subscription:
     - Monthly
 description: >-
   A rich, comforting cup with a deep, velvety body. You'll get classic notes of dark chocolate and toasted spice, with a smooth, lingering sweetness.
+fun_fact: >-
+  Ospreys have reversible outer toes and barbed footpads that let them grip slippery fish and carry them headfirst to reduce wind drag in flight.
 ---

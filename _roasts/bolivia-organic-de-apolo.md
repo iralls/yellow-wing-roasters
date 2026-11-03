@@ -27,4 +27,6 @@ subscription:
     - Monthly
 description: >-
   A smooth, creamy cup featuring sweet dark chocolate with a touch of citrus brightness and a clean finish.
+fun_fact: >-
+  Belted kingfishers dive headfirst into water with a specialized translucent third eyelid that acts like a pair of underwater swimming goggles.
 ---

@@ -13,6 +13,8 @@ frequencies:
   - Monthly
 price:
   12oz: 5
+fun_fact: >-
+  Many birds begin incubating before their final egg is laid; the last chick to hatch — the runt — makes up for its late start by begging the loudest at feeding time.
 ---
 
 Beans that didn't make the cut — test roasts, experimental profiles, and one-off batches that didn't quite land where we wanted. Each month, you'll get a 12oz bag. Every one is a little different, and that's the fun of it.

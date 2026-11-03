@@ -28,4 +28,6 @@ beans:
   - Bolivia Fair Trade Organic
 description: >-
   A romantic Valentine's Day blend roasted to a balanced Full City profile. Combines fruit-forward Ethiopia Wush Wush Natural with creamy Bolivia Fair Trade Washed for rich layers of sweet blueberry, dark cherry, and smooth milk chocolate.
+fun_fact: >-
+  Lovebirds form lifelong monogamous pairs and feed one another beak-to-beak to reinforce their bond after time apart.
 ---

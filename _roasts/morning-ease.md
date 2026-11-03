@@ -19,4 +19,6 @@ price:
 published: false
 description: >-
   Nothing to mourn here! All the smooth, nutty, mild-chocolate character of a great morning cup, without the caffeine.
+fun_fact: >-
+  A mourning dove's distinctive whistling takeoff doesn't come from its throat — it's produced by air rushing through specialized stiff outer wing feathers.
 ---

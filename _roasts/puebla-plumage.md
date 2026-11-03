@@ -30,4 +30,6 @@ beans:
   - Brazil Estavam Mario
 description: >-
   A celebratory Cinco de Mayo blend roasted to a balanced Full City profile. Combines Guatemala Antigua Washed, Bolivia Fair Trade Washed, and Brazil Estavam Mário Natural for a rich, smooth cup with notes of bittersweet chocolate, sweet fig, and toasted hazelnut.
+fun_fact: >-
+  A symbol on Mexico's coat of arms since the founding of Tenochtitlan, the golden eagle can reach diving speeds of over 150 miles per hour.
 ---

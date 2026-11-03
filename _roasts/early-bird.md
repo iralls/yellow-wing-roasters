@@ -53,4 +53,6 @@ history:
         ratio: 10%
 description: >-
   Our signature house blend, modeled after Willoughby's. It's balanced and smooth, pairing a rich cocoa and caramel sweetness with just a hint of bright fruit to keep things interesting. Easy-drinking, consistent, and great however you like to brew it.
+fun_fact: >-
+  American robins are often the very first birds heard in the pre-dawn chorus, singing up to an hour before sunrise while hunting earthworms by ear and sight.
 ---

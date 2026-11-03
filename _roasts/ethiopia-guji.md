@@ -44,4 +44,6 @@ history:
 
 description: >-
   Bright and naturally sweet with flavors of dark berries and ripe peach, grounded by chocolate and a hint of spice.
+fun_fact: >-
+  Female Baltimore orioles weave hanging gourd-shaped nests out of hundreds of plant fibers, tying knots and threading strands with beak movements resembling needlework.
 ---

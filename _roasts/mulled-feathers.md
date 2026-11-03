@@ -26,4 +26,6 @@ origins:
   - Ethiopia Washed
 description: >-
   A cozy, cold-weather blend built for slow winter mornings and holiday gatherings. It pairs a rich foundation of dark chocolate and melted caramel with a festive pop of crisp red apple and comforting toasted nuts. Bold, warming, and sweet, it holds up perfectly black or with a splash of cream.
+fun_fact: >-
+  Northern cardinals don't migrate or molt into dull winter plumage, making their crimson feathers — derived from red carotenoid pigments in berries — stand out against winter snow.
 ---

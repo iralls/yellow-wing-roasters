@@ -30,4 +30,6 @@ history:
         ratio: 50%
 description: >-
   A clean, smooth blend crafted from two washed coffees with warm, subdued spices and rich cocoa.
+fun_fact: >-
+  Blue jays frequently mimic the sharp "kee-aah" call of the red-shouldered hawk to scatter other birds away from backyard feeders.
 ---

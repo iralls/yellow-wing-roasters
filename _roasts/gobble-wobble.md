@@ -26,4 +26,6 @@ origins:
   - Kenya Washed
 description: >-
   A festive Thanksgiving blend roasted to a rich Full City profile. Delivers warm notes of roasted pecan and brown sugar balanced by a vibrant pop of blackcurrant and tart cranberry sweetness.
+fun_fact: >-
+  Despite their heavy build, wild turkeys can sprint at 20 miles per hour on the ground and burst into flight at up to 55 miles per hour.
 ---

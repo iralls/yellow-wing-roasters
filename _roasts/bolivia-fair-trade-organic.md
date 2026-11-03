@@ -29,4 +29,6 @@ subscription:
     - Monthly
 description: >-
   A smooth and full-bodied coffee featuring sweet milk chocolate notes, low acidity, and a rich, satisfying aroma. High-grown in the Bolivian Andes for exceptional balance and sweetness.
+fun_fact: >-
+  The raspy, echoing scream heard in movies whenever an eagle soars overhead is almost always the voice of a red-tailed hawk.
 ---

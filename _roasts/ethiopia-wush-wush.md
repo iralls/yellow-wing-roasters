@@ -28,4 +28,6 @@ subscription:
     - Monthly
 description: >-
   A bold, fruit-forward coffee packed with rich flavors of blueberry and sweet cherry, rounded out by chocolate and toasted pecan.
+fun_fact: >-
+  Unlike most songbirds, male rose-breasted grosbeaks take equal turns incubating the eggs — and often sing softly from inside the nest while sitting on them.
 ---

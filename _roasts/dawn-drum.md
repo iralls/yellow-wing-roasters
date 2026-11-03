@@ -17,4 +17,6 @@ price:
   5lb: 70
 
 published: false
+fun_fact: >-
+  Woodpeckers drum on resonant hollow branches at up to 20 beats per second, with spongy skull bone and a wrap-around hyoid bone cushioning every strike.
 ---

@@ -32,4 +32,6 @@ history:
         ratio: 50%
 description: >-
   Made specifically for cold brewing. We roast this to bring out a deep, fudge-like sweetness that stays smooth even when poured over a full glass of ice. It's naturally sweet, rich, and your best bet for a great iced coffee.
+fun_fact: >-
+  Great blue herons wade motionlessly in shallow water before striking with a specialized S-curved neck vertebra that acts like a coiled spring.
 ---

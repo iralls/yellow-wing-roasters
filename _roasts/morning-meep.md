@@ -32,4 +32,6 @@ description: |
   Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of dark fruit and jammy sweetness.
 
   While it performs exceptionally as an espresso—pulling a smooth, balanced shot with plenty of crema—it also brews remarkably well as drip coffee or in a French press.
+fun_fact: >-
+  At dawn and dusk, male American woodcocks give a nasal "peent" call before spiraling 300 feet into the sky to perform a musical, fluttering courtship dance.
 ---

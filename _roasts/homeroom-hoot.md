@@ -33,4 +33,6 @@ history:
         ratio: 50%
 description: >-
   A comforting Back to School blend combining smooth beans roasted to a balanced Full City profile. Delivers rich cocoa warmth and caramel sweetness for a focused, easy-drinking morning cup.
+fun_fact: >-
+  The barred owl's classic eight-note call carries over half a mile through dense forest and sounds unmistakably like "Who cooks for you? Who cooks for you-all?"
 ---

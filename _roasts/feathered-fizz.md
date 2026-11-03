@@ -30,4 +30,6 @@ beans:
   - Peru Fair Trade Organic
 description: >-
   A vibrant New Year's blend crafted to celebrate the countdown. Effervescent notes of bergamot and black tea layer over ripe blackberry and a smooth bittersweet chocolate finish.
+fun_fact: >-
+  Woodpeckers have zygodactyl feet — two toes pointing forward and two pointing backward — giving them a four-point climbing grip on vertical tree trunks.
 ---

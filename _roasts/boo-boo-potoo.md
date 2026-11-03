@@ -23,4 +23,6 @@ origins:
   - Bolivia Washed
 description: >-
   A seasonal blend crafted from two distinct beans roasted to different levels, creating a delicious Reese's effect—layering rich chocolate with warm, toasted nuts.
+fun_fact: >-
+  Nocturnal potoos freeze upright on tree stumps by day, peering through tiny vertical slits in their closed eyelids so they never break their bark-like camouflage.
 ---

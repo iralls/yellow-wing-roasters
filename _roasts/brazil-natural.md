@@ -44,4 +44,6 @@ history:
 
 description: >-
   Heavy-bodied, smooth, and low in acidity. Rich chocolate and toasted walnut make it a comforting morning drip or a thick espresso.
+fun_fact: >-
+  Each autumn, black-capped chickadees hide thousands of individual seeds in different tree bark crevices — and their hippocampus physically grows by 30% to remember every spot.
 ---

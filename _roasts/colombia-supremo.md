@@ -43,4 +43,6 @@ history:
 
 description: >-
   A crisp, sweet Colombian coffee with a cocoa aroma. Easy to drink, with flavors of fresh peach and apricot and a bright, clean finish.
+fun_fact: >-
+  Eastern bluebirds can spot caterpillars and crickets in tall grass from over 60 feet away, hovering briefly before dropping silently onto their catch.
 ---

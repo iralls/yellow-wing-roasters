@@ -27,4 +27,6 @@ subscription:
     - Monthly
 description: >-
   A balanced, easy-drinking cup pairing smooth dark chocolate with crisp red apple and sweet berries.
+fun_fact: >-
+  To lure predators away from its ground nest, a parent killdeer performs a dramatic "broken-wing" act, limping and fluttering until the threat is safely led astray.
 ---

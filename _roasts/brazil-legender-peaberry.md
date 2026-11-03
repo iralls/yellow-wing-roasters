@@ -23,4 +23,6 @@ price:
 
 description: >-
   Sweet, viscous cup. Good component for an espresso.
+fun_fact: >-
+  American goldfinches are among the strictest vegetarians in the bird world, waiting until late summer to nest when milkweed and thistle seeds are abundant.
 ---

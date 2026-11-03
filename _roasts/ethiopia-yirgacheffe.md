@@ -26,4 +26,6 @@ subscription:
     - Monthly
 description: >-
   A classic washed Yirgacheffe with a smooth, full body. Expect sweet notes of maple and brown sugar, toasted chestnut, and warm spices on the finish.
+fun_fact: >-
+  Unlike most waterbirds, cormorants have intentionally less oil on their feathers so they trap less air and can dive deeper and faster underwater.
 ---

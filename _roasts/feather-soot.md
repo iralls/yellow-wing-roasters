@@ -42,4 +42,6 @@ subscription:
     - Monthly
 description: >-
   A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.
+fun_fact: >-
+  Because canaries breathe air in on both inhalation and exhalation, coal miners relied on them for over a century as an early warning sensor in deep shafts.
 ---
