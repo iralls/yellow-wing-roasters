@@ -8,7 +8,7 @@ order: 5
 permalink: /pantry/sweet-suet/
 mascot_file: bars-transparent.png
 mascot_alt: "Chocolate Quinoa and Espresso Crisps"
-price: 10
+price: 12
 size: "6oz"
 descriptor: "chocolate quinoa and espresso crisps"
 intro: "Crisped quinoa and freshly ground espresso formed into crunchy dark chocolate squares. An energizing treat inspired by wild bird suet cakes."
