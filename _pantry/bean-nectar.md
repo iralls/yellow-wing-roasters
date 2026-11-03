@@ -13,4 +13,6 @@ size: "12oz"
 descriptor: "coffee simple syrup"
 intro: "Rich, aromatic simple syrup brewed with freshly roasted coffee. Perfect for sweetening cold brew, lattes, cocktails, and weekend pancakes."
 overlay_notes: "coffee simple syrup — 12oz bottle"
+fun_fact: >-
+  Nectar-feeding birds like hummingbirds and orioles have forked, grooved tongues that draw in sweet liquid through capillary action — no suction required.
 ---
