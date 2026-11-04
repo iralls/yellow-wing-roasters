@@ -81,6 +81,20 @@ sitemap: false
             <span>Show depleted beans (0g)</span>
           </label>
         </div>
+        <div class="roast-admin-totals-bar">
+          <div class="roast-admin-field" style="min-width: 11rem;">
+            <label for="beans-filter-bean">Filter Bean</label>
+            <select id="beans-filter-bean" class="roast-admin-select">
+              <option value="all">All Beans</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 10rem;">
+            <label for="beans-filter-supplier">Filter Supplier</label>
+            <select id="beans-filter-supplier" class="roast-admin-select">
+              <option value="all">All Suppliers</option>
+            </select>
+          </div>
+        </div>
         <div id="roast-admin-beans-table-wrap" class="roast-admin-table-wrap"></div>
       </div>
     </div>
@@ -153,6 +167,44 @@ sitemap: false
 
       <div class="roast-admin-card">
         <h3 class="roast-admin-card-title">Green Bean Orders</h3>
+        <div class="roast-admin-totals-bar">
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="orders-filter-year">Filter Year</label>
+            <select id="orders-filter-year" class="roast-admin-select">
+              <option value="all">All Years</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="orders-filter-month">Filter Month</label>
+            <select id="orders-filter-month" class="roast-admin-select">
+              <option value="all">All Months</option>
+              <option value="01">01 — Jan</option>
+              <option value="02">02 — Feb</option>
+              <option value="03">03 — Mar</option>
+              <option value="04">04 — Apr</option>
+              <option value="05">05 — May</option>
+              <option value="06">06 — Jun</option>
+              <option value="07">07 — Jul</option>
+              <option value="08">08 — Aug</option>
+              <option value="09">09 — Sep</option>
+              <option value="10">10 — Oct</option>
+              <option value="11">11 — Nov</option>
+              <option value="12">12 — Dec</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 11rem;">
+            <label for="orders-filter-bean">Filter Bean</label>
+            <select id="orders-filter-bean" class="roast-admin-select">
+              <option value="all">All Beans</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 10rem;">
+            <label for="orders-filter-supplier">Filter Supplier</label>
+            <select id="orders-filter-supplier" class="roast-admin-select">
+              <option value="all">All Suppliers</option>
+            </select>
+          </div>
+        </div>
         <div id="roast-admin-orders-table-wrap" class="roast-admin-table-wrap"></div>
       </div>
     </div>
@@ -221,6 +273,38 @@ sitemap: false
 
       <div class="roast-admin-card">
         <h3 class="roast-admin-card-title">Roast Logs</h3>
+        <div class="roast-admin-totals-bar">
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="roasts-filter-year">Filter Year</label>
+            <select id="roasts-filter-year" class="roast-admin-select">
+              <option value="all">All Years</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="roasts-filter-month">Filter Month</label>
+            <select id="roasts-filter-month" class="roast-admin-select">
+              <option value="all">All Months</option>
+              <option value="01">01 — Jan</option>
+              <option value="02">02 — Feb</option>
+              <option value="03">03 — Mar</option>
+              <option value="04">04 — Apr</option>
+              <option value="05">05 — May</option>
+              <option value="06">06 — Jun</option>
+              <option value="07">07 — Jul</option>
+              <option value="08">08 — Aug</option>
+              <option value="09">09 — Sep</option>
+              <option value="10">10 — Oct</option>
+              <option value="11">11 — Nov</option>
+              <option value="12">12 — Dec</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 11rem;">
+            <label for="roasts-filter-bean">Filter Bean</label>
+            <select id="roasts-filter-bean" class="roast-admin-select">
+              <option value="all">All Beans</option>
+            </select>
+          </div>
+        </div>
         <div id="roast-admin-roasts-table-wrap" class="roast-admin-table-wrap"></div>
       </div>
     </div>
@@ -314,6 +398,54 @@ sitemap: false
             <button type="button" class="order-admin-filter-pill order-admin-filter-pill--active" data-pkg-filter="all">All Logs</button>
             <button type="button" class="order-admin-filter-pill" data-pkg-filter="orders">Customer Orders Only</button>
             <button type="button" class="order-admin-filter-pill" data-pkg-filter="non-orders">Sample / Personal Only</button>
+          </div>
+        </div>
+        <div class="roast-admin-totals-bar">
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="pkg-filter-year">Filter Year</label>
+            <select id="pkg-filter-year" class="roast-admin-select">
+              <option value="all">All Years</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 8rem;">
+            <label for="pkg-filter-month">Filter Month</label>
+            <select id="pkg-filter-month" class="roast-admin-select">
+              <option value="all">All Months</option>
+              <option value="01">01 — Jan</option>
+              <option value="02">02 — Feb</option>
+              <option value="03">03 — Mar</option>
+              <option value="04">04 — Apr</option>
+              <option value="05">05 — May</option>
+              <option value="06">06 — Jun</option>
+              <option value="07">07 — Jul</option>
+              <option value="08">08 — Aug</option>
+              <option value="09">09 — Sep</option>
+              <option value="10">10 — Oct</option>
+              <option value="11">11 — Nov</option>
+              <option value="12">12 — Dec</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 11rem;">
+            <label for="pkg-filter-product">Filter Product</label>
+            <select id="pkg-filter-product" class="roast-admin-select">
+              <option value="all">All Products</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 11rem;">
+            <label for="pkg-filter-bean">Filter Bean</label>
+            <select id="pkg-filter-bean" class="roast-admin-select">
+              <option value="all">All Beans</option>
+            </select>
+          </div>
+          <div class="roast-admin-field" style="min-width: 10rem;">
+            <label for="pkg-filter-bag-size">Filter Bag Size</label>
+            <select id="pkg-filter-bag-size" class="roast-admin-select">
+              <option value="all">All Sizes</option>
+              {% for s in site.data.bag_sizes %}
+              <option value="{{ s.id }}">{{ s.label }}</option>
+              {% endfor %}
+              <option value="Custom">Custom / Loose</option>
+            </select>
           </div>
         </div>
         <div id="roast-admin-packaging-table-wrap" class="roast-admin-table-wrap"></div>

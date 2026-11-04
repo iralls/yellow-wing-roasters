@@ -830,6 +830,24 @@
     var pkgSubmitBtn = document.getElementById('pkg-submit-btn');
     var pkgFeedback = document.getElementById('pkg-form-feedback');
 
+    var beansFilterBean = document.getElementById('beans-filter-bean');
+    var beansFilterSupplier = document.getElementById('beans-filter-supplier');
+
+    var ordersFilterYear = document.getElementById('orders-filter-year');
+    var ordersFilterMonth = document.getElementById('orders-filter-month');
+    var ordersFilterBean = document.getElementById('orders-filter-bean');
+    var ordersFilterSupplier = document.getElementById('orders-filter-supplier');
+
+    var roastsFilterYear = document.getElementById('roasts-filter-year');
+    var roastsFilterMonth = document.getElementById('roasts-filter-month');
+    var roastsFilterBean = document.getElementById('roasts-filter-bean');
+
+    var pkgFilterYear = document.getElementById('pkg-filter-year');
+    var pkgFilterMonth = document.getElementById('pkg-filter-month');
+    var pkgFilterProduct = document.getElementById('pkg-filter-product');
+    var pkgFilterBean = document.getElementById('pkg-filter-bean');
+    var pkgFilterBagSize = document.getElementById('pkg-filter-bag-size');
+
     var totalsGroupBy = document.getElementById('totals-group-by');
     var totalsFilterYear = document.getElementById('totals-filter-year');
     var totalsFilterMonth = document.getElementById('totals-filter-month');
@@ -983,8 +1001,13 @@
     function renderActiveBeansTable() {
       recomputeActiveBeanStocks(state);
       var showDepleted = showDepletedCheckbox.checked;
+      var filterBean = beansFilterBean ? beansFilterBean.value : 'all';
+      var filterSupplier = beansFilterSupplier ? beansFilterSupplier.value : 'all';
+
       var rows = state.greenBeans.filter(function (b) {
         if (!showDepleted && b.activeStockGrams <= 0) return false;
+        if (filterBean !== 'all' && b.name !== filterBean) return false;
+        if (filterSupplier !== 'all' && b.supplier !== filterSupplier) return false;
         return matchesSearch([b.name, b.supplier, b.url]);
       }).slice().sort(function (a, b) {
         var dir = activeBeansSortDir === 'asc' ? 1 : -1;
@@ -1160,8 +1183,18 @@
 
     function renderGreenBeanOrdersTable() {
       recomputeActiveBeanStocks(state);
+      var filterYear = ordersFilterYear ? ordersFilterYear.value : 'all';
+      var filterMonth = ordersFilterMonth ? ordersFilterMonth.value : 'all';
+      var filterBean = ordersFilterBean ? ordersFilterBean.value : 'all';
+      var filterSupplier = ordersFilterSupplier ? ordersFilterSupplier.value : 'all';
+
       var rows = sortGreenBeanOrders(
         state.greenBeanOrders.filter(function (o) {
+          var ym = extractYearMonth(o.date);
+          if (filterYear !== 'all' && ym.year !== filterYear) return false;
+          if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
+          if (filterBean !== 'all' && o.name !== filterBean) return false;
+          if (filterSupplier !== 'all' && o.supplier !== filterSupplier) return false;
           return matchesSearch([o.orderId, o.supplierOrderId, o.name, o.supplier, o.date]);
         }),
         gbOrdersSortCol,
@@ -1381,7 +1414,16 @@
 
     function renderRoastLogsTable() {
       recomputeActiveBeanStocks(state);
+      var filterYear = roastsFilterYear ? roastsFilterYear.value : 'all';
+      var filterMonth = roastsFilterMonth ? roastsFilterMonth.value : 'all';
+      var filterBean = roastsFilterBean ? roastsFilterBean.value : 'all';
+
       var rows = state.roastLogs.filter(function (r) {
+        var ym = extractYearMonth(r.date);
+        if (filterYear !== 'all' && ym.year !== filterYear) return false;
+        if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
+        if (filterBean !== 'all' && r.beanName !== filterBean) return false;
+
         var compText = (r.greenBeanComponents || []).map(function (c) { return c.orderId; }).join(' ');
         return matchesSearch([r.roastId, compText, r.beanName, r.date, r.notes]);
       }).slice().sort(function (a, b) {
@@ -1782,13 +1824,40 @@
     }
 
     function renderBlendPackagingTable() {
+      var filterYear = pkgFilterYear ? pkgFilterYear.value : 'all';
+      var filterMonth = pkgFilterMonth ? pkgFilterMonth.value : 'all';
+      var filterProduct = pkgFilterProduct ? pkgFilterProduct.value : 'all';
+      var filterBean = pkgFilterBean ? pkgFilterBean.value : 'all';
+      var filterBagSize = pkgFilterBagSize ? pkgFilterBagSize.value : 'all';
+
+      var roastById = {};
+      for (var rIdx = 0; rIdx < state.roastLogs.length; rIdx++) {
+        roastById[state.roastLogs[rIdx].roastId] = state.roastLogs[rIdx];
+      }
+
       var rows = state.blendPackagingLogs.filter(function (p) {
         if (currentPkgFilter === 'orders') {
           if (p.purpose !== 'Order' && !p.orderId) return false;
         } else if (currentPkgFilter === 'non-orders') {
           if (p.purpose === 'Order' || p.orderId) return false;
         }
-        var compText = (p.roastComponents || []).map(function (c) { return c.roastId; }).join(' ');
+
+        var ym = extractYearMonth(p.date);
+        if (filterYear !== 'all' && ym.year !== filterYear) return false;
+        if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
+        if (filterProduct !== 'all' && p.product !== filterProduct) return false;
+        if (filterBagSize !== 'all' && p.bagSize !== filterBagSize) return false;
+
+        var comps = p.roastComponents || [];
+        if (filterBean !== 'all') {
+          var matchesBean = (p.product === filterBean) || comps.some(function (c) {
+            var rObj = roastById[c.roastId];
+            return rObj && rObj.beanName === filterBean;
+          });
+          if (!matchesBean) return false;
+        }
+
+        var compText = comps.map(function (c) { return c.roastId; }).join(' ');
         return matchesSearch([p.logId, p.date, p.purpose, p.orderId, p.product, compText, p.bagSize, p.notes]);
       }).slice().sort(function (a, b) {
         var dir = pkgLogSortDir === 'asc' ? 1 : -1;
@@ -1904,31 +1973,80 @@
       });
     }
 
-    function populateTotalsFilters() {
+    function populateTabFilterDropdowns() {
+      // 1. Years
       var yearsSet = {};
       state.greenBeanOrders.forEach(function (o) { yearsSet[extractYearMonth(o.date).year] = true; });
       state.roastLogs.forEach(function (r) { yearsSet[extractYearMonth(r.date).year] = true; });
       state.blendPackagingLogs.forEach(function (p) { yearsSet[extractYearMonth(p.date).year] = true; });
 
       var years = Object.keys(yearsSet).filter(function (y) { return y && y !== 'Unknown'; }).sort().reverse();
-      var prevYear = totalsFilterYear.value || 'all';
-      var yearHtml = '<option value="all">All Years</option>';
+      var yearOptions = '<option value="all">All Years</option>';
       years.forEach(function (y) {
-        yearHtml += '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
+        yearOptions += '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
       });
-      totalsFilterYear.innerHTML = yearHtml;
-      if (years.indexOf(prevYear) !== -1) {
-        totalsFilterYear.value = prevYear;
-      }
 
-      var prevBean = totalsFilterBean.value || 'all';
-      var beanHtml = '<option value="all">All Beans</option>';
-      state.greenBeans.forEach(function (b) {
-        beanHtml += '<option value="' + escapeHtml(b.name) + '">' + escapeHtml(b.name) + '</option>';
+      var yearSelects = [ordersFilterYear, roastsFilterYear, pkgFilterYear, totalsFilterYear];
+      yearSelects.forEach(function (sel) {
+        if (!sel) return;
+        var prev = sel.value || 'all';
+        sel.innerHTML = yearOptions;
+        if (years.indexOf(prev) !== -1) {
+          sel.value = prev;
+        }
       });
-      totalsFilterBean.innerHTML = beanHtml;
-      if (state.greenBeans.some(function (b) { return b.name === prevBean; })) {
-        totalsFilterBean.value = prevBean;
+
+      // 2. Beans
+      var beanNames = state.greenBeans.map(function (b) { return b.name; });
+      var beanOptions = '<option value="all">All Beans</option>';
+      beanNames.forEach(function (name) {
+        beanOptions += '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>';
+      });
+
+      var beanSelects = [beansFilterBean, ordersFilterBean, roastsFilterBean, pkgFilterBean, totalsFilterBean];
+      beanSelects.forEach(function (sel) {
+        if (!sel) return;
+        var prev = sel.value || 'all';
+        sel.innerHTML = beanOptions;
+        if (beanNames.indexOf(prev) !== -1) {
+          sel.value = prev;
+        }
+      });
+
+      // 3. Suppliers
+      var suppliersSet = {};
+      state.greenBeans.forEach(function (b) { if (b.supplier) suppliersSet[b.supplier] = true; });
+      state.greenBeanOrders.forEach(function (o) { if (o.supplier) suppliersSet[o.supplier] = true; });
+      var suppliers = Object.keys(suppliersSet).sort();
+      var supplierOptions = '<option value="all">All Suppliers</option>';
+      suppliers.forEach(function (s) {
+        supplierOptions += '<option value="' + escapeHtml(s) + '">' + escapeHtml(s) + '</option>';
+      });
+
+      var supplierSelects = [beansFilterSupplier, ordersFilterSupplier];
+      supplierSelects.forEach(function (sel) {
+        if (!sel) return;
+        var prev = sel.value || 'all';
+        sel.innerHTML = supplierOptions;
+        if (suppliers.indexOf(prev) !== -1) {
+          sel.value = prev;
+        }
+      });
+
+      // 4. Products / Blends
+      var productsSet = {};
+      state.blendPackagingLogs.forEach(function (p) { if (p.product) productsSet[p.product] = true; });
+      var products = Object.keys(productsSet).sort();
+      var productOptions = '<option value="all">All Products</option>';
+      products.forEach(function (prod) {
+        productOptions += '<option value="' + escapeHtml(prod) + '">' + escapeHtml(prod) + '</option>';
+      });
+      if (pkgFilterProduct) {
+        var prevProd = pkgFilterProduct.value || 'all';
+        pkgFilterProduct.innerHTML = productOptions;
+        if (products.indexOf(prevProd) !== -1) {
+          pkgFilterProduct.value = prevProd;
+        }
       }
     }
 
@@ -2156,7 +2274,7 @@
       refreshRoastComponentDropdowns();
       populateCustomerOrderDropdown();
       refreshPkgComponentDropdowns();
-      populateTotalsFilters();
+      populateTabFilterDropdowns();
       refreshTotalsGroupPills();
       renderActiveBeansTable();
       renderGreenBeanOrdersTable();
@@ -2487,6 +2605,24 @@
     });
 
     showDepletedCheckbox.addEventListener('change', renderActiveBeansTable);
+
+    if (beansFilterBean) beansFilterBean.addEventListener('change', renderActiveBeansTable);
+    if (beansFilterSupplier) beansFilterSupplier.addEventListener('change', renderActiveBeansTable);
+
+    if (ordersFilterYear) ordersFilterYear.addEventListener('change', renderGreenBeanOrdersTable);
+    if (ordersFilterMonth) ordersFilterMonth.addEventListener('change', renderGreenBeanOrdersTable);
+    if (ordersFilterBean) ordersFilterBean.addEventListener('change', renderGreenBeanOrdersTable);
+    if (ordersFilterSupplier) ordersFilterSupplier.addEventListener('change', renderGreenBeanOrdersTable);
+
+    if (roastsFilterYear) roastsFilterYear.addEventListener('change', renderRoastLogsTable);
+    if (roastsFilterMonth) roastsFilterMonth.addEventListener('change', renderRoastLogsTable);
+    if (roastsFilterBean) roastsFilterBean.addEventListener('change', renderRoastLogsTable);
+
+    if (pkgFilterYear) pkgFilterYear.addEventListener('change', renderBlendPackagingTable);
+    if (pkgFilterMonth) pkgFilterMonth.addEventListener('change', renderBlendPackagingTable);
+    if (pkgFilterProduct) pkgFilterProduct.addEventListener('change', renderBlendPackagingTable);
+    if (pkgFilterBean) pkgFilterBean.addEventListener('change', renderBlendPackagingTable);
+    if (pkgFilterBagSize) pkgFilterBagSize.addEventListener('change', renderBlendPackagingTable);
 
     if (roastTotalsModePills) {
       var mPills = roastTotalsModePills.querySelectorAll('.order-admin-filter-pill');
