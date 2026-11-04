@@ -946,6 +946,15 @@
       return fields.join(' ').toLowerCase().indexOf(q) !== -1;
     }
 
+    function applySearch(query) {
+      currentSearch = (query || '').trim();
+      searchInput.value = currentSearch;
+      renderActiveBeansTable();
+      renderGreenBeanOrdersTable();
+      renderRoastLogsTable();
+      renderBlendPackagingTable();
+    }
+
     function setDrawerState(drawerId, open) {
       var drawer = document.getElementById(drawerId);
       if (!drawer) return;
@@ -1134,12 +1143,7 @@
       });
 
       if (highlightId) {
-        currentSearch = highlightId;
-        searchInput.value = highlightId;
-        renderActiveBeansTable();
-        renderGreenBeanOrdersTable();
-        renderRoastLogsTable();
-        renderBlendPackagingTable();
+        applySearch(highlightId);
 
         setTimeout(function () {
           var targetRow = document.querySelector('[data-row-id="' + highlightId + '"]');
@@ -1196,12 +1200,16 @@
           : '<strong>' + escapeHtml(o.name) + '</strong>';
         var rowStyle = editingOrderId === o.orderId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
+        var supplierOrderCell = o.supplierOrderId
+          ? '<button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-filter-supplier-order="' + escapeHtml(o.supplierOrderId) + '" title="Filter by supplier order ' + escapeHtml(o.supplierOrderId) + '">' + escapeHtml(o.supplierOrderId) + '</button>'
+          : '';
+
         html += '<tr data-row-id="' + escapeHtml(o.orderId) + '"' + rowStyle + '>' +
           '<td><button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-edit-order="' + escapeHtml(o.orderId) + '" title="Edit order ' + escapeHtml(o.orderId) + '">' + escapeHtml(o.orderId) + '</button></td>' +
           '<td class="mono">' + escapeHtml(o.date) + '</td>' +
           '<td>' + beanLink + '</td>' +
           '<td>' + escapeHtml(o.supplier) + '</td>' +
-          '<td class="mono">' + escapeHtml(o.supplierOrderId || '') + '</td>' +
+          '<td class="mono">' + supplierOrderCell + '</td>' +
           '<td class="mono" style="text-align: right;">$' + Number(o.cost).toFixed(2) + '</td>' +
           '<td class="mono" style="text-align: right;">' + Number(o.weightLbs).toFixed(2) + ' lbs</td>' +
           '<td class="mono" style="text-align: right;">' + adjStr + '</td>' +
@@ -1217,6 +1225,14 @@
       editOrderBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           startEditOrder(btn.getAttribute('data-edit-order'));
+        });
+      });
+
+      var filterSupplierBtns = ordersTableWrap.querySelectorAll('[data-filter-supplier-order]');
+      filterSupplierBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var suppOrderId = btn.getAttribute('data-filter-supplier-order');
+          applySearch(suppOrderId);
         });
       });
 
@@ -2545,11 +2561,7 @@
     }
 
     searchInput.addEventListener('input', function () {
-      currentSearch = searchInput.value.trim();
-      renderActiveBeansTable();
-      renderGreenBeanOrdersTable();
-      renderRoastLogsTable();
-      renderBlendPackagingTable();
+      applySearch(searchInput.value);
     });
 
     gateForm.addEventListener('submit', function (e) {
@@ -2599,6 +2611,16 @@
       clearStoredKey();
       showGate();
     });
+
+    if (typeof window !== 'undefined' && window.location && window.location.search) {
+      try {
+        var qParams = new URLSearchParams(window.location.search);
+        var qSearch = qParams.get('search') || qParams.get('id');
+        if (qSearch) {
+          applySearch(qSearch);
+        }
+      } catch (paramErr) {}
+    }
 
     var storedKey = getStoredKey();
     if (storedKey) {
