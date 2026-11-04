@@ -38,7 +38,7 @@ descriptor: "choose four or more roasts to sample"
 <div class="roast-mv-center" style="margin-top:1rem;">
   {% assign default_min = page.min_bags %}
   {% assign default_price = default_min | times: page.price_per_bag %}
-  <button class="add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select at least {{ default_min }} roasts — ${{ default_price }}</button>
+  <button class="sleek-buy-add-btn add-to-order-btn add-to-order-btn--disabled" id="pyo-add" style="width: auto; min-width: 18rem;" disabled>Select at least {{ default_min }} roasts — ${{ default_price }}</button>
 </div>
 
 <script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
