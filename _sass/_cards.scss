@@ -2621,7 +2621,7 @@ $category-colors: (
 
 .min-cellar-item {
   display: grid;
-  grid-template-columns: 3.5rem 1.5fr 7.5rem 1fr 2fr 5rem;
+  grid-template-columns: 1.5fr 7.5rem 1fr 2fr 5rem;
   align-items: center;
   gap: 1.5rem;
   padding: 1.25rem 0.5rem;
@@ -2633,8 +2633,9 @@ $category-colors: (
   cursor: pointer;
 
   @media (max-width: 900px) {
-    grid-template-columns: 2.5rem 1.5fr 6rem 5rem;
+    grid-template-columns: 1.5fr 6rem 5rem;
     gap: 1rem;
+    padding: 1rem 0.5rem;
     .min-cellar-origin,
     .min-cellar-notes,
     .min-cellar-action {
@@ -2643,7 +2644,6 @@ $category-colors: (
   }
 
   &:hover {
-    background: var(--min-surface-subtle);
     padding-left: 1rem;
     padding-right: 1rem;
     color: inherit;
@@ -2665,6 +2665,9 @@ $category-colors: (
 .min-cellar-info {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
 }
 
 .min-cellar-name {
@@ -2672,9 +2675,11 @@ $category-colors: (
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--min-text);
-  line-height: 1.2;
+  line-height: 1.15;
   text-decoration: none;
   transition: color 0.15s ease;
+  margin: 0;
+  padding: 0;
 
   &:hover {
     text-decoration: none;
@@ -2683,10 +2688,12 @@ $category-colors: (
 
 .min-cellar-sub {
   font-size: 0.75rem;
+  line-height: 1.2;
   color: var(--min-text-subtle);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
 }
 
 .min-cellar-level {

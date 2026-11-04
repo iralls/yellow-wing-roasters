@@ -47,8 +47,6 @@ permalink: /roasts/
   {% for r in all_roasts %}
     {% assign s_info = site.data.statuses[r.status] %}
     {% assign r_url = r.permalink | default: r.url %}
-    {% assign num_str = forloop.index %}
-    {% if forloop.index < 10 %}{% assign num_str = "0" | append: forloop.index %}{% endif %}
 
     <div class="min-cellar-item sleek-catalog-item{% if s_info.dim_card %} min-cellar-item--dimmed{% endif %}"
          data-category="{{ r.category }}"
@@ -56,7 +54,6 @@ permalink: /roasts/
          data-title="{{ r.title }}"
          data-notes="{{ r.tasting_notes }}"
          data-slug="{{ r.slug }}">
-      <span class="min-cellar-num">{{ num_str }}</span>
       <div class="min-cellar-info">
         <a href="{{ r_url | relative_url }}" class="min-cellar-name">{{ r.card_title | default: r.title }}</a>
         <span class="min-cellar-sub">{{ r.category }} · {{ r.descriptor | default: r.subtitle }}</span>
@@ -74,7 +71,11 @@ permalink: /roasts/
       </span>
       <span class="min-cellar-notes">{{ r.tasting_notes }}</span>
       <span class="min-cellar-price">
-        {% if r.temporary_price and r.temporary_price["12oz"] %}
+        {% if r.status == 'flown_south' %}
+          <span class="roast-trans-archived-label">Seasonal Archive</span>
+        {% elsif r.status == 'incubating' or s_info.dim_card %}
+          <span class="roast-trans-archived-label">Coming Soon</span>
+        {% elsif r.temporary_price and r.temporary_price["12oz"] %}
           <s>${{ r.price["12oz"] }}</s> <span style="color:#b45309;">${{ r.temporary_price["12oz"] }}</span>
         {% elsif r.price and r.price["12oz"] %}
           ${{ r.price["12oz"] }}
@@ -84,13 +85,6 @@ permalink: /roasts/
           ${{ r.price }}
         {% endif %}
       </span>
-      <div class="min-cellar-action">
-        {% if r.status == 'flown_south' %}
-          <span class="roast-trans-archived-label">Seasonal Archive</span>
-        {% elsif r.status == 'incubating' or s_info.dim_card %}
-          <span class="roast-trans-archived-label">Coming Soon</span>
-        {% endif %}
-      </div>
     </div>
   {% endfor %}
 </div>
