@@ -37,10 +37,10 @@ var STATUS_CONFIGS = {
   },
   'roasted': {
     badgeClass: 'status-roasted',
-    title: 'Freshly Roasted!',
-    message: "Your beans have just been roasted to perfection and are beginning to degas. We'll send another update as soon as they are ready for pickup or delivery.",
+    title: 'Roasted',
+    message: "Your beans have just dropped from the burner and are beginning to degas. We'll send another update as soon as they are ready for pickup or delivery.",
     detailsLabel: 'Roast Notes',
-    subject: function (orderId) { return "Fresh from the Roaster: Order #" + orderId + " is Roasted"; }
+    subject: function (orderId) { return "Your order is roasted (#" + orderId + ")"; }
   },
   'ready for pickup': {
     badgeClass: 'status-ready',
