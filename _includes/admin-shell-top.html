@@ -1,0 +1,50 @@
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem('ywr_admin_passcode')) {
+        document.documentElement.classList.add('ywr-admin-authenticated');
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  .ywr-admin-authenticated #{{ include.prefix }}-admin-gate-section { display: none !important; }
+  .ywr-admin-authenticated #{{ include.prefix }}-admin-dashboard-section { display: block !important; }
+</style>
+
+<div class="roast-minimal-vertical">
+<div class="order-admin-container">
+
+  <div class="order-admin-header-compact roast-admin-header-compact">
+    <h1 class="order-admin-page-title">{{ include.title }}</h1>
+  </div>
+
+  <!-- Passcode Gate View -->
+  <div id="{{ include.prefix }}-admin-gate-section" class="order-admin-gate">
+    <div class="order-admin-gate-icon">
+      <span class="status-badge status-received">Passcode Required</span>
+    </div>
+    <h2 class="order-admin-gate-title">Owner Authentication</h2>
+    <p class="order-admin-gate-desc">{{ include.gate_desc }}</p>
+    
+    <form id="{{ include.prefix }}-admin-gate-form" class="order-admin-gate-form">
+      <div>
+        <input type="password" id="{{ include.prefix }}-admin-passcode-input" class="order-admin-input" placeholder="Enter owner passcode..." required autocomplete="current-password" autofocus>
+      </div>
+      <button type="submit" id="{{ include.prefix }}-admin-gate-btn" class="order-admin-save-btn">Unlock Dashboard</button>
+      <div id="{{ include.prefix }}-admin-gate-error" class="order-admin-gate-error" style="display: none;"></div>
+    </form>
+  </div>
+
+  <!-- Authenticated Dashboard View -->
+  <div id="{{ include.prefix }}-admin-dashboard-section" style="display: none;">
+    <!-- Top Bar Controls -->
+    <div class="order-admin-topbar">
+      <div class="order-admin-header-row">
+        <div id="{{ include.prefix }}-admin-stats" class="order-admin-stats"></div>
+        <div class="order-admin-actions">
+          <a href="{{ '/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Admin</a>
+          <button type="button" id="{{ include.prefix }}-admin-refresh-btn" class="order-admin-btn-sm" title="Refresh">Refresh</button>
+          <button type="button" id="{{ include.prefix }}-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out">Log Out</button>
+        </div>
+      </div>

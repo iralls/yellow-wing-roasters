@@ -60,6 +60,11 @@ sitemap: false
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
       </a>
 
+      <a href="{{ '/gift/admin/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
+        <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/gift/admin/</span>
+        <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
+      </a>
+
       <a href="{{ '/roasts/admin/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
         <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/roasts/admin/</span>
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>

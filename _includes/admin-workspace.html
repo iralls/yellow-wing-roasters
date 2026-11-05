@@ -1,0 +1,17 @@
+<div id="{{ include.id }}" class="roast-admin-panel{% if include.active %} roast-admin-panel--active{% endif %}">
+  {% if include.filter_html %}
+    <div class="order-admin-controls-row" style="margin-bottom: 0.75rem;">
+      <div id="{{ include.filters_id }}" class="order-admin-filters">
+        {{ include.filter_html }}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Master-Detail Workspace -->
+  <div class="order-admin-workspace">
+    <div id="{{ include.queue_id }}" class="order-admin-queue"></div>
+    <div id="{{ include.inspector_id }}" class="order-admin-inspector">
+      <div class="order-admin-inspector-empty">{{ include.empty_text }}</div>
+    </div>
+  </div>
+</div>

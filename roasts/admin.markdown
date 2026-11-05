@@ -50,8 +50,7 @@ sitemap: false
       <div class="order-admin-header-row">
         <div id="roast-admin-stats" class="order-admin-stats"></div>
         <div class="order-admin-actions">
-          <a href="{{ '/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Admin Portal</a>
-          <a href="{{ '/order/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Order Manager</a>
+          <a href="{{ '/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Admin</a>
           <button type="button" id="roast-admin-refresh-btn" class="order-admin-btn-sm" title="Refresh inventory data">Refresh</button>
           <button type="button" id="roast-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out of console">Log Out</button>
         </div>

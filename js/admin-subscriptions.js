@@ -227,7 +227,7 @@
     }
 
     function loadSubscriptions() {
-      queueContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: #8a7060; font-style: italic;">Loading recurring subscriptions...</div>';
+      queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">Loading subscriptions...</div>';
 
       if (!API_URL) {
         queueContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: #c0392b;">API URL is not configured.</div>';
@@ -274,9 +274,11 @@
     function renderStats() {
       var stats = computeSubscriptionStats(allSubscriptions);
       statsContainer.innerHTML =
-        '<span style="font-weight: 700; color: #2c1e14;">' + stats.active + '</span> Active &bull; ' +
-        '<span style="font-weight: 700; color: #f39c12;">' + stats.paused + '</span> Paused &bull; ' +
-        '<span style="font-weight: 700; color: #8a7060;">$' + stats.recurringRevenue.toFixed(2) + '</span>/cycle';
+        '<span class="order-admin-stat-pill order-admin-stat-pill--highlight">Total: ' + stats.total + '</span>' +
+        '<span class="order-admin-stat-pill">Active: ' + stats.active + '</span>' +
+        (stats.paused > 0 ? '<span class="order-admin-stat-pill" style="color: #b45309; background: #fef3c7;">Paused: ' + stats.paused + '</span>' : '') +
+        (stats.cancelled > 0 ? '<span class="order-admin-stat-pill">Cancelled: ' + stats.cancelled + '</span>' : '') +
+        '<span class="order-admin-stat-pill" style="color: #1e824c; background: #eafaf1; font-weight: 700;">$' + stats.recurringRevenue.toFixed(2) + ' / cycle</span>';
     }
 
     function renderQueue() {
@@ -286,9 +288,9 @@
       if (filtered.length === 0) {
         currentSelectedId = null;
         if (!allSubscriptions || allSubscriptions.length === 0) {
-          queueContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: #8a7060; font-style: italic;">No subscriptions found in database.</div>';
+          queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">No subscriptions found in database.</div>';
         } else {
-          queueContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: #8a7060; font-style: italic;">No subscriptions found matching this filter.</div>';
+          queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">No subscriptions match the selected filter.</div>';
         }
         renderInspector(null);
         return;
