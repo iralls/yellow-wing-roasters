@@ -10,6 +10,7 @@ subscription_api_url: "https://script.google.com/macros/s/AKfycbxIh-6wDtqAvNRKGX
 discount_codes_api_url: "https://script.google.com/macros/s/AKfycbyLa8yr6s5eiPAgwnaMIhetJKGBHsyRxLIETRiMQzWdEFU9KqWK2mLTJPccZ_i1Z5S8/exec"
 order_api_url: "https://script.google.com/macros/s/AKfycbxJc5qiMnjizmsiyFMZ9hDZbxJdNglVbqbYARhufnOHDIn8OX8hhY_kipqZ30K2EOY/exec"
 roast_inventory_api_url: "https://script.google.com/macros/s/AKfycbxN0628D4RLNSOjdxf1rpI-PyYZuDJKiyZdyz9CbRJRgVsmrevQ6gM_kNC2FVPLnsLJPw/exec"
+gift_subscription_api_url: "https://script.google.com/macros/s/AKfycbygFkHeztL96YHxdBNllNAyGP6X9vR5ZgO_121-peUuW_oOBE4TGaZPb_EqLr19J40m/exec"
 
 # Local Hand Delivery Radius
 local_delivery_towns:

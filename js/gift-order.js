@@ -385,6 +385,13 @@
       var unitPrice = getUnitPrice(product, '12oz');
       var totalPrice = '$' + (unitPrice * months);
 
+      var streetVal = document.getElementById('gift-address').value.trim();
+      var cityVal = document.getElementById('gift-city').value.trim();
+      var stateVal = document.getElementById('gift-state').value.trim();
+      var zipVal = document.getElementById('gift-zip').value.trim();
+      var addressStr = [streetVal, cityVal, stateVal, zipVal].filter(Boolean).join(', ');
+      var combinedGiftNotes = 'Delivery: ' + addressStr + (userNotes ? ' | Notes: ' + userNotes : '');
+
       // 1. Submit purchase details to dedicated Gift Subscription Google Form
       var pendingFetch = null;
       if (config.giftSubscriptionUrl && config.giftSubscriptionEntries) {
@@ -398,7 +405,7 @@
         if (giftEntries.duration) giftParams.append(giftEntries.duration, duration);
         if (giftEntries.price) giftParams.append(giftEntries.price, totalPrice);
         if (giftEntries.gift_message && giftMessage) giftParams.append(giftEntries.gift_message, giftMessage);
-        if (giftEntries.notes && userNotes) giftParams.append(giftEntries.notes, userNotes);
+        if (giftEntries.notes) giftParams.append(giftEntries.notes, combinedGiftNotes);
 
         pendingFetch = fetch(config.giftSubscriptionUrl, {
           method: 'POST',

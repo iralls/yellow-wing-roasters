@@ -12,10 +12,10 @@ function sendPurchaserConfirmation(data) {
   template.recipientName = data.recipientName;
   template.recipientEmail = data.recipientEmail;
   template.roast = data.roast;
-  template.size = data.size;
+  template.size = data.size || "12oz";
   template.duration = data.duration;
-  template.frequency = data.frequency;
-  template.deliveryMethod = data.deliveryMethod;
+  template.frequency = data.frequency || "Monthly";
+  template.deliveryMethod = data.deliveryMethod || "Hand delivery";
   template.cost = data.cost;
 
   var htmlBody = template.evaluate().getContent();
@@ -27,6 +27,8 @@ function sendPurchaserConfirmation(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
+      bcc: ROASTER_EMAIL,
+      replyTo: data.purchaserEmail,
       htmlBody: htmlBody
     }
   );
@@ -48,10 +50,10 @@ function sendRecipientAnnouncement(data) {
   template.recipientName = data.recipientName;
   template.giftMessage = data.giftMessage;
   template.roast = data.roast;
-  template.size = data.size;
+  template.size = data.size || "12oz";
   template.duration = data.duration;
-  template.frequency = data.frequency;
-  template.deliveryMethod = data.deliveryMethod;
+  template.frequency = data.frequency || "Monthly";
+  template.deliveryMethod = data.deliveryMethod || "Hand delivery";
 
   var htmlBody = template.evaluate().getContent();
 
@@ -62,8 +64,70 @@ function sendRecipientAnnouncement(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
+      replyTo: ROASTER_EMAIL,
       htmlBody: htmlBody
     }
   );
   console.log("Sent gift announcement to recipient: " + data.recipientEmail + " (#" + data.orderId + ")");
+}
+
+/**
+ * Sends branded status update email to either recipient (no prices) or purchaser (with total).
+ */
+function sendGiftSubscriptionStatusEmail(data, isRecipient) {
+  var rawStatus = (data.status || "Active").toString().trim();
+  var lowerStatus = rawStatus.toLowerCase();
+  var statusConfig = GIFT_SUB_STATUS_CONFIGS[lowerStatus] || {
+    badgeClass: 'status-active',
+    title: 'Gift Subscription Update',
+    recipientMessage: "Here is the latest update on your Yellow Wing Roasters coffee gift:",
+    purchaserMessage: "Here is the latest update on the gift subscription you ordered:",
+    detailsLabel: 'Update Note',
+    subject: function (id) { return "Update on your Yellow Wing Roasters coffee gift (#" + id + ")"; }
+  };
+
+  var targetEmail = isRecipient ? data.recipientEmail : data.purchaserEmail;
+  if (!targetEmail) {
+    console.warn("sendGiftSubscriptionStatusEmail: Target email missing for " + (isRecipient ? "recipient" : "purchaser"));
+    return;
+  }
+
+  var subject = statusConfig.subject(data.orderId);
+  var template = getTemplate('gift-subscription-status-update-template');
+  template.orderId = data.orderId;
+  template.isPurchaser = !isRecipient;
+  template.purchaserName = data.purchaserName;
+  template.recipientName = data.recipientName;
+  template.roast = data.roast;
+  template.size = data.size || "12oz";
+  template.duration = data.duration;
+  template.deliveryMethod = data.deliveryMethod || "Hand delivery";
+  template.cost = data.cost || "";
+  template.giftMessage = data.giftMessage || "";
+  template.status = rawStatus;
+  template.statusTitle = statusConfig.title;
+  template.statusMessage = isRecipient ? statusConfig.recipientMessage : statusConfig.purchaserMessage;
+  template.statusDetails = data.statusDetails || "";
+  template.detailsLabel = statusConfig.detailsLabel;
+
+  var mailOptions = {
+    name: "Yellow Wing Roasters",
+    from: ROASTER_EMAIL,
+    replyTo: ROASTER_EMAIL,
+    htmlBody: template.evaluate().getContent()
+  };
+
+  // BCC Roaster if sending to purchaser
+  if (!isRecipient) {
+    mailOptions.bcc = ROASTER_EMAIL;
+  }
+
+  GmailApp.sendEmail(
+    targetEmail,
+    subject,
+    statusConfig.title + " - Gift Order #" + data.orderId + ": " + (isRecipient ? statusConfig.recipientMessage : statusConfig.purchaserMessage),
+    mailOptions
+  );
+
+  console.log("Gift subscription status email (" + rawStatus + ") sent to " + (isRecipient ? "recipient: " : "purchaser: ") + targetEmail + " (#" + data.orderId + ")");
 }

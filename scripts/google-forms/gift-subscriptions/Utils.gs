@@ -82,3 +82,11 @@ function getTemplate(filename) {
     return HtmlService.createTemplateFromFile(filename + '.html');
   }
 }
+
+/**
+ * Returns JSON output formatted for Apps Script Web App responses.
+ */
+function createJsonResponse(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
