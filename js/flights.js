@@ -42,21 +42,37 @@
     var optionsEls = document.querySelectorAll('.pyo-option');
     var addBtn = document.getElementById('pyo-add');
     var countEl = document.getElementById('pyo-count');
+    var subEl = document.getElementById('pyo-sub');
+    var priceEl = document.getElementById('pyo-price');
     var grindSelect = document.getElementById('pyo-grind-select');
+
+    function toggleRoast(slug) {
+      var idx = selected.indexOf(slug);
+      if (idx >= 0) {
+        selected.splice(idx, 1);
+      } else {
+        selected.push(slug);
+      }
+      update();
+    }
 
     function update() {
       var count = selected.length;
-      var price = count * pricePerBag;
+      var displayPrice = Math.max(count, minBags) * pricePerBag;
       var remaining = minBags - count;
 
+      priceEl.textContent = '$' + displayPrice;
+
       if (remaining > 0) {
-        countEl.textContent = 'Select ' + remaining + ' more roast' + (remaining === 1 ? '' : 's') + ':';
-        addBtn.textContent = 'Select ' + remaining + ' more — $' + (minBags * pricePerBag);
+        countEl.textContent = 'Select ' + remaining + ' more roast' + (remaining === 1 ? '' : 's');
+        subEl.textContent = count + ' of ' + minBags + ' minimum selected ($' + pricePerBag + '/bag)';
+        addBtn.textContent = 'Select ' + remaining + ' more — $' + displayPrice;
         addBtn.disabled = true;
         addBtn.classList.add('add-to-order-btn--disabled');
       } else {
-        countEl.textContent = 'Your picks (' + count + '):';
-        addBtn.textContent = 'Add to Cart';
+        countEl.textContent = count + ' roast' + (count === 1 ? '' : 's') + ' selected';
+        subEl.textContent = count + ' × 8oz bags ($' + pricePerBag + '/bag)';
+        addBtn.textContent = 'Add to Cart — $' + displayPrice;
         addBtn.disabled = false;
         addBtn.classList.remove('add-to-order-btn--disabled');
       }
@@ -66,24 +82,24 @@
         var isSelected = selected.indexOf(slug) >= 0;
         if (isSelected) {
           optionsEls[i].classList.add('is-selected');
+          optionsEls[i].setAttribute('aria-checked', 'true');
         } else {
           optionsEls[i].classList.remove('is-selected');
+          optionsEls[i].setAttribute('aria-checked', 'false');
         }
       }
     }
 
-
     for (var i = 0; i < optionsEls.length; i++) {
       optionsEls[i].style.cursor = 'pointer';
       optionsEls[i].addEventListener('click', function () {
-        var slug = this.getAttribute('data-slug');
-        var idx = selected.indexOf(slug);
-        if (idx >= 0) {
-          selected.splice(idx, 1);
-        } else {
-          selected.push(slug);
+        toggleRoast(this.getAttribute('data-slug'));
+      });
+      optionsEls[i].addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleRoast(this.getAttribute('data-slug'));
         }
-        update();
       });
     }
 
