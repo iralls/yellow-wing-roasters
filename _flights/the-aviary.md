@@ -8,7 +8,7 @@ permalink: /flights/the-aviary/
 price: 38
 mascot_file: audubon-cage-transparent.png
 mascot_alt: "The Aviary cage"
-intro: "A range of four blends, from bright and floral to dark and smoky"
+intro: 'Our four "nest" blends, ranging from bright and floral to dark and smoky'
 notes: "Four blends, one box"
 descriptor: "a sample pack of our most popular blends"
 ---
@@ -17,19 +17,22 @@ descriptor: "a sample pack of our most popular blends"
 
 {% assign aviary_slugs = "early-bird,feather-soot,chimney-sweep,lil-sipper" | split: "," %}
 
-<div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 0 auto;">
-  <div class="roast-trans-grid sleek-comparison-grid aviary-grid">
-    {% for slug in aviary_slugs %}
-      {% assign r = site.roasts | where: "slug", slug | first %}
-      {% if r %}
-        {% include roast-card.html roast=r card_class="aviary-card" hide_price=true %}
-      {% endif %}
-    {% endfor %}
-  </div>
-</div>
+<ul class="aviary-list">
+  {% for slug in aviary_slugs %}
+    {% assign r = site.roasts | where: "slug", slug | first %}
+    <li class="aviary-list-item">
+      <a href="{{ r.permalink | default: r.url | relative_url }}" class="aviary-list-name">{{ r.card_title | default: r.title }}</a>
+      <span class="aviary-list-level" title="Roast Level: {{ r.roast_level }}/5">
+        {% include roast-dots.html roast=r class="roast-dots-sm" %}
+        <span class="aviary-list-level-text">{{ site.data.roast_levels[r.roast_level].layman }}</span>
+      </span>
+      <span class="aviary-list-notes">{{ r.tasting_notes }}</span>
+    </li>
+  {% endfor %}
+</ul>
 
 
-<p class="roast-mv-body" style="font-size: 0.85rem; color: #8a7060; font-style: italic; margin-top: -0.5rem; margin-bottom: 2rem;">Brewing method varies by blend — click any roast for full profile and brew details.</p>
+<p class="roast-mv-body" style="font-size: 0.85rem; color: #8a7060; font-style: italic; margin-top: 1.25rem; margin-bottom: 2rem;">Brewing method varies by blend — click any roast for full profile and brew details.</p>
 
 <div class="roast-mv-center" style="margin-bottom:1rem;">
   <label for="aviary-grind-select" class="roast-mv-meta-label">Grind</label>
