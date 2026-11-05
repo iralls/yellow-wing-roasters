@@ -1,6 +1,7 @@
 /**
  * Yellow Wing Roasters - Subscription Management
- * Handles lookup, status display, pause, resume, and cancellation.
+ * Handles secure token lookup, Magic Link dispatch, status tracking,
+ * and subscriber self-service controls (Pause, Resume, Cancel).
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -14,59 +15,23 @@
   'use strict';
 
   return function initManageSubscriptions(options) {
-    options = options || {};
-    var API_URL = options.apiUrl || '';
-    var resubscribeUrl = options.resubscribeUrl || '/subscriptions/';
-    var isMockMode = false;
+    var API_URL = options.apiUrl;
+    var resubscribeUrl = options.resubscribeUrl;
 
-    // Detect if the API URL is still a placeholder or empty
-    if (!API_URL || API_URL.indexOf("YOUR_DEPLOYMENT_ID_HERE") >= 0 || API_URL.trim() === "") {
-      isMockMode = true;
-    }
+    var lookupForm = document.getElementById('sub-lookup-form');
+    var lookupEmail = document.getElementById('sub-lookup-email');
+    var lookupId = document.getElementById('sub-lookup-id');
+    var lookupBtn = document.getElementById('sub-lookup-btn');
+    var lookupStatus = document.getElementById('sub-lookup-status');
 
-    // Local storage cache for mock data to allow local interactivity
-    var MOCK_DB = JSON.parse(localStorage.getItem('ywr_mock_subscriptions')) || {
-      "test@test.com": [
-        { roast: "Wingshot Collective", size: "12oz", frequency: "Monthly", status: "Active" },
-        { roast: "Fledglings", size: "2lb", frequency: "Every 2 weeks", status: "Paused" }
-      ],
-      "jane@test.com": [
-        { roast: "The Migrator", size: "12oz", frequency: "Monthly", status: "Cancelled" }
-      ],
-      "friend@example.com": [
-        { roast: "Murmurations", size: "5lb", frequency: "Monthly", status: "Active" }
-      ]
-    };
-
-    function saveMockDb() {
-      try {
-        localStorage.setItem('ywr_mock_subscriptions', JSON.stringify(MOCK_DB));
-      } catch (e) {
-        console.error('saveMockDb: Failed to save mock subscriptions:', e);
-      }
-    }
-
-    var lookupForm = document.getElementById('lookup-form');
-    var lookupEmail = document.getElementById('lookup-email');
-    var lookupBtn = document.getElementById('lookup-btn');
-    var lookupStatus = document.getElementById('lookup-status');
-
-    var lookupSection = document.getElementById('lookup-section');
-    var resultsSection = document.getElementById('results-section');
-    var resultsEmailDisplay = document.getElementById('results-email-display');
-    var subscriptionsList = document.getElementById('subscriptions-list');
-    var mockIndicator = document.getElementById('mock-indicator');
-    var backSearchBtn = document.getElementById('back-search-btn');
-
-    var currentSearchEmail = "";
-
-    if (isMockMode && mockIndicator) {
-      mockIndicator.style.display = 'inline-block';
-    }
+    var lookupSection = document.getElementById('sub-lookup-section');
+    var resultsSection = document.getElementById('sub-results-section');
+    var resultsIdDisplay = document.getElementById('sub-results-id-display');
+    var subscriptionContent = document.getElementById('subscription-content');
 
     function escapeHtml(str) {
       if (!str) return '';
-      return str.toString()
+      return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -74,236 +39,318 @@
         .replace(/'/g, "&#039;");
     }
 
-    function showError(msg) {
-      lookupStatus.textContent = msg;
-      lookupStatus.className = 'order-status order-status-error';
-      lookupBtn.disabled = false;
+    function formatPrice(val) {
+      if (!val && val !== 0) return '';
+      var str = String(val).trim();
+      if (!str) return '';
+      var clean = str.replace(/^\$/, '').replace(/,/g, '').trim();
+      var num = parseFloat(clean);
+      if (!isNaN(num) && /^(\d+(\.\d+)?|\.\d+)$/.test(clean)) {
+        return '$' + num.toFixed(2);
+      }
+      if (str.charAt(0) === '$') return str;
+      return '$' + str;
     }
 
-    function showResults(email) {
-      lookupStatus.textContent = '';
-      lookupStatus.className = 'order-status';
-      lookupBtn.disabled = false;
-      lookupSection.style.display = 'none';
-      resultsSection.style.display = 'block';
-      if (resultsEmailDisplay) resultsEmailDisplay.textContent = email;
+    function getStatusBadgeClass(status) {
+      var s = (status || '').toLowerCase();
+      if (s === 'active') return 'status-active';
+      if (s === 'paused') return 'status-paused';
+      if (s === 'cancelled') return 'status-cancelled';
+      return 'status-active';
     }
 
-    function renderSubscriptions(subs) {
-      subscriptionsList.innerHTML = '';
-      if (subs.length === 0) {
-        subscriptionsList.innerHTML = '<p style="color: #6e5e54; font-style: italic; text-align: center; margin: 2rem 0;">No subscriptions found associated with this email address.</p>';
-        return;
+    function renderSubscriptionCard(sub) {
+      subscriptionContent.innerHTML = '';
+
+      var card = document.createElement('div');
+      card.className = 'sub-card';
+
+      var badgeClass = getStatusBadgeClass(sub.status);
+      var lowerStatus = (sub.status || '').toLowerCase();
+
+      var html = '<div class="sub-header">' +
+        '<h3 class="sub-title">Subscription #' + escapeHtml(sub.orderId) + '</h3>' +
+        '<span class="status-badge ' + badgeClass + '">' + escapeHtml(sub.status) + '</span>' +
+        '</div>';
+
+      if (sub.timestamp) {
+        html += '<div class="order-date" style="font-size: 0.85rem; color: #8a7060; margin-bottom: 1rem;">Started: ' + escapeHtml(sub.timestamp) + '</div>';
       }
 
-      subs.forEach(function (sub) {
-        var card = document.createElement('div');
-        card.className = 'sub-card';
+      // Contextual status banners
+      if (lowerStatus === 'paused') {
+        html += '<div style="background-color: #fef9e7; border-left: 4px solid #f39c12; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #7d5a00;">' +
+          '<strong>Deliveries Temporarily Paused:</strong> Your recurring orders are currently on hold.' +
+          (sub.statusDetails ? ' <br><span style="font-style: italic;">Reason: ' + escapeHtml(sub.statusDetails) + '</span>' : '') +
+          '</div>';
+      } else if (lowerStatus === 'cancelled') {
+        html += '<div style="background-color: #fdf2f2; border-left: 4px solid #c0392b; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #78281f;">' +
+          '<strong>Subscription Cancelled:</strong> This subscription is no longer active.' +
+          (sub.statusDetails ? ' <br><span style="font-style: italic;">Reason: ' + escapeHtml(sub.statusDetails) + '</span>' : '') +
+          '</div>';
+      } else {
+        html += '<div style="background-color: #f4fbf7; border-left: 4px solid #1e824c; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #1e824c;">' +
+          '<strong>Subscription Active:</strong> Your coffee is scheduled for fulfillment according to our regular roast cycles.' +
+          '</div>';
+      }
 
-        var badgeClass = 'status-active';
-        if (sub.status.toLowerCase() === 'paused') {
-          badgeClass = 'status-paused';
-        } else if (sub.status.toLowerCase() === 'cancelled') {
-          badgeClass = 'status-cancelled';
-        }
+      // Delivery Method
+      html += '<div style="font-size: 0.88rem; color: #554338; margin-bottom: 1.25rem;">' +
+        '<strong>Delivery Method:</strong> ' + escapeHtml(sub.deliveryMethod);
+      if (sub.deliveryMethod === 'Hand delivery' && sub.address) {
+        html += ' &bull; ' + escapeHtml(sub.address) + ', ' + escapeHtml(sub.city) + ' ' + escapeHtml(sub.state) + ' ' + escapeHtml(sub.zip);
+      }
+      html += '</div>';
 
-        var html = '<div class="sub-header">' +
-          '<h3 class="sub-title">' + escapeHtml(sub.roast) + '</h3>' +
-          '<span class="status-badge ' + badgeClass + '">' + escapeHtml(sub.status) + '</span>' +
-          '</div>' +
-          '<p class="sub-details">Size: <strong>' + escapeHtml(sub.size) + '</strong> &bull; Frequency: <strong>' + escapeHtml(sub.frequency) + '</strong></p>';
+      // Linen Detail Table
+      html += '<div style="background-color: #f5efe6; border-radius: 8px; padding: 16px 18px; margin-bottom: 1.5rem;">' +
+        '<table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: left;">' +
+        '<tr>' +
+        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060; width: 32%;">Roast</td>' +
+        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.95rem; font-weight: 600; color: #2c1e14;">' + escapeHtml(sub.roast) + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Bag Size</td>' +
+        '<td style="padding: 4px 8px; font-family: Georgia, serif; font-size: 0.95rem; color: #2c1e14;">' + escapeHtml(sub.size) + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Frequency</td>' +
+        '<td style="padding: 4px 8px; font-family: Georgia, serif; font-size: 0.95rem; color: #2c1e14;">' + escapeHtml(sub.frequency) + '</td>' +
+        '</tr>' +
+        (sub.cost ? (
+          '<tr>' +
+          '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Price / Period</td>' +
+          '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 1.05rem; font-weight: 600; color: #2c1e14;">' + escapeHtml(formatPrice(sub.cost)) + '</td>' +
+          '</tr>'
+        ) : '') +
+        '</table>' +
+        '</div>';
 
-        if (sub.status.toLowerCase() === 'cancelled') {
-          html += '<p style="margin: 0; font-size: 0.9rem; color: #8a7060; font-style: italic;">This subscription has been cancelled. If you\'d like to start receiving deliveries again, please <a href="' + escapeHtml(resubscribeUrl) + '" style="font-weight: 700; text-decoration: underline;">resubscribe</a>.</p>';
-          card.innerHTML = html;
-          subscriptionsList.appendChild(card);
-          return;
-        }
+      // Customer Actions
+      if (lowerStatus === 'active') {
+        html += '<div class="sub-actions" id="sub-actions-active">' +
+          '<button type="button" id="trigger-pause-btn" class="action-pill-btn btn-secondary-pill">Pause Deliveries</button>' +
+          '<button type="button" id="trigger-cancel-btn" class="action-pill-btn btn-danger-pill">Cancel Subscription</button>' +
+          '</div>';
 
-        // Add actions container
-        html += '<div class="sub-actions">';
-        if (sub.status.toLowerCase() === 'active') {
-          html += '<button class="action-pill-btn btn-primary-pill pause-btn">Pause</button>';
-        } else if (sub.status.toLowerCase() === 'paused') {
-          html += '<button class="action-pill-btn btn-primary-pill resume-btn">Resume</button>';
-        }
-        html += '<button class="action-pill-btn btn-danger-pill cancel-trigger-btn">Cancel</button>';
-        html += '</div>';
-
-        // Cancellation details hidden container
-        html += '<div class="cancel-reason-container" style="display: none;">' +
-          '<label style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Reason for cancelling (optional)</label>' +
-          '<textarea class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
+        // Hidden Pause Prompt
+        html += '<div id="pause-container" class="cancel-reason-container" style="display: none;">' +
+          '<label for="pause-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Optional note for pausing:</label>' +
+          '<textarea id="pause-reason-input" class="cancel-textarea" rows="2" placeholder="e.g. Taking a vacation, resuming next month..."></textarea>' +
           '<div style="display: flex; gap: 0.5rem;">' +
-          '<button class="action-pill-btn btn-danger-pill confirm-cancel-btn">Confirm</button>' +
-          '<button class="action-pill-btn btn-secondary-pill abort-cancel-btn">Keep</button>' +
+          '<button type="button" id="confirm-pause-btn" class="action-pill-btn btn-primary-pill">Confirm Pause</button>' +
+          '<button type="button" id="abort-pause-btn" class="action-pill-btn btn-secondary-pill">Keep Active</button>' +
           '</div>' +
           '</div>';
 
-        card.innerHTML = html;
+        // Hidden Cancel Prompt
+        html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
+          '<label for="cancel-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Reason for cancelling (optional):</label>' +
+          '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
+          '<div style="display: flex; gap: 0.5rem;">' +
+          '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
+          '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Subscription</button>' +
+          '</div>' +
+          '</div>';
+      } else if (lowerStatus === 'paused') {
+        html += '<div class="sub-actions" id="sub-actions-paused">' +
+          '<button type="button" id="confirm-resume-btn" class="action-pill-btn btn-primary-pill">Resume Deliveries</button>' +
+          '<button type="button" id="trigger-cancel-btn" class="action-pill-btn btn-danger-pill">Cancel Subscription</button>' +
+          '</div>';
 
-        // Event listener wiring
-        var pauseBtn = card.querySelector('.pause-btn');
-        var resumeBtn = card.querySelector('.resume-btn');
-        var cancelTriggerBtn = card.querySelector('.cancel-trigger-btn');
-        var cancelReasonContainer = card.querySelector('.cancel-reason-container');
-        var abortCancelBtn = card.querySelector('.abort-cancel-btn');
-        var confirmCancelBtn = card.querySelector('.confirm-cancel-btn');
-        var cancelTextarea = card.querySelector('.cancel-textarea');
-        var actionsDiv = card.querySelector('.sub-actions');
+        // Hidden Cancel Prompt
+        html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
+          '<label for="cancel-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Reason for cancelling (optional):</label>' +
+          '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
+          '<div style="display: flex; gap: 0.5rem;">' +
+          '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
+          '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Paused</button>' +
+          '</div>' +
+          '</div>';
+      } else if (lowerStatus === 'cancelled') {
+        html += '<p style="margin: 1.5rem 0 0; font-size: 0.92rem; color: #8a7060; font-style: italic; text-align: center;">' +
+          'Ready to receive fresh roasts again? <a href="' + escapeHtml(resubscribeUrl) + '" style="font-weight: 700; text-decoration: underline; color: #2c1e14;">Browse Subscription Plans &rarr;</a>' +
+          '</p>';
+      }
 
-        if (pauseBtn) {
-          pauseBtn.addEventListener('click', function () {
-            updateStatus(sub.roast, 'Paused', '', pauseBtn);
-          });
-        }
+      card.innerHTML = html;
+      subscriptionContent.appendChild(card);
 
-        if (resumeBtn) {
-          resumeBtn.addEventListener('click', function () {
-            updateStatus(sub.roast, 'Active', '', resumeBtn);
-          });
-        }
+      // Wire action listeners
+      var triggerPauseBtn = card.querySelector('#trigger-pause-btn');
+      var pauseContainer = card.querySelector('#pause-container');
+      var confirmPauseBtn = card.querySelector('#confirm-pause-btn');
+      var abortPauseBtn = card.querySelector('#abort-pause-btn');
+      var pauseReasonInput = card.querySelector('#pause-reason-input');
 
-        if (cancelTriggerBtn) {
-          cancelTriggerBtn.addEventListener('click', function () {
-            actionsDiv.style.display = 'none';
-            cancelReasonContainer.style.display = 'block';
-            cancelTextarea.focus();
-          });
-        }
+      var triggerCancelBtn = card.querySelector('#trigger-cancel-btn');
+      var cancelContainer = card.querySelector('#cancel-container');
+      var confirmCancelBtn = card.querySelector('#confirm-cancel-btn');
+      var abortCancelBtn = card.querySelector('#abort-cancel-btn');
+      var cancelReasonInput = card.querySelector('#cancel-reason-input');
 
-        if (abortCancelBtn) {
-          abortCancelBtn.addEventListener('click', function () {
-            cancelReasonContainer.style.display = 'none';
-            actionsDiv.style.display = 'flex';
-            cancelTextarea.value = '';
-          });
-        }
+      var confirmResumeBtn = card.querySelector('#confirm-resume-btn');
+      var actionsActive = card.querySelector('#sub-actions-active');
+      var actionsPaused = card.querySelector('#sub-actions-paused');
 
-        if (confirmCancelBtn) {
-          confirmCancelBtn.addEventListener('click', function () {
-            var reason = cancelTextarea.value.trim();
-            updateStatus(sub.roast, 'Cancelled', reason, confirmCancelBtn);
-          });
-        }
+      if (triggerPauseBtn) {
+        triggerPauseBtn.addEventListener('click', function () {
+          if (actionsActive) actionsActive.style.display = 'none';
+          if (cancelContainer) cancelContainer.style.display = 'none';
+          pauseContainer.style.display = 'block';
+          if (pauseReasonInput) pauseReasonInput.focus();
+        });
+      }
 
-        subscriptionsList.appendChild(card);
-      });
-    }
+      if (abortPauseBtn) {
+        abortPauseBtn.addEventListener('click', function () {
+          pauseContainer.style.display = 'none';
+          if (actionsActive) actionsActive.style.display = 'flex';
+          if (pauseReasonInput) pauseReasonInput.value = '';
+        });
+      }
 
-    function updateStatus(roast, newStatus, reason, buttonEl) {
-      var originalText = buttonEl.textContent;
-      buttonEl.textContent = 'Updating...';
-      buttonEl.disabled = true;
+      if (confirmPauseBtn) {
+        confirmPauseBtn.addEventListener('click', function () {
+          var reason = pauseReasonInput ? pauseReasonInput.value.trim() : '';
+          performStatusUpdate(sub, 'Paused', reason, confirmPauseBtn);
+        });
+      }
 
-      if (isMockMode) {
-        setTimeout(function () {
-          var userSubs = MOCK_DB[currentSearchEmail.toLowerCase()] || [];
-          for (var i = 0; i < userSubs.length; i++) {
-            if (userSubs[i].roast.toLowerCase() === roast.toLowerCase()) {
-              userSubs[i].status = newStatus;
-              break;
-            }
-          }
-          MOCK_DB[currentSearchEmail.toLowerCase()] = userSubs;
-          saveMockDb();
-          renderSubscriptions(userSubs);
-        }, 800);
-      } else {
-        // Live POST request
-        fetch(API_URL, {
-          method: 'POST',
-          mode: 'cors',
-          body: JSON.stringify({
-            email: currentSearchEmail,
-            roast: roast,
-            status: newStatus,
-            statusDetails: reason
-          })
-        })
-        .then(function (response) {
-          if (!response.ok) throw new Error('Update failed');
-          return response.json();
-        })
-        .then(function (data) {
-          if (data.error) {
-            alert("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
-            buttonEl.textContent = originalText;
-            buttonEl.disabled = false;
-          } else {
-            fetch(API_URL + "?email=" + encodeURIComponent(currentSearchEmail))
-              .then(function (res) { return res.json(); })
-              .then(function (lookupData) {
-                renderSubscriptions(lookupData.subscriptions || []);
-              });
-          }
-        })
-        .catch(function (err) {
-          console.error('manage-subscriptions: Error updating subscription:', err);
-          alert("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
-          buttonEl.textContent = originalText;
-          buttonEl.disabled = false;
+      if (confirmResumeBtn) {
+        confirmResumeBtn.addEventListener('click', function () {
+          performStatusUpdate(sub, 'Active', '', confirmResumeBtn);
+        });
+      }
+
+      if (triggerCancelBtn) {
+        triggerCancelBtn.addEventListener('click', function () {
+          if (actionsActive) actionsActive.style.display = 'none';
+          if (actionsPaused) actionsPaused.style.display = 'none';
+          if (pauseContainer) pauseContainer.style.display = 'none';
+          cancelContainer.style.display = 'block';
+          if (cancelReasonInput) cancelReasonInput.focus();
+        });
+      }
+
+      if (abortCancelBtn) {
+        abortCancelBtn.addEventListener('click', function () {
+          cancelContainer.style.display = 'none';
+          if (actionsActive) actionsActive.style.display = 'flex';
+          if (actionsPaused) actionsPaused.style.display = 'flex';
+          if (cancelReasonInput) cancelReasonInput.value = '';
+        });
+      }
+
+      if (confirmCancelBtn) {
+        confirmCancelBtn.addEventListener('click', function () {
+          var reason = cancelReasonInput ? cancelReasonInput.value.trim() : '';
+          performStatusUpdate(sub, 'Cancelled', reason, confirmCancelBtn);
         });
       }
     }
 
-    lookupForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = lookupEmail.value.trim();
-      if (!email) return;
+    function performStatusUpdate(sub, newStatus, reason, buttonEl) {
+      var origText = buttonEl.textContent;
+      buttonEl.textContent = 'Updating...';
+      buttonEl.disabled = true;
 
-      currentSearchEmail = email;
-      lookupStatus.textContent = 'Searching...';
-      lookupStatus.className = 'order-status order-status-pending';
-      lookupBtn.disabled = true;
-
-      if (isMockMode) {
-        setTimeout(function () {
-          var subs = MOCK_DB[email.toLowerCase()] || [];
-          if (subs.length === 0 && email.toLowerCase().indexOf('@') > 0 && email.toLowerCase() !== 'none@test.com') {
-            subs = [{ roast: "Wingshot Collective", size: "12oz", frequency: "Monthly", status: "Active" }];
-            MOCK_DB[email.toLowerCase()] = subs;
-            saveMockDb();
-          }
-          renderSubscriptions(subs);
-          showResults(email);
-        }, 600);
-      } else {
-        var fetchUrl = API_URL + "?email=" + encodeURIComponent(email);
-        fetch(fetchUrl)
-          .then(function (response) {
-            if (!response.ok) throw new Error('Network error');
-            return response.json();
-          })
-          .then(function (data) {
-            if (data.error) {
-              showError("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
-            } else {
-              renderSubscriptions(data.subscriptions || []);
-              showResults(email);
-            }
-          })
-          .catch(function (err) {
-            console.error('manage-subscriptions: Error fetching subscriptions:', err);
-            showError("Technical glitch. Please reach out to chirp@yellowwingroasters.com");
-          });
-      }
-    });
-
-    if (backSearchBtn) {
-      backSearchBtn.addEventListener('click', function () {
-        resultsSection.style.display = 'none';
-        lookupSection.style.display = 'block';
-        lookupEmail.value = '';
-        lookupEmail.focus();
+      fetch(API_URL, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        body: JSON.stringify({
+          action: 'update_status',
+          orderId: sub.orderId,
+          token: sub.token,
+          status: newStatus,
+          statusDetails: reason
+        })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.error) {
+          alert(data.error);
+          buttonEl.textContent = origText;
+          buttonEl.disabled = false;
+        } else {
+          sub.status = newStatus;
+          sub.statusDetails = reason;
+          renderSubscriptionCard(sub);
+        }
+      })
+      .catch(function (err) {
+        console.error('manage-subscriptions: Error updating status:', err);
+        alert("Technical glitch. Please reach out to orders@yellowwingroasters.com");
+        buttonEl.textContent = origText;
+        buttonEl.disabled = false;
       });
     }
 
+    // Phase 1 Lookup Form Submission
+    if (lookupForm) {
+      lookupForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = lookupEmail.value.trim();
+        var orderId = lookupId ? lookupId.value.trim() : '';
+        if (!email) return;
+
+        lookupStatus.textContent = 'Sending secure link...';
+        lookupStatus.className = 'order-status order-status-pending';
+        lookupBtn.disabled = true;
+
+        fetch(API_URL, {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'omit',
+          body: JSON.stringify({
+            action: 'request_link',
+            email: email,
+            orderId: orderId
+          })
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          lookupStatus.textContent = data.message || "If a subscription matches that information, we've emailed a secure link to manage it.";
+          lookupStatus.className = 'order-status order-status-success';
+          lookupBtn.disabled = false;
+        })
+        .catch(function (err) {
+          console.error('manage-subscriptions: Error requesting magic link:', err);
+          lookupStatus.textContent = "Technical glitch. Please reach out to orders@yellowwingroasters.com";
+          lookupStatus.className = 'order-status order-status-error';
+          lookupBtn.disabled = false;
+        });
+      });
+    }
+
+    // Phase 2 Direct URL Authenticated Load (?orderId=1001&token=xyz)
     var urlParams = new URLSearchParams(window.location.search);
-    var paramEmail = urlParams.get('email');
-    if (paramEmail && lookupEmail) {
-      lookupEmail.value = paramEmail.trim();
-      lookupForm.dispatchEvent(new Event('submit'));
+    var paramOrderId = urlParams.get('orderId');
+    var paramToken = urlParams.get('token');
+
+    if (paramOrderId && paramToken) {
+      lookupSection.style.display = 'none';
+      resultsSection.style.display = 'block';
+      if (resultsIdDisplay) resultsIdDisplay.textContent = '#' + paramOrderId;
+
+      subscriptionContent.innerHTML = '<p style="text-align: center; color: #8a7060; font-style: italic; margin: 2rem 0;">Loading subscription details...</p>';
+      fetch(API_URL + '?orderId=' + encodeURIComponent(paramOrderId) + '&token=' + encodeURIComponent(paramToken))
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.error || !data.subscription) {
+            subscriptionContent.innerHTML = '<p class="order-status order-status-error" style="text-align: center; margin: 2rem 0;">' +
+              (data.error || 'Subscription not found or link has expired.') +
+              '</p>';
+          } else {
+            renderSubscriptionCard(data.subscription);
+          }
+        })
+        .catch(function (err) {
+          console.error('manage-subscriptions: Error loading subscription:', err);
+          subscriptionContent.innerHTML = '<p class="order-status order-status-error" style="text-align: center; margin: 2rem 0;">Technical glitch loading subscription. Please try again or contact orders@yellowwingroasters.com</p>';
+        });
     }
   };
 });

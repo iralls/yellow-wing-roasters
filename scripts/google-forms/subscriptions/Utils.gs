@@ -72,6 +72,13 @@ function requireField(namedValues, possibleNames, context) {
 }
 
 /**
+ * Generates an unguessable 16-character hexadecimal token for subscription security.
+ */
+function generateSecureToken() {
+  return Utilities.getUuid().replace(/-/g, '').slice(0, 16);
+}
+
+/**
  * Returns JSON output formatted for Apps Script Web App responses.
  */
 function createJsonResponse(data) {

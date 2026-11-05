@@ -55,6 +55,11 @@ sitemap: false
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
       </a>
 
+      <a href="{{ '/subscriptions/admin/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
+        <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/subscriptions/admin/</span>
+        <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
+      </a>
+
       <a href="{{ '/roasts/admin/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
         <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/roasts/admin/</span>
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
@@ -62,11 +67,6 @@ sitemap: false
 
       <a href="{{ '/pigeon-post/email-composer/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
         <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/pigeon-post/email-composer/</span>
-        <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
-      </a>
-
-      <a href="{{ '/email-templates/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
-        <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/email-templates/</span>
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
       </a>
     </div>
