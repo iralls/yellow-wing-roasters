@@ -8,6 +8,10 @@ Gemfile.lock
 run.sh
 agy.sh
 
+# Clasp and Apps Script local config
+.clasp.json
+.clasprc.json
+
 # Preview & playground files
 *-preview.*
 preview-*.*

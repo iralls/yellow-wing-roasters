@@ -127,9 +127,11 @@
     function renderFooterHtml() {
       return (
         '<div style="text-align: center;">' +
-          '<div style="font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 13px; color: #f0c838; line-height: 1.5; margin-bottom: 14px;">' +
-            'Chirp,<br>' +
-            '<strong style="color: #f0c838;">' + escapeHtml(siteTitle) + '</strong>' +
+          '<div style="font-family: Georgia, \'Lora\', serif; font-style: italic; font-size: 15px; color: #8a7060; margin-bottom: 4px;">' +
+            'Chirp,' +
+          '</div>' +
+          '<div style="font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #2c1e14; margin-bottom: 20px;">' +
+            escapeHtml(siteTitle) +
           '</div>' +
           '<p style="font-size: 11px; color: #998070; line-height: 1.6; margin: 0 auto; max-width: 360px;">' +
             'Sent via Pigeon Post from <a href="' + escapeHtml(siteUrl) + '" style="color: #8a7060; text-decoration: underline;">yellowwingroasters.com</a>. Reply to <a href="mailto:' + escapeHtml(roasterEmail) + '" style="color: #8a7060; text-decoration: underline;">' + escapeHtml(roasterEmail) + '</a> anytime with questions or to unsubscribe.' +

@@ -3,27 +3,6 @@
  */
 
 /**
- * Retrieves the logo thumbnail blob safely for inline embedding.
- * Throws an informative error if the Drive file cannot be found or rendered.
- */
-function getLogoBlob() {
-  var file;
-  try {
-    file = DriveApp.getFileById(LOGO_IMAGE_FILE_ID);
-  } catch (err) {
-    throw new Error("getLogoBlob: Unable to locate Drive file ID [" + LOGO_IMAGE_FILE_ID + "]: " + err.message);
-  }
-
-  var resizedBlob = file.getThumbnail();
-  if (!resizedBlob) {
-    throw new Error("getLogoBlob: Unable to retrieve thumbnail for Drive file [" + LOGO_IMAGE_FILE_ID + "]. Ensure it is a valid image.");
-  }
-
-  resizedBlob.setName("myResizedImage");
-  return resizedBlob;
-}
-
-/**
  * Sends purchase and billing confirmation receipt to the gift purchaser.
  */
 function sendPurchaserConfirmation(data) {
@@ -40,7 +19,6 @@ function sendPurchaserConfirmation(data) {
   template.cost = data.cost;
 
   var htmlBody = template.evaluate().getContent();
-  var logoBlob = getLogoBlob();
 
   GmailApp.sendEmail(
     data.purchaserEmail,
@@ -49,8 +27,7 @@ function sendPurchaserConfirmation(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
-      htmlBody: htmlBody,
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: htmlBody
     }
   );
   console.log("Sent confirmation receipt to purchaser: " + data.purchaserEmail + " (#" + data.orderId + ")");
@@ -77,7 +54,6 @@ function sendRecipientAnnouncement(data) {
   template.deliveryMethod = data.deliveryMethod;
 
   var htmlBody = template.evaluate().getContent();
-  var logoBlob = getLogoBlob();
 
   GmailApp.sendEmail(
     data.recipientEmail,
@@ -86,8 +62,7 @@ function sendRecipientAnnouncement(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
-      htmlBody: htmlBody,
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: htmlBody
     }
   );
   console.log("Sent gift announcement to recipient: " + data.recipientEmail + " (#" + data.orderId + ")");

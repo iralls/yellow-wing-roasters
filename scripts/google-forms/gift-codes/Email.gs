@@ -3,27 +3,6 @@
  */
 
 /**
- * Retrieves the logo thumbnail blob safely for inline embedding.
- * Throws an informative error if the Drive file cannot be found or rendered.
- */
-function getLogoBlob() {
-  var file;
-  try {
-    file = DriveApp.getFileById(LOGO_IMAGE_FILE_ID);
-  } catch (err) {
-    throw new Error("getLogoBlob: Unable to locate Drive file ID [" + LOGO_IMAGE_FILE_ID + "]: " + err.message);
-  }
-
-  var resizedBlob = file.getThumbnail();
-  if (!resizedBlob) {
-    throw new Error("getLogoBlob: Unable to retrieve thumbnail for Drive file [" + LOGO_IMAGE_FILE_ID + "]. Ensure it is a valid image.");
-  }
-
-  resizedBlob.setName("myResizedImage");
-  return resizedBlob;
-}
-
-/**
  * Sends purchase confirmation receipt to the gift card buyer.
  */
 function sendPurchaserEmail(data) {
@@ -34,7 +13,6 @@ function sendPurchaserEmail(data) {
   purchaserTemplate.giftCode = data.giftCode;
   purchaserTemplate.amount = data.amount;
 
-  var logoBlob = getLogoBlob();
   GmailApp.sendEmail(
     data.purchaserEmail,
     "Yellow Wing Roasters Gift Card Purchase Confirmed",
@@ -42,8 +20,7 @@ function sendPurchaserEmail(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
-      htmlBody: purchaserTemplate.evaluate().getContent(),
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: purchaserTemplate.evaluate().getContent()
     }
   );
   console.log("Successfully sent Purchaser Email to: " + data.purchaserEmail);
@@ -65,7 +42,6 @@ function sendRecipientEmail(data) {
   recipientTemplate.amount = data.amount;
   recipientTemplate.giftMessage = data.giftMessage;
 
-  var logoBlob = getLogoBlob();
   GmailApp.sendEmail(
     data.recipientEmail,
     "A Digital Gift Card from " + (data.purchaserName || "a friend") + "!",
@@ -73,8 +49,7 @@ function sendRecipientEmail(data) {
     {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
-      htmlBody: recipientTemplate.evaluate().getContent(),
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: recipientTemplate.evaluate().getContent()
     }
   );
   console.log("Successfully sent Recipient Email to: " + data.recipientEmail);

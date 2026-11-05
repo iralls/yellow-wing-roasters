@@ -3,27 +3,6 @@
  */
 
 /**
- * Helper to fetch the logo thumbnail blob safely for inline email embedding.
- * Throws if the file cannot be located or converted.
- */
-function getLogoBlob() {
-  var file;
-  try {
-    file = DriveApp.getFileById(LOGO_IMAGE_FILE_ID);
-  } catch (err) {
-    throw new Error("getLogoBlob: Could not locate Drive file [" + LOGO_IMAGE_FILE_ID + "]: " + err.message);
-  }
-
-  var resizedBlob = file.getThumbnail();
-  if (!resizedBlob) {
-    throw new Error("getLogoBlob: Could not generate thumbnail for Drive file [" + LOGO_IMAGE_FILE_ID + "]. Ensure it is an image.");
-  }
-
-  resizedBlob.setName("myResizedImage");
-  return resizedBlob;
-}
-
-/**
  * Sends initial order confirmation email containing the customer's secure magic link.
  */
 function sendOrderConfirmationEmail(orderData) {
@@ -36,7 +15,6 @@ function sendOrderConfirmationEmail(orderData) {
   template.deliveryMethod = orderData.deliveryMethod;
 
   var htmlBody = template.evaluate().getContent();
-  var logoBlob = getLogoBlob();
 
   GmailApp.sendEmail(
     orderData.customerEmail,
@@ -47,8 +25,7 @@ function sendOrderConfirmationEmail(orderData) {
       from: ROASTER_EMAIL,
       bcc: ROASTER_EMAIL,
       replyTo: orderData.customerEmail,
-      htmlBody: htmlBody,
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: htmlBody
     }
   );
   console.log("Order confirmation email sent to " + orderData.customerEmail + " (#" + orderData.orderId + ")");
@@ -64,12 +41,10 @@ function sendMagicLinkEmail(orderData) {
   magicTpl.items = orderData.items;
   magicTpl.cost = orderData.cost;
 
-  var logoBlob = getLogoBlob();
   var magicMailOptions = {
     name: "Yellow Wing Roasters",
     from: ROASTER_EMAIL,
-    htmlBody: magicTpl.evaluate().getContent(),
-    inlineImages: { myResizedImage: logoBlob }
+    htmlBody: magicTpl.evaluate().getContent()
   };
 
   GmailApp.sendEmail(
@@ -91,7 +66,6 @@ function sendCustomerCancellationEmail(orderData) {
   cancelTpl.items = orderData.items;
   cancelTpl.cost = orderData.cost;
 
-  var logoBlob = getLogoBlob();
   GmailApp.sendEmail(
     orderData.customerEmail,
     "Yellow Wing Roasters Order Cancelled (#" + orderData.orderId + ")",
@@ -100,8 +74,7 @@ function sendCustomerCancellationEmail(orderData) {
       name: "Yellow Wing Roasters",
       from: ROASTER_EMAIL,
       replyTo: ROASTER_EMAIL,
-      htmlBody: cancelTpl.evaluate().getContent(),
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: cancelTpl.evaluate().getContent()
     }
   );
   console.log("Cancellation email sent to customer: " + orderData.customerEmail + " (#" + orderData.orderId + ")");
@@ -179,7 +152,6 @@ function sendStatusEmailForRow(sheet, rowIdx) {
   template.statusMessage = statusConfig.message;
   template.detailsLabel = statusConfig.detailsLabel;
 
-  var logoBlob = getLogoBlob();
   GmailApp.sendEmail(
     customerEmail,
     subject,
@@ -189,8 +161,7 @@ function sendStatusEmailForRow(sheet, rowIdx) {
       from: ROASTER_EMAIL,
       bcc: ROASTER_EMAIL,
       replyTo: ROASTER_EMAIL,
-      htmlBody: template.evaluate().getContent(),
-      inlineImages: { myResizedImage: logoBlob }
+      htmlBody: template.evaluate().getContent()
     }
   );
   console.log("Status update email (" + status + ") sent to " + customerEmail + " (#" + orderId + ")");
