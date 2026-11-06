@@ -1,176 +1,33 @@
-/**
- * Yellow Wing Roasters - Owner Order Dashboard Controller (/order/admin/)
- * Provides secure owner authentication, live queue management, filtering & search,
- * and roaster status updates with automatic customer email dispatch.
- */
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof module === 'object' && module.exports) {
+  if (typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
-    var exp = factory();
-    root.initAdminOrders = exp.initAdminOrders;
-    root.filterOrders = exp.filterOrders;
-    root.computeStats = exp.computeStats;
-    root.getStatusBadgeClass = exp.getStatusBadgeClass;
-    root.computeBrowserHash = exp.computeBrowserHash;
-    root.extractOrderDate = exp.extractOrderDate;
-    root.parseOrderLineItems = exp.parseOrderLineItems;
-    root.parseCurrency = exp.parseCurrency;
-    root.bagSizeToLbs = exp.bagSizeToLbs;
-    root.formatSizeCounts = exp.formatSizeCounts;
-    root.computeOrderTotals = exp.computeOrderTotals;
-    root.DEFAULT_MOCK_HASH = exp.DEFAULT_MOCK_HASH;
-    root.DEFAULT_MOCK_PASSCODE = exp.DEFAULT_MOCK_PASSCODE;
+    var exports = factory();
+    root.initAdminOrders = exports.initAdminOrders;
+    root.AdminOrdersLogic = exports;
   }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
   var STORAGE_KEY = 'ywr_admin_passcode';
-  var DEFAULT_MOCK_PASSCODE = 'yellowwing-roaster-secret';
   var DEFAULT_SALT = 'yellow-wing-roasters-auth-v1';
-  var DEFAULT_MOCK_HASH = '35ad8e83336a3fd0137981caaaa1e2c0d63260378aab3a1d3c4dc2b372f2d7f3';
   var ADMIN_PASSWORD_HASH = 'fe65aec7e9795f3d9f4d55755b8c3bc82818e8955ac270c5ab5ebc09e28b3de9';
 
-  function computeBrowserHash(key, salt) {
-    salt = salt || DEFAULT_SALT;
-    var rawText = salt + (key || '').trim();
-    if (typeof crypto !== 'undefined' && crypto.subtle) {
-      var msg = new TextEncoder().encode(rawText);
-      return crypto.subtle.digest('SHA-256', msg).then(function (buf) {
-        var arr = Array.from(new Uint8Array(buf));
-        return arr.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-      });
-    }
-    return Promise.resolve('');
-  }
-
-  var CANONICAL_MOCK_ORDERS = [
-    {
-      orderId: "1001",
-      token: "mock-token-1",
-      name: "Jane Doe",
-      email: "jane@test.com",
-      items: "1x Early Bird 12oz (Grind: Whole Bean), 1x Feather Soot 2lb (Grind: Medium — Drip / Filter)",
-      total: "$40.00",
-      deliveryMethod: "Pickup",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      notes: "Please call when ready",
-      status: "Received",
-      statusDetails: "",
-      timestamp: "10/08/2026, 10:15:00 AM"
-    },
-    {
-      orderId: "1002",
-      token: "mock-token-2",
-      name: "Sam Smith",
-      email: "sam@test.com",
-      items: "2x Colombia Supremo 12oz (Grind: Whole Bean)",
-      total: "$24.00",
-      deliveryMethod: "Hand delivery",
-      address: "123 Elm St",
-      city: "Guilford",
-      state: "CT",
-      zip: "06437",
-      notes: "Leave by back porch",
-      status: "Delayed",
-      statusDetails: "Awaiting Colombia green bean shipment from importer, roasting scheduled for Friday.",
-      timestamp: "10/07/2026, 02:30:00 PM"
-    },
-    {
-      orderId: "1003",
-      token: "mock-token-3",
-      name: "Chris Brown",
-      email: "chris@test.com",
-      items: "1x Early Bird 2lb (Grind: Whole Bean)",
-      total: "$26.00",
-      deliveryMethod: "Pickup",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      notes: "",
-      status: "Roasted",
-      statusDetails: "Freshly roasted and currently degassing.",
-      timestamp: "10/06/2026, 11:45:00 AM"
-    },
-    {
-      orderId: "1004",
-      token: "mock-token-4",
-      name: "Morgan Lee",
-      email: "morgan@test.com",
-      items: "1x Morning Meep 12oz (Grind: Whole Bean), 1x Colombia Supremo 12oz (Grind: Coarser — French Press)",
-      total: "$24.00",
-      deliveryMethod: "Pickup",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      notes: "",
-      status: "Ready for Pickup",
-      statusDetails: "Your beans are roasted, bagged, and waiting in our pickup bin at 45 Soundview Rd, Guilford! Available Mon–Sat 8am–6pm.",
-      timestamp: "10/05/2026, 08:30:00 AM"
-    },
-    {
-      orderId: "1005",
-      token: "mock-token-5",
-      name: "Taylor Swift",
-      email: "taylor@test.com",
-      items: "1x Lil' Sipper 12oz (Grind: Whole Bean), 1x Guatemala Antigua 12oz (Grind: Medium — Drip / Filter)",
-      total: "$22.00",
-      deliveryMethod: "Hand delivery",
-      address: "78 Broad St",
-      city: "Guilford",
-      state: "CT",
-      zip: "06437",
-      notes: "Ring bell twice",
-      status: "Ready to Deliver",
-      statusDetails: "Packed and out for afternoon delivery in Guilford. Estimated delivery between 2:00 PM and 4:30 PM.",
-      timestamp: "10/04/2026, 09:15:00 AM"
-    },
-    {
-      orderId: "1006",
-      token: "mock-token-6",
-      name: "Jordan Case",
-      email: "jordan@test.com",
-      items: "2x Feather Soot 12oz (Grind: Medium — Drip / Filter)",
-      total: "$24.00",
-      deliveryMethod: "Hand delivery",
-      address: "44 River St",
-      city: "Madison",
-      state: "CT",
-      zip: "06443",
-      notes: "Leave by back door",
-      status: "Delivered",
-      statusDetails: "Left safely on the back porch as requested. Enjoy your fresh cup!",
-      timestamp: "10/03/2026, 01:20:00 PM"
-    },
-    {
-      orderId: "1007",
-      token: "mock-token-7",
-      name: "Robin Hood",
-      email: "robin@test.com",
-      items: "1x Early Bird 12oz (Grind: Whole Bean)",
-      total: "$10.00",
-      deliveryMethod: "Pickup",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      notes: "",
-      status: "Cancelled",
-      statusDetails: "Customer requested cancellation.",
-      timestamp: "10/02/2026, 10:00:00 AM"
-    }
-  ];
+  var ORDER_DIMENSION_LABELS = {
+    month: 'Month',
+    year: 'Year',
+    date: 'Date',
+    roast: 'Roast',
+    product: 'Roast',
+    size: 'Bag Size',
+    deliveryMethod: 'Delivery Method',
+    status: 'Status',
+    city: 'City',
+    customer: 'Customer'
+  };
 
   function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
+    return String(str || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -178,557 +35,458 @@
       .replace(/'/g, '&#39;');
   }
 
+  function computeBrowserHash(passcode, salt) {
+    var activeSalt = salt || DEFAULT_SALT;
+    var input = activeSalt + String(passcode || '').trim();
+
+    if (typeof crypto !== 'undefined' && crypto.subtle && typeof TextEncoder !== 'undefined') {
+      var msgBuffer = new TextEncoder().encode(input);
+      return crypto.subtle.digest('SHA-256', msgBuffer).then(function (hashBuffer) {
+        var hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      });
+    }
+
+    if (typeof require === 'function') {
+      var nodeCrypto = require('crypto');
+      var digest = nodeCrypto.createHash('sha256').update(input, 'utf8').digest('hex');
+      return Promise.resolve(digest);
+    }
+
+    return Promise.reject(new Error('WebCrypto API not available'));
+  }
+
+  function normalizeStatus(status) {
+    var s = String(status || 'Received').trim().toLowerCase();
+    if (s === 'received') return 'received';
+    if (s === 'delayed') return 'delayed';
+    if (s === 'roasted') return 'roasted';
+    if (s === 'ready for pickup' || s === 'ready_for_pickup') return 'ready_for_pickup';
+    if (s === 'ready to deliver' || s === 'ready_to_deliver' || s === 'out for delivery') return 'ready_to_deliver';
+    if (s === 'delivered') return 'delivered';
+    if (s === 'cancelled' || s === 'canceled') return 'cancelled';
+    return 'other';
+  }
+
   function getStatusBadgeClass(status) {
-    var s = (status || '').toLowerCase();
-    if (s === 'received') return 'status-received';
-    if (s === 'delayed') return 'status-delayed';
-    if (s === 'roasted') return 'status-roasted';
-    if (s === 'ready for pickup' || s === 'ready to deliver' || s === 'out for delivery') return 'status-ready';
-    if (s === 'delivered') return 'status-delivered';
-    if (s === 'cancelled') return 'status-cancelled';
-    return 'status-received';
+    var norm = normalizeStatus(status);
+    if (norm === 'received') return 'status-received';
+    if (norm === 'delayed') return 'status-delayed';
+    if (norm === 'roasted') return 'status-roasted';
+    if (norm === 'ready_for_pickup' || norm === 'ready_to_deliver') return 'status-ready';
+    if (norm === 'delivered') return 'status-delivered';
+    if (norm === 'cancelled') return 'status-cancelled';
+    return 'status-default';
   }
 
   function computeStats(orders) {
-    var total = orders.length;
-    var received = 0;
-    var delayed = 0;
-    var roasted = 0;
-    var readyForPickup = 0;
-    var readyToDeliver = 0;
-    var delivered = 0;
-    var cancelled = 0;
-
-    for (var i = 0; i < orders.length; i++) {
-      var s = (orders[i].status || '').toLowerCase();
-      if (s === 'received') received++;
-      else if (s === 'delayed') delayed++;
-      else if (s === 'roasted') roasted++;
-      else if (s === 'ready for pickup') readyForPickup++;
-      else if (s === 'ready to deliver' || s === 'out for delivery') readyToDeliver++;
-      else if (s === 'delivered') delivered++;
-      else if (s === 'cancelled') cancelled++;
-    }
-
-    return {
-      total: total,
-      received: received,
-      delayed: delayed,
-      roasted: roasted,
-      readyForPickup: readyForPickup,
-      readyToDeliver: readyToDeliver,
-      delivered: delivered,
-      cancelled: cancelled
+    var stats = {
+      total: 0,
+      received: 0,
+      delayed: 0,
+      roasted: 0,
+      readyForPickup: 0,
+      readyToDeliver: 0,
+      delivered: 0,
+      cancelled: 0
     };
-  }
-
-  function filterOrders(orders, filterCategory, searchQuery) {
-    var result = orders.slice();
-
-    if (filterCategory && filterCategory !== 'all') {
-      result = result.filter(function (order) {
-        var s = (order.status || '').toLowerCase();
-        if (filterCategory === 'received') return s === 'received';
-        if (filterCategory === 'delayed') return s === 'delayed';
-        if (filterCategory === 'roasted') return s === 'roasted';
-        if (filterCategory === 'ready_for_pickup') return s === 'ready for pickup';
-        if (filterCategory === 'ready_to_deliver') return s === 'ready to deliver' || s === 'out for delivery';
-        if (filterCategory === 'delivered') return s === 'delivered';
-        if (filterCategory === 'cancelled') return s === 'cancelled';
-        return true;
-      });
-    }
-
-    if (searchQuery) {
-      var q = searchQuery.toLowerCase().trim();
-      result = result.filter(function (order) {
-        var text = [
-          order.orderId || '',
-          order.name || '',
-          order.email || '',
-          order.items || '',
-          order.deliveryMethod || '',
-          order.status || '',
-          order.notes || ''
-        ].join(' ').toLowerCase();
-        return text.indexOf(q) !== -1;
-      });
-    }
-
-    return result;
+    orders.forEach(function (o) {
+      stats.total++;
+      var norm = normalizeStatus(o.status);
+      if (norm === 'received') stats.received++;
+      else if (norm === 'delayed') stats.delayed++;
+      else if (norm === 'roasted') stats.roasted++;
+      else if (norm === 'ready_for_pickup') stats.readyForPickup++;
+      else if (norm === 'ready_to_deliver') stats.readyToDeliver++;
+      else if (norm === 'delivered') stats.delivered++;
+      else if (norm === 'cancelled') stats.cancelled++;
+    });
+    return stats;
   }
 
   function extractOrderDate(timestampStr) {
-    var raw = String(timestampStr || '').trim();
-    if (!raw) return { year: 'Unknown', month: '00', yearMonth: 'Unknown' };
+    if (!timestampStr) return { year: 'Unknown', month: 'Unknown', yearMonth: 'Unknown', date: 'Unknown' };
+    var str = String(timestampStr).trim();
 
-    // Try MM/DD/YYYY format first (common Google Sheets & mock format)
-    var mdyMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-    if (mdyMatch) {
-      var mm = mdyMatch[1].padStart(2, '0');
-      var yyyy = mdyMatch[3];
+    var isoMatch = str.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+    if (isoMatch) {
+      var isoDay = isoMatch[3] || '01';
       return {
-        year: yyyy,
-        month: mm,
-        yearMonth: yyyy + '-' + mm
+        year: isoMatch[1],
+        month: isoMatch[2],
+        yearMonth: isoMatch[1] + '-' + isoMatch[2],
+        date: isoMatch[1] + '-' + isoMatch[2] + '-' + isoDay
       };
     }
 
-    // Try ISO YYYY-MM-DD
-    var isoMatch = raw.match(/^(\d{4})-(\d{1,2})/);
-    if (isoMatch) {
-      var y = isoMatch[1];
-      var m = isoMatch[2].padStart(2, '0');
+    var usMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (usMatch) {
+      var m = usMatch[1].length === 1 ? '0' + usMatch[1] : usMatch[1];
+      var d = usMatch[2].length === 1 ? '0' + usMatch[2] : usMatch[2];
+      var y = usMatch[3];
       return {
         year: y,
         month: m,
-        yearMonth: y + '-' + m
+        yearMonth: y + '-' + m,
+        date: y + '-' + m + '-' + d
       };
     }
 
-    // Fallback: Date parse
-    var d = new Date(raw);
-    if (!isNaN(d.getTime())) {
-      var parsedY = String(d.getFullYear());
-      var parsedM = String(d.getMonth() + 1).padStart(2, '0');
-      return {
-        year: parsedY,
-        month: parsedM,
-        yearMonth: parsedY + '-' + parsedM
-      };
+    var parsed = new Date(str);
+    if (!isNaN(parsed.getTime())) {
+      var yr = String(parsed.getFullYear());
+      var mo = String(parsed.getMonth() + 1);
+      if (mo.length === 1) mo = '0' + mo;
+      var dy = String(parsed.getDate());
+      if (dy.length === 1) dy = '0' + dy;
+      return { year: yr, month: mo, yearMonth: yr + '-' + mo, date: yr + '-' + mo + '-' + dy };
     }
 
-    return { year: 'Unknown', month: '00', yearMonth: 'Unknown' };
+    return { year: 'Unknown', month: 'Unknown', yearMonth: 'Unknown', date: 'Unknown' };
   }
 
   function parseCurrency(val) {
+    if (val === null || val === undefined) return 0;
     if (typeof val === 'number') return isNaN(val) ? 0 : val;
-    if (!val) return 0;
-    var num = parseFloat(String(val).replace(/[^0-9.-]+/g, ''));
+    var clean = String(val).replace(/[^0-9.-]/g, '');
+    var num = parseFloat(clean);
     return isNaN(num) ? 0 : num;
   }
 
-  function bagSizeToLbs(bagSizeId, bagSizes) {
-    if (!bagSizeId) return 0;
+  function bagSizeToLbs(sizeStr, bagSizes) {
+    if (!sizeStr) return 0;
+    var clean = String(sizeStr).trim().toLowerCase();
+
     if (Array.isArray(bagSizes)) {
-      var match = bagSizes.find(function (b) { return b.id === bagSizeId; });
-      if (match && match.weight_oz) {
-        return Number((Number(match.weight_oz) / 16).toFixed(4));
+      var found = bagSizes.find(function (s) {
+        return s && String(s.id || '').toLowerCase() === clean;
+      });
+      if (found && found.weight_oz) {
+        return Number(found.weight_oz) / 16;
       }
     }
-    var str = String(bagSizeId).trim().toLowerCase();
-    var flightMatch = str.match(/^(\d+)\s*[×x]\s*(\d+(?:\.\d+)?)\s*(oz|lb)/i);
-    if (flightMatch) {
-      var count = parseInt(flightMatch[1], 10);
-      var perBagVal = parseFloat(flightMatch[2]);
-      var unit = flightMatch[3].toLowerCase();
-      var perBagLbs = (unit === 'lb') ? perBagVal : (perBagVal / 16);
-      return Number((count * perBagLbs).toFixed(4));
+
+    var match = clean.match(/^(\d+(?:\.\d+)?)\s*(oz|lb|lbs)$/);
+    if (match) {
+      var qty = parseFloat(match[1]);
+      return match[2] === 'oz' ? qty / 16 : qty;
     }
-    var m = str.match(/^(\d+(?:\.\d+)?)\s*(oz|lb)s?$/i);
-    if (m) {
-      var val = parseFloat(m[1]);
-      var unit = m[2].toLowerCase();
-      if (unit === 'lb') return val;
-      if (unit === 'oz') return Number((val / 16).toFixed(4));
-    }
+
     return 0;
   }
 
-  function parseOrderLineItems(itemsStr, bagSizes) {
-    var raw = String(itemsStr || '').trim();
+  function splitOrderItemsRaw(raw) {
     if (!raw) return [];
-    var parts = raw.split(/,\s*(?=\d+x\s)/i);
-    return parts.map(function (part) {
-      var clean = part.replace(/\s*\([^)]*\)\s*$/, '').trim();
-      var qtyMatch = clean.match(/^(\d+)x\s+/i);
-      var qty = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
-      var withoutQty = clean.replace(/^\d+x\s+/i, '').trim();
+    var str = String(raw).trim();
+    if (!str) return [];
+
+    if (str.indexOf('\n') !== -1) {
+      return str.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    }
+
+    var parts = [];
+    var current = '';
+    var depth = 0;
+    for (var i = 0; i < str.length; i++) {
+      var char = str[i];
+      if (char === '(') depth++;
+      else if (char === ')') depth = Math.max(0, depth - 1);
+
+      if (char === ',' && depth === 0) {
+        if (current.trim()) parts.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    if (current.trim()) parts.push(current.trim());
+    return parts;
+  }
+
+  function parseOrderLineItems(rawItems, bagSizes) {
+    var lines = splitOrderItemsRaw(rawItems);
+    var parsed = [];
+
+    lines.forEach(function (line) {
+      var unitPrice = null;
+      var priceMatch = line.match(/\(\s*Price:\s*\$([0-9]+(?:\.[0-9]+)?)/i);
+      if (priceMatch) {
+        unitPrice = parseFloat(priceMatch[1]);
+      }
+
+      var withoutParens = line.replace(/\s*\(.*\)\s*$/, '').trim();
+      var qty = 1;
+      var rest = withoutParens;
+
+      var qtyMatch = withoutParens.match(/^(\d+)\s*x\s+(.+)$/i);
+      if (qtyMatch) {
+        qty = parseInt(qtyMatch[1], 10);
+        rest = qtyMatch[2].trim();
+      }
+
+      var multiBagMatch = rest.match(/^(.+?)\s+(\d+)\s*[×x]\s*(\d+(?:\.\d+)?\s*(?:oz|lb|lbs))\s*(?:bags?)?$/i);
+      if (multiBagMatch) {
+        var packProduct = multiBagMatch[1].trim();
+        var packCount = parseInt(multiBagMatch[2], 10);
+        var singleBagSize = multiBagMatch[3].replace(/\s+/g, '');
+        var singleBagLbs = bagSizeToLbs(singleBagSize, bagSizes);
+        parsed.push({
+          qty: qty,
+          product: packProduct,
+          bagSize: packCount + ' × ' + singleBagSize + ' bags',
+          bagsPerUnit: packCount,
+          bagsCount: qty * packCount,
+          weightLbs: packCount * singleBagLbs,
+          unitPrice: unitPrice,
+          linePrice: unitPrice !== null ? Math.round(qty * unitPrice * 100) / 100 : null,
+          raw: line
+        });
+        return;
+      }
+
+      if (/^peck your own$/i.test(rest)) {
+        parsed.push({
+          qty: qty,
+          product: 'Peck Your Own',
+          bagSize: '4 × 8oz bags',
+          bagsPerUnit: 4,
+          bagsCount: qty * 4,
+          weightLbs: 4 * bagSizeToLbs('8oz', bagSizes),
+          unitPrice: unitPrice,
+          linePrice: unitPrice !== null ? Math.round(qty * unitPrice * 100) / 100 : null,
+          raw: line
+        });
+        return;
+      }
 
       var bagSize = '';
-      var product = withoutQty;
-      var bagsPerUnit = 1;
-
-      var flightSizeMatch = withoutQty.match(/\s+(\d+\s*[×x]\s*\d+(?:oz|lb)(?:\s*bags?)?)$/i);
-      if (flightSizeMatch) {
-        bagSize = flightSizeMatch[1].trim();
-        product = withoutQty.slice(0, withoutQty.length - flightSizeMatch[0].length).trim();
-        var numBagsMatch = bagSize.match(/^(\d+)/);
-        if (numBagsMatch) {
-          bagsPerUnit = parseInt(numBagsMatch[1], 10);
-        }
-      } else {
-        var sizeMatch = withoutQty.match(/\s+(\d+(?:oz|lb)s?)$/i);
-        if (sizeMatch) {
-          bagSize = sizeMatch[1].toLowerCase();
-          product = withoutQty.slice(0, withoutQty.length - sizeMatch[0].length).trim();
-        }
+      var product = rest;
+      var sizeMatch = rest.match(/^(.+?)\s+(\d+(?:\.\d+)?\s*(?:oz|lb|lbs))$/i);
+      if (sizeMatch) {
+        product = sizeMatch[1].trim();
+        bagSize = sizeMatch[2].replace(/\s+/g, '');
       }
 
-      // Aggregate "Peck Your Own" flights under "Peck Your Own" without breaking down individual roasts
-      if (/^peck your own/i.test(product)) {
-        product = 'Peck Your Own';
-      } else if (/^the aviary/i.test(product)) {
-        product = 'The Aviary';
-      }
-
-      var weightLbs = bagSizeToLbs(bagSize, bagSizes);
-      var explicitPrice = null;
-      var detailsMatch = part.match(/\((.*)\)$/);
-      if (detailsMatch) {
-        var priceMatch = detailsMatch[1].match(/Price:\s*\$?([\d.]+)/i);
-        if (priceMatch) {
-          explicitPrice = parseFloat(priceMatch[1]);
-        }
-        if (!weightLbs && product === 'Peck Your Own') {
-          var picksMatch = detailsMatch[1].match(/Picks:\s*([^;]+)/i);
-          if (picksMatch) {
-            var picksCount = picksMatch[1].split(',').filter(Boolean).length;
-            if (picksCount > 0) {
-              bagsPerUnit = picksCount;
-              weightLbs = Number((picksCount * 0.5).toFixed(4));
-            }
-          }
-        }
-      }
-
-      return {
+      var lbs = bagSizeToLbs(bagSize, bagSizes);
+      parsed.push({
         qty: qty,
-        bagsPerUnit: bagsPerUnit,
-        bagsCount: qty * bagsPerUnit,
-        label: clean,
-        product: product,
+        product: product || 'Coffee',
         bagSize: bagSize,
-        weightLbs: weightLbs,
-        unitPrice: explicitPrice,
-        linePrice: explicitPrice !== null ? Number((qty * explicitPrice).toFixed(2)) : null
-      };
+        bagsPerUnit: 1,
+        bagsCount: qty,
+        weightLbs: lbs,
+        unitPrice: unitPrice,
+        linePrice: unitPrice !== null ? Math.round(qty * unitPrice * 100) / 100 : null,
+        raw: line
+      });
     });
+
+    return parsed;
   }
 
-  function formatSizeCounts(sizeCounts, delimiter) {
-    if (!sizeCounts) return '';
-    delimiter = delimiter || ', ';
-    var sizeOrder = ['8oz', '12oz', '1lb', '2lb', '5lb'];
-    var keys = Object.keys(sizeCounts).sort(function (a, b) {
-      var idxA = sizeOrder.indexOf(a);
-      var idxB = sizeOrder.indexOf(b);
-      if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-      if (idxA !== -1) return -1;
-      if (idxB !== -1) return 1;
-      return a.localeCompare(b);
-    });
-    return keys
-      .filter(function (k) { return sizeCounts[k] > 0; })
-      .map(function (k) { return sizeCounts[k] + ' × ' + k; })
-      .join(delimiter);
+  function computeAgg(values, mode) {
+    if (!values || values.length === 0) return 0;
+    if (mode === 'min') return Math.min.apply(null, values);
+    if (mode === 'max') return Math.max.apply(null, values);
+    var sum = values.reduce(function (a, b) { return a + (Number(b) || 0); }, 0);
+    if (mode === 'avg') return sum / values.length;
+    return sum;
   }
 
-  var ORDER_DIMENSION_LABELS = {
-    month: 'Month',
-    year: 'Year',
-    roast: 'Roast',
-    product: 'Roast',
-    size: 'Bag Size',
-    deliveryMethod: 'Delivery Method',
-    status: 'Status',
-    city: 'City'
-  };
+  function computeOrderTotals(orders, options, bagSizes) {
+    var opts = options || {};
+    var rawGroupBy = opts.groupBy || 'month';
+    var groupBys = Array.isArray(rawGroupBy)
+      ? rawGroupBy.slice()
+      : String(rawGroupBy).split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (groupBys.length === 0) groupBys = ['month'];
+    groupBys = groupBys.map(function (g) { return g === 'product' ? 'roast' : g; });
 
-  function computeOrderTotals(orders, filters, bagSizes) {
-    orders = orders || [];
-    filters = filters || {};
+    var filterYear = opts.year || 'all';
+    var filterMonth = opts.month || 'all';
+    var filterStatus = opts.status || 'all';
+    var filterDelivery = opts.deliveryMethod || 'all';
+    var filterRoast = opts.roast || opts.coffee || 'all';
+    var filterSize = opts.size || 'all';
+    var filterSearch = (opts.search || '').trim().toLowerCase();
 
-    var groupBys = [];
-    if (Array.isArray(filters.groupBy)) {
-      groupBys = filters.groupBy.filter(Boolean);
-    } else if (typeof filters.groupBy === 'string') {
-      groupBys = filters.groupBy.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-    }
-    if (groupBys.length === 0) {
-      groupBys = ['month'];
-    }
-
-    var hasItemDim = groupBys.some(function (d) {
-      return d === 'roast' || d === 'product' || d === 'size';
-    });
-
+    var groups = {};
     var summary = {
       totalOrders: 0,
       totalBags: 0,
       totalLbs: 0,
-      totalRevenue: 0,
-      avgOrderValue: 0,
-      sizeCounts: {},
-      sizeBreakdownStr: '',
-      sizeCountsStr: '',
-      pickupCount: 0,
-      deliveryCount: 0,
-      deliveredCount: 0,
-      readyCount: 0,
-      inProgressCount: 0,
-      cancelledCount: 0
+      totalRevenue: 0
     };
 
-    var groups = {};
-    function ensureGroup(key, label, dimVals) {
+    function getGroupSlot(key, label, dimValues) {
       if (!groups[key]) {
         groups[key] = {
           key: key,
           label: label || key,
-          dimValues: dimVals || {},
-          ordersSet: {},
+          dimValues: dimValues || {},
           ordersCount: 0,
           bagsCount: 0,
           weightLbs: 0,
-          sizeCounts: {},
-          sizeBreakdownStr: '',
           revenue: 0,
-          avgOrderValue: null,
-          pickupCount: 0,
-          deliveryCount: 0,
-          deliveredCount: 0
+          bagsVals: [],
+          weightVals: [],
+          revVals: [],
+          _orderIds: {}
         };
       }
       return groups[key];
     }
 
-    var roastFilter = (filters.roast || filters.coffee || 'all').toLowerCase();
-    var sizeFilter = (filters.size || 'all').toLowerCase();
+    (orders || []).forEach(function (o) {
+      var normStatus = normalizeStatus(o.status);
+      var isCancelled = normStatus === 'cancelled';
+      var isDelivered = normStatus === 'delivered';
 
-    for (var i = 0; i < orders.length; i++) {
-      var ord = orders[i];
-      var ym = extractOrderDate(ord.timestamp);
-      var lineItems = parseOrderLineItems(ord.items, bagSizes);
-      var totalBagsInOrder = 0;
-      var totalLbsInOrder = 0;
-      var orderSizes = {};
-      for (var b = 0; b < lineItems.length; b++) {
-        var li = lineItems[b];
-        var bCount = (li.bagsCount || li.qty);
-        totalBagsInOrder += bCount;
-        totalLbsInOrder += li.qty * (li.weightLbs || bagSizeToLbs(li.bagSize, bagSizes));
-        var sz = li.bagSize || 'Other';
-        orderSizes[sz] = (orderSizes[sz] || 0) + bCount;
-      }
-      var orderCost = parseCurrency(ord.total);
-
-      var normStatus = (ord.status || '').toLowerCase();
-
-      // Filters
-      if (filters.year && filters.year !== 'all' && ym.year !== filters.year) continue;
-      if (filters.month && filters.month !== 'all' && ym.month !== filters.month) continue;
-      if (filters.deliveryMethod && filters.deliveryMethod !== 'all' && ord.deliveryMethod !== filters.deliveryMethod) continue;
-
-      var statusFilter = (filters.status || 'all').toLowerCase();
-      if (statusFilter === 'all_with_cancelled') {
-        // Explicitly include all statuses including cancelled
-      } else if (statusFilter !== 'all') {
-        if (normStatus !== statusFilter) continue;
-      } else {
-        // Exclude cancelled orders by default unless explicitly filtered for 'Cancelled'
-        if (normStatus === 'cancelled') continue;
-      }
-      if (roastFilter !== 'all') {
-        var matchesRoast = lineItems.some(function (it) {
-          return it.product.toLowerCase() === roastFilter;
-        });
-        if (!matchesRoast) continue;
-      }
-      if (sizeFilter !== 'all') {
-        var matchesSize = lineItems.some(function (it) {
-          return (it.bagSize || '').toLowerCase() === sizeFilter;
-        });
-        if (!matchesSize) continue;
+      if (filterStatus === 'active') {
+        if (isCancelled || isDelivered) return;
+      } else if (filterStatus === 'all') {
+        if (isCancelled) return;
+      } else if (filterStatus !== 'all_with_cancelled') {
+        if (normStatus !== normalizeStatus(filterStatus)) return;
       }
 
-      // Summary accumulation
-      summary.totalOrders += 1;
-      summary.totalBags += totalBagsInOrder;
-      summary.totalLbs = Number((summary.totalLbs + totalLbsInOrder).toFixed(2));
-      summary.totalRevenue = Number((summary.totalRevenue + orderCost).toFixed(2));
-      Object.keys(orderSizes).forEach(function (sz) {
-        summary.sizeCounts[sz] = (summary.sizeCounts[sz] || 0) + orderSizes[sz];
+      if (filterSearch) {
+        var haystack = [o.orderId, o.name, o.email, o.items, o.status, o.deliveryMethod, o.city].join(' ').toLowerCase();
+        if (haystack.indexOf(filterSearch) === -1) return;
+      }
+
+      var dt = extractOrderDate(o.timestamp);
+      if (filterYear !== 'all' && dt.year !== filterYear) return;
+      if (filterMonth !== 'all' && dt.month !== filterMonth) return;
+
+      var deliv = (o.deliveryMethod || 'Pickup').trim();
+      if (filterDelivery !== 'all' && deliv.toLowerCase() !== filterDelivery.toLowerCase()) return;
+
+      var lineItems = parseOrderLineItems(o.items, bagSizes);
+      if (filterRoast !== 'all') {
+        var matchesRoast = lineItems.some(function (li) { return li.product.toLowerCase() === filterRoast.toLowerCase(); });
+        if (!matchesRoast) return;
+      }
+      if (filterSize !== 'all') {
+        var matchesSize = lineItems.some(function (li) { return (li.bagSize || '').toLowerCase() === filterSize.toLowerCase(); });
+        if (!matchesSize) return;
+      }
+
+      var orderRev = parseCurrency(o.total);
+      var orderBags = 0;
+      var orderLbs = 0;
+
+      lineItems.forEach(function (li) {
+        if (filterRoast !== 'all' && li.product.toLowerCase() !== filterRoast.toLowerCase()) return;
+        if (filterSize !== 'all' && (li.bagSize || '').toLowerCase() !== filterSize.toLowerCase()) return;
+        orderBags += li.bagsCount;
+        orderLbs += li.qty * li.weightLbs;
       });
-      if (ord.deliveryMethod === 'Pickup') summary.pickupCount += 1;
-      if (ord.deliveryMethod === 'Hand delivery') summary.deliveryCount += 1;
 
-      var normStatus = (ord.status || '').toLowerCase();
-      if (normStatus === 'delivered') {
-        summary.deliveredCount += 1;
-      } else if (normStatus === 'ready for pickup' || normStatus === 'ready to deliver' || normStatus === 'out for delivery') {
-        summary.readyCount += 1;
-      } else if (normStatus === 'cancelled') {
-        summary.cancelledCount += 1;
-      } else {
-        summary.inProgressCount += 1;
+      summary.totalOrders++;
+      summary.totalBags += orderBags;
+      summary.totalLbs = Math.round((summary.totalLbs + orderLbs) * 100) / 100;
+      summary.totalRevenue = Math.round((summary.totalRevenue + orderRev) * 100) / 100;
+
+      var needsLineItemBreakout = groupBys.indexOf('roast') !== -1 || groupBys.indexOf('size') !== -1;
+
+      function resolveOrderDim(dim, li) {
+        if (dim === 'year') return dt.year;
+        if (dim === 'month') return dt.yearMonth;
+        if (dim === 'date') return dt.date;
+        if (dim === 'deliveryMethod') return deliv;
+        if (dim === 'status') return o.status || 'Received';
+        if (dim === 'city') return (o.city || '').trim() || 'Pickup / No City';
+        if (dim === 'customer') return (o.name || 'Customer').trim();
+        if (dim === 'roast') return li ? (li.product || 'Unknown Roast') : 'Unknown Roast';
+        if (dim === 'size') return li ? (li.bagSize || 'Unspecified') : 'Unspecified';
+        return 'All';
       }
 
-      // Grouping
-      if (hasItemDim) {
-        var totalKnownItemRevenue = 0;
-        var allItemsHavePrice = lineItems.length > 0 && lineItems.every(function (it) {
-          return it.linePrice !== null;
-        });
-        if (allItemsHavePrice) {
-          totalKnownItemRevenue = lineItems.reduce(function (acc, it) {
-            return acc + it.linePrice;
-          }, 0);
-        }
+      if (needsLineItemBreakout) {
+        var totalLineWeight = lineItems.reduce(function (acc, it) { return acc + (it.qty * it.weightLbs); }, 0);
+        var totalLineBags = lineItems.reduce(function (acc, it) { return acc + it.bagsCount; }, 0);
 
-        var itemsInOrder = {};
-        for (var p = 0; p < lineItems.length; p++) {
-          var item = lineItems[p];
-          if (roastFilter !== 'all' && item.product.toLowerCase() !== roastFilter) {
-            continue;
-          }
-          if (sizeFilter !== 'all' && (item.bagSize || '').toLowerCase() !== sizeFilter) {
-            continue;
-          }
-          var dimVals = {};
-          var keyParts = [];
-          for (var g = 0; g < groupBys.length; g++) {
-            var dim = groupBys[g];
-            var val = '';
-            if (dim === 'month') val = ym.yearMonth;
-            else if (dim === 'year') val = ym.year;
-            else if (dim === 'roast' || dim === 'product') val = item.product || 'Unknown';
-            else if (dim === 'size') val = item.bagSize || 'Other';
-            else if (dim === 'deliveryMethod') val = ord.deliveryMethod || 'Other';
-            else if (dim === 'status') val = ord.status || 'Unknown';
-            else if (dim === 'city') val = (ord.city || (ord.deliveryMethod === 'Pickup' ? 'Pickup' : 'Unspecified'));
-            dimVals[dim] = val;
-            keyParts.push(val);
-          }
-          var compKey = keyParts.join(' — ');
-          if (!itemsInOrder[compKey]) {
-            itemsInOrder[compKey] = {
-              compKey: compKey,
-              dimVals: dimVals,
-              bagsCount: 0,
-              weightLbs: 0,
-              revenue: 0,
-              sizeCounts: {}
-            };
-          }
-          var itemBags = (item.bagsCount || item.qty);
-          var itemWeightLbs = item.qty * (item.weightLbs || bagSizeToLbs(item.bagSize, bagSizes));
-          itemsInOrder[compKey].bagsCount += itemBags;
-          itemsInOrder[compKey].weightLbs += itemWeightLbs;
+        lineItems.forEach(function (li) {
+          if (filterRoast !== 'all' && li.product.toLowerCase() !== filterRoast.toLowerCase()) return;
+          if (filterSize !== 'all' && (li.bagSize || '').toLowerCase() !== filterSize.toLowerCase()) return;
 
-          var itemRev = 0;
-          if (item.linePrice !== null) {
-            if (allItemsHavePrice && totalKnownItemRevenue > 0 && Math.abs(totalKnownItemRevenue - orderCost) > 0.01) {
-              itemRev = Number(((item.linePrice / totalKnownItemRevenue) * orderCost).toFixed(2));
-            } else {
-              itemRev = item.linePrice;
-            }
-          } else if (totalLbsInOrder > 0) {
-            itemRev = Number(((itemWeightLbs / totalLbsInOrder) * orderCost).toFixed(2));
-          } else {
-            itemRev = lineItems.length > 0 ? Number((orderCost / lineItems.length).toFixed(2)) : 0;
-          }
-
-          itemsInOrder[compKey].revenue = Number((itemsInOrder[compKey].revenue + itemRev).toFixed(2));
-          var itemSz = item.bagSize || 'Other';
-          itemsInOrder[compKey].sizeCounts[itemSz] = (itemsInOrder[compKey].sizeCounts[itemSz] || 0) + itemBags;
-        }
-
-        Object.keys(itemsInOrder).forEach(function (cKey) {
-          var iData = itemsInOrder[cKey];
-          var grp = ensureGroup(cKey, cKey, iData.dimVals);
-          if (!grp.ordersSet[ord.orderId]) {
-            grp.ordersSet[ord.orderId] = true;
-            grp.ordersCount += 1;
-            if (ord.deliveryMethod === 'Pickup') grp.pickupCount += 1;
-            if (ord.deliveryMethod === 'Hand delivery') grp.deliveryCount += 1;
-            if (normStatus === 'delivered') grp.deliveredCount += 1;
-          }
-          grp.bagsCount += iData.bagsCount;
-          grp.weightLbs = Number((grp.weightLbs + iData.weightLbs).toFixed(2));
-          grp.revenue = Number((grp.revenue + iData.revenue).toFixed(2));
-          Object.keys(iData.sizeCounts).forEach(function (sz) {
-            grp.sizeCounts[sz] = (grp.sizeCounts[sz] || 0) + iData.sizeCounts[sz];
+          var dimValues = {};
+          var keyParts = groupBys.map(function (dim) {
+            var val = resolveOrderDim(dim, li);
+            dimValues[dim] = val;
+            return val;
           });
+          var compositeKey = keyParts.join(' — ');
+          var slot = getGroupSlot(compositeKey, compositeKey, dimValues);
+
+          var itemWeight = li.qty * li.weightLbs;
+          var itemBags = li.bagsCount;
+          if (!slot._orderIds[o.orderId]) {
+            slot._orderIds[o.orderId] = true;
+            slot.ordersCount++;
+          }
+          slot.bagsCount += itemBags;
+          slot.bagsVals.push(itemBags);
+          slot.weightLbs = Math.round((slot.weightLbs + itemWeight) * 100) / 100;
+          slot.weightVals.push(itemWeight);
+
+          var itemRevShare = 0;
+          if (li.linePrice !== null && li.linePrice !== undefined) {
+            itemRevShare = li.linePrice;
+          } else if (totalLineWeight > 0) {
+            itemRevShare = orderRev * (itemWeight / totalLineWeight);
+          } else if (totalLineBags > 0) {
+            itemRevShare = orderRev * (itemBags / totalLineBags);
+          }
+          slot.revenue = Math.round((slot.revenue + itemRevShare) * 100) / 100;
+          slot.revVals.push(itemRevShare);
         });
       } else {
-        var dimValsOrder = {};
-        var keyPartsOrder = [];
-        for (var g2 = 0; g2 < groupBys.length; g2++) {
-          var dim2 = groupBys[g2];
-          var val2 = '';
-          if (dim2 === 'month') val2 = ym.yearMonth;
-          else if (dim2 === 'year') val2 = ym.year;
-          else if (dim2 === 'deliveryMethod') val2 = ord.deliveryMethod || 'Other';
-          else if (dim2 === 'status') val2 = ord.status || 'Unknown';
-          else if (dim2 === 'city') val2 = (ord.city || (ord.deliveryMethod === 'Pickup' ? 'Pickup' : 'Unspecified'));
-          dimValsOrder[dim2] = val2;
-          keyPartsOrder.push(val2);
-        }
-        var compKeyOrder = keyPartsOrder.join(' — ');
-        var grpOrder = ensureGroup(compKeyOrder, compKeyOrder, dimValsOrder);
-        grpOrder.ordersCount += 1;
-        grpOrder.bagsCount += totalBagsInOrder;
-        grpOrder.weightLbs = Number((grpOrder.weightLbs + totalLbsInOrder).toFixed(2));
-        grpOrder.revenue = Number((grpOrder.revenue + orderCost).toFixed(2));
-        Object.keys(orderSizes).forEach(function (sz) {
-          grpOrder.sizeCounts[sz] = (grpOrder.sizeCounts[sz] || 0) + orderSizes[sz];
+        var dimVals = {};
+        var parts = groupBys.map(function (dim) {
+          var v = resolveOrderDim(dim, null);
+          dimVals[dim] = v;
+          return v;
         });
-        if (ord.deliveryMethod === 'Pickup') grpOrder.pickupCount += 1;
-        if (ord.deliveryMethod === 'Hand delivery') grpOrder.deliveryCount += 1;
-        if (normStatus === 'delivered') grpOrder.deliveredCount += 1;
+        var compKey = parts.join(' — ');
+        var gSlot = getGroupSlot(compKey, compKey, dimVals);
+        gSlot.ordersCount++;
+        gSlot.bagsCount += orderBags;
+        gSlot.bagsVals.push(orderBags);
+        gSlot.weightLbs = Math.round((gSlot.weightLbs + orderLbs) * 100) / 100;
+        gSlot.weightVals.push(orderLbs);
+        gSlot.revenue = Math.round((gSlot.revenue + orderRev) * 100) / 100;
+        gSlot.revVals.push(orderRev);
       }
-    }
-
-    summary.avgOrderValue = summary.totalOrders > 0
-      ? Number((summary.totalRevenue / summary.totalOrders).toFixed(2))
-      : 0;
-    summary.sizeBreakdownStr = formatSizeCounts(summary.sizeCounts, ' · ');
-    summary.sizeCountsStr = formatSizeCounts(summary.sizeCounts, ', ');
-
-    var rows = Object.keys(groups).map(function (k) {
-      var row = groups[k];
-      if (row.revenue !== null && row.ordersCount > 0) {
-        row.avgOrderValue = Number((row.revenue / row.ordersCount).toFixed(2));
-      }
-      row.sizeBreakdownStr = formatSizeCounts(row.sizeCounts, ', ');
-      return row;
     });
 
-    var sizeOrder = ['8oz', '12oz', '1lb', '2lb', '5lb'];
-    rows.sort(function (a, b) {
-      if (groupBys.length === 1 && (groupBys[0] === 'month' || groupBys[0] === 'year')) {
-        return b.key.localeCompare(a.key);
-      }
-      if (groupBys.length === 1 && groupBys[0] === 'size') {
-        var idxA = sizeOrder.indexOf(a.key);
-        var idxB = sizeOrder.indexOf(b.key);
-        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-        if (idxA !== -1) return -1;
-        if (idxB !== -1) return 1;
-      }
-      return b.ordersCount - a.ordersCount || a.label.localeCompare(b.label);
+    var rows = Object.keys(groups).map(function (k) {
+      var g = groups[k];
+      delete g._orderIds;
+      return g;
     });
 
     return {
+      groupBy: groupBys[0],
       groupBys: groupBys,
-      hasItemDim: hasItemDim,
       summary: summary,
       rows: rows
     };
   }
 
-  function sortOrderTotalsRows(rows, sortCol, sortDir) {
+  function sortOrderTotalsRows(rows, sortCol, sortDir, bagSizes) {
     if (!rows || rows.length === 0 || !sortCol) return rows ? rows.slice() : [];
     var dir = sortDir === 'asc' ? 1 : -1;
-    var sizeOrder = ['8oz', '12oz', '1lb', '2lb', '5lb'];
+    var sizeOrder = Array.isArray(bagSizes) ? bagSizes.map(function (s) { return String(s.id).toLowerCase(); }) : [];
+
     return rows.slice().sort(function (a, b) {
       var cmp = 0;
       if (sortCol.indexOf('dim:') === 0) {
         var dimKey = sortCol.slice(4);
         var aVal = String((a.dimValues && a.dimValues[dimKey]) || a.label || '');
         var bVal = String((b.dimValues && b.dimValues[dimKey]) || b.label || '');
-        if (dimKey === 'size') {
+        if (dimKey === 'size' && sizeOrder.length > 0) {
           var idxA = sizeOrder.indexOf(aVal.toLowerCase());
           var idxB = sizeOrder.indexOf(bVal.toLowerCase());
           if (idxA !== -1 && idxB !== -1) cmp = idxA - idxB;
@@ -740,6 +498,8 @@
         }
       } else if (sortCol === 'orders') {
         cmp = (a.ordersCount || 0) - (b.ordersCount || 0);
+      } else if (sortCol === 'bags') {
+        cmp = (a.bagsCount || 0) - (b.bagsCount || 0);
       } else if (sortCol === 'weight') {
         cmp = (a.weightLbs || 0) - (b.weightLbs || 0);
       } else if (sortCol === 'revenue') {
@@ -751,53 +511,43 @@
   }
 
   function initAdminOrders(options) {
-    options = options || {};
-    var apiUrl = options.apiUrl || '';
-    var manageBaseUrl = options.manageBaseUrl || '/order/manage/';
-    var bagSizes = options.bagSizes || [];
-
-    var hasMockParam = typeof window !== 'undefined' &&
-      (window.location.search.indexOf('mock=1') !== -1 || window.location.search.indexOf('demo=1') !== -1);
+    var apiUrl = options.apiUrl;
+    var manageBaseUrl = options.manageBaseUrl;
+    var bagSizes = options.bagSizes;
 
     var gateSection = document.getElementById('order-admin-gate-section');
     var gateForm = document.getElementById('order-admin-gate-form');
     var passcodeInput = document.getElementById('order-admin-passcode-input');
     var gateError = document.getElementById('order-admin-gate-error');
-    var gateBtn = document.getElementById('order-admin-gate-btn');
 
     var dashboardSection = document.getElementById('order-admin-dashboard-section');
     var statsContainer = document.getElementById('order-admin-stats');
     var refreshBtn = document.getElementById('order-admin-refresh-btn');
     var logoutBtn = document.getElementById('order-admin-logout-btn');
-    var filtersContainer = document.getElementById('order-admin-filters');
     var searchInput = document.getElementById('order-admin-search-input');
-    var queueContainer = document.getElementById('order-admin-queue');
+
+    var inspectorCard = document.getElementById('order-admin-inspector-card');
     var inspectorContainer = document.getElementById('order-admin-inspector');
 
-    var tabsContainer = document.getElementById('order-admin-tabs');
-    var queuePanel = document.getElementById('order-admin-panel-queue');
-    var totalsPanel = document.getElementById('order-admin-panel-totals');
-
-    var totalsGroupBy = document.getElementById('order-totals-group-by');
     var totalsFilterYear = document.getElementById('order-totals-filter-year');
     var totalsFilterMonth = document.getElementById('order-totals-filter-month');
     var totalsFilterStatus = document.getElementById('order-totals-filter-status');
     var totalsFilterDelivery = document.getElementById('order-totals-filter-delivery');
-    var totalsFilterCoffee = document.getElementById('order-totals-filter-coffee');
-    var totalsFilterRoast = document.getElementById('order-totals-filter-roast') || totalsFilterCoffee;
+    var totalsFilterRoast = document.getElementById('order-totals-filter-roast');
     var totalsFilterSize = document.getElementById('order-totals-filter-size');
-    var totalsKpisWrap = document.getElementById('order-totals-kpis');
+    var orderGroupPillsWrap = document.getElementById('order-totals-group-pills');
+    var orderClearGroupByBtn = document.getElementById('order-clear-groupby');
+    var orderAggBags = document.getElementById('order-agg-bags');
+    var orderAggWeight = document.getElementById('order-agg-weight');
+    var orderAggRevenue = document.getElementById('order-agg-revenue');
     var totalsTableWrap = document.getElementById('order-totals-table-wrap');
 
     var currentOrders = [];
-    var activeFilter = 'all';
-    var activeTab = 'queue';
     var currentSearch = '';
     var selectedOrderId = null;
-    var isMockModeActive = false;
-    var isDeliveredCollapsed = true;
-    var isCancelledCollapsed = true;
-    var orderTotalsSortCol = null;
+    var orderRawSortCol = 'date';
+    var orderRawSortDir = 'desc';
+    var orderTotalsSortCol = 'orders';
     var orderTotalsSortDir = 'desc';
 
     function getStoredKey() {
@@ -811,47 +561,35 @@
     function saveKey(key) {
       try {
         localStorage.setItem(STORAGE_KEY, key);
-        if (typeof document !== 'undefined') {
-          document.documentElement.classList.add('ywr-admin-authenticated');
-        }
+        document.documentElement.classList.add('ywr-admin-authenticated');
       } catch (e) {}
     }
 
     function clearStoredKey() {
       try {
         localStorage.removeItem(STORAGE_KEY);
-        if (typeof document !== 'undefined') {
-          document.documentElement.classList.remove('ywr-admin-authenticated');
-        }
+        document.documentElement.classList.remove('ywr-admin-authenticated');
       } catch (e) {}
     }
 
     function showGate(errorMessage) {
-      if (typeof document !== 'undefined') {
-        document.documentElement.classList.remove('ywr-admin-authenticated');
+      document.documentElement.classList.remove('ywr-admin-authenticated');
+      dashboardSection.style.display = 'none';
+      gateSection.style.display = 'block';
+      if (errorMessage) {
+        gateError.textContent = errorMessage;
+        gateError.style.display = 'block';
+      } else {
+        gateError.style.display = 'none';
       }
-      if (dashboardSection) dashboardSection.style.display = 'none';
-      if (gateSection) gateSection.style.display = 'block';
-      if (gateError) {
-        if (errorMessage) {
-          gateError.textContent = errorMessage;
-          gateError.style.display = 'block';
-        } else {
-          gateError.style.display = 'none';
-        }
-      }
-      if (passcodeInput) {
-        passcodeInput.value = '';
-        passcodeInput.focus();
-      }
+      passcodeInput.value = '';
+      passcodeInput.focus();
     }
 
     function showDashboard() {
-      if (typeof document !== 'undefined') {
-        document.documentElement.classList.add('ywr-admin-authenticated');
-      }
-      if (gateSection) gateSection.style.display = 'none';
-      if (dashboardSection) dashboardSection.style.display = 'block';
+      document.documentElement.classList.add('ywr-admin-authenticated');
+      gateSection.style.display = 'none';
+      dashboardSection.style.display = 'block';
     }
 
     function renderStats() {
@@ -862,25 +600,16 @@
       if (stats.delayed > 0) {
         html += '<span class="order-admin-stat-pill" style="color: #b45309; background: #fef3c7;">Delayed: ' + stats.delayed + '</span>';
       }
-
       if (stats.roasted > 0) {
         html += '<span class="order-admin-stat-pill">Roasted: ' + stats.roasted + '</span>';
       }
-
       if (stats.readyForPickup > 0) {
         html += '<span class="order-admin-stat-pill">Ready for Pickup: ' + stats.readyForPickup + '</span>';
       }
-
       if (stats.readyToDeliver > 0) {
         html += '<span class="order-admin-stat-pill">Ready to Deliver: ' + stats.readyToDeliver + '</span>';
       }
-
       html += '<span class="order-admin-stat-pill">Delivered: ' + stats.delivered + '</span>';
-
-      if (isMockModeActive) {
-        html += '<span class="order-admin-stat-pill" style="color: #92400e; background: #fde68a; font-weight: 700;">MOCK MODE</span>';
-      }
-
       statsContainer.innerHTML = html;
     }
 
@@ -893,115 +622,73 @@
       if (!isNaN(num) && clean.match(/^\d+(\.\d+)?$/)) {
         return '$' + num.toFixed(2);
       }
-      if (str.charAt(0) === '$') return str;
-      return '$' + str;
-    }
-
-    function parseOrderItems(raw) {
-      if (!raw) return [];
-      var str = String(raw).trim();
-      if (!str) return [];
-
-      if (str.indexOf('\n') !== -1) {
-        return str.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
-      }
-
-      var parts = [];
-      var current = '';
-      var depth = 0;
-      for (var i = 0; i < str.length; i++) {
-        var char = str[i];
-        if (char === '(') depth++;
-        else if (char === ')') depth = Math.max(0, depth - 1);
-
-        if (char === ',' && depth === 0) {
-          if (current.trim()) parts.push(current.trim());
-          current = '';
-        } else {
-          current += char;
-        }
-      }
-      if (current.trim()) parts.push(current.trim());
-      return parts;
+      return str.charAt(0) === '$' ? str : ('$' + str);
     }
 
     function renderInspector(order) {
       if (!order) {
-        inspectorContainer.innerHTML = '<div class="order-admin-inspector-empty">Select an order from the queue to view details and update fulfillment status.</div>';
+        inspectorCard.style.display = 'none';
+        inspectorContainer.innerHTML = '';
         return;
       }
+      inspectorCard.style.display = 'block';
 
       var badgeClass = getStatusBadgeClass(order.status);
       var magicLinkUrl = manageBaseUrl + (manageBaseUrl.indexOf('?') === -1 ? '?' : '&') +
         'orderId=' + encodeURIComponent(order.orderId) + '&token=' + encodeURIComponent(order.token || '');
 
-      var fulfillmentHtml = '<div class="order-admin-info-line"><strong>Method:</strong> ' + escapeHtml(order.deliveryMethod || 'Pickup') + '</div>';
+      var fulfillmentHtml = '<div class="order-admin-info-line"><strong>Method:</strong> ' + escapeHtml(order.deliveryMethod) + '</div>';
       if ((order.deliveryMethod || '').toLowerCase() === 'hand delivery' && order.address) {
         var addressLine = escapeHtml(order.address) + (order.city ? ', ' + escapeHtml(order.city) : '') +
           (order.state ? ' ' + escapeHtml(order.state) : '') + (order.zip ? ' ' + escapeHtml(order.zip) : '');
         fulfillmentHtml += '<div class="order-admin-info-line"><strong>Address:</strong> ' + addressLine + '</div>';
       }
 
-      var notesHtml = '';
-      if (order.notes) {
-        notesHtml = '<div class="order-admin-section-block">' +
-          '<div class="order-admin-section-label">Customer Instructions</div>' +
-          '<div class="order-admin-info-line">' + escapeHtml(order.notes) + '</div>' +
-          '</div>';
-      }
+      var notesHtml = order.notes
+        ? '<div class="order-admin-section-block"><div class="order-admin-section-label">Customer Instructions</div><div class="order-admin-info-line">' + escapeHtml(order.notes) + '</div></div>'
+        : '';
 
-      var itemLines = parseOrderItems(order.items);
-      var itemsBoxHtml = '';
-      if (itemLines.length === 0) {
-        itemsBoxHtml = '<div class="order-admin-items-box">No items listed</div>';
-      } else {
-        itemsBoxHtml = '<div class="order-admin-items-box">' +
-          '<ul class="order-admin-items-list">' +
-          itemLines.map(function (it) {
-            return '<li>' + escapeHtml(it) + '</li>';
-          }).join('') +
-          '</ul>' +
-          '</div>';
-      }
+      var itemLines = splitOrderItemsRaw(order.items);
+      var itemsBoxHtml = itemLines.length === 0
+        ? '<div class="order-admin-items-box">No items listed</div>'
+        : '<div class="order-admin-items-box"><ul class="order-admin-items-list">' +
+          itemLines.map(function (it) { return '<li>' + escapeHtml(it) + '</li>'; }).join('') +
+          '</ul></div>';
 
       var formattedTotal = formatPrice(order.total);
       var totalHtml = formattedTotal
-        ? '<span class="order-admin-inspector-divider" aria-hidden="true">|</span>' +
-          '<span class="order-admin-inspector-price">' + escapeHtml(formattedTotal) + '</span>'
+        ? '<span class="order-admin-inspector-divider" aria-hidden="true">|</span><span class="order-admin-inspector-price">' + escapeHtml(formattedTotal) + '</span>'
         : '';
 
-      var html = '<div class="order-admin-inspector-header">' +
+      inspectorContainer.innerHTML = '<div class="order-admin-inspector-header">' +
         '<div class="order-admin-inspector-title-wrap">' +
         '<h3 class="order-admin-inspector-title">Order #' + escapeHtml(order.orderId) + '</h3>' +
         totalHtml +
         '</div>' +
+        '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
         '<span class="status-badge ' + badgeClass + '">' + escapeHtml(order.status) + '</span>' +
+        '<button type="button" id="admin-close-inspector-btn" class="order-admin-btn-sm">Close</button>' +
         '</div>' +
-
+        '</div>' +
         '<div class="order-admin-section-block">' +
         '<div class="order-admin-section-label">Customer Contact</div>' +
-        '<div class="order-admin-info-line"><strong>Name:</strong> ' + escapeHtml(order.name || 'Customer') + '</div>' +
+        '<div class="order-admin-info-line"><strong>Name:</strong> ' + escapeHtml(order.name) + '</div>' +
         '<div class="order-admin-info-line"><strong>Email:</strong> <a href="mailto:' + escapeHtml(order.email) + '">' + escapeHtml(order.email) + '</a></div>' +
         (order.timestamp ? '<div class="order-admin-info-line"><strong>Placed:</strong> ' + escapeHtml(order.timestamp) + '</div>' : '') +
         '</div>' +
-
         '<div class="order-admin-section-block">' +
         '<div class="order-admin-section-label">Fulfillment Details</div>' +
         fulfillmentHtml +
         '</div>' +
-
         '<div class="order-admin-section-block">' +
         '<div class="order-admin-section-label">Ordered Items</div>' +
         itemsBoxHtml +
         '</div>' +
-
         notesHtml +
-
         '<div class="order-admin-section-block">' +
         '<div class="order-admin-section-label">Customer Portal Link</div>' +
         '<div class="order-admin-info-line"><a href="' + magicLinkUrl + '" target="_blank" rel="noopener">Open Customer View &rarr;</a></div>' +
         '</div>' +
-
         '<div class="order-admin-status-box">' +
         '<div class="order-admin-section-label">Fulfillment Status</div>' +
         '<select id="admin-status-select" class="order-admin-status-picker">' +
@@ -1027,8 +714,7 @@
         '<div id="admin-status-feedback" class="order-admin-feedback" style="display: none;"></div>' +
         '</div>';
 
-      inspectorContainer.innerHTML = html;
-
+      var closeBtn = document.getElementById('admin-close-inspector-btn');
       var saveBtn = document.getElementById('admin-save-status-btn');
       var statusSelect = document.getElementById('admin-status-select');
       var detailsTextarea = document.getElementById('admin-status-details');
@@ -1036,402 +722,435 @@
       var noticePill = document.getElementById('admin-notice-pill');
       var feedbackDiv = document.getElementById('admin-status-feedback');
 
-      if (notifyCheckbox && saveBtn && noticePill) {
-        notifyCheckbox.addEventListener('change', function () {
-          if (notifyCheckbox.checked) {
-            saveBtn.textContent = 'Save & Send Notification';
-            noticePill.className = 'order-admin-notice-pill order-admin-notice-pill--notify';
-            noticePill.innerHTML = '<span>⚡ Status update email will be sent to customer and BCC roaster.</span>';
-          } else {
-            saveBtn.textContent = 'Save Status';
-            noticePill.className = 'order-admin-notice-pill';
-            noticePill.innerHTML = '<span>🔕 Silent update: No email will be sent to the customer.</span>';
-          }
+      closeBtn.addEventListener('click', function () {
+        selectedOrderId = null;
+        renderInspector(null);
+        totalsTableWrap.querySelectorAll('tr.is-selected').forEach(function (tr) {
+          tr.classList.remove('is-selected');
         });
-      }
+      });
 
-      if (saveBtn) {
-        saveBtn.addEventListener('click', function () {
-          var newStatus = statusSelect.value;
-          var newDetails = detailsTextarea.value.trim();
-          var shouldNotify = notifyCheckbox ? notifyCheckbox.checked : false;
-
-          saveBtn.disabled = true;
-          saveBtn.textContent = shouldNotify ? 'Saving & Notifying...' : 'Saving...';
-          feedbackDiv.style.display = 'none';
-
-          updateOrderStatus(order.orderId, newStatus, newDetails, shouldNotify, function (err, res) {
-            saveBtn.disabled = false;
-            saveBtn.textContent = shouldNotify ? 'Save & Send Notification' : 'Save Status';
-
-            if (err) {
-              feedbackDiv.className = 'order-admin-feedback order-admin-feedback--error';
-              feedbackDiv.textContent = 'Failed to update: ' + err;
-              feedbackDiv.style.display = 'block';
-            } else {
-              order.status = newStatus;
-              order.statusDetails = newDetails;
-
-              renderStats();
-              renderQueue();
-              renderInspector(order);
-              populateOrderTotalsFilters();
-              if (activeTab === 'totals') renderOrderTotalsTab();
-
-              var newFeedbackDiv = document.getElementById('admin-status-feedback');
-              newFeedbackDiv.className = 'order-admin-feedback order-admin-feedback--success';
-              newFeedbackDiv.textContent = '✓ Order #' + order.orderId + ' updated to ' + newStatus + (shouldNotify ? ' (email sent)!' : ' (saved silently)!');
-              newFeedbackDiv.style.display = 'block';
-            }
-          });
-        });
-      }
-    }
-
-    function createCardElement(order) {
-      var card = document.createElement('div');
-      card.className = 'order-admin-card-item' + (order.orderId === selectedOrderId ? ' order-admin-card-item--selected' : '');
-      card.setAttribute('data-order-id', order.orderId);
-
-      var badgeClass = getStatusBadgeClass(order.status);
-      var timeHtml = order.timestamp ? '<span class="order-admin-card-time">' + escapeHtml(order.timestamp) + '</span>' : '';
-
-      card.innerHTML = '<div class="order-admin-card-header">' +
-        '<div class="order-admin-card-id-wrap">' +
-        '<span class="order-admin-card-id">#' + escapeHtml(order.orderId) + '</span>' +
-        timeHtml +
-        '</div>' +
-        '<span class="status-badge ' + badgeClass + '">' + escapeHtml(order.status) + '</span>' +
-        '</div>' +
-        '<div class="order-admin-card-sub">' +
-        '<span class="order-admin-card-name">' + escapeHtml(order.name || 'Customer') + '</span>' +
-        '<span class="order-admin-card-delivery">' + escapeHtml(order.deliveryMethod || 'Pickup') + '</span>' +
-        '</div>';
-
-      card.addEventListener('click', function () {
-        selectedOrderId = order.orderId;
-        // Re-render queue selected highlight
-        var allCards = queueContainer.querySelectorAll('.order-admin-card-item');
-        allCards.forEach(function (c) { c.classList.remove('order-admin-card-item--selected'); });
-        card.classList.add('order-admin-card-item--selected');
-        renderInspector(order);
-
-        if (window.innerWidth <= 860 && inspectorContainer) {
-          inspectorContainer.scrollIntoView({ behavior: 'smooth' });
+      notifyCheckbox.addEventListener('change', function () {
+        if (notifyCheckbox.checked) {
+          saveBtn.textContent = 'Save & Send Notification';
+          noticePill.className = 'order-admin-notice-pill order-admin-notice-pill--notify';
+          noticePill.innerHTML = '<span>⚡ Status update email will be sent to customer and BCC roaster.</span>';
+        } else {
+          saveBtn.textContent = 'Save Status';
+          noticePill.className = 'order-admin-notice-pill';
+          noticePill.innerHTML = '<span>🔕 Silent update: No email will be sent to the customer.</span>';
         }
       });
 
-      return card;
-    }
+      saveBtn.addEventListener('click', function () {
+        var newStatus = statusSelect.value;
+        var newDetails = detailsTextarea.value.trim();
+        var shouldNotify = notifyCheckbox.checked;
 
-    function renderQueue() {
-      var filtered = filterOrders(currentOrders, activeFilter, currentSearch);
+        saveBtn.disabled = true;
+        saveBtn.textContent = shouldNotify ? 'Saving & Notifying...' : 'Saving...';
+        feedbackDiv.style.display = 'none';
 
-      if (filtered.length === 0) {
-        selectedOrderId = null;
-        queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">No orders match the selected filter.</div>';
-        renderInspector(null);
-        return;
-      }
+        updateOrderStatus(order.orderId, newStatus, newDetails, shouldNotify, function (err) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = shouldNotify ? 'Save & Send Notification' : 'Save Status';
 
-      if (selectedOrderId) {
-        var isSelectedInFiltered = filtered.some(function (o) { return o.orderId === selectedOrderId; });
-        if (!isSelectedInFiltered) {
-          selectedOrderId = null;
-        }
-      }
-
-      queueContainer.innerHTML = '';
-
-      if (activeFilter === 'all') {
-        var activeOrders = [];
-        var deliveredOrders = [];
-        var cancelledOrders = [];
-        filtered.forEach(function (order) {
-          var s = (order.status || '').toLowerCase();
-          if (s === 'delivered') {
-            deliveredOrders.push(order);
-          } else if (s === 'cancelled') {
-            cancelledOrders.push(order);
+          if (err) {
+            feedbackDiv.className = 'order-admin-feedback order-admin-feedback--error';
+            feedbackDiv.textContent = 'Failed to update: ' + err;
+            feedbackDiv.style.display = 'block';
           } else {
-            activeOrders.push(order);
+            order.status = newStatus;
+            order.statusDetails = newDetails;
+
+            renderStats();
+            populateOrderTotalsFilters();
+            renderOrdersTable();
+            renderInspector(order);
+
+            var newFeedbackDiv = document.getElementById('admin-status-feedback');
+            newFeedbackDiv.className = 'order-admin-feedback order-admin-feedback--success';
+            newFeedbackDiv.textContent = '✓ Order #' + order.orderId + ' updated to ' + newStatus + (shouldNotify ? ' (email sent)!' : ' (saved silently)!');
+            newFeedbackDiv.style.display = 'block';
           }
         });
+      });
+    }
 
-        // Render active orders
-        activeOrders.forEach(function (order) {
-          queueContainer.appendChild(createCardElement(order));
-        });
+    function getActiveGroupBys() {
+      var groupBys = [];
+      orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active').forEach(function (p) {
+        groupBys.push(p.getAttribute('data-group'));
+      });
+      return groupBys;
+    }
 
-        function appendCollapsibleSection(title, orders, isCollapsed, setCollapsed) {
-          if (orders.length === 0) return;
+    function getActiveFilterCount() {
+      var count = 0;
+      if (totalsFilterYear.value !== 'all') count++;
+      if (totalsFilterMonth.value !== 'all') count++;
+      if (totalsFilterRoast.value !== 'all') count++;
+      if (totalsFilterSize.value !== 'all') count++;
+      if (totalsFilterStatus.value !== 'all_with_cancelled') count++;
+      if (totalsFilterDelivery.value !== 'all') count++;
+      return count;
+    }
 
-          var collWrap = document.createElement('div');
-          collWrap.className = 'order-admin-collapsible-wrap';
+    function updateFilterBtnLabel() {
+      var drawerId = 'order-totals-filter-drawer';
+      var btn = document.querySelector('[data-drawer-target="' + drawerId + '"]');
+      var drawer = document.getElementById(drawerId);
+      var isOpen = drawer.style.display !== 'none';
+      var count = getActiveFilterCount();
+      var groupCount = getActiveGroupBys().length;
+      var labelSpan = btn.querySelector('strong');
 
-          var toggleBtn = document.createElement('button');
-          toggleBtn.type = 'button';
-          toggleBtn.className = 'order-admin-collapse-toggle';
-          toggleBtn.innerHTML = '<span class="order-admin-collapse-title">' + title + ' (' + orders.length + ')</span>' +
-            '<span class="order-admin-collapse-icon">' + (isCollapsed ? '▶' : '▼') + '</span>';
-
-          var content = document.createElement('div');
-          content.className = 'order-admin-collapsed-content';
-          content.style.display = isCollapsed ? 'none' : 'flex';
-
-          orders.forEach(function (order) {
-            content.appendChild(createCardElement(order));
-          });
-
-          toggleBtn.addEventListener('click', function () {
-            var next = !isCollapsed;
-            setCollapsed(next);
-            isCollapsed = next;
-            content.style.display = next ? 'none' : 'flex';
-            toggleBtn.querySelector('.order-admin-collapse-icon').textContent = next ? '▶' : '▼';
-          });
-
-          collWrap.appendChild(toggleBtn);
-          collWrap.appendChild(content);
-          queueContainer.appendChild(collWrap);
-        }
-
-        appendCollapsibleSection('Delivered Orders', deliveredOrders, isDeliveredCollapsed, function (c) {
-          isDeliveredCollapsed = c;
-        });
-
-        appendCollapsibleSection('Cancelled Orders', cancelledOrders, isCancelledCollapsed, function (c) {
-          isCancelledCollapsed = c;
-        });
+      if (count > 0 || groupCount > 0) {
+        btn.classList.add('has-active-filters');
       } else {
-        // Direct rendering when a specific filter is active (including 'delivered' and 'cancelled')
-        filtered.forEach(function (order) {
-          queueContainer.appendChild(createCardElement(order));
-        });
+        btn.classList.remove('has-active-filters');
       }
 
-      var currentSelected = selectedOrderId
-        ? currentOrders.find(function (o) { return o.orderId === selectedOrderId; })
-        : null;
-      renderInspector(currentSelected);
+      if (!isOpen) {
+        var parts = [];
+        if (count > 0) parts.push(String(count));
+        if (groupCount > 0) parts.push('Grouped: ' + groupCount);
+        labelSpan.textContent = parts.length > 0 ? 'Filters (' + parts.join(' • ') + ')' : 'Filters';
+      }
     }
 
-    function switchToTab(targetTab) {
-      activeTab = targetTab;
-      if (tabsContainer) {
-        var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
-        tabBtns.forEach(function (b) {
-          var isTarget = b.getAttribute('data-tab') === targetTab;
-          if (isTarget) {
-            b.classList.add('roast-admin-tab-btn--active');
-            b.setAttribute('aria-selected', 'true');
-          } else {
-            b.classList.remove('roast-admin-tab-btn--active');
-            b.setAttribute('aria-selected', 'false');
-          }
-        });
-      }
+    function setDrawerState(drawerId, open) {
+      var drawer = document.getElementById(drawerId);
+      var btn = document.querySelector('[data-drawer-target="' + drawerId + '"]');
+      var labelSpan = btn.querySelector('strong');
+      var iconSpan = btn.querySelector('span');
 
-      if (queuePanel && totalsPanel) {
-        if (targetTab === 'queue') {
-          queuePanel.classList.add('roast-admin-panel--active');
-          totalsPanel.classList.remove('roast-admin-panel--active');
-          renderQueue();
-        } else if (targetTab === 'totals') {
-          queuePanel.classList.remove('roast-admin-panel--active');
-          totalsPanel.classList.add('roast-admin-panel--active');
-          renderOrderTotalsTab();
-        }
+      if (open) {
+        drawer.style.display = 'block';
+        btn.classList.add('is-open');
+        labelSpan.textContent = 'Close Filters';
+        iconSpan.textContent = '−';
+      } else {
+        drawer.style.display = 'none';
+        btn.classList.remove('is-open');
+        iconSpan.textContent = '+';
+        updateFilterBtnLabel();
       }
     }
 
     function populateOrderTotalsFilters() {
-      if (!totalsFilterYear) return;
-
       var yearsSet = {};
-      currentOrders.forEach(function (o) {
-        var d = extractOrderDate(o.timestamp);
-        if (d.year && d.year !== 'Unknown') {
-          yearsSet[d.year] = true;
-        }
-      });
-      var years = Object.keys(yearsSet).sort().reverse();
-      var prevYear = totalsFilterYear.value || 'all';
-      var yearHtml = '<option value="all">All Years</option>';
-      years.forEach(function (y) {
-        yearHtml += '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
-      });
-      totalsFilterYear.innerHTML = yearHtml;
-      if (years.indexOf(prevYear) !== -1) {
-        totalsFilterYear.value = prevYear;
-      }
-
       var roastsSet = {};
       var sizesSet = {};
+
       currentOrders.forEach(function (o) {
-        var items = parseOrderLineItems(o.items, bagSizes);
-        items.forEach(function (it) {
-          if (it.product) {
-            roastsSet[it.product] = true;
-          }
-          if (it.bagSize) {
-            sizesSet[it.bagSize] = true;
-          }
+        var d = extractOrderDate(o.timestamp);
+        if (d.year && d.year !== 'Unknown') yearsSet[d.year] = true;
+        parseOrderLineItems(o.items, bagSizes).forEach(function (it) {
+          if (it.product) roastsSet[it.product] = true;
+          if (it.bagSize) sizesSet[it.bagSize] = true;
         });
       });
 
-      var roastFilterEl = totalsFilterRoast || totalsFilterCoffee;
-      if (roastFilterEl) {
-        var roasts = Object.keys(roastsSet).sort();
-        var prevRoast = roastFilterEl.value || 'all';
-        var roastHtml = '<option value="all">All Roasts</option>';
-        roasts.forEach(function (c) {
-          roastHtml += '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
-        });
-        roastFilterEl.innerHTML = roastHtml;
-        if (roasts.indexOf(prevRoast) !== -1) {
-          roastFilterEl.value = prevRoast;
-        }
-      }
+      var years = Object.keys(yearsSet).sort().reverse();
+      var prevYear = totalsFilterYear.value;
+      totalsFilterYear.innerHTML = '<option value="all">All Years</option>' +
+        years.map(function (y) { return '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>'; }).join('');
+      if (years.indexOf(prevYear) !== -1) totalsFilterYear.value = prevYear;
 
-      if (totalsFilterSize) {
-        var sizeOrder = ['8oz', '12oz', '1lb', '2lb', '5lb'];
-        var sizes = Object.keys(sizesSet).sort(function (a, b) {
-          var idxA = sizeOrder.indexOf(a);
-          var idxB = sizeOrder.indexOf(b);
-          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-          if (idxA !== -1) return -1;
-          if (idxB !== -1) return 1;
-          return a.localeCompare(b);
-        });
-        var prevSize = totalsFilterSize.value || 'all';
-        var sizeHtml = '<option value="all">All Sizes</option>';
-        sizes.forEach(function (sz) {
-          sizeHtml += '<option value="' + escapeHtml(sz) + '">' + escapeHtml(sz) + '</option>';
-        });
-        totalsFilterSize.innerHTML = sizeHtml;
-        if (sizes.indexOf(prevSize) !== -1) {
-          totalsFilterSize.value = prevSize;
-        }
-      }
+      var roasts = Object.keys(roastsSet).sort();
+      var prevRoast = totalsFilterRoast.value;
+      totalsFilterRoast.innerHTML = '<option value="all">All Roasts</option>' +
+        roasts.map(function (c) { return '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>'; }).join('');
+      if (roasts.indexOf(prevRoast) !== -1) totalsFilterRoast.value = prevRoast;
+
+      var configuredSizeIds = bagSizes.map(function (s) { return s.id; });
+      var sizes = Object.keys(sizesSet).sort(function (a, b) {
+        var idxA = configuredSizeIds.indexOf(a);
+        var idxB = configuredSizeIds.indexOf(b);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+        return a.localeCompare(b);
+      });
+      var prevSize = totalsFilterSize.value;
+      totalsFilterSize.innerHTML = '<option value="all">All Sizes</option>' +
+        sizes.map(function (sz) { return '<option value="' + escapeHtml(sz) + '">' + escapeHtml(sz) + '</option>'; }).join('');
+      if (sizes.indexOf(prevSize) !== -1) totalsFilterSize.value = prevSize;
+
+      updateFilterBtnLabel();
     }
 
-    function renderOrderTotalsTab() {
-      if (!totalsKpisWrap || !totalsTableWrap) return;
+    function renderSortTh(label, colKey, currentCol, currentDir, alignRight, widthClass) {
+      var isSorted = currentCol === colKey;
+      var icon = isSorted
+        ? (currentDir === 'asc' ? ' ▲' : ' ▼')
+        : '<span class="roast-admin-sort-icon">↕</span>';
+      var style = alignRight ? ' style="text-align: right;"' : '';
+      var cls = 'roast-admin-th-sortable' + (isSorted ? ' is-sorted' : '') + (widthClass ? ' ' + widthClass : '');
+      return '<th class="' + cls + '" data-sort-col="' + escapeHtml(colKey) + '"' + style + '>' +
+        escapeHtml(label) + icon + '</th>';
+    }
 
-      var groupBys = [];
-      var orderGroupPillsWrap = document.getElementById('order-totals-group-pills');
-      if (orderGroupPillsWrap) {
-        var activePills = orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active');
-        activePills.forEach(function (p) {
-          var g = p.getAttribute('data-group');
-          if (g) groupBys.push(g);
-        });
-      } else if (totalsGroupBy) {
-        groupBys = [totalsGroupBy.value];
-      }
+    function renderOrdersTable() {
+      var groupBys = getActiveGroupBys();
+      var filterYear = totalsFilterYear.value;
+      var filterMonth = totalsFilterMonth.value;
+      var filterStatus = totalsFilterStatus.value;
+      var filterDelivery = totalsFilterDelivery.value;
+      var filterRoast = totalsFilterRoast.value;
+      var filterSize = totalsFilterSize.value;
+
+      var bagsAgg = orderAggBags.value;
+      var weightAgg = orderAggWeight.value;
+      var revAgg = orderAggRevenue.value;
+
       if (groupBys.length === 0) {
-        groupBys = ['month'];
-      }
+        var rawRows = [];
+        currentOrders.forEach(function (o) {
+          var normStatus = normalizeStatus(o.status);
+          var isCancelled = normStatus === 'cancelled';
+          var isDelivered = normStatus === 'delivered';
 
-      var roastVal = (totalsFilterRoast && totalsFilterRoast.value) || (totalsFilterCoffee && totalsFilterCoffee.value) || 'all';
-      var sizeVal = (totalsFilterSize && totalsFilterSize.value) || 'all';
+          if (filterStatus === 'active') {
+            if (isCancelled || isDelivered) return;
+          } else if (filterStatus === 'all') {
+            if (isCancelled) return;
+          } else if (filterStatus !== 'all_with_cancelled') {
+            if (normStatus !== normalizeStatus(filterStatus)) return;
+          }
 
-      var result = computeOrderTotals(currentOrders, {
-        groupBy: groupBys,
-        year: totalsFilterYear ? totalsFilterYear.value : 'all',
-        month: totalsFilterMonth ? totalsFilterMonth.value : 'all',
-        status: totalsFilterStatus ? totalsFilterStatus.value : 'all',
-        deliveryMethod: totalsFilterDelivery ? totalsFilterDelivery.value : 'all',
-        roast: roastVal,
-        size: sizeVal
-      }, bagSizes);
+          if (currentSearch) {
+            var q = currentSearch.toLowerCase();
+            var haystack = [o.orderId, o.name, o.email, o.items, o.status, o.deliveryMethod, o.city].join(' ').toLowerCase();
+            if (haystack.indexOf(q) === -1) return;
+          }
 
-      var s = result.summary;
-      var deliveryPct = s.totalOrders > 0 ? ((s.deliveryCount / s.totalOrders) * 100).toFixed(0) : '0';
-      var sizeSummaryStr = s.sizeBreakdownStr || 'None';
+          var dt = extractOrderDate(o.timestamp);
+          if (filterYear !== 'all' && dt.year !== filterYear) return;
+          if (filterMonth !== 'all' && dt.month !== filterMonth) return;
 
-      totalsKpisWrap.innerHTML =
-        '<div class="roast-admin-kpi-box">' +
-        '<div class="roast-admin-kpi-label">Total Orders</div>' +
-        '<div class="roast-admin-kpi-value">' + s.totalOrders + ' Orders</div>' +
-        '<div class="roast-admin-kpi-sub">' + (s.totalOrders > 0 ? (s.totalLbs / s.totalOrders).toFixed(2) : '0.00') + ' lbs / order avg</div>' +
-        '</div>' +
-        '<div class="roast-admin-kpi-box">' +
-        '<div class="roast-admin-kpi-label">Total Weight Sold</div>' +
-        '<div class="roast-admin-kpi-value">' + s.totalLbs.toFixed(2) + ' lbs</div>' +
-        '<div class="roast-admin-kpi-sub">' + (s.totalLbs * 16).toFixed(0) + ' oz total volume</div>' +
-        '</div>' +
-        '<div class="roast-admin-kpi-box">' +
-        '<div class="roast-admin-kpi-label">Total Revenue</div>' +
-        '<div class="roast-admin-kpi-value">$' + s.totalRevenue.toFixed(2) + '</div>' +
-        '<div class="roast-admin-kpi-sub">' + (s.totalOrders > 0 ? ('Avg $' + s.avgOrderValue.toFixed(2) + ' / order') : '$0.00') + '</div>' +
-        '</div>';
+          var deliv = (o.deliveryMethod || 'Pickup').trim();
+          if (filterDelivery !== 'all' && deliv.toLowerCase() !== filterDelivery.toLowerCase()) return;
 
-      if (result.rows.length === 0) {
-        totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No orders match the selected period/filters.</div>';
+          var lineItems = parseOrderLineItems(o.items, bagSizes);
+          if (filterRoast !== 'all') {
+            var matchesRoast = lineItems.some(function (li) { return li.product.toLowerCase() === filterRoast.toLowerCase(); });
+            if (!matchesRoast) return;
+          }
+          if (filterSize !== 'all') {
+            var matchesSize = lineItems.some(function (li) { return (li.bagSize || '').toLowerCase() === filterSize.toLowerCase(); });
+            if (!matchesSize) return;
+          }
+
+          var orderBags = 0;
+          var orderLbs = 0;
+          lineItems.forEach(function (li) {
+            if (filterRoast !== 'all' && li.product.toLowerCase() !== filterRoast.toLowerCase()) return;
+            if (filterSize !== 'all' && (li.bagSize || '').toLowerCase() !== filterSize.toLowerCase()) return;
+            orderBags += li.bagsCount;
+            orderLbs += li.qty * li.weightLbs;
+          });
+
+          rawRows.push({
+            order: o,
+            orderId: o.orderId,
+            dateIso: dt.date !== 'Unknown' ? dt.date : (o.timestamp || ''),
+            customer: (o.name || 'Customer').trim(),
+            email: o.email || '',
+            deliveryMethod: deliv,
+            city: o.city || '',
+            status: o.status || 'Received',
+            items: o.items || '',
+            bagsCount: orderBags,
+            weightLbs: Math.round(orderLbs * 100) / 100,
+            revenue: parseCurrency(o.total)
+          });
+        });
+
+        if (rawRows.length === 0) {
+          totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No orders match the selected filters.</div>';
+          return;
+        }
+
+        var dir = orderRawSortDir === 'asc' ? 1 : -1;
+        rawRows.sort(function (a, b) {
+          var cmp = 0;
+          if (orderRawSortCol === 'date') cmp = String(a.dateIso).localeCompare(String(b.dateIso));
+          else if (orderRawSortCol === 'orderId') cmp = (Number(a.orderId) || 0) - (Number(b.orderId) || 0) || String(a.orderId).localeCompare(String(b.orderId));
+          else if (orderRawSortCol === 'customer') cmp = a.customer.localeCompare(b.customer);
+          else if (orderRawSortCol === 'bags') cmp = a.bagsCount - b.bagsCount;
+          else if (orderRawSortCol === 'weight') cmp = a.weightLbs - b.weightLbs;
+          else if (orderRawSortCol === 'revenue') cmp = a.revenue - b.revenue;
+          else if (orderRawSortCol === 'deliveryMethod') cmp = a.deliveryMethod.localeCompare(b.deliveryMethod);
+          else if (orderRawSortCol === 'status') cmp = a.status.localeCompare(b.status);
+          if (cmp !== 0) return cmp * dir;
+          return (Number(b.orderId) || 0) - (Number(a.orderId) || 0);
+        });
+
+        var totBags = computeAgg(rawRows.map(function (r) { return r.bagsCount; }), bagsAgg);
+        var totWeight = computeAgg(rawRows.map(function (r) { return r.weightLbs; }), weightAgg);
+        var totRev = computeAgg(rawRows.map(function (r) { return r.revenue; }), revAgg);
+
+        var html = '<table class="roast-admin-table"><thead><tr>' +
+          renderSortTh('Date', 'date', orderRawSortCol, orderRawSortDir, false) +
+          renderSortTh('Order', 'orderId', orderRawSortCol, orderRawSortDir, false) +
+          renderSortTh('Customer', 'customer', orderRawSortCol, orderRawSortDir, false) +
+          '<th>Items</th>';
+        if (bagsAgg !== 'hide') html += renderSortTh('Bags', 'bags', orderRawSortCol, orderRawSortDir, true, 'order-col-orders');
+        if (weightAgg !== 'hide') html += renderSortTh('Weight', 'weight', orderRawSortCol, orderRawSortDir, true, 'order-col-weight');
+        if (revAgg !== 'hide') html += renderSortTh('Total', 'revenue', orderRawSortCol, orderRawSortDir, true, 'order-col-revenue');
+        html += renderSortTh('Delivery', 'deliveryMethod', orderRawSortCol, orderRawSortDir, false) +
+          renderSortTh('Status', 'status', orderRawSortCol, orderRawSortDir, false) +
+          '<th style="text-align: right;">Action</th>' +
+          '</tr></thead><tbody>';
+
+        rawRows.forEach(function (r) {
+          var isSelected = r.orderId === selectedOrderId;
+          var badgeClass = getStatusBadgeClass(r.status);
+          var itemLines = splitOrderItemsRaw(r.items);
+          var itemsHtml = itemLines.map(function (line) {
+            return '<div style="font-size: 0.78rem; line-height: 1.35;">' + escapeHtml(line) + '</div>';
+          }).join('');
+
+          html += '<tr class="order-admin-table-row-selectable' + (isSelected ? ' is-selected' : '') + '" data-order-id="' + escapeHtml(r.orderId) + '">' +
+            '<td class="mono">' + escapeHtml(r.dateIso) + '</td>' +
+            '<td class="mono"><strong>#' + escapeHtml(r.orderId) + '</strong></td>' +
+            '<td><strong>' + escapeHtml(r.customer) + '</strong><div class="cell-sub">' + escapeHtml(r.email) + '</div></td>' +
+            '<td>' + itemsHtml + '</td>';
+          if (bagsAgg !== 'hide') html += '<td class="mono order-col-orders" style="text-align: right;">' + r.bagsCount + '</td>';
+          if (weightAgg !== 'hide') html += '<td class="mono order-col-weight" style="text-align: right;">' + r.weightLbs.toFixed(2) + ' lbs</td>';
+          if (revAgg !== 'hide') html += '<td class="mono order-col-revenue" style="text-align: right;">$' + r.revenue.toFixed(2) + '</td>';
+          html += '<td>' + escapeHtml(r.deliveryMethod) + (r.city ? '<div class="cell-sub">' + escapeHtml(r.city) + '</div>' : '') + '</td>' +
+            '<td><span class="status-badge ' + badgeClass + '">' + escapeHtml(r.status) + '</span></td>' +
+            '<td style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-manage-order="' + escapeHtml(r.orderId) + '">Manage</button></td>' +
+            '</tr>';
+        });
+
+        var totBagsStr = bagsAgg === 'avg' ? totBags.toFixed(1) : Math.round(totBags);
+        html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td colspan="4">Summary (' + rawRows.length + ' orders)</td>';
+        if (bagsAgg !== 'hide') html += '<td class="mono order-col-orders" style="text-align: right;">' + totBagsStr + '<div class="cell-sub">' + escapeHtml(bagsAgg.toUpperCase()) + '</div></td>';
+        if (weightAgg !== 'hide') html += '<td class="mono order-col-weight" style="text-align: right;">' + totWeight.toFixed(2) + ' lbs<div class="cell-sub">' + escapeHtml(weightAgg.toUpperCase()) + '</div></td>';
+        if (revAgg !== 'hide') html += '<td class="mono order-col-revenue" style="text-align: right;">$' + totRev.toFixed(2) + '<div class="cell-sub">' + escapeHtml(revAgg.toUpperCase()) + '</div></td>';
+        html += '<td colspan="3"></td></tr></tfoot></table>';
+
+        totalsTableWrap.innerHTML = html;
+
+        totalsTableWrap.querySelectorAll('tr[data-order-id]').forEach(function (tr) {
+          tr.addEventListener('click', function () {
+            var oId = tr.getAttribute('data-order-id');
+            var ord = currentOrders.find(function (o) { return o.orderId === oId; });
+            selectedOrderId = oId;
+            totalsTableWrap.querySelectorAll('tr.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+            tr.classList.add('is-selected');
+            renderInspector(ord);
+            inspectorCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        });
+
+        totalsTableWrap.querySelectorAll('th[data-sort-col]').forEach(function (th) {
+          th.addEventListener('click', function () {
+            var col = th.getAttribute('data-sort-col');
+            if (orderRawSortCol === col) {
+              orderRawSortDir = orderRawSortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+              orderRawSortCol = col;
+              orderRawSortDir = (col === 'date' || col === 'orderId' || col === 'bags' || col === 'weight' || col === 'revenue') ? 'desc' : 'asc';
+            }
+            renderOrdersTable();
+          });
+        });
         return;
       }
 
-      function renderSortTh(label, colKey, alignRight) {
-        var isSorted = orderTotalsSortCol === colKey;
-        var icon = isSorted
-          ? (orderTotalsSortDir === 'asc' ? ' ▲' : ' ▼')
-          : '<span class="roast-admin-sort-icon">↕</span>';
-        var style = alignRight ? ' style="text-align: right;"' : '';
-        return '<th class="roast-admin-th-sortable' + (isSorted ? ' is-sorted' : '') + '" data-sort-col="' + escapeHtml(colKey) + '"' + style + '>' +
-          escapeHtml(label) + icon + '</th>';
+      // Grouped Mode (1+ Group By dimensions active)
+      renderInspector(null);
+
+      var result = computeOrderTotals(currentOrders, {
+        groupBy: groupBys,
+        year: filterYear,
+        month: filterMonth,
+        status: filterStatus,
+        deliveryMethod: filterDelivery,
+        roast: filterRoast,
+        size: filterSize,
+        search: currentSearch
+      }, bagSizes);
+
+      if (result.rows.length === 0) {
+        totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No orders match the selected filters.</div>';
+        return;
       }
 
-      var html = '<table class="roast-admin-table">' +
-        '<thead><tr>';
+      var allBagsVals = [];
+      var allWeightVals = [];
+      var allRevVals = [];
 
-      result.groupBys.forEach(function (dim) {
-        html += renderSortTh(ORDER_DIMENSION_LABELS[dim] || dim, 'dim:' + dim, false);
+      var computedRows = result.rows.map(function (r) {
+        r.bagsVals.forEach(function (v) { allBagsVals.push(v); });
+        r.weightVals.forEach(function (v) { allWeightVals.push(v); });
+        r.revVals.forEach(function (v) { allRevVals.push(v); });
+        return {
+          key: r.key,
+          label: r.label,
+          dimValues: r.dimValues,
+          ordersCount: r.ordersCount,
+          bagsCount: computeAgg(r.bagsVals, bagsAgg),
+          weightLbs: computeAgg(r.weightVals, weightAgg),
+          revenue: computeAgg(r.revVals, revAgg)
+        };
       });
 
-      html += renderSortTh('Orders', 'orders', true) +
-        renderSortTh('Weight (lbs)', 'weight', true) +
-        renderSortTh('Revenue', 'revenue', true) +
-        '</tr></thead><tbody>';
+      var displayRows = sortOrderTotalsRows(computedRows, orderTotalsSortCol, orderTotalsSortDir, bagSizes);
+      var footBags = computeAgg(allBagsVals, bagsAgg);
+      var footWeight = computeAgg(allWeightVals, weightAgg);
+      var footRev = computeAgg(allRevVals, revAgg);
 
-      var displayRows = sortOrderTotalsRows(result.rows, orderTotalsSortCol, orderTotalsSortDir);
+      var groupedHtml = '<table class="roast-admin-table"><thead><tr>';
+      result.groupBys.forEach(function (dim) {
+        groupedHtml += renderSortTh(ORDER_DIMENSION_LABELS[dim] || dim, 'dim:' + dim, orderTotalsSortCol, orderTotalsSortDir, false);
+      });
+      groupedHtml += renderSortTh('Orders', 'orders', orderTotalsSortCol, orderTotalsSortDir, true, 'order-col-orders');
+      if (bagsAgg !== 'hide') groupedHtml += renderSortTh('Bags (' + bagsAgg.toUpperCase() + ')', 'bags', orderTotalsSortCol, orderTotalsSortDir, true, 'order-col-orders');
+      if (weightAgg !== 'hide') groupedHtml += renderSortTh('Weight (' + weightAgg.toUpperCase() + ')', 'weight', orderTotalsSortCol, orderTotalsSortDir, true, 'order-col-weight');
+      if (revAgg !== 'hide') groupedHtml += renderSortTh('Revenue (' + revAgg.toUpperCase() + ')', 'revenue', orderTotalsSortCol, orderTotalsSortDir, true, 'order-col-revenue');
+      groupedHtml += '</tr></thead><tbody>';
 
       displayRows.forEach(function (r) {
-        html += '<tr>';
-
+        var rowBagsStr = bagsAgg === 'avg' ? r.bagsCount.toFixed(1) : Math.round(r.bagsCount);
+        groupedHtml += '<tr>';
         result.groupBys.forEach(function (dim) {
-          var cellVal = r.dimValues && r.dimValues[dim] ? r.dimValues[dim] : r.label;
-          html += '<td><strong>' + escapeHtml(cellVal) + '</strong></td>';
+          groupedHtml += '<td><strong>' + escapeHtml(r.dimValues[dim]) + '</strong></td>';
         });
-
-        html += '<td class="mono" style="text-align: right;">' + r.ordersCount + '</td>' +
-          '<td class="mono" style="text-align: right;">' + r.weightLbs.toFixed(2) + ' lbs</td>' +
-          '<td class="mono" style="text-align: right;">$' + r.revenue.toFixed(2) + '</td>' +
-          '</tr>';
+        groupedHtml += '<td class="mono order-col-orders" style="text-align: right;">' + r.ordersCount + '</td>';
+        if (bagsAgg !== 'hide') groupedHtml += '<td class="mono order-col-orders" style="text-align: right;">' + rowBagsStr + '</td>';
+        if (weightAgg !== 'hide') groupedHtml += '<td class="mono order-col-weight" style="text-align: right;">' + r.weightLbs.toFixed(2) + ' lbs</td>';
+        if (revAgg !== 'hide') groupedHtml += '<td class="mono order-col-revenue" style="text-align: right;">$' + r.revenue.toFixed(2) + '</td>';
+        groupedHtml += '</tr>';
       });
 
-      html += '</tbody><tfoot>' +
-        '<tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
-        '<td colspan="' + result.groupBys.length + '">Total</td>' +
-        '<td class="mono" style="text-align: right;">' + s.totalOrders + '</td>' +
-        '<td class="mono" style="text-align: right;">' + s.totalLbs.toFixed(2) + ' lbs</td>' +
-        '<td class="mono" style="text-align: right;">$' + s.totalRevenue.toFixed(2) + '</td>' +
-        '</tr></tfoot></table>';
+      var footBagsStr = bagsAgg === 'avg' ? footBags.toFixed(1) : Math.round(footBags);
+      groupedHtml += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+        '<td colspan="' + result.groupBys.length + '">Summary (' + displayRows.length + ' groups)</td>' +
+        '<td class="mono order-col-orders" style="text-align: right;">' + result.summary.totalOrders + '</td>';
+      if (bagsAgg !== 'hide') groupedHtml += '<td class="mono order-col-orders" style="text-align: right;">' + footBagsStr + '</td>';
+      if (weightAgg !== 'hide') groupedHtml += '<td class="mono order-col-weight" style="text-align: right;">' + footWeight.toFixed(2) + ' lbs</td>';
+      if (revAgg !== 'hide') groupedHtml += '<td class="mono order-col-revenue" style="text-align: right;">$' + footRev.toFixed(2) + '</td>';
+      groupedHtml += '</tr></tfoot></table>';
 
-      totalsTableWrap.innerHTML = html;
+      totalsTableWrap.innerHTML = groupedHtml;
 
-      var sortHeaders = totalsTableWrap.querySelectorAll('th[data-sort-col]');
-      sortHeaders.forEach(function (th) {
+      totalsTableWrap.querySelectorAll('th[data-sort-col]').forEach(function (th) {
         th.addEventListener('click', function () {
           var col = th.getAttribute('data-sort-col');
           if (orderTotalsSortCol === col) {
             orderTotalsSortDir = orderTotalsSortDir === 'asc' ? 'desc' : 'asc';
           } else {
             orderTotalsSortCol = col;
-            orderTotalsSortDir = (col === 'orders' || col === 'weight' || col === 'revenue') ? 'desc' : 'asc';
+            orderTotalsSortDir = (col === 'orders' || col === 'bags' || col === 'weight' || col === 'revenue') ? 'desc' : 'asc';
           }
-          renderOrderTotalsTab();
+          renderOrdersTable();
         });
       });
     }
@@ -1440,47 +1159,31 @@
       var fetchUrl = apiUrl + (apiUrl.indexOf('?') === -1 ? '?' : '&') +
         'action=admin_list&adminKey=' + encodeURIComponent(passcode);
 
-      fetch(fetchUrl, {
-        credentials: 'omit'
-      })
+      fetch(fetchUrl, { credentials: 'omit' })
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (data.error) {
             callback(data.error);
           } else if (data.orders) {
-            isMockModeActive = false;
             currentOrders = data.orders;
             callback(null, currentOrders);
           } else {
-            callback("Unexpected server response format");
+            callback('Unexpected server response format');
           }
         })
         .catch(function (err) {
-          callback("Could not connect to live order API (" + (err.message || 'Network error') + ").");
+          callback('Could not connect to live order API (' + (err.message || 'Network error') + ').');
         });
     }
 
     function updateOrderStatus(orderId, newStatus, newDetails, notifyCustomer, callback) {
-      if (typeof notifyCustomer === 'function') {
-        callback = notifyCustomer;
-        notifyCustomer = false;
-      }
-      var currentKey = getStoredKey();
-
-      if (isMockModeActive) {
-        setTimeout(function () {
-          callback(null, { success: true, orderId: orderId, status: newStatus, emailSent: !!notifyCustomer });
-        }, 300);
-        return;
-      }
-
       fetch(apiUrl, {
         method: 'POST',
         mode: 'cors',
         credentials: 'omit',
         body: JSON.stringify({
           action: 'admin_update_status',
-          adminKey: currentKey,
+          adminKey: getStoredKey(),
           orderId: orderId,
           status: newStatus,
           statusDetails: newDetails,
@@ -1489,195 +1192,143 @@
       })
       .then(function (res) { return res.json(); })
       .then(function (data) {
-        if (data.error) {
-          callback(data.error);
-        } else {
-          callback(null, data);
-        }
+        if (data.error) callback(data.error);
+        else callback(null, data);
       })
       .catch(function (err) {
-        callback("Network error during status update: " + err.message);
+        callback('Network error during status update: ' + err.message);
       });
     }
 
-    // Gate form submit handler
-    if (gateForm) {
-      gateForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var key = passcodeInput.value.trim();
-        if (!key) return;
-
-        gateError.style.display = 'none';
-
-        computeBrowserHash(key).then(function (hash) {
-          if (hash !== ADMIN_PASSWORD_HASH) {
-            clearStoredKey();
-            gateError.textContent = 'Unauthorized: Invalid Admin Key.';
-            gateError.style.display = 'block';
-            return;
-          }
-          saveKey(key);
-          showDashboard();
-          queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">Loading orders...</div>';
-          loadOrders(key, function (err) {
-            if (!err) {
-              renderStats();
-              renderQueue();
-            }
-          });
-        });
-      });
+    function onOrdersLoaded() {
+      renderStats();
+      populateOrderTotalsFilters();
+      renderOrdersTable();
+      if (currentSearch) {
+        var targetId = currentSearch.replace(/^#/, '');
+        var matchOrder = currentOrders.find(function (o) { return o.orderId === targetId; });
+        if (matchOrder) {
+          selectedOrderId = matchOrder.orderId;
+          renderOrdersTable();
+          renderInspector(matchOrder);
+        }
+      }
     }
 
-    // Refresh button
-    if (refreshBtn) {
-      refreshBtn.addEventListener('click', function () {
-        var key = getStoredKey();
-        if (!key) {
-          showGate();
+    gateForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var key = passcodeInput.value.trim();
+      if (!key) return;
+      gateError.style.display = 'none';
+
+      computeBrowserHash(key).then(function (hash) {
+        if (hash !== ADMIN_PASSWORD_HASH) {
+          clearStoredKey();
+          gateError.textContent = 'Unauthorized: Invalid Admin Key.';
+          gateError.style.display = 'block';
           return;
         }
-
-        refreshBtn.disabled = true;
-        refreshBtn.textContent = 'Refreshing...';
-
-        loadOrders(key, function (err, orders) {
-          refreshBtn.disabled = false;
-          refreshBtn.textContent = 'Refresh';
-
-          if (err) {
-            alert('Failed to refresh orders: ' + err);
-          } else {
-            renderStats();
-            renderQueue();
-            populateOrderTotalsFilters();
-            if (activeTab === 'totals') renderOrderTotalsTab();
-          }
+        saveKey(key);
+        showDashboard();
+        totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">Loading orders...</div>';
+        loadOrders(key, function (err) {
+          if (!err) onOrdersLoaded();
         });
       });
-    }
+    });
 
-    // Logout button
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', function () {
-        clearStoredKey();
-        currentOrders = [];
-        selectedOrderId = null;
+    refreshBtn.addEventListener('click', function () {
+      var key = getStoredKey();
+      if (!key) {
         showGate();
+        return;
+      }
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = 'Refreshing...';
+
+      loadOrders(key, function (err) {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = 'Refresh';
+        if (err) alert('Failed to refresh orders: ' + err);
+        else onOrdersLoaded();
       });
-    }
+    });
 
-    // Tab switching
-    if (tabsContainer) {
-      var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
-      tabBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var t = btn.getAttribute('data-tab');
-          switchToTab(t);
-        });
+    logoutBtn.addEventListener('click', function () {
+      clearStoredKey();
+      currentOrders = [];
+      selectedOrderId = null;
+      renderInspector(null);
+      showGate();
+    });
+
+    document.querySelectorAll('.roast-admin-toggle-drawer-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId = btn.getAttribute('data-drawer-target');
+        var drawer = document.getElementById(targetId);
+        setDrawerState(targetId, drawer.style.display === 'none');
       });
-    }
+    });
 
-    // Totals filter change events
-    var orderGroupPillsWrap = document.getElementById('order-totals-group-pills');
-    if (orderGroupPillsWrap) {
-      var groupPills = orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill');
-      groupPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          pill.classList.toggle('order-admin-filter-pill--active');
-          var active = orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active');
-          if (active.length === 0) {
-            pill.classList.add('order-admin-filter-pill--active');
-          }
-          renderOrderTotalsTab();
-        });
+    orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill').forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        pill.classList.toggle('order-admin-filter-pill--active');
+        renderOrdersTable();
+        updateFilterBtnLabel();
       });
-    }
+    });
 
-    if (totalsGroupBy) totalsGroupBy.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterYear) totalsFilterYear.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterMonth) totalsFilterMonth.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterRoast) totalsFilterRoast.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterSize) totalsFilterSize.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterCoffee && totalsFilterCoffee !== totalsFilterRoast) totalsFilterCoffee.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterStatus) totalsFilterStatus.addEventListener('change', renderOrderTotalsTab);
-    if (totalsFilterDelivery) totalsFilterDelivery.addEventListener('change', renderOrderTotalsTab);
-
-    // Filter pills
-    if (filtersContainer) {
-      var pills = filtersContainer.querySelectorAll('.order-admin-filter-pill');
-      pills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          pills.forEach(function (p) { p.classList.remove('order-admin-filter-pill--active'); });
-          pill.classList.add('order-admin-filter-pill--active');
-          activeFilter = pill.getAttribute('data-filter') || 'all';
-          renderQueue();
-        });
+    orderClearGroupByBtn.addEventListener('click', function () {
+      orderGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active').forEach(function (p) {
+        p.classList.remove('order-admin-filter-pill--active');
       });
-    }
+      renderOrdersTable();
+      updateFilterBtnLabel();
+    });
 
-    // Search input
-    if (searchInput) {
-      searchInput.addEventListener('input', function () {
-        currentSearch = searchInput.value.trim();
-        renderQueue();
+    [totalsFilterYear, totalsFilterMonth, totalsFilterRoast, totalsFilterSize, totalsFilterStatus, totalsFilterDelivery, orderAggBags, orderAggWeight, orderAggRevenue].forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        renderOrdersTable();
+        updateFilterBtnLabel();
       });
-    }
+    });
 
-    // Check URL parameters for ?search= or ?id=
+    searchInput.addEventListener('input', function () {
+      currentSearch = searchInput.value.trim();
+      renderOrdersTable();
+    });
+
     if (typeof window !== 'undefined' && window.location && window.location.search) {
-      try {
-        var qParams = new URLSearchParams(window.location.search);
-        var qSearch = qParams.get('search') || qParams.get('id');
-        if (qSearch) {
-          currentSearch = qSearch.trim();
-          if (searchInput) {
-            searchInput.value = currentSearch;
-          }
-        }
-      } catch (paramErr) {}
+      var qParams = new URLSearchParams(window.location.search);
+      var qSearch = qParams.get('search') || qParams.get('id');
+      if (qSearch) {
+        currentSearch = qSearch.trim();
+        searchInput.value = currentSearch;
+      }
     }
 
-    // Check stored key on init
     var storedKey = getStoredKey();
     if (storedKey) {
       showDashboard();
-      queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #8a7060; cursor: default;">Loading orders...</div>';
+      totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">Loading orders...</div>';
 
-      loadOrders(storedKey, function (err, orders) {
+      loadOrders(storedKey, function (err) {
         if (err) {
           var isAuthFailure = typeof err === 'string' && (err.indexOf('Unauthorized') !== -1 || err.indexOf('Invalid') !== -1);
           if (isAuthFailure) {
             clearStoredKey();
             showGate('Previous session expired. Please enter your passcode again.');
           } else {
-            queueContainer.innerHTML = '<div class="order-admin-card-item" style="text-align: center; color: #c0392b; cursor: default;">' +
+            totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty" style="color: #c0392b;">' +
               'Could not connect to live order API (' + escapeHtml(err) + ').<br>' +
               '<button type="button" id="order-admin-retry-btn" class="order-admin-btn-sm" style="margin-top: 0.6rem; display: inline-block;">Retry Connection</button>' +
               '</div>';
-            var retryBtn = document.getElementById('order-admin-retry-btn');
-            retryBtn.addEventListener('click', function () {
+            document.getElementById('order-admin-retry-btn').addEventListener('click', function () {
               refreshBtn.click();
             });
           }
         } else {
-          renderStats();
-          renderQueue();
-          populateOrderTotalsFilters();
-          if (activeTab === 'totals') renderOrderTotalsTab();
-          if (currentSearch) {
-            var targetId = currentSearch.replace(/^#/, '');
-            var matchOrder = currentOrders.find(function (o) { return o.orderId === targetId; });
-            if (matchOrder) {
-              selectedOrderId = matchOrder.orderId;
-              var matchingCard = queueContainer.querySelector('[data-order-id="' + selectedOrderId + '"]');
-              if (matchingCard) {
-                matchingCard.click();
-              } else {
-                renderInspector(matchOrder);
-              }
-            }
-          }
+          onOrdersLoaded();
         }
       });
     } else {
@@ -1687,7 +1338,6 @@
 
   return {
     initAdminOrders: initAdminOrders,
-    filterOrders: filterOrders,
     computeStats: computeStats,
     getStatusBadgeClass: getStatusBadgeClass,
     computeBrowserHash: computeBrowserHash,
@@ -1695,12 +1345,9 @@
     parseOrderLineItems: parseOrderLineItems,
     parseCurrency: parseCurrency,
     bagSizeToLbs: bagSizeToLbs,
-    formatSizeCounts: formatSizeCounts,
+    computeAgg: computeAgg,
     computeOrderTotals: computeOrderTotals,
     sortOrderTotalsRows: sortOrderTotalsRows,
-    DEFAULT_MOCK_HASH: DEFAULT_MOCK_HASH,
-    DEFAULT_MOCK_PASSCODE: DEFAULT_MOCK_PASSCODE,
-    DEFAULT_SALT: DEFAULT_SALT,
-    CANONICAL_MOCK_ORDERS: CANONICAL_MOCK_ORDERS
+    DEFAULT_SALT: DEFAULT_SALT
   };
 });

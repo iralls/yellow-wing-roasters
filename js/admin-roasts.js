@@ -1,30 +1,16 @@
 /**
  * Yellow Wing Roasters - Roaster Inventory & Roast Log Controller (/roasts/admin/)
- * Manages Active Green Beans (pure derived view), Green Bean Orders, Roast Logs,
- * Master Blend & Packaging Log, and Totals.
+ * Unified Database Query Table interface for Active Green Beans, Green Bean Orders,
+ * Roast Logs, and Master Blend & Packaging Log.
  */
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof module === 'object' && module.exports) {
+  if (typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
     var exp = factory();
+    root.RoastAdmin = exp;
     root.initAdminRoasts = exp.initAdminRoasts;
     root.initAdminPortal = exp.initAdminPortal;
-    root.lbsToGrams = exp.lbsToGrams;
-    root.computeWeightLossPct = exp.computeWeightLossPct;
-    root.generateNextInternalId = exp.generateNextInternalId;
-    root.generateGreenBeanOrderId = exp.generateGreenBeanOrderId;
-    root.generateRoastLogId = exp.generateRoastLogId;
-    root.generatePackagingLogId = exp.generatePackagingLogId;
-    root.makeSemanticCode = exp.makeSemanticCode;
-    root.recomputeActiveBeanStocks = exp.recomputeActiveBeanStocks;
-    root.computeTotals = exp.computeTotals;
-    root.calculateBagSizeGrams = exp.calculateBagSizeGrams;
-    root.calculateGramsFromPercentage = exp.calculateGramsFromPercentage;
-    root.calculatePercentageFromGrams = exp.calculatePercentageFromGrams;
-    root.filterSelectOptions = exp.filterSelectOptions;
   }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
@@ -32,25 +18,56 @@
   var STORAGE_KEY = 'ywr_admin_passcode';
   var DEFAULT_SALT = 'yellow-wing-roasters-auth-v1';
   var ADMIN_PASSWORD_HASH = 'fe65aec7e9795f3d9f4d55755b8c3bc82818e8955ac270c5ab5ebc09e28b3de9';
-
   var GRAMS_PER_LB = 453.592;
 
+  var DIMENSION_LABELS = {
+    month: 'Date (Month)',
+    year: 'Date (Year)',
+    date: 'Date (Day)',
+    bean: 'Bean Selection',
+    supplier: 'Supplier',
+    roastLevel: 'Roast Level',
+    product: 'Product / Blend',
+    bagSize: 'Bag Size',
+    purpose: 'Purpose'
+  };
+
+  function escapeHtml(str) {
+    if (!str && str !== 0) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function todayIso() {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
   function computeBrowserHash(key, salt) {
-    salt = salt || DEFAULT_SALT;
-    var rawText = salt + (key || '').trim();
-    if (typeof crypto !== 'undefined' && crypto.subtle) {
+    var activeSalt = salt || DEFAULT_SALT;
+    var rawText = activeSalt + String(key || '').trim();
+    if (typeof crypto !== 'undefined' && crypto.subtle && typeof TextEncoder !== 'undefined') {
       var msg = new TextEncoder().encode(rawText);
       return crypto.subtle.digest('SHA-256', msg).then(function (buf) {
-        var arr = Array.from(new Uint8Array(buf));
-        return arr.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+        return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
       });
+    }
+    if (typeof require === 'function') {
+      var nodeCrypto = require('crypto');
+      return Promise.resolve(nodeCrypto.createHash('sha256').update(rawText, 'utf8').digest('hex'));
     }
     return Promise.resolve('');
   }
 
   function lbsToGrams(lbs) {
-    var num = Number(lbs) || 0;
-    return Math.round(num * GRAMS_PER_LB);
+    return Math.round((Number(lbs) || 0) * GRAMS_PER_LB);
   }
 
   function computeWeightLossPct(greenWeightGrams, endWeightGrams) {
@@ -62,18 +79,9 @@
 
   function calculateBagSizeGrams(bagSizeId, bagSizes) {
     if (!bagSizeId || bagSizeId === 'Custom') return 0;
-    if (Array.isArray(bagSizes)) {
-      var match = bagSizes.find(function (b) { return b.id === bagSizeId; });
-      if (match && match.weight_oz) {
-        return Math.round((Number(match.weight_oz) / 16) * GRAMS_PER_LB);
-      }
-    }
-    var numMatch = String(bagSizeId).match(/^(\d+)(oz|lb)$/i);
-    if (numMatch) {
-      var val = Number(numMatch[1]);
-      var unit = numMatch[2].toLowerCase();
-      if (unit === 'lb') return lbsToGrams(val);
-      if (unit === 'oz') return Math.round((val / 16) * GRAMS_PER_LB);
+    var match = bagSizes.find(function (b) { return b.id === bagSizeId; });
+    if (match && match.weight_oz) {
+      return Math.round((Number(match.weight_oz) / 16) * GRAMS_PER_LB);
     }
     return 0;
   }
@@ -93,152 +101,48 @@
     return Number(p % 1 === 0 ? p : Number(p.toFixed(1)));
   }
 
-  function formatDateCompact(val) {
-    if (!val) return '';
-    var s = String(val).split('T')[0].replace(/[^0-9]/g, '');
-    return s.length >= 8 ? s.slice(0, 8) : s;
+  function computeAgg(values, mode) {
+    if (!values || values.length === 0 || mode === 'hide') return 0;
+    var nums = values.map(function (v) { return Number(v) || 0; });
+    if (mode === 'min') return Math.min.apply(null, nums);
+    if (mode === 'max') return Math.max.apply(null, nums);
+    var sum = nums.reduce(function (a, b) { return a + b; }, 0);
+    return mode === 'avg' ? (sum / nums.length) : sum;
   }
 
-  function makeSemanticCode(text, maxLen) {
-    var limit = maxLen || 6;
-    var words = String(text || '')
-      .trim()
-      .toUpperCase()
-      .replace(/[^A-Z0-9\s]+/g, '')
-      .split(/\s+/)
-      .filter(Boolean);
-
-    if (words.length === 0) return 'ITEM';
-    if (words.length === 1) return words[0].slice(0, limit);
-
-    var filtered = words.filter(function (w) {
-      return !/^(COFFEE|BEANS|ROASTERS|ROAST|THE|AND|OF)$/i.test(w);
-    });
-    if (filtered.length === 0) filtered = words;
-    if (filtered.length === 1) return filtered[0].slice(0, limit);
-
-    var p1 = filtered[0].slice(0, 3);
-    var p2 = filtered[1].slice(0, 3);
-    return (p1 + p2).slice(0, Math.max(limit, 6));
+  function extractYearMonth(dateStr) {
+    var parts = String(dateStr || '').trim().split('-');
+    return {
+      year: parts[0] || 'Unknown',
+      month: parts[1] || '00',
+      yearMonth: parts.length >= 2 ? (parts[0] + '-' + parts[1]) : 'Unknown'
+    };
   }
 
-  function generateGreenBeanOrderId(existingOrders, dateVal, supplier, beanName) {
-    var existingIds = (existingOrders || []).map(function (o) { return String(o.orderId || '').trim(); });
-    var d = formatDateCompact(dateVal);
-    var suppCode = makeSemanticCode(supplier, 6);
-    var beanCode = makeSemanticCode(beanName, 6);
-    var baseId = 'GBO-' + d + '-' + suppCode + '-' + beanCode;
-
-    if (existingIds.indexOf(baseId) === -1) {
-      return baseId;
-    }
-    var counter = 2;
-    while (existingIds.indexOf(baseId + '-' + counter) !== -1) {
-      counter++;
-    }
-    return baseId + '-' + counter;
-  }
-
-  function generateRoastLogId(existingRoasts, dateVal, beanName) {
-    var existingIds = (existingRoasts || []).map(function (r) { return String(r.roastId || '').trim(); });
-    var d = formatDateCompact(dateVal);
-    var beanCode = makeSemanticCode(beanName, 6);
-    var prefix = 'R-' + d + '-' + beanCode + '-';
-
-    var batch = 1;
-    while (existingIds.indexOf(prefix + batch) !== -1) {
-      batch++;
-    }
-    return prefix + batch;
-  }
-
-  function generatePackagingLogId(existingLogs, dateVal, product, purpose, orderId) {
-    var existingIds = (existingLogs || []).map(function (p) { return String(p.logId || '').trim(); });
-    var d = formatDateCompact(dateVal);
-    var prodCode = makeSemanticCode(product, 6);
-
-    var dest = 'PERSONAL';
-    if (purpose === 'Order' && orderId) {
-      dest = 'ORD' + String(orderId).trim().replace(/^#/, '');
-    } else if (purpose === 'Sample') {
-      dest = 'SAMPLE';
-    }
-
-    var baseId = 'PKG-' + d + '-' + prodCode + '-' + dest;
-    if (existingIds.indexOf(baseId) === -1) {
-      return baseId;
-    }
-    var counter = 2;
-    while (existingIds.indexOf(baseId + '-' + counter) !== -1) {
-      counter++;
-    }
-    return baseId + '-' + counter;
-  }
-
-  function generateNextInternalId(items, idKey, prefix, startNum, padLen) {
-    var maxNum = startNum - 1;
-    var prefixLower = prefix.toLowerCase();
-    for (var i = 0; i < items.length; i++) {
-      var raw = String(items[i][idKey] || '').trim();
-      if (!raw) continue;
-      var clean = raw;
-      if (raw.toLowerCase().indexOf(prefixLower) === 0) {
-        clean = raw.slice(prefix.length);
-      }
-      var num = parseInt(clean, 10);
-      if (!isNaN(num) && num > maxNum) {
-        maxNum = num;
-      }
-    }
-    var nextStr = String(maxNum + 1);
-    while (nextStr.length < padLen) {
-      nextStr = '0' + nextStr;
-    }
-    return prefix + nextStr;
-  }
-
-  /**
-   * Pure derived Active Green Beans computation:
-   * Groups GreenBeanOrders by bean Name, computes net weightGrams (base + adjustment),
-   * subtracts greenWeightGrams from RoastLogs,
-   * computes availableGrams per GreenBeanOrder (excluding excludeRoastId when editing),
-   * and computes availableGrams per RoastLog from BlendPackagingLog (excluding excludePkgLogId when editing).
-   */
   function recomputeActiveBeanStocks(state, excludePkgLogId, excludeRoastId) {
     var roastedByOrder = {};
-    if (Array.isArray(state.roastLogs)) {
-      for (var rIdx = 0; rIdx < state.roastLogs.length; rIdx++) {
-        var rLog = state.roastLogs[rIdx];
-        if (excludeRoastId && rLog.roastId === excludeRoastId) continue;
-        var gComps = rLog.greenBeanComponents || [];
-        for (var gc = 0; gc < gComps.length; gc++) {
-          var oId = gComps[gc].orderId;
-          roastedByOrder[oId] = (roastedByOrder[oId] || 0) + (Number(gComps[gc].weightGrams) || 0);
-        }
-      }
-    }
+    state.roastLogs.forEach(function (rLog) {
+      if (excludeRoastId && rLog.roastId === excludeRoastId) return;
+      (rLog.greenBeanComponents || []).forEach(function (gc) {
+        roastedByOrder[gc.orderId] = (roastedByOrder[gc.orderId] || 0) + (Number(gc.weightGrams) || 0);
+      });
+    });
 
     var packagedByRoast = {};
-    if (Array.isArray(state.blendPackagingLogs)) {
-      for (var m = 0; m < state.blendPackagingLogs.length; m++) {
-        var pkg = state.blendPackagingLogs[m];
-        if (excludePkgLogId && pkg.logId === excludePkgLogId) continue;
-        var comps = pkg.roastComponents || [];
-        for (var c = 0; c < comps.length; c++) {
-          var rId = comps[c].roastId;
-          packagedByRoast[rId] = (packagedByRoast[rId] || 0) + (Number(comps[c].weightGrams) || 0);
-        }
-      }
-    }
+    state.blendPackagingLogs.forEach(function (pkg) {
+      if (excludePkgLogId && pkg.logId === excludePkgLogId) return;
+      (pkg.roastComponents || []).forEach(function (c) {
+        packagedByRoast[c.roastId] = (packagedByRoast[c.roastId] || 0) + (Number(c.weightGrams) || 0);
+      });
+    });
 
     var beanMap = {};
     var beanOrder = [];
     var orderNameById = {};
 
-    for (var i = 0; i < state.greenBeanOrders.length; i++) {
-      var ord = state.greenBeanOrders[i];
+    state.greenBeanOrders.forEach(function (ord) {
       var name = String(ord.name || '').trim();
-      if (!name) continue;
+      if (!name) return;
       orderNameById[ord.orderId] = name;
       if (!beanMap[name]) {
         beanMap[name] = {
@@ -261,34 +165,27 @@
       ord.roastedGrams = roastedByOrder[ord.orderId] || 0;
       ord.availableGrams = Math.max(0, Math.round(netOrderGrams - ord.roastedGrams));
       beanMap[name].orderedGrams += netOrderGrams;
-    }
+    });
 
-    for (var j = 0; j < state.roastLogs.length; j++) {
-      var rst = state.roastLogs[j];
+    state.roastLogs.forEach(function (rst) {
       var isExcludedRoast = Boolean(excludeRoastId && rst.roastId === excludeRoastId);
       var rstComps = rst.greenBeanComponents || [];
       if (rstComps.length > 0) {
         var compBeanNames = [];
         var compTotalGrams = 0;
-        for (var rc = 0; rc < rstComps.length; rc++) {
-          var compOrdName = orderNameById[rstComps[rc].orderId];
-          var compGrams = Number(rstComps[rc].weightGrams) || 0;
+        rstComps.forEach(function (rc) {
+          var compOrdName = orderNameById[rc.orderId];
+          var compGrams = Number(rc.weightGrams) || 0;
           compTotalGrams += compGrams;
           if (compOrdName) {
-            if (compBeanNames.indexOf(compOrdName) === -1) {
-              compBeanNames.push(compOrdName);
-            }
+            if (compBeanNames.indexOf(compOrdName) === -1) compBeanNames.push(compOrdName);
             if (!isExcludedRoast && beanMap[compOrdName]) {
               beanMap[compOrdName].roastedGrams += compGrams;
             }
           }
-        }
-        if (compBeanNames.length > 0) {
-          rst.beanName = compBeanNames.join(' / ');
-        }
-        if (!rst.greenWeightGrams) {
-          rst.greenWeightGrams = compTotalGrams;
-        }
+        });
+        if (compBeanNames.length > 0) rst.beanName = compBeanNames.join(' / ');
+        if (!rst.greenWeightGrams) rst.greenWeightGrams = compTotalGrams;
       } else {
         var resolvedName = String(rst.beanName || '').trim();
         rst.beanName = resolvedName;
@@ -298,7 +195,7 @@
       }
       rst.packagedGrams = packagedByRoast[rst.roastId] || 0;
       rst.availableGrams = Math.max(0, Math.round((Number(rst.endWeightGrams) || 0) - rst.packagedGrams));
-    }
+    });
 
     state.greenBeans = beanOrder.map(function (name) {
       var b = beanMap[name];
@@ -311,439 +208,17 @@
     return state.greenBeans;
   }
 
-  function extractYearMonth(dateStr) {
-    var s = String(dateStr || '').trim();
-    var parts = s.split('-');
-    return {
-      year: parts[0] || 'Unknown',
-      month: parts[1] || '00',
-      yearMonth: parts.length >= 2 ? (parts[0] + '-' + parts[1]) : 'Unknown'
-    };
-  }
-
-  function matchesDateAndBeanFilter(dateStr, beanName, filters) {
-    var ym = extractYearMonth(dateStr);
-    if (filters.year && filters.year !== 'all' && ym.year !== filters.year) {
-      return false;
-    }
-    if (filters.month && filters.month !== 'all' && ym.month !== filters.month) {
-      return false;
-    }
-    if (filters.beanName && filters.beanName !== 'all') {
-      if (beanName !== filters.beanName) return false;
-    }
-    return true;
-  }
-
-  var ROAST_DIMENSION_LABELS = {
-    month: 'Month',
-    year: 'Year',
-    bean: 'Green Bean',
-    supplier: 'Supplier'
-  };
-
-  function computeTotals(state, filters) {
-    filters = filters || {};
-    var mode = filters.mode || 'all';
-
-    var groupBys = [];
-    if (Array.isArray(filters.groupBy)) {
-      groupBys = filters.groupBy.filter(Boolean);
-    } else if (typeof filters.groupBy === 'string') {
-      groupBys = filters.groupBy.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-    }
-    if (groupBys.length === 0) {
-      groupBys = ['month'];
-    }
-
-    var filterBean = filters.beanName;
-
-    var roastById = {};
-    for (var r = 0; r < state.roastLogs.length; r++) {
-      roastById[state.roastLogs[r].roastId] = state.roastLogs[r];
-    }
-
-    var supplierByBean = {};
-    for (var o = 0; o < state.greenBeanOrders.length; o++) {
-      supplierByBean[state.greenBeanOrders[o].name] = state.greenBeanOrders[o].supplier;
-    }
-
-    var groups = {};
-    function ensureGroup(key, label, dimVals) {
-      if (!groups[key]) {
-        groups[key] = {
-          key: key,
-          label: label || key,
-          dimValues: dimVals || {},
-          ordersCount: 0,
-          orderedWeightLbs: 0,
-          orderedWeightGrams: 0,
-          totalSpend: 0,
-          roastCount: 0,
-          greenWeightRoastedGrams: 0,
-          endWeightGrams: 0,
-          avgWeightLossPct: 0,
-          packagedCount: 0,
-          packagedGramsUsed: 0
-        };
-      }
-      return groups[key];
-    }
-
-    var summary = ensureGroup('__summary__', 'Total', {});
-    delete groups['__summary__'];
-
-    // 1. Aggregate Green Bean Orders (if mode is 'orders' or 'all')
-    if (mode === 'all' || mode === 'orders') {
-      for (var i = 0; i < state.greenBeanOrders.length; i++) {
-        var ordItem = state.greenBeanOrders[i];
-        if (!matchesDateAndBeanFilter(ordItem.date, ordItem.name, filters)) continue;
-
-        var ymOrd = extractYearMonth(ordItem.date);
-        var dimValsOrd = {};
-        for (var g1 = 0; g1 < groupBys.length; g1++) {
-          var d1 = groupBys[g1];
-          if (d1 === 'month') dimValsOrd[d1] = ymOrd.yearMonth;
-          else if (d1 === 'year') dimValsOrd[d1] = ymOrd.year;
-          else if (d1 === 'bean') dimValsOrd[d1] = ordItem.name;
-          else if (d1 === 'supplier') dimValsOrd[d1] = ordItem.supplier;
-          else if (d1 === 'purpose') dimValsOrd[d1] = 'Green Bean Purchase';
-          else dimValsOrd[d1] = '—';
-        }
-        var gKeyOrd = groupBys.map(function (d) { return dimValsOrd[d]; }).join(' — ');
-
-        var grpOrd = ensureGroup(gKeyOrd, gKeyOrd, dimValsOrd);
-        var wLbs = Number(ordItem.weightLbs) || 0;
-        var wGrams = Number(ordItem.weightGrams) || lbsToGrams(wLbs);
-        var cost = Number(ordItem.cost) || 0;
-
-        grpOrd.ordersCount += 1;
-        grpOrd.orderedWeightLbs = Number((grpOrd.orderedWeightLbs + wLbs).toFixed(2));
-        grpOrd.orderedWeightGrams += wGrams;
-        grpOrd.totalSpend = Number((grpOrd.totalSpend + cost).toFixed(2));
-
-        summary.ordersCount += 1;
-        summary.orderedWeightLbs = Number((summary.orderedWeightLbs + wLbs).toFixed(2));
-        summary.orderedWeightGrams += wGrams;
-        summary.totalSpend = Number((summary.totalSpend + cost).toFixed(2));
-      }
-    }
-
-    // 2. Aggregate Roast Logs (if mode is 'roasting' or 'all')
-    if (mode === 'all' || mode === 'roasting') {
-      for (var j = 0; j < state.roastLogs.length; j++) {
-        var rstItem = state.roastLogs[j];
-        var rstBean = (rstItem.beanName || '').trim();
-        if (!rstBean && rstItem.greenBeanComponents && rstItem.greenBeanComponents.length > 0) {
-          var firstComp = rstItem.greenBeanComponents[0];
-          var matchedOrder = state.greenBeanOrders.find(function (o) { return o.orderId === firstComp.orderId; });
-          if (matchedOrder && matchedOrder.name) {
-            rstBean = matchedOrder.name.trim();
-          }
-        }
-        if (!rstBean) {
-          rstBean = 'Unknown Bean';
-        }
-
-        if (!matchesDateAndBeanFilter(rstItem.date, rstBean, filters)) continue;
-
-        var ymRst = extractYearMonth(rstItem.date);
-        var dimValsRst = {};
-        for (var g2 = 0; g2 < groupBys.length; g2++) {
-          var d2 = groupBys[g2];
-          if (d2 === 'month') dimValsRst[d2] = ymRst.yearMonth;
-          else if (d2 === 'year') dimValsRst[d2] = ymRst.year;
-          else if (d2 === 'bean') dimValsRst[d2] = rstBean;
-          else if (d2 === 'supplier') dimValsRst[d2] = supplierByBean[rstBean] || 'Unknown';
-          else if (d2 === 'purpose') dimValsRst[d2] = 'Roast Batch';
-          else if (d2 === 'roast') dimValsRst[d2] = rstBean;
-          else dimValsRst[d2] = '—';
-        }
-        var gKeyRst = groupBys.map(function (d) { return dimValsRst[d]; }).join(' — ');
-
-        var grpRst = ensureGroup(gKeyRst, gKeyRst, dimValsRst);
-        var greenG = Number(rstItem.greenWeightGrams) || 0;
-        var endG = Number(rstItem.endWeightGrams) || 0;
-
-        grpRst.roastCount += 1;
-        grpRst.greenWeightRoastedGrams += greenG;
-        grpRst.endWeightGrams += endG;
-
-        summary.roastCount += 1;
-        summary.greenWeightRoastedGrams += greenG;
-        summary.endWeightGrams += endG;
-      }
-    }
-
-    // 3. Aggregate Blend & Packaging Logs (if mode is 'packaging' or 'all')
-    if (mode === 'all' || mode === 'packaging') {
-      for (var k = 0; k < state.blendPackagingLogs.length; k++) {
-        var pkgItem = state.blendPackagingLogs[k];
-        var ymPkg = extractYearMonth(pkgItem.date);
-        if (filters.year && filters.year !== 'all' && ymPkg.year !== filters.year) continue;
-        if (filters.month && filters.month !== 'all' && ymPkg.month !== filters.month) continue;
-        if (filters.purpose && filters.purpose !== 'all') {
-          if (filters.purpose === 'Order') {
-            if (pkgItem.purpose !== 'Order' && !pkgItem.orderId) continue;
-          } else {
-            if (pkgItem.purpose !== filters.purpose) continue;
-          }
-        }
-
-        var comps = pkgItem.roastComponents || [];
-        if (filterBean && filterBean !== 'all') {
-          var hasMatchingBean = comps.some(function (c) {
-            var rObj = roastById[c.roastId];
-            return rObj && rObj.beanName === filterBean;
-          });
-          if (!hasMatchingBean) continue;
-        }
-
-        var dimValsPkg = {};
-        for (var g3 = 0; g3 < groupBys.length; g3++) {
-          var d3 = groupBys[g3];
-          if (d3 === 'month') dimValsPkg[d3] = ymPkg.yearMonth;
-          else if (d3 === 'year') dimValsPkg[d3] = ymPkg.year;
-          else if (d3 === 'purpose') dimValsPkg[d3] = pkgItem.purpose;
-          else if (d3 === 'roast') dimValsPkg[d3] = pkgItem.product;
-          else if (d3 === 'size') dimValsPkg[d3] = pkgItem.bagSize;
-          else if (d3 === 'bean') {
-            var firstRoast = comps.length > 0 ? roastById[comps[0].roastId] : null;
-            dimValsPkg[d3] = firstRoast ? firstRoast.beanName : pkgItem.product;
-          } else if (d3 === 'supplier') {
-            var firstR = comps.length > 0 ? roastById[comps[0].roastId] : null;
-            dimValsPkg[d3] = firstR && supplierByBean[firstR.beanName] ? supplierByBean[firstR.beanName] : 'Mixed / Blend';
-          } else {
-            dimValsPkg[d3] = '—';
-          }
-        }
-        var gKeyPkg = groupBys.map(function (d) { return dimValsPkg[d]; }).join(' — ');
-
-        var grpPkg = ensureGroup(gKeyPkg, gKeyPkg, dimValsPkg);
-        var compGrams = comps.reduce(function (acc, c) { return acc + (Number(c.weightGrams) || 0); }, 0);
-
-        grpPkg.packagedCount += 1;
-        grpPkg.packagedGramsUsed += compGrams;
-
-        summary.packagedCount += 1;
-        summary.packagedGramsUsed += compGrams;
-      }
-    }
-
-    summary.avgWeightLossPct = computeWeightLossPct(summary.greenWeightRoastedGrams, summary.endWeightGrams);
-
-    var rows = Object.keys(groups).map(function (k) {
-      var row = groups[k];
-      row.avgWeightLossPct = computeWeightLossPct(row.greenWeightRoastedGrams, row.endWeightGrams);
-      return row;
-    });
-
-    rows.sort(function (a, b) {
-      return b.key.localeCompare(a.key);
-    });
-
-    return {
-      mode: mode,
-      groupBys: groupBys,
-      summary: summary,
-      rows: rows
-    };
-  }
-
-  function sortGreenBeanOrders(orders, sortCol, sortDir) {
-    if (!orders || orders.length === 0) return [];
-    var col = sortCol || 'date';
-    var dir = sortDir === 'asc' ? 1 : -1;
-    return orders.slice().sort(function (a, b) {
-      var cmp = 0;
-      if (col === 'orderId') {
-        cmp = (a.orderId || '').localeCompare(b.orderId || '');
-      } else if (col === 'date') {
-        cmp = (a.date || '').localeCompare(b.date || '');
-      } else if (col === 'name') {
-        cmp = (a.name || '').localeCompare(b.name || '');
-      } else if (col === 'supplier') {
-        cmp = (a.supplier || '').localeCompare(b.supplier || '');
-      } else if (col === 'supplierOrderId') {
-        cmp = (a.supplierOrderId || '').localeCompare(b.supplierOrderId || '');
-      } else if (col === 'cost') {
-        cmp = (Number(a.cost) || 0) - (Number(b.cost) || 0);
-      } else if (col === 'weightLbs') {
-        cmp = (Number(a.weightLbs) || 0) - (Number(b.weightLbs) || 0);
-      } else if (col === 'adjustGrams') {
-        cmp = (Number(a.adjustGrams) || 0) - (Number(b.adjustGrams) || 0);
-      } else if (col === 'weightGrams') {
-        cmp = (Number(a.weightGrams) || 0) - (Number(b.weightGrams) || 0);
-      } else if (col === 'availableGrams') {
-        var aAvail = a.availableGrams !== undefined ? Number(a.availableGrams) : Number(a.weightGrams);
-        var bAvail = b.availableGrams !== undefined ? Number(b.availableGrams) : Number(b.weightGrams);
-        cmp = (aAvail || 0) - (bAvail || 0);
-      }
-      if (cmp !== 0) return cmp * dir;
-      return (b.date || '').localeCompare(a.date || '') || (b.orderId || '').localeCompare(a.orderId || '');
-    });
-  }
-
-  function sortTotalsRows(rows, sortCol, sortDir) {
-    if (!rows || rows.length === 0 || !sortCol) return rows ? rows.slice() : [];
-    var dir = sortDir === 'asc' ? 1 : -1;
-    return rows.slice().sort(function (a, b) {
-      var cmp = 0;
-      if (sortCol.indexOf('dim:') === 0) {
-        var dimKey = sortCol.slice(4);
-        var aVal = String((a.dimValues && a.dimValues[dimKey]) || a.label || '');
-        var bVal = String((b.dimValues && b.dimValues[dimKey]) || b.label || '');
-        cmp = aVal.localeCompare(bVal);
-      } else if (sortCol === 'roasts' || sortCol === 'orders') {
-        cmp = ((a.roastCount || a.ordersCount) || 0) - ((b.roastCount || b.ordersCount) || 0);
-      } else if (sortCol === 'greenWeight') {
-        cmp = (a.greenWeightRoastedGrams || 0) - (b.greenWeightRoastedGrams || 0);
-      } else if (sortCol === 'endWeight') {
-        cmp = (a.endWeightGrams || 0) - (b.endWeightGrams || 0);
-      } else if (sortCol === 'lossPct') {
-        cmp = (a.avgWeightLossPct || 0) - (b.avgWeightLossPct || 0);
-      } else if (sortCol === 'orderedWeight') {
-        cmp = (a.orderedWeightGrams || 0) - (b.orderedWeightGrams || 0);
-      } else if (sortCol === 'spend') {
-        cmp = (a.totalSpend || 0) - (b.totalSpend || 0);
-      }
-      if (cmp !== 0) return cmp * dir;
-      return (b.key || '').localeCompare(a.key || '');
-    });
-  }
-
-  var CANONICAL_MOCK_DATA = {
-    greenBeans: [],
-    greenBeanOrders: [
-      {
-        orderId: 'GBO-1001',
-        supplierOrderId: 'RM-88412',
-        name: 'Colombia Supremo Huila',
-        supplier: 'Roastmasters',
-        date: '2026-10-05',
-        cost: 41.10,
-        weightLbs: 5,
-        adjustGrams: 18,
-        weightGrams: 2286,
-        url: 'https://www.roastmasters.com/colombia-supremo.html'
-      },
-      {
-        orderId: 'GBO-1002',
-        supplierOrderId: 'BC-50921',
-        name: 'Ethiopian Guji Natural Org. Gr. 1 - Kayon Mountain',
-        supplier: 'Burman Coffee',
-        date: '2026-10-10',
-        cost: 44.95,
-        weightLbs: 5,
-        adjustGrams: -5,
-        weightGrams: 2263,
-        url: 'https://burmancoffee.com/product/green-coffee-beans/ethiopian-kayon-1'
-      },
-      {
-        orderId: 'GBO-1003',
-        supplierOrderId: 'BC-50921',
-        name: 'Brazil Mogiana 15/16 FC SS - Cooxupe',
-        supplier: 'Burman Coffee',
-        date: '2026-10-10',
-        cost: 64.90,
-        weightLbs: 10,
-        adjustGrams: 0,
-        weightGrams: 4536,
-        url: 'https://burmancoffee.com/product/green-coffee-beans/brazil-mogiana-15-16/'
-      }
-    ],
-    roastLogs: [
-      {
-        roastId: 'RST-2001',
-        date: '2026-10-14',
-        greenBeanComponents: [{ orderId: 'GBO-1001', weightGrams: 460 }],
-        beanName: 'Colombia Supremo Huila',
-        greenWeightGrams: 460,
-        endWeightGrams: 392,
-        weightLossPct: 14.78,
-        roastLevel: 2,
-        profileUrl: 'https://yellowwingroasters.com/profiles/rst-2001',
-        notes: 'First crack at 8:45, dropped at City+'
-      },
-      {
-        roastId: 'RST-2002',
-        date: '2026-10-15',
-        greenBeanComponents: [{ orderId: 'GBO-1002', weightGrams: 454 }],
-        beanName: 'Ethiopian Guji Natural Org. Gr. 1 - Kayon Mountain',
-        greenWeightGrams: 454,
-        endWeightGrams: 390,
-        weightLossPct: 14.10,
-        roastLevel: 2,
-        profileUrl: 'https://yellowwingroasters.com/profiles/rst-2002',
-        notes: 'Bright blueberry aroma'
-      },
-      {
-        roastId: 'RST-2003',
-        date: '2026-10-18',
-        greenBeanComponents: [{ orderId: 'GBO-1003', weightGrams: 454 }],
-        beanName: 'Brazil Mogiana 15/16 FC SS - Cooxupe',
-        greenWeightGrams: 454,
-        endWeightGrams: 382,
-        weightLossPct: 15.86,
-        roastLevel: 3,
-        profileUrl: 'https://yellowwingroasters.com/profiles/rst-2003',
-        notes: 'Full City espresso base'
-      }
-    ],
-    blendPackagingLogs: [
-      {
-        logId: 'PKG-3001',
-        date: '2026-10-16',
-        purpose: 'Order',
-        product: 'Early Bird',
-        roastComponents: [
-          { roastId: 'RST-2001', weightGrams: 204 },
-          { roastId: 'RST-2002', weightGrams: 136 }
-        ],
-        bagSize: '12oz',
-        notes: 'Order #1001'
-      },
-      {
-        logId: 'PKG-3002',
-        date: '2026-10-19',
-        purpose: 'Sample',
-        product: 'Ethiopia Guji Sample',
-        roastComponents: [
-          { roastId: 'RST-2002', weightGrams: 113 }
-        ],
-        bagSize: 'Custom',
-        notes: 'Free sample for neighbor'
-      }
-    ]
-  };
-  recomputeActiveBeanStocks(CANONICAL_MOCK_DATA);
-
-  function escapeHtml(str) {
-    if (!str && str !== 0) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function todayIso() {
-    var d = new Date();
-    var y = d.getFullYear();
-    var m = String(d.getMonth() + 1).padStart(2, '0');
-    var day = String(d.getDate()).padStart(2, '0');
-    return y + '-' + m + '-' + day;
-  }
-
-  function parseOrderLineItems(itemsStr) {
+  function parseOrderLineItems(itemsStr, bagSizes) {
     var raw = String(itemsStr || '').trim();
     if (!raw) return [];
-    var parts = raw.split(/,\s*(?=\d+x\s)/i);
-    return parts.map(function (part) {
+    var sizePattern = Array.isArray(bagSizes) && bagSizes.length > 0
+      ? new RegExp('\\s+(' + bagSizes.map(function (s) { return s.id; }).join('|') + ')$', 'i')
+      : /\s+(\d+(?:\.\d+)?\s*(?:oz|lb|lbs))$/i;
+
+    return raw.split(/,\s*(?=\d+x\s)/i).map(function (part) {
       var clean = part.replace(/\s*\([^)]*\)\s*$/, '').trim();
       var withoutQty = clean.replace(/^\d+x\s+/i, '').trim();
-      var sizeMatch = withoutQty.match(/\s+(12oz|1lb|2lb|5lb)$/i);
+      var sizeMatch = withoutQty.match(sizePattern);
       var bagSize = sizeMatch ? sizeMatch[1].toLowerCase() : '';
       var product = sizeMatch
         ? withoutQty.slice(0, withoutQty.length - sizeMatch[0].length).trim()
@@ -758,9 +233,7 @@
 
   function filterSelectOptions(optionsList, query) {
     var tokens = String(query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (tokens.length === 0) {
-      return optionsList.slice();
-    }
+    if (tokens.length === 0) return optionsList.slice();
     return optionsList.filter(function (opt) {
       var hay = String(opt.text || '').toLowerCase();
       return tokens.every(function (t) { return hay.indexOf(t) !== -1; });
@@ -820,10 +293,7 @@
 
     function getSelectedOptionText() {
       var idx = sel.selectedIndex;
-      if (idx >= 0 && sel.options[idx]) {
-        return sel.options[idx].textContent;
-      }
-      return '';
+      return (idx >= 0 && sel.options[idx]) ? sel.options[idx].textContent : '';
     }
 
     function getAllOptions() {
@@ -837,20 +307,12 @@
       filteredOptions = isFiltering ? filterSelectOptions(allOpts, input.value) : allOpts;
 
       if (!isFiltering) {
-        var selIdx = -1;
-        for (var i = 0; i < filteredOptions.length; i++) {
-          if (filteredOptions[i].value === sel.value) {
-            selIdx = i;
-            break;
-          }
-        }
+        var selIdx = filteredOptions.findIndex(function (o) { return o.value === sel.value; });
         activeIndex = selIdx >= 0 ? selIdx : (filteredOptions.length > 0 ? 0 : -1);
-      } else {
-        if (filteredOptions.length === 0) {
-          activeIndex = -1;
-        } else if (activeIndex < 0 || activeIndex >= filteredOptions.length) {
-          activeIndex = 0;
-        }
+      } else if (filteredOptions.length === 0) {
+        activeIndex = -1;
+      } else if (activeIndex < 0 || activeIndex >= filteredOptions.length) {
+        activeIndex = 0;
       }
 
       if (filteredOptions.length === 0) {
@@ -858,16 +320,13 @@
         return;
       }
 
-      var html = '';
-      filteredOptions.forEach(function (opt, idx) {
+      menu.innerHTML = filteredOptions.map(function (opt, idx) {
         var classes = 'roast-admin-combobox-option';
         if (opt.value === sel.value) classes += ' is-selected';
         if (idx === activeIndex) classes += ' is-active';
-        html += '<div class="' + classes + '" role="option" data-value="' + escapeHtml(opt.value) + '" data-idx="' + idx + '">' +
-          escapeHtml(opt.text) +
-          '</div>';
-      });
-      menu.innerHTML = html;
+        return '<div class="' + classes + '" role="option" data-value="' + escapeHtml(opt.value) + '" data-idx="' + idx + '">' +
+          escapeHtml(opt.text) + '</div>';
+      }).join('');
 
       if (isOpen && activeIndex >= 0) {
         var activeEl = menu.querySelector('.roast-admin-combobox-option.is-active');
@@ -901,9 +360,7 @@
     input.addEventListener('focus', function () {
       isFiltering = false;
       openMenu();
-      setTimeout(function () {
-        input.select();
-      }, 0);
+      setTimeout(function () { input.select(); }, 0);
     });
 
     input.addEventListener('click', function () {
@@ -943,12 +400,10 @@
           activeIndex = (activeIndex - 1 + filteredOptions.length) % filteredOptions.length;
           renderMenu();
         }
-      } else if (e.key === 'Enter') {
-        if (isOpen) {
-          e.preventDefault();
-          if (activeIndex >= 0 && filteredOptions[activeIndex]) {
-            selectValue(filteredOptions[activeIndex].value);
-          }
+      } else if (e.key === 'Enter' && isOpen) {
+        e.preventDefault();
+        if (activeIndex >= 0 && filteredOptions[activeIndex]) {
+          selectValue(filteredOptions[activeIndex].value);
         }
       } else if (e.key === 'Tab') {
         if (isOpen && isFiltering && activeIndex >= 0 && filteredOptions[activeIndex]) {
@@ -956,62 +411,46 @@
         } else {
           closeMenu();
         }
-      } else if (e.key === 'Escape') {
-        if (isOpen) {
-          e.preventDefault();
-          closeMenu();
-        }
+      } else if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        closeMenu();
       }
     });
 
-    input.addEventListener('blur', function () {
-      closeMenu();
-    });
+    input.addEventListener('blur', closeMenu);
 
     menu.addEventListener('mousedown', function (e) {
       e.preventDefault();
       var optEl = e.target.closest('.roast-admin-combobox-option');
-      if (optEl) {
-        selectValue(optEl.getAttribute('data-value'));
-      }
+      if (optEl) selectValue(optEl.getAttribute('data-value'));
     });
 
     sel._comboboxSync = function () {
-      if (!isFiltering) {
-        input.value = getSelectedOptionText();
-      }
-      if (isOpen) {
-        renderMenu();
-      }
+      if (!isFiltering) input.value = getSelectedOptionText();
+      if (isOpen) renderMenu();
     };
-
-    sel.focus = function () {
-      input.focus();
-    };
-
+    sel.focus = function () { input.focus(); };
     sel._comboboxSync();
   }
 
   function syncSearchableSelect(sel) {
-    if (sel._comboboxSync) {
-      sel._comboboxSync();
-    }
+    if (sel._comboboxSync) sel._comboboxSync();
   }
 
   function initAdminRoasts(options) {
     var apiUrl = options.apiUrl;
     var orderApiUrl = options.orderApiUrl;
     var roastLevels = options.roastLevels;
-    var bagSizes = options.bagSizes || [];
+    var bagSizes = options.bagSizes;
+    var defaultBagSize = bagSizes.find(function (s) { return s.default; }) || bagSizes[0];
 
     var gateSection = document.getElementById('roast-admin-gate-section');
     var gateForm = document.getElementById('roast-admin-gate-form');
     var passcodeInput = document.getElementById('roast-admin-passcode-input');
     var gateError = document.getElementById('roast-admin-gate-error');
-    var gateBtn = document.getElementById('roast-admin-gate-btn');
 
     var dashboardSection = document.getElementById('roast-admin-dashboard-section');
-    var statsContainer = document.getElementById('roast-admin-stats');
+    var errorBanner = document.getElementById('roast-admin-error-banner');
     var refreshBtn = document.getElementById('roast-admin-refresh-btn');
     var logoutBtn = document.getElementById('roast-admin-logout-btn');
     var tabsContainer = document.getElementById('roast-admin-tabs');
@@ -1022,10 +461,7 @@
     var ordersTableWrap = document.getElementById('roast-admin-orders-table-wrap');
     var roastsTableWrap = document.getElementById('roast-admin-roasts-table-wrap');
     var packagingTableWrap = document.getElementById('roast-admin-packaging-table-wrap');
-    var totalsKpisWrap = document.getElementById('roast-admin-totals-kpis');
-    var totalsTableWrap = document.getElementById('roast-admin-totals-table-wrap');
 
-    // Forms
     var orderForm = document.getElementById('roast-admin-order-form');
     var orderFormTitle = document.getElementById('order-form-title');
     var orderCancelEditBtn = document.getElementById('order-cancel-edit-btn');
@@ -1075,32 +511,41 @@
 
     var beansFilterBean = document.getElementById('beans-filter-bean');
     var beansFilterSupplier = document.getElementById('beans-filter-supplier');
+    var beansAggStock = document.getElementById('beans-agg-stock');
+    var beansAggOrders = document.getElementById('beans-agg-orders');
 
     var ordersFilterYear = document.getElementById('orders-filter-year');
     var ordersFilterMonth = document.getElementById('orders-filter-month');
     var ordersFilterBean = document.getElementById('orders-filter-bean');
     var ordersFilterSupplier = document.getElementById('orders-filter-supplier');
+    var ordersAggWeight = document.getElementById('orders-agg-weight');
+    var ordersAggCost = document.getElementById('orders-agg-cost');
+    var ordersAggUnitCost = document.getElementById('orders-agg-unit-cost');
+    var ordersAggRemaining = document.getElementById('orders-agg-remaining');
 
     var roastsFilterYear = document.getElementById('roasts-filter-year');
     var roastsFilterMonth = document.getElementById('roasts-filter-month');
     var roastsFilterBean = document.getElementById('roasts-filter-bean');
+    var roastsFilterRoastLevel = document.getElementById('roasts-filter-roast-level');
+    var roastsAggGreen = document.getElementById('roasts-agg-green');
+    var roastsAggEnd = document.getElementById('roasts-agg-end');
+    var roastsAggLoss = document.getElementById('roasts-agg-loss');
+    var roastsAggAvail = document.getElementById('roasts-agg-avail');
 
     var pkgFilterYear = document.getElementById('pkg-filter-year');
     var pkgFilterMonth = document.getElementById('pkg-filter-month');
     var pkgFilterProduct = document.getElementById('pkg-filter-product');
     var pkgFilterBean = document.getElementById('pkg-filter-bean');
+    var pkgFilterPurpose = document.getElementById('pkg-filter-purpose');
     var pkgFilterBagSize = document.getElementById('pkg-filter-bag-size');
+    var pkgAggWeight = document.getElementById('pkg-agg-weight');
 
-    var totalsGroupBy = document.getElementById('totals-group-by');
-    var totalsFilterYear = document.getElementById('totals-filter-year');
-    var totalsFilterMonth = document.getElementById('totals-filter-month');
-    var totalsFilterBean = document.getElementById('totals-filter-bean');
-    var totalsFilterPurpose = document.getElementById('totals-filter-purpose');
-    var totalsFilterPurposeWrap = document.getElementById('totals-filter-purpose-wrap');
-    var currentTotalsMode = 'roasting';
-    var currentPkgFilter = 'all';
-    var roastTotalsModePills = document.getElementById('roast-totals-mode-pills');
-    var roastGroupPillsWrap = document.getElementById('roast-totals-group-pills');
+    var groupByCols = {
+      beans: [],
+      orders: [],
+      roasts: [],
+      packaging: []
+    };
 
     var state = {
       greenBeans: [],
@@ -1110,7 +555,6 @@
       customerOrders: []
     };
 
-    var activeTab = 'beans';
     var currentSearch = '';
     var editingOrderId = null;
     var editingRoastId = null;
@@ -1124,25 +568,37 @@
     var roastLogSortDir = 'desc';
     var pkgLogSortCol = 'date';
     var pkgLogSortDir = 'desc';
-    var roastTotalsSortCol = null;
-    var roastTotalsSortDir = 'desc';
-    var gbOrdersTotalsSortCol = null;
-    var gbOrdersTotalsSortDir = 'desc';
-
-    function renderSortTh(label, colKey, currentCol, currentDir, alignRight) {
-      var isSorted = currentCol === colKey;
-      var icon = isSorted
-        ? (currentDir === 'asc' ? ' ▲' : ' ▼')
-        : '<span class="roast-admin-sort-icon">↕</span>';
-      var style = alignRight ? ' style="text-align: right;"' : '';
-      return '<th class="roast-admin-th-sortable' + (isSorted ? ' is-sorted' : '') + '" data-sort-col="' + escapeHtml(colKey) + '"' + style + '>' +
-        escapeHtml(label) + icon + '</th>';
-    }
 
     orderDate.value = todayIso();
     roastDate.value = todayIso();
     pkgDate.value = todayIso();
     enhanceSearchableSelect(orderBeanSelect, 'Search green bean by name or supplier...');
+
+    function renderSortTh(label, colKey, currentCol, currentDir, alignRight, extraClass) {
+      var isSorted = currentCol === colKey;
+      var icon = isSorted
+        ? (currentDir === 'asc' ? ' ▲' : ' ▼')
+        : '<span class="roast-admin-sort-icon">↕</span>';
+      var style = alignRight ? ' style="text-align: right;"' : '';
+      var cls = 'roast-admin-th-sortable' + (isSorted ? ' is-sorted' : '') + (extraClass ? (' ' + extraClass) : '');
+      return '<th class="' + cls + '" data-sort-col="' + escapeHtml(colKey) + '"' + style + '>' +
+        escapeHtml(label) + icon + '</th>';
+    }
+
+    function bindSortHeaders(wrapEl, getCol, setColDir, numCols, rerender) {
+      wrapEl.querySelectorAll('th[data-sort-col]').forEach(function (th) {
+        th.addEventListener('click', function () {
+          var col = th.getAttribute('data-sort-col');
+          var cur = getCol();
+          if (cur.col === col) {
+            setColDir(col, cur.dir === 'asc' ? 'desc' : 'asc');
+          } else {
+            setColDir(col, numCols.indexOf(col) !== -1 ? 'desc' : 'asc');
+          }
+          rerender();
+        });
+      });
+    }
 
     function getStoredKey() {
       try {
@@ -1186,22 +642,6 @@
       dashboardSection.style.display = 'block';
     }
 
-    function renderStatsBar() {
-      recomputeActiveBeanStocks(state);
-      var activeBeans = state.greenBeans.filter(function (b) { return b.activeStockGrams > 0; });
-      var totalActiveGrams = activeBeans.reduce(function (sum, b) { return sum + b.activeStockGrams; }, 0);
-      var totalActiveLbs = (totalActiveGrams / GRAMS_PER_LB).toFixed(2);
-
-      var html = '<span class="order-admin-stat-pill order-admin-stat-pill--highlight">Active Stock: ' +
-        totalActiveGrams.toLocaleString() + ' g (' + totalActiveLbs + ' lbs)</span>' +
-        '<span class="order-admin-stat-pill">Active Beans: ' + activeBeans.length + '</span>' +
-        '<span class="order-admin-stat-pill">Bean Orders: ' + state.greenBeanOrders.length + '</span>' +
-        '<span class="order-admin-stat-pill">Roasts: ' + state.roastLogs.length + '</span>' +
-        '<span class="order-admin-stat-pill">Blend/Pkg Logs: ' + state.blendPackagingLogs.length + '</span>';
-
-      statsContainer.innerHTML = html;
-    }
-
     function matchesSearch(fields) {
       if (!currentSearch) return true;
       var q = currentSearch.toLowerCase();
@@ -1217,116 +657,234 @@
       renderBlendPackagingTable();
     }
 
+    function getActiveFilterCount(mod) {
+      var selects = {
+        beans: [beansFilterBean, beansFilterSupplier],
+        orders: [ordersFilterYear, ordersFilterMonth, ordersFilterBean, ordersFilterSupplier],
+        roasts: [roastsFilterYear, roastsFilterMonth, roastsFilterBean, roastsFilterRoastLevel],
+        pkg: [pkgFilterYear, pkgFilterMonth, pkgFilterProduct, pkgFilterBean, pkgFilterPurpose, pkgFilterBagSize]
+      }[mod] || [];
+      return selects.filter(function (s) { return s.value !== 'all'; }).length;
+    }
+
+    function updateFilterBtnLabel(mod) {
+      var canonicalMod = mod === 'packaging' ? 'pkg' : mod;
+      var groupKey = canonicalMod === 'pkg' ? 'packaging' : canonicalMod;
+      var drawerId = canonicalMod + '-filter-drawer';
+      var btn = document.querySelector('[data-drawer-target="' + drawerId + '"]');
+      var drawer = document.getElementById(drawerId);
+      var isOpen = drawer.style.display !== 'none';
+      var count = getActiveFilterCount(canonicalMod);
+      var groupCount = groupByCols[groupKey].length;
+      var labelSpan = btn.querySelector('strong');
+
+      if (count > 0 || groupCount > 0) {
+        btn.classList.add('has-active-filters');
+      } else {
+        btn.classList.remove('has-active-filters');
+      }
+
+      if (!isOpen) {
+        var parts = [];
+        if (count > 0) parts.push(String(count));
+        if (groupCount > 0) parts.push('Grouped: ' + groupCount);
+        labelSpan.textContent = parts.length > 0 ? 'Filters (' + parts.join(' • ') + ')' : 'Filters';
+      }
+    }
+
     function setDrawerState(drawerId, open) {
       var drawer = document.getElementById(drawerId);
-      if (!drawer) return;
       var btn = document.querySelector('[data-drawer-target="' + drawerId + '"]');
       var defaultLabels = {
         'order-entry-drawer': 'Record Green Bean Order',
         'roast-entry-drawer': 'Record Roast Log',
         'pkg-entry-drawer': 'Record Master Blend & Packaging'
       };
-      var labelSpan = btn ? btn.querySelector('strong') : null;
-      var iconSpan = btn ? btn.querySelector('span') : null;
+      var openLabels = {
+        'order-entry-drawer': 'Close Entry Form',
+        'roast-entry-drawer': 'Close Entry Form',
+        'pkg-entry-drawer': 'Close Entry Form'
+      };
+      var labelSpan = btn.querySelector('strong');
+      var iconSpan = btn.querySelector('span');
 
       if (open) {
         drawer.style.display = 'block';
-        if (btn) btn.classList.add('is-open');
-        if (labelSpan) labelSpan.textContent = 'Close Entry Form';
-        if (iconSpan) iconSpan.textContent = '−';
+        btn.classList.add('is-open');
+        labelSpan.textContent = openLabels[drawerId] || 'Close Filters';
+        iconSpan.textContent = '−';
       } else {
         drawer.style.display = 'none';
-        if (btn) btn.classList.remove('is-open');
-        if (labelSpan) labelSpan.textContent = defaultLabels[drawerId] || 'Record Entry';
-        if (iconSpan) iconSpan.textContent = '+';
+        btn.classList.remove('is-open');
+        iconSpan.textContent = '+';
+        if (drawerId.endsWith('-filter-drawer')) {
+          updateFilterBtnLabel(drawerId.replace('-filter-drawer', ''));
+        } else {
+          labelSpan.textContent = defaultLabels[drawerId];
+        }
       }
     }
 
     function renderActiveBeansTable() {
       recomputeActiveBeanStocks(state);
       var showDepleted = showDepletedCheckbox.checked;
-      var filterBean = beansFilterBean ? beansFilterBean.value : 'all';
-      var filterSupplier = beansFilterSupplier ? beansFilterSupplier.value : 'all';
+      var filterBean = beansFilterBean.value;
+      var filterSupplier = beansFilterSupplier.value;
 
-      var rows = state.greenBeans.filter(function (b) {
+      var orderCountByBean = {};
+      state.greenBeanOrders.forEach(function (o) {
+        orderCountByBean[o.name] = (orderCountByBean[o.name] || 0) + 1;
+      });
+
+      var filtered = state.greenBeans.filter(function (b) {
         if (!showDepleted && b.activeStockGrams <= 0) return false;
         if (filterBean !== 'all' && b.name !== filterBean) return false;
         if (filterSupplier !== 'all' && b.supplier !== filterSupplier) return false;
-        return matchesSearch([b.name, b.supplier, b.url]);
-      }).slice().sort(function (a, b) {
-        var dir = activeBeansSortDir === 'asc' ? 1 : -1;
-        var cmp = 0;
-        if (activeBeansSortCol === 'name') {
-          cmp = (a.name || '').localeCompare(b.name || '');
-        } else if (activeBeansSortCol === 'supplier') {
-          cmp = (a.supplier || '').localeCompare(b.supplier || '');
-        } else if (activeBeansSortCol === 'stockGrams' || activeBeansSortCol === 'stockLbs') {
-          cmp = (a.activeStockGrams || 0) - (b.activeStockGrams || 0);
-        }
-        if (cmp !== 0) return cmp * dir;
-        return (a.name || '').localeCompare(b.name || '');
+        return matchesSearch([b.name, b.supplier]);
       });
 
-      if (rows.length === 0) {
-        beansTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No matching green beans found.</div>';
+      if (filtered.length === 0) {
+        beansTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No green beans match the current filter.</div>';
         return;
       }
 
-      var html = '<table class="roast-admin-table">' +
-        '<thead><tr>' +
-        renderSortTh('Green Bean & Supplier', 'name', activeBeansSortCol, activeBeansSortDir, false) +
-        '<th>Status</th>' +
-        renderSortTh('Active Stock', 'stockGrams', activeBeansSortCol, activeBeansSortDir, true) +
-        '<th style="text-align: right;">Capacity Left</th>' +
-        '</tr></thead><tbody>';
+      var stockAgg = beansAggStock.value;
+      var ordersAgg = beansAggOrders.value;
+      var gCols = groupByCols.beans;
 
-      rows.forEach(function (b) {
-        var lbs = (b.activeStockGrams / GRAMS_PER_LB).toFixed(2);
-        var nameCell = b.url
-          ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(b.name) + '</strong> &nearr;</a>'
-          : '<strong>' + escapeHtml(b.name) + '</strong>';
+      var allStockGrams = filtered.map(function (b) { return Math.max(0, b.activeStockGrams); });
+      var allOrderCounts = filtered.map(function (b) { return orderCountByBean[b.name] || 0; });
+      var summaryStockG = Math.round(computeAgg(allStockGrams, stockAgg));
+      var summaryStockLbs = (summaryStockG / GRAMS_PER_LB).toFixed(2);
+      var summaryOrdersVal = computeAgg(allOrderCounts, ordersAgg);
+      var summaryOrdersStr = ordersAgg === 'avg' ? summaryOrdersVal.toFixed(1) : Math.round(summaryOrdersVal);
 
-        var totalPurchased = state.greenBeanOrders.filter(function (o) { return o.name === b.name; }).reduce(function (sum, o) {
-          return sum + (Number(o.weightGrams) || lbsToGrams(o.weightLbs));
-        }, 0);
-        var capacityPct = totalPurchased > 0 ? Math.round((b.activeStockGrams / totalPurchased) * 100) : 0;
-        var statusClass = b.activeStockGrams <= 0 ? 'depleted' : (b.activeStockGrams < GRAMS_PER_LB ? 'low' : 'in-stock');
-        var statusLabel = b.activeStockGrams <= 0 ? 'Depleted' : (b.activeStockGrams < GRAMS_PER_LB ? 'Low Stock' : 'In Stock');
-        var statusBadge = '<span class="stock-badge stock-badge--' + statusClass + '">' + statusLabel + '</span>';
-
-        var rowClass = '';
-        if (b.activeStockGrams <= 0) {
-          rowClass = ' class="roast-admin-row--depleted"';
-        } else if (b.activeStockGrams < GRAMS_PER_LB) {
-          rowClass = ' class="roast-admin-row--under-1lb"';
-        } else if (b.activeStockGrams < 2 * GRAMS_PER_LB) {
-          rowClass = ' class="roast-admin-row--under-2lb"';
-        }
-
-        html += '<tr' + rowClass + '>' +
-          '<td class="primary-cell">' + nameCell + '<div class="cell-sub">' + escapeHtml(b.supplier) + '</div></td>' +
-          '<td>' + statusBadge + '</td>' +
-          '<td class="mono" style="text-align: right;"><strong>' + b.activeStockGrams.toLocaleString() + ' g</strong><div class="cell-sub">' + lbs + ' lbs</div></td>' +
-          '<td class="mono" style="text-align: right;"><strong>' + capacityPct + '%</strong><div class="cell-sub">of ordered</div></td>' +
-          '</tr>';
-      });
-
-      html += '</tbody></table>';
-      beansTableWrap.innerHTML = html;
-
-      var ths = beansTableWrap.querySelectorAll('th[data-sort-col]');
-      ths.forEach(function (th) {
-        th.addEventListener('click', function () {
-          var col = th.getAttribute('data-sort-col');
-          if (activeBeansSortCol === col) {
-            activeBeansSortDir = activeBeansSortDir === 'asc' ? 'desc' : 'asc';
-          } else {
-            activeBeansSortCol = col;
-            activeBeansSortDir = (col === 'stockGrams' || col === 'stockLbs') ? 'desc' : 'asc';
+      if (gCols.length > 0) {
+        var groupsMap = {};
+        filtered.forEach(function (b) {
+          var dimVals = {};
+          var keyParts = gCols.map(function (c) {
+            var v = c === 'supplier' ? (b.supplier || 'Unknown') : b.name;
+            dimVals[c] = v;
+            return v;
+          });
+          var gKey = keyParts.join(' — ');
+          if (!groupsMap[gKey]) {
+            groupsMap[gKey] = {
+              key: gKey,
+              dimValues: dimVals,
+              beansCount: 0,
+              stockVals: [],
+              orderVals: []
+            };
           }
-          renderActiveBeansTable();
+          groupsMap[gKey].beansCount++;
+          groupsMap[gKey].stockVals.push(Math.max(0, b.activeStockGrams));
+          groupsMap[gKey].orderVals.push(orderCountByBean[b.name] || 0);
         });
-      });
+
+        var groupedRows = Object.keys(groupsMap).map(function (k) {
+          var g = groupsMap[k];
+          g.stockGrams = Math.round(computeAgg(g.stockVals, stockAgg));
+          g.ordersVal = computeAgg(g.orderVals, ordersAgg);
+          return g;
+        }).sort(function (a, b) {
+          var dir = activeBeansSortDir === 'asc' ? 1 : -1;
+          var cmp = 0;
+          if (activeBeansSortCol.indexOf('dim:') === 0) {
+            var dKey = activeBeansSortCol.slice(4);
+            cmp = String(a.dimValues[dKey]).localeCompare(String(b.dimValues[dKey]));
+          } else if (activeBeansSortCol === 'beansCount') cmp = a.beansCount - b.beansCount;
+          else if (activeBeansSortCol === 'ordersCount') cmp = a.ordersVal - b.ordersVal;
+          else if (activeBeansSortCol === 'stockGrams') cmp = a.stockGrams - b.stockGrams;
+          else cmp = a.key.localeCompare(b.key);
+          return cmp !== 0 ? cmp * dir : a.key.localeCompare(b.key);
+        });
+
+        var gHtml = '<table class="roast-admin-table"><thead><tr>';
+        gCols.forEach(function (c) {
+          gHtml += renderSortTh(DIMENSION_LABELS[c] || c, 'dim:' + c, activeBeansSortCol, activeBeansSortDir, false);
+        });
+        gHtml += renderSortTh('Beans', 'beansCount', activeBeansSortCol, activeBeansSortDir, true);
+        if (ordersAgg !== 'hide') gHtml += renderSortTh('Orders (' + ordersAgg.toUpperCase() + ')', 'ordersCount', activeBeansSortCol, activeBeansSortDir, true);
+        if (stockAgg !== 'hide') gHtml += renderSortTh('Active Stock (' + stockAgg.toUpperCase() + ')', 'stockGrams', activeBeansSortCol, activeBeansSortDir, true);
+        gHtml += '</tr></thead><tbody>';
+
+        groupedRows.forEach(function (r) {
+          var rLbs = (r.stockGrams / GRAMS_PER_LB).toFixed(2);
+          var rOrdStr = ordersAgg === 'avg' ? r.ordersVal.toFixed(1) : Math.round(r.ordersVal);
+          gHtml += '<tr>';
+          gCols.forEach(function (c) {
+            gHtml += '<td><strong>' + escapeHtml(r.dimValues[c]) + '</strong></td>';
+          });
+          gHtml += '<td class="mono" style="text-align: right;">' + r.beansCount + '</td>';
+          if (ordersAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">' + rOrdStr + '</td>';
+          if (stockAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rLbs + ' lbs</strong><div class="cell-sub">' + r.stockGrams.toLocaleString() + ' g</div></td>';
+          gHtml += '</tr>';
+        });
+
+        gHtml += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td colspan="' + gCols.length + '">Total (' + filtered.length + ' beans)</td>' +
+          '<td class="mono" style="text-align: right;">' + filtered.length + '</td>';
+        if (ordersAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">' + summaryOrdersStr + '</td>';
+        if (stockAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + summaryStockLbs + ' lbs</strong><div class="cell-sub">' + summaryStockG.toLocaleString() + ' g</div></td>';
+        gHtml += '</tr></tfoot></table>';
+        beansTableWrap.innerHTML = gHtml;
+      } else {
+        var rows = filtered.slice().sort(function (a, b) {
+          var dir = activeBeansSortDir === 'asc' ? 1 : -1;
+          var cmp = 0;
+          if (activeBeansSortCol === 'name') cmp = a.name.localeCompare(b.name);
+          else if (activeBeansSortCol === 'ordersCount') cmp = (orderCountByBean[a.name] || 0) - (orderCountByBean[b.name] || 0);
+          else if (activeBeansSortCol === 'stockGrams') cmp = a.activeStockGrams - b.activeStockGrams;
+          return cmp !== 0 ? cmp * dir : a.name.localeCompare(b.name);
+        });
+
+        var html = '<table class="roast-admin-table"><thead><tr>' +
+          renderSortTh('Bean & Supplier', 'name', activeBeansSortCol, activeBeansSortDir, false);
+        if (ordersAgg !== 'hide') html += renderSortTh('Orders', 'ordersCount', activeBeansSortCol, activeBeansSortDir, true);
+        if (stockAgg !== 'hide') html += renderSortTh('Active Stock', 'stockGrams', activeBeansSortCol, activeBeansSortDir, true);
+        html += '</tr></thead><tbody>';
+
+        rows.forEach(function (b) {
+          var stockColor = b.activeStockGrams <= 0 ? '#a93226' : (b.activeStockGrams < 2 * GRAMS_PER_LB ? '#b35300' : '#1e7e44');
+          var nameCell = b.url
+            ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(b.name) + '</strong> &nearr;</a>'
+            : '<strong>' + escapeHtml(b.name) + '</strong>';
+          var stockLbs = (Math.max(0, b.activeStockGrams) / GRAMS_PER_LB).toFixed(2);
+          var stockPrimary = b.activeStockGrams <= 0 ? '0.00 lbs' : (stockLbs + ' lbs');
+          var stockSecondary = b.activeStockGrams <= 0
+            ? '0 g &bull; Depleted'
+            : (b.activeStockGrams.toLocaleString() + ' g' + (b.activeStockGrams < GRAMS_PER_LB ? ' &bull; Low' : ''));
+
+          var rowClass = '';
+          if (b.activeStockGrams <= 0) rowClass = ' class="roast-admin-row--depleted"';
+          else if (b.activeStockGrams < GRAMS_PER_LB) rowClass = ' class="roast-admin-row--under-1lb"';
+          else if (b.activeStockGrams < 2 * GRAMS_PER_LB) rowClass = ' class="roast-admin-row--under-2lb"';
+
+          html += '<tr' + rowClass + '>' +
+            '<td class="primary-cell">' + nameCell + '<div class="cell-sub">' + escapeHtml(b.supplier) + '</div></td>';
+          if (ordersAgg !== 'hide') html += '<td class="mono" style="text-align: right;">' + (orderCountByBean[b.name] || 0) + '</td>';
+          if (stockAgg !== 'hide') {
+            html += '<td class="mono" style="text-align: right;"><strong style="color: ' + stockColor + ';">' + stockPrimary + '</strong><div class="cell-sub" style="color: ' + (b.activeStockGrams <= 0 ? '#a93226' : '#7d6b5e') + ';">' + stockSecondary + '</div></td>';
+          }
+          html += '</tr>';
+        });
+
+        html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td>' + escapeHtml(stockAgg.toUpperCase()) + ' (' + rows.length + ' beans)</td>';
+        if (ordersAgg !== 'hide') html += '<td class="mono" style="text-align: right;">' + summaryOrdersStr + ' (' + escapeHtml(ordersAgg.toUpperCase()) + ')</td>';
+        if (stockAgg !== 'hide') html += '<td class="mono" style="text-align: right;"><strong>' + summaryStockLbs + ' lbs</strong><div class="cell-sub">' + summaryStockG.toLocaleString() + ' g</div></td>';
+        html += '</tr></tfoot></table>';
+        beansTableWrap.innerHTML = html;
+      }
+
+      bindSortHeaders(beansTableWrap, function () {
+        return { col: activeBeansSortCol, dir: activeBeansSortDir };
+      }, function (c, d) {
+        activeBeansSortCol = c;
+        activeBeansSortDir = d;
+      }, ['stockGrams', 'ordersCount', 'beansCount'], renderActiveBeansTable);
     }
 
     function populateOrderBeanDropdown() {
@@ -1334,8 +892,7 @@
       var html = '<option value="__new__">+ New Green Bean</option>';
       state.greenBeans.forEach(function (b) {
         html += '<option value="' + escapeHtml(b.name) + '">' +
-          escapeHtml(b.name) + ' (' + escapeHtml(b.supplier) + ')' +
-          '</option>';
+          escapeHtml(b.name) + ' (' + escapeHtml(b.supplier) + ')</option>';
       });
       orderBeanSelect.innerHTML = html;
       if (prevVal && Array.from(orderBeanSelect.options).some(function (o) { return o.value === prevVal; })) {
@@ -1352,11 +909,9 @@
       orderSubmitBtn.textContent = 'Update Order ' + ord.orderId;
       orderFeedback.style.display = 'none';
 
-      if (Array.from(orderBeanSelect.options).some(function (opt) { return opt.value === ord.name; })) {
-        orderBeanSelect.value = ord.name;
-      } else {
-        orderBeanSelect.value = '__new__';
-      }
+      orderBeanSelect.value = Array.from(orderBeanSelect.options).some(function (opt) { return opt.value === ord.name; })
+        ? ord.name
+        : '__new__';
       syncSearchableSelect(orderBeanSelect);
       orderBeanName.value = ord.name;
       orderSupplier.value = ord.supplier;
@@ -1368,10 +923,7 @@
       orderBeanUrl.value = ord.url;
       updateOrderWeightPreview();
       setDrawerState('order-entry-drawer', true);
-      var drawer = document.getElementById('order-entry-drawer');
-      if (drawer) {
-        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+      document.getElementById('order-entry-drawer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       orderAdjustGrams.focus();
       renderGreenBeanOrdersTable();
     }
@@ -1397,32 +949,24 @@
     }
 
     function switchToTab(targetTab, highlightId) {
-      activeTab = targetTab;
-      var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
-      tabBtns.forEach(function (b) {
+      tabsContainer.querySelectorAll('.roast-admin-tab-btn').forEach(function (b) {
         var isTarget = b.getAttribute('data-tab') === targetTab;
-        if (isTarget) {
-          b.classList.add('roast-admin-tab-btn--active');
-          b.setAttribute('aria-selected', 'true');
-        } else {
-          b.classList.remove('roast-admin-tab-btn--active');
-          b.setAttribute('aria-selected', 'false');
-        }
+        b.classList.toggle('roast-admin-tab-btn--active', isTarget);
+        b.setAttribute('aria-selected', isTarget ? 'true' : 'false');
       });
 
-      var panels = ['beans', 'orders', 'roasts', 'packaging', 'totals'];
-      panels.forEach(function (p) {
+      ['beans', 'orders', 'roasts', 'packaging'].forEach(function (p) {
         var panelEl = document.getElementById('roast-admin-panel-' + p);
-        if (p === targetTab) {
-          panelEl.classList.add('roast-admin-panel--active');
-        } else {
-          panelEl.classList.remove('roast-admin-panel--active');
-        }
+        panelEl.classList.toggle('roast-admin-panel--active', p === targetTab);
       });
+
+      if (targetTab === 'beans') renderActiveBeansTable();
+      else if (targetTab === 'orders') renderGreenBeanOrdersTable();
+      else if (targetTab === 'roasts') renderRoastLogsTable();
+      else if (targetTab === 'packaging') renderBlendPackagingTable();
 
       if (highlightId) {
         applySearch(highlightId);
-
         setTimeout(function () {
           var targetRow = document.querySelector('[data-row-id="' + highlightId + '"]');
           if (targetRow) {
@@ -1438,116 +982,285 @@
 
     function renderGreenBeanOrdersTable() {
       recomputeActiveBeanStocks(state);
-      var filterYear = ordersFilterYear ? ordersFilterYear.value : 'all';
-      var filterMonth = ordersFilterMonth ? ordersFilterMonth.value : 'all';
-      var filterBean = ordersFilterBean ? ordersFilterBean.value : 'all';
-      var filterSupplier = ordersFilterSupplier ? ordersFilterSupplier.value : 'all';
+      var filterYear = ordersFilterYear.value;
+      var filterMonth = ordersFilterMonth.value;
+      var filterBean = ordersFilterBean.value;
+      var filterSupplier = ordersFilterSupplier.value;
 
-      var rows = sortGreenBeanOrders(
-        state.greenBeanOrders.filter(function (o) {
-          var ym = extractYearMonth(o.date);
-          if (filterYear !== 'all' && ym.year !== filterYear) return false;
-          if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
-          if (filterBean !== 'all' && o.name !== filterBean) return false;
-          if (filterSupplier !== 'all' && o.supplier !== filterSupplier) return false;
-          return matchesSearch([o.orderId, o.supplierOrderId, o.name, o.supplier, o.date]);
-        }),
-        gbOrdersSortCol,
-        gbOrdersSortDir
-      );
+      var filtered = state.greenBeanOrders.filter(function (o) {
+        var ym = extractYearMonth(o.date);
+        if (filterYear !== 'all' && ym.year !== filterYear) return false;
+        if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
+        if (filterBean !== 'all' && o.name !== filterBean) return false;
+        if (filterSupplier !== 'all' && o.supplier !== filterSupplier) return false;
+        return matchesSearch([o.orderId, o.supplierOrderId, o.name, o.supplier, o.date]);
+      });
 
-      if (rows.length === 0) {
-        ordersTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No green bean orders recorded yet.</div>';
+      if (filtered.length === 0) {
+        ordersTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No green bean orders match the selected filters.</div>';
         return;
       }
 
-      var html = '<table class="roast-admin-table">' +
-        '<thead><tr>' +
-        renderSortTh('Order & Date', 'orderId', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Bean & Supplier', 'name', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Weight & Cost', 'weightLbs', gbOrdersSortCol, gbOrdersSortDir, true) +
-        renderSortTh('Stock Remaining', 'availableGrams', gbOrdersSortCol, gbOrdersSortDir, true) +
-        '<th style="text-align: right;">Action</th>' +
-        '</tr></thead><tbody>';
+      var weightAgg = ordersAggWeight.value;
+      var costAgg = ordersAggCost.value;
+      var unitCostAgg = ordersAggUnitCost.value;
+      var remAgg = ordersAggRemaining.value;
+      var gCols = groupByCols.orders;
+
+      var allWeightG = filtered.map(function (o) { return Number(o.weightGrams) || lbsToGrams(o.weightLbs); });
+      var allWeightLbs = filtered.map(function (o) { return Number(o.weightLbs) || 0; });
+      var allCost = filtered.map(function (o) { return Number(o.cost) || 0; });
+      var allUnitCost = filtered.map(function (o) {
+        var l = Number(o.weightLbs) || 0;
+        return l > 0 ? ((Number(o.cost) || 0) / l) : 0;
+      });
+      var allRemG = filtered.map(function (o) {
+        var g = Number(o.weightGrams) || lbsToGrams(o.weightLbs);
+        return o.availableGrams !== undefined ? Number(o.availableGrams) : g;
+      });
+
+      var totWeightG = Math.round(computeAgg(allWeightG, weightAgg));
+      var totWeightLbs = (totWeightG / GRAMS_PER_LB).toFixed(2);
+      var totCostVal = computeAgg(allCost, costAgg);
+      var totUnitCostVal = unitCostAgg === 'avg'
+        ? (computeAgg(allWeightLbs, 'sum') > 0 ? (computeAgg(allCost, 'sum') / computeAgg(allWeightLbs, 'sum')) : 0)
+        : computeAgg(allUnitCost, unitCostAgg);
+      var totRemG = Math.round(computeAgg(allRemG, remAgg));
+      var totRemLbs = (totRemG / GRAMS_PER_LB).toFixed(2);
+
+      if (gCols.length > 0) {
+        var groupsMap = {};
+        filtered.forEach(function (o) {
+          var ym = extractYearMonth(o.date);
+          var dimVals = {};
+          var keyParts = gCols.map(function (c) {
+            var v = '—';
+            if (c === 'month') v = ym.yearMonth;
+            else if (c === 'year') v = ym.year;
+            else if (c === 'date') v = o.date;
+            else if (c === 'supplier') v = o.supplier;
+            else if (c === 'bean') v = o.name;
+            dimVals[c] = v;
+            return v;
+          });
+          var gKey = keyParts.join(' — ');
+          if (!groupsMap[gKey]) {
+            groupsMap[gKey] = {
+              key: gKey,
+              dimValues: dimVals,
+              ordersCount: 0,
+              weightValsG: [],
+              weightValsLbs: [],
+              costVals: [],
+              unitCostVals: [],
+              remValsG: []
+            };
+          }
+          var grp = groupsMap[gKey];
+          var wLbs = Number(o.weightLbs) || 0;
+          var wG = Number(o.weightGrams) || lbsToGrams(wLbs);
+          var cVal = Number(o.cost) || 0;
+          var rG = o.availableGrams !== undefined ? Number(o.availableGrams) : wG;
+          grp.ordersCount++;
+          grp.weightValsG.push(wG);
+          grp.weightValsLbs.push(wLbs);
+          grp.costVals.push(cVal);
+          if (wLbs > 0) grp.unitCostVals.push(cVal / wLbs);
+          grp.remValsG.push(rG);
+        });
+
+        var groupedRows = Object.keys(groupsMap).map(function (k) {
+          var g = groupsMap[k];
+          g.orderedWeightGrams = Math.round(computeAgg(g.weightValsG, weightAgg));
+          g.totalSpend = computeAgg(g.costVals, costAgg);
+          var sumLbs = computeAgg(g.weightValsLbs, 'sum');
+          var sumSpend = computeAgg(g.costVals, 'sum');
+          g.unitCostVal = unitCostAgg === 'avg'
+            ? (sumLbs > 0 ? (sumSpend / sumLbs) : 0)
+            : computeAgg(g.unitCostVals, unitCostAgg);
+          g.remGramsVal = Math.round(computeAgg(g.remValsG, remAgg));
+          return g;
+        }).sort(function (a, b) {
+          var dir = gbOrdersSortDir === 'asc' ? 1 : -1;
+          var cmp = 0;
+          if (gbOrdersSortCol.indexOf('dim:') === 0) {
+            var dKey = gbOrdersSortCol.slice(4);
+            cmp = String(a.dimValues[dKey]).localeCompare(String(b.dimValues[dKey]));
+          } else if (gbOrdersSortCol === 'orders') cmp = a.ordersCount - b.ordersCount;
+          else if (gbOrdersSortCol === 'weightGrams') cmp = a.orderedWeightGrams - b.orderedWeightGrams;
+          else if (gbOrdersSortCol === 'cost') cmp = a.totalSpend - b.totalSpend;
+          else if (gbOrdersSortCol === 'unitCost') cmp = a.unitCostVal - b.unitCostVal;
+          else if (gbOrdersSortCol === 'availableGrams') cmp = a.remGramsVal - b.remGramsVal;
+          else cmp = a.key.localeCompare(b.key);
+          return cmp !== 0 ? cmp * dir : b.key.localeCompare(a.key);
+        });
+
+        var gHtml = '<table class="roast-admin-table"><thead><tr>';
+        gCols.forEach(function (colId) {
+          gHtml += renderSortTh(DIMENSION_LABELS[colId] || colId, 'dim:' + colId, gbOrdersSortCol, gbOrdersSortDir, false);
+        });
+        gHtml += renderSortTh('Orders', 'orders', gbOrdersSortCol, gbOrdersSortDir, true);
+        if (weightAgg !== 'hide') gHtml += renderSortTh('Weight (' + weightAgg.toUpperCase() + ')', 'weightGrams', gbOrdersSortCol, gbOrdersSortDir, true);
+        if (costAgg !== 'hide') gHtml += renderSortTh('Spend (' + costAgg.toUpperCase() + ')', 'cost', gbOrdersSortCol, gbOrdersSortDir, true);
+        if (unitCostAgg !== 'hide') gHtml += renderSortTh('Unit Cost (' + unitCostAgg.toUpperCase() + ')', 'unitCost', gbOrdersSortCol, gbOrdersSortDir, true);
+        if (remAgg !== 'hide') gHtml += renderSortTh('Available (' + remAgg.toUpperCase() + ')', 'availableGrams', gbOrdersSortCol, gbOrdersSortDir, true);
+        gHtml += '</tr></thead><tbody>';
+
+        groupedRows.forEach(function (r) {
+          var rowLbs = (r.orderedWeightGrams / GRAMS_PER_LB).toFixed(2);
+          var remLbs = (r.remGramsVal / GRAMS_PER_LB).toFixed(2);
+          gHtml += '<tr>';
+          gCols.forEach(function (colId) {
+            gHtml += '<td><strong>' + escapeHtml(r.dimValues[colId]) + '</strong></td>';
+          });
+          gHtml += '<td class="mono" style="text-align: right;">' + r.ordersCount + '</td>';
+          if (weightAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rowLbs + ' lbs</strong><div class="cell-sub">' + r.orderedWeightGrams.toLocaleString() + ' g</div></td>';
+          if (costAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">$' + Number(r.totalSpend).toFixed(2) + '</td>';
+          if (unitCostAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">$' + Number(r.unitCostVal).toFixed(2) + ' / lb</td>';
+          if (remAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + remLbs + ' lbs</strong><div class="cell-sub">' + r.remGramsVal.toLocaleString() + ' g</div></td>';
+          gHtml += '</tr>';
+        });
+
+        gHtml += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td colspan="' + gCols.length + '">Total (' + filtered.length + ' orders)</td>' +
+          '<td class="mono" style="text-align: right;">' + filtered.length + '</td>';
+        if (weightAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totWeightLbs + ' lbs</strong><div class="cell-sub">' + totWeightG.toLocaleString() + ' g</div></td>';
+        if (costAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">$' + totCostVal.toFixed(2) + '</td>';
+        if (unitCostAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;">$' + totUnitCostVal.toFixed(2) + ' / lb</td>';
+        if (remAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totRemLbs + ' lbs</strong><div class="cell-sub">' + totRemG.toLocaleString() + ' g</div></td>';
+        gHtml += '</tr></tfoot></table>';
+
+        ordersTableWrap.innerHTML = gHtml;
+        bindSortHeaders(ordersTableWrap, function () {
+          return { col: gbOrdersSortCol, dir: gbOrdersSortDir };
+        }, function (c, d) {
+          gbOrdersSortCol = c;
+          gbOrdersSortDir = d;
+        }, ['orders', 'weightGrams', 'cost', 'unitCost', 'availableGrams'], renderGreenBeanOrdersTable);
+        return;
+      }
+
+      var rows = filtered.slice().sort(function (a, b) {
+        var dir = gbOrdersSortDir === 'asc' ? 1 : -1;
+        var cmp = 0;
+        if (gbOrdersSortCol === 'orderId') cmp = a.orderId.localeCompare(b.orderId);
+        else if (gbOrdersSortCol === 'date') cmp = a.date.localeCompare(b.date);
+        else if (gbOrdersSortCol === 'name') cmp = a.name.localeCompare(b.name);
+        else if (gbOrdersSortCol === 'supplier') cmp = a.supplier.localeCompare(b.supplier);
+        else if (gbOrdersSortCol === 'cost') cmp = (Number(a.cost) || 0) - (Number(b.cost) || 0);
+        else if (gbOrdersSortCol === 'weightGrams') cmp = (Number(a.weightGrams) || 0) - (Number(b.weightGrams) || 0);
+        else if (gbOrdersSortCol === 'availableGrams') cmp = (Number(a.availableGrams) || 0) - (Number(b.availableGrams) || 0);
+        return cmp !== 0 ? cmp * dir : (b.date.localeCompare(a.date) || b.orderId.localeCompare(a.orderId));
+      });
+
+      var html = '<table class="roast-admin-table roast-admin-table--gb-orders"><thead><tr>' +
+        renderSortTh('Date', 'date', gbOrdersSortCol, gbOrdersSortDir, false, 'roast-col-date') +
+        renderSortTh('Order ID', 'orderId', gbOrdersSortCol, gbOrdersSortDir, false, 'roast-col-id') +
+        renderSortTh('Green Bean', 'name', gbOrdersSortCol, gbOrdersSortDir, false, 'roast-col-bean') +
+        renderSortTh('Supplier', 'supplier', gbOrdersSortCol, gbOrdersSortDir, false, 'roast-col-supplier') +
+        renderSortTh('Weight & Cost', 'weightGrams', gbOrdersSortCol, gbOrdersSortDir, false, 'roast-col-weight-cost');
+      if (remAgg !== 'hide') html += renderSortTh('Remaining', 'availableGrams', gbOrdersSortCol, gbOrdersSortDir, true, 'roast-col-remaining');
+      html += '<th class="roast-col-action" style="text-align: right;">Action</th></tr></thead><tbody>';
 
       rows.forEach(function (o) {
-        var orderGrams = o.weightGrams;
-        var adjVal = Number(o.adjustGrams) || 0;
-        var adjStr = (adjVal > 0 ? '+' : '') + adjVal + ' g';
-        var availGrams = o.availableGrams !== undefined ? o.availableGrams : orderGrams;
-        var availPct = orderGrams > 0 ? Math.round((availGrams / orderGrams) * 100) : 0;
-        var availCell = availGrams > 0
-          ? ('<strong style="color: #1e7e44;">' + availGrams.toLocaleString() + ' g</strong>')
-          : '<span style="color:#a93226; font-weight: 600;">0 g (Depleted)</span>';
-        var beanLink = o.url
+        var baseG = lbsToGrams(o.weightLbs);
+        var adjG = Number(o.adjustGrams) || 0;
+        var grams = Number(o.weightGrams) || (baseG + adjG);
+        var availGrams = o.availableGrams !== undefined ? o.availableGrams : grams;
+        var lbsNum = Number(o.weightLbs) || 0;
+        var costNum = Number(o.cost) || 0;
+        var unitCost = lbsNum > 0 ? ('$' + (costNum / lbsNum).toFixed(2) + '/lb') : '—';
+        var beanCell = o.url
           ? '<a href="' + escapeHtml(o.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(o.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(o.name) + '</strong>';
+        var adjTag = adjG !== 0
+          ? ' <span style="color: ' + (adjG > 0 ? '#1e7e44' : '#b35300') + '; font-weight: 600;">(' + (adjG > 0 ? '+' : '') + adjG + 'g)</span>'
+          : '';
+        var availColor = availGrams <= 0 ? '#a93226' : (availGrams < 454 ? '#b35300' : '#1e7e44');
+        var totalLbsStr = (grams / GRAMS_PER_LB).toFixed(2);
+        var availLbsStr = (availGrams / GRAMS_PER_LB).toFixed(2);
+        var availCell = availGrams <= 0
+          ? '<span style="color: #a93226; font-weight: 600;">0.00 lbs</span><div class="cell-sub" style="color: #a93226;">0 g &bull; Depleted</div>'
+          : '<strong style="color: ' + availColor + ';">' + availLbsStr + ' lbs</strong><div class="cell-sub">' + availGrams.toLocaleString() + ' g / ' + totalLbsStr + ' lbs</div>';
         var rowStyle = editingOrderId === o.orderId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
-
-        var supplierOrderCell = o.supplierOrderId
-          ? '<button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-filter-supplier-order="' + escapeHtml(o.supplierOrderId) + '" title="Filter by supplier order ' + escapeHtml(o.supplierOrderId) + '">' + escapeHtml(o.supplierOrderId) + '</button>'
+        var suppSub = o.supplierOrderId
+          ? '<div class="cell-sub"><button type="button" class="roast-supplier-order-filter-link" data-filter-supplier-order="' + escapeHtml(o.supplierOrderId) + '" title="Filter by supplier order #' + escapeHtml(o.supplierOrderId) + '">#' + escapeHtml(o.supplierOrderId) + '</button></div>'
           : '';
 
         html += '<tr data-row-id="' + escapeHtml(o.orderId) + '"' + rowStyle + '>' +
-          '<td class="primary-cell">' +
-          '  <button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-edit-order="' + escapeHtml(o.orderId) + '" title="Edit order ' + escapeHtml(o.orderId) + '">' + escapeHtml(o.orderId) + '</button>' +
-          '  <div class="cell-sub"><span class="mono">' + escapeHtml(o.date) + '</span>' + (supplierOrderCell ? ' &bull; PO: ' + supplierOrderCell : '') + '</div>' +
-          '</td>' +
-          '<td>' + beanLink + '<div class="cell-sub">' + escapeHtml(o.supplier) + '</div></td>' +
-          '<td class="mono" style="text-align: right;">' + Number(o.weightLbs).toFixed(2) + ' lbs ($' + Number(o.cost).toFixed(2) + ')<div class="cell-sub">' + orderGrams.toLocaleString() + ' g (' + adjStr + ')</div></td>' +
-          '<td class="mono" style="text-align: right;">' + availCell + '<div class="cell-sub">' + availPct + '% left</div></td>' +
-          '<td style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-order="' + escapeHtml(o.orderId) + '">Edit</button></td>' +
-          '</tr>';
+          '<td class="mono roast-col-date">' + escapeHtml(o.date) + '</td>' +
+          '<td class="primary-cell roast-col-id"><span class="roast-admin-id-chip">' + escapeHtml(o.orderId) + '</span></td>' +
+          '<td class="roast-col-bean">' + beanCell + '</td>' +
+          '<td class="roast-col-supplier">' + escapeHtml(o.supplier) + suppSub + '</td>' +
+          '<td class="mono roast-col-weight-cost">' +
+          '  <div class="roast-dual-num-row">' +
+          '    <span class="roast-num-part roast-num-part--weight"><strong>' + totalLbsStr + ' lbs</strong></span>' +
+          '    <span class="roast-num-part roast-num-part--cost">$' + costNum.toFixed(2) + '</span>' +
+          '  </div>' +
+          '  <div class="cell-sub roast-dual-num-row">' +
+          '    <span class="roast-num-part roast-num-part--weight">' + grams.toLocaleString() + ' g' + adjTag + '</span>' +
+          '    <span class="roast-num-part roast-num-part--cost">' + unitCost + '</span>' +
+          '  </div>' +
+          '</td>';
+        if (remAgg !== 'hide') html += '<td class="mono roast-col-remaining" style="text-align: right;">' + availCell + '</td>';
+        html += '<td class="roast-col-action" style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-order="' + escapeHtml(o.orderId) + '">Edit</button></td></tr>';
       });
 
-      html += '</tbody></table>';
+      var footWeightPart = weightAgg !== 'hide' ? ('<strong>' + totWeightLbs + ' lbs</strong> (' + escapeHtml(weightAgg.toUpperCase()) + ')') : '';
+      var footCostPart = costAgg !== 'hide' ? ('$' + totCostVal.toFixed(2) + ' (' + escapeHtml(costAgg.toUpperCase()) + ')') : '';
+      var footSubWeight = weightAgg !== 'hide' ? (totWeightG.toLocaleString() + ' g') : '';
+      var footSubUnit = unitCostAgg !== 'hide' ? ('$' + totUnitCostVal.toFixed(2) + '/lb (' + escapeHtml(unitCostAgg.toUpperCase()) + ')') : '';
+
+      html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+        '<td colspan="4">Summary (' + rows.length + ' orders)</td>' +
+        '<td class="mono roast-col-weight-cost">' +
+        '  <div class="roast-dual-num-row">' +
+        '    <span class="roast-num-part roast-num-part--weight">' + footWeightPart + '</span>' +
+        '    <span class="roast-num-part roast-num-part--cost">' + footCostPart + '</span>' +
+        '  </div>' +
+        '  <div class="cell-sub roast-dual-num-row">' +
+        '    <span class="roast-num-part roast-num-part--weight">' + footSubWeight + '</span>' +
+        '    <span class="roast-num-part roast-num-part--cost">' + footSubUnit + '</span>' +
+        '  </div>' +
+        '</td>';
+      if (remAgg !== 'hide') {
+        html += '<td class="mono roast-col-remaining" style="text-align: right;"><strong>' + totRemLbs + ' lbs</strong><div class="cell-sub">' + totRemG.toLocaleString() + ' g (' + escapeHtml(remAgg.toUpperCase()) + ')</div></td>';
+      }
+      html += '<td></td></tr></tfoot></table>';
       ordersTableWrap.innerHTML = html;
 
-      var editOrderBtns = ordersTableWrap.querySelectorAll('[data-edit-order]');
-      editOrderBtns.forEach(function (btn) {
+      ordersTableWrap.querySelectorAll('[data-edit-order]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           startEditOrder(btn.getAttribute('data-edit-order'));
         });
       });
 
-      var filterSupplierBtns = ordersTableWrap.querySelectorAll('[data-filter-supplier-order]');
-      filterSupplierBtns.forEach(function (btn) {
+      ordersTableWrap.querySelectorAll('[data-filter-supplier-order]').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var suppOrderId = btn.getAttribute('data-filter-supplier-order');
-          applySearch(suppOrderId);
+          applySearch(btn.getAttribute('data-filter-supplier-order'));
         });
       });
 
-      var ths = ordersTableWrap.querySelectorAll('th[data-sort-col]');
-      ths.forEach(function (th) {
-        th.addEventListener('click', function () {
-          var col = th.getAttribute('data-sort-col');
-          if (gbOrdersSortCol === col) {
-            gbOrdersSortDir = gbOrdersSortDir === 'asc' ? 'desc' : 'asc';
-          } else {
-            gbOrdersSortCol = col;
-            var numCols = ['date', 'cost', 'weightLbs', 'adjustGrams', 'weightGrams', 'availableGrams'];
-            gbOrdersSortDir = numCols.indexOf(col) !== -1 ? 'desc' : 'asc';
-          }
-          renderGreenBeanOrdersTable();
-        });
-      });
+      bindSortHeaders(ordersTableWrap, function () {
+        return { col: gbOrdersSortCol, dir: gbOrdersSortDir };
+      }, function (c, d) {
+        gbOrdersSortCol = c;
+        gbOrdersSortDir = d;
+      }, ['date', 'cost', 'weightGrams', 'availableGrams'], renderGreenBeanOrdersTable);
     }
 
     function buildGreenOrderOptionsHtml(selectedVal) {
       recomputeActiveBeanStocks(state, editingPkgId, editingRoastId);
       var html = '';
-      var ordersReversed = state.greenBeanOrders.slice().reverse();
-      ordersReversed.forEach(function (o) {
+      state.greenBeanOrders.slice().reverse().forEach(function (o) {
         var orderGrams = Number(o.weightGrams) || lbsToGrams(o.weightLbs);
         var availGrams = o.availableGrams !== undefined ? o.availableGrams : orderGrams;
-        if (availGrams <= 0 && o.orderId !== selectedVal) {
-          return;
-        }
+        if (availGrams <= 0 && o.orderId !== selectedVal) return;
         var isSel = o.orderId === selectedVal ? ' selected' : '';
+        var oTotalLbs = (orderGrams / GRAMS_PER_LB).toFixed(2);
+        var oAvailLbs = (availGrams / GRAMS_PER_LB).toFixed(2);
         html += '<option value="' + escapeHtml(o.orderId) + '" data-avail-grams="' + availGrams + '" data-bean-name="' + escapeHtml(o.name) + '"' + isSel + '>' +
-          escapeHtml(o.orderId) + ' — ' + escapeHtml(o.name) + ' (Avail: ' + availGrams + 'g / ' + orderGrams + 'g, ' + escapeHtml(o.supplier) + ')' +
-          '</option>';
+          escapeHtml(o.orderId) + ' — ' + escapeHtml(o.name) + ' (Avail: ' + oAvailLbs + ' lbs / ' + oTotalLbs + ' lbs [' + availGrams + 'g], ' + escapeHtml(o.supplier) + ')</option>';
       });
       return html;
     }
@@ -1582,8 +1295,7 @@
       gramsInput.addEventListener('input', updateRoastLossPreview);
       syncRoastComponentRowMax(row);
 
-      var removeBtn = row.querySelector('.roast-admin-remove-btn');
-      removeBtn.addEventListener('click', function () {
+      row.querySelector('.roast-admin-remove-btn').addEventListener('click', function () {
         if (roastCompsContainer.children.length > 1) {
           row.remove();
           updateRoastLossPreview();
@@ -1625,9 +1337,7 @@
         var matchByText = Array.from(roastLevelSelect.options).find(function (opt) {
           return opt.textContent.trim().toLowerCase() === String(rst.roastLevel).trim().toLowerCase();
         });
-        if (matchByText) {
-          roastLevelSelect.value = matchByText.value;
-        }
+        if (matchByText) roastLevelSelect.value = matchByText.value;
       }
       roastEndGrams.value = rst.endWeightGrams;
       roastProfileUrl.value = rst.profileUrl;
@@ -1635,13 +1345,9 @@
 
       roastCompsContainer.innerHTML = '';
       var gComps = rst.greenBeanComponents || [];
-      if (gComps.length === 0) {
-        addRoastComponentRow();
-      } else {
-        gComps.forEach(function (gc) {
-          addRoastComponentRow(gc.orderId, gc.weightGrams);
-        });
-      }
+      if (gComps.length === 0) addRoastComponentRow();
+      else gComps.forEach(function (gc) { addRoastComponentRow(gc.orderId, gc.weightGrams); });
+
       updateRoastLossPreview();
       setDrawerState('roast-entry-drawer', true);
       renderRoastLogsTable();
@@ -1665,138 +1371,260 @@
 
     function renderRoastLogsTable() {
       recomputeActiveBeanStocks(state);
-      var filterYear = roastsFilterYear ? roastsFilterYear.value : 'all';
-      var filterMonth = roastsFilterMonth ? roastsFilterMonth.value : 'all';
-      var filterBean = roastsFilterBean ? roastsFilterBean.value : 'all';
+      var filterYear = roastsFilterYear.value;
+      var filterMonth = roastsFilterMonth.value;
+      var filterBean = roastsFilterBean.value;
+      var filterRoastLevel = roastsFilterRoastLevel.value;
 
-      var rows = state.roastLogs.filter(function (r) {
+      var supplierByBean = {};
+      state.greenBeanOrders.forEach(function (o) {
+        if (o.name && o.supplier) supplierByBean[o.name] = o.supplier;
+      });
+
+      var filtered = state.roastLogs.filter(function (r) {
         var ym = extractYearMonth(r.date);
         if (filterYear !== 'all' && ym.year !== filterYear) return false;
         if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
         if (filterBean !== 'all' && r.beanName !== filterBean) return false;
+        if (filterRoastLevel !== 'all' && String(r.roastLevel) !== String(filterRoastLevel)) return false;
 
         var compText = (r.greenBeanComponents || []).map(function (c) { return c.orderId; }).join(' ');
         return matchesSearch([r.roastId, compText, r.beanName, r.date, r.notes]);
-      }).slice().sort(function (a, b) {
-        var dir = roastLogSortDir === 'asc' ? 1 : -1;
-        var cmp = 0;
-        if (roastLogSortCol === 'roastId') {
-          cmp = (a.roastId || '').localeCompare(b.roastId || '');
-        } else if (roastLogSortCol === 'date') {
-          cmp = (a.date || '').localeCompare(b.date || '');
-        } else if (roastLogSortCol === 'beanName') {
-          cmp = (a.beanName || '').localeCompare(b.beanName || '');
-        } else if (roastLogSortCol === 'greenGrams') {
-          cmp = (Number(a.greenWeightGrams) || 0) - (Number(b.greenWeightGrams) || 0);
-        } else if (roastLogSortCol === 'endGrams') {
-          cmp = (Number(a.endWeightGrams) || 0) - (Number(b.endWeightGrams) || 0);
-        } else if (roastLogSortCol === 'lossPct') {
-          cmp = (Number(a.weightLossPct) || 0) - (Number(b.weightLossPct) || 0);
-        } else if (roastLogSortCol === 'roastLevel') {
-          cmp = (Number(a.roastLevel) || 0) - (Number(b.roastLevel) || 0);
-        }
-        if (cmp !== 0) return cmp * dir;
-        return (b.date || '').localeCompare(a.date || '') || (b.roastId || '').localeCompare(a.roastId || '');
       });
 
-      if (rows.length === 0) {
-        roastsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No roast logs recorded yet.</div>';
+      if (filtered.length === 0) {
+        roastsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No roast logs match the selected filters.</div>';
         return;
       }
 
-      var html = '<table class="roast-admin-table">' +
-        '<thead><tr>' +
-        renderSortTh('Batch & Date', 'roastId', roastLogSortCol, roastLogSortDir, false) +
-        renderSortTh('Bean & Roast Level', 'beanName', roastLogSortCol, roastLogSortDir, false) +
-        '<th>Green Orders</th>' +
-        renderSortTh('Yield & Loss', 'lossPct', roastLogSortCol, roastLogSortDir, true) +
-        '<th>Notes</th>' +
-        '<th style="text-align: right;">Action</th>' +
+      var greenAgg = roastsAggGreen.value;
+      var endAgg = roastsAggEnd.value;
+      var lossAgg = roastsAggLoss.value;
+      var availAgg = roastsAggAvail.value;
+      var gCols = groupByCols.roasts;
+
+      var allGreenG = filtered.map(function (r) { return Number(r.greenWeightGrams) || 0; });
+      var allEndG = filtered.map(function (r) { return Number(r.endWeightGrams) || 0; });
+      var allLoss = filtered.map(function (r) { return Number(r.weightLossPct) || computeWeightLossPct(r.greenWeightGrams, r.endWeightGrams); });
+      var allAvailG = filtered.map(function (r) { return r.availableGrams !== undefined ? Number(r.availableGrams) : (Number(r.endWeightGrams) || 0); });
+
+      var totGreenG = Math.round(computeAgg(allGreenG, greenAgg));
+      var totGreenLbs = (totGreenG / GRAMS_PER_LB).toFixed(2);
+      var totEndG = Math.round(computeAgg(allEndG, endAgg));
+      var totEndLbs = (totEndG / GRAMS_PER_LB).toFixed(2);
+      var totLossPct = (lossAgg === 'avg'
+        ? computeWeightLossPct(computeAgg(allGreenG, 'sum'), computeAgg(allEndG, 'sum'))
+        : computeAgg(allLoss, lossAgg)).toFixed(1);
+      var totAvailG = Math.round(computeAgg(allAvailG, availAgg));
+      var totAvailLbs = (totAvailG / GRAMS_PER_LB).toFixed(2);
+
+      if (gCols.length > 0) {
+        var groupsMap = {};
+        filtered.forEach(function (r) {
+          var ym = extractYearMonth(r.date);
+          var dimVals = {};
+          var keyParts = gCols.map(function (c) {
+            var v = '—';
+            if (c === 'month') v = ym.yearMonth;
+            else if (c === 'year') v = ym.year;
+            else if (c === 'date') v = r.date;
+            else if (c === 'bean') v = r.beanName || 'Unknown Bean';
+            else if (c === 'supplier') v = supplierByBean[r.beanName] || 'Unknown';
+            else if (c === 'roastLevel') {
+              var lvlObj = roastLevels[String(r.roastLevel)];
+              v = lvlObj ? (lvlObj.specialty || lvlObj.name) : String(r.roastLevel || '—');
+            }
+            dimVals[c] = v;
+            return v;
+          });
+          var gKey = keyParts.join(' — ');
+          if (!groupsMap[gKey]) {
+            groupsMap[gKey] = {
+              key: gKey,
+              dimValues: dimVals,
+              roastCount: 0,
+              greenVals: [],
+              endVals: [],
+              lossVals: [],
+              availVals: []
+            };
+          }
+          var grp = groupsMap[gKey];
+          grp.roastCount++;
+          grp.greenVals.push(Number(r.greenWeightGrams) || 0);
+          grp.endVals.push(Number(r.endWeightGrams) || 0);
+          grp.lossVals.push(Number(r.weightLossPct) || computeWeightLossPct(r.greenWeightGrams, r.endWeightGrams));
+          grp.availVals.push(r.availableGrams !== undefined ? Number(r.availableGrams) : (Number(r.endWeightGrams) || 0));
+        });
+
+        var groupedRows = Object.keys(groupsMap).map(function (k) {
+          var g = groupsMap[k];
+          g.greenWeightGrams = Math.round(computeAgg(g.greenVals, greenAgg));
+          g.endWeightGrams = Math.round(computeAgg(g.endVals, endAgg));
+          g.lossPctVal = lossAgg === 'avg'
+            ? computeWeightLossPct(computeAgg(g.greenVals, 'sum'), computeAgg(g.endVals, 'sum'))
+            : computeAgg(g.lossVals, lossAgg);
+          g.availGramsVal = Math.round(computeAgg(g.availVals, availAgg));
+          return g;
+        }).sort(function (a, b) {
+          var dir = roastLogSortDir === 'asc' ? 1 : -1;
+          var cmp = 0;
+          if (roastLogSortCol.indexOf('dim:') === 0) {
+            var dKey = roastLogSortCol.slice(4);
+            cmp = String(a.dimValues[dKey]).localeCompare(String(b.dimValues[dKey]));
+          } else if (roastLogSortCol === 'roasts') cmp = a.roastCount - b.roastCount;
+          else if (roastLogSortCol === 'greenWeight') cmp = a.greenWeightGrams - b.greenWeightGrams;
+          else if (roastLogSortCol === 'endWeight') cmp = a.endWeightGrams - b.endWeightGrams;
+          else if (roastLogSortCol === 'lossPct') cmp = a.lossPctVal - b.lossPctVal;
+          else if (roastLogSortCol === 'availWeight') cmp = a.availGramsVal - b.availGramsVal;
+          else cmp = a.key.localeCompare(b.key);
+          return cmp !== 0 ? cmp * dir : b.key.localeCompare(a.key);
+        });
+
+        var gHtml = '<table class="roast-admin-table"><thead><tr>';
+        gCols.forEach(function (colId) {
+          gHtml += renderSortTh(DIMENSION_LABELS[colId] || colId, 'dim:' + colId, roastLogSortCol, roastLogSortDir, false);
+        });
+        gHtml += renderSortTh('Roasts', 'roasts', roastLogSortCol, roastLogSortDir, true);
+        if (greenAgg !== 'hide') gHtml += renderSortTh('Green Weight (' + greenAgg.toUpperCase() + ')', 'greenWeight', roastLogSortCol, roastLogSortDir, true);
+        if (endAgg !== 'hide') gHtml += renderSortTh('End Weight (' + endAgg.toUpperCase() + ')', 'endWeight', roastLogSortCol, roastLogSortDir, true);
+        if (lossAgg !== 'hide') gHtml += renderSortTh('Weight Loss (' + lossAgg.toUpperCase() + ')', 'lossPct', roastLogSortCol, roastLogSortDir, true);
+        if (availAgg !== 'hide') gHtml += renderSortTh('Available Yield (' + availAgg.toUpperCase() + ')', 'availWeight', roastLogSortCol, roastLogSortDir, true);
+        gHtml += '</tr></thead><tbody>';
+
+        groupedRows.forEach(function (r) {
+          var rGreenLbs = (r.greenWeightGrams / GRAMS_PER_LB).toFixed(2);
+          var rEndLbs = (r.endWeightGrams / GRAMS_PER_LB).toFixed(2);
+          var rAvailLbs = (r.availGramsVal / GRAMS_PER_LB).toFixed(2);
+          gHtml += '<tr>';
+          gCols.forEach(function (colId) {
+            gHtml += '<td><strong>' + escapeHtml(r.dimValues[colId]) + '</strong></td>';
+          });
+          gHtml += '<td class="mono" style="text-align: right;">' + r.roastCount + '</td>';
+          if (greenAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rGreenLbs + ' lbs</strong><div class="cell-sub">' + r.greenWeightGrams.toLocaleString() + ' g</div></td>';
+          if (endAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rEndLbs + ' lbs</strong><div class="cell-sub">' + r.endWeightGrams.toLocaleString() + ' g</div></td>';
+          if (lossAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><span class="metric-loss">-' + Number(r.lossPctVal).toFixed(1) + '%</span></td>';
+          if (availAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rAvailLbs + ' lbs</strong><div class="cell-sub">' + r.availGramsVal.toLocaleString() + ' g</div></td>';
+          gHtml += '</tr>';
+        });
+
+        gHtml += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td colspan="' + gCols.length + '">Total (' + filtered.length + ' roasts)</td>' +
+          '<td class="mono" style="text-align: right;">' + filtered.length + '</td>';
+        if (greenAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totGreenLbs + ' lbs</strong><div class="cell-sub">' + totGreenG.toLocaleString() + ' g</div></td>';
+        if (endAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totEndLbs + ' lbs</strong><div class="cell-sub">' + totEndG.toLocaleString() + ' g</div></td>';
+        if (lossAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><span class="metric-loss">-' + totLossPct + '%</span></td>';
+        if (availAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totAvailLbs + ' lbs</strong><div class="cell-sub">' + totAvailG.toLocaleString() + ' g</div></td>';
+        gHtml += '</tr></tfoot></table>';
+
+        roastsTableWrap.innerHTML = gHtml;
+        bindSortHeaders(roastsTableWrap, function () {
+          return { col: roastLogSortCol, dir: roastLogSortDir };
+        }, function (c, d) {
+          roastLogSortCol = c;
+          roastLogSortDir = d;
+        }, ['roasts', 'greenWeight', 'endWeight', 'lossPct', 'availWeight'], renderRoastLogsTable);
+        return;
+      }
+
+      var rows = filtered.slice().sort(function (a, b) {
+        var dir = roastLogSortDir === 'asc' ? 1 : -1;
+        var cmp = 0;
+        if (roastLogSortCol === 'roastId') cmp = a.roastId.localeCompare(b.roastId);
+        else if (roastLogSortCol === 'date') cmp = a.date.localeCompare(b.date);
+        else if (roastLogSortCol === 'beanName') cmp = (a.beanName || '').localeCompare(b.beanName || '');
+        else if (roastLogSortCol === 'lossPct') cmp = (Number(a.weightLossPct) || 0) - (Number(b.weightLossPct) || 0);
+        return cmp !== 0 ? cmp * dir : (b.date.localeCompare(a.date) || b.roastId.localeCompare(a.roastId));
+      });
+
+      var html = '<table class="roast-admin-table roast-admin-table--roasts"><thead><tr>' +
+        renderSortTh('Date', 'date', roastLogSortCol, roastLogSortDir, false, 'roast-col-date') +
+        renderSortTh('Batch', 'roastId', roastLogSortCol, roastLogSortDir, false, 'roast-col-batch') +
+        renderSortTh('Bean & Roast Level', 'beanName', roastLogSortCol, roastLogSortDir, false, 'roast-col-bean') +
+        '<th class="roast-col-green-orders">Green Orders</th>' +
+        renderSortTh('Yield & Loss', 'lossPct', roastLogSortCol, roastLogSortDir, true, 'roast-col-yield') +
+        '<th class="roast-col-notes">Notes</th>' +
+        '<th class="roast-col-action" style="text-align: right;">Action</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (r) {
         var lvlObj = roastLevels[String(r.roastLevel)];
-        var lvlLabel = lvlObj ? (lvlObj.specialty || lvlObj.name) : (r.roastLevel ? String(r.roastLevel) : '—');
+        var lvlLabel = lvlObj ? (lvlObj.specialty || lvlObj.name) : String(r.roastLevel || '—');
         var profileCell = r.profileUrl
           ? '<a href="' + escapeHtml(r.profileUrl) + '" target="_blank" rel="noopener">Profile &nearr;</a>'
           : '';
-        var gComps = r.greenBeanComponents || [];
-        var gCompsHtml = gComps.map(function (c) {
+        var gCompsHtml = (r.greenBeanComponents || []).map(function (c) {
           return '<a href="#tab=orders&id=' + encodeURIComponent(c.orderId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-nav-tab="orders" data-nav-id="' + escapeHtml(c.orderId) + '" title="View order ' + escapeHtml(c.orderId) + '">' + escapeHtml(c.orderId) + '</a>';
-        }).join(' ');
+        }).join('');
+        var gCompsWrap = gCompsHtml ? ('<div class="roast-chip-stack">' + gCompsHtml + '</div>') : '—';
         var rowStyle = editingRoastId === r.roastId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(r.roastId) + '"' + rowStyle + '>' +
-          '<td class="primary-cell"><span class="roast-admin-id-chip">' + escapeHtml(r.roastId) + '</span><div class="cell-sub mono">' + escapeHtml(r.date) + '</div></td>' +
-          '<td><strong>' + escapeHtml(r.beanName) + '</strong><div class="cell-sub">Level: ' + escapeHtml(lvlLabel) + (profileCell ? ' &bull; ' + profileCell : '') + '</div></td>' +
-          '<td>' + (gCompsHtml || '—') + '</td>' +
-          '<td class="mono" style="text-align: right;">' + r.greenWeightGrams + 'g &rarr; ' + r.endWeightGrams + 'g <span class="metric-loss">(-' + Number(r.weightLossPct).toFixed(1) + '%)</span></td>' +
-          '<td style="font-size: 0.74rem; color: #554439; max-width: 16rem;">' + escapeHtml(r.notes || '—') + '</td>' +
-          '<td style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-roast="' + escapeHtml(r.roastId) + '">Edit</button></td>' +
+          '<td class="mono roast-col-date">' + escapeHtml(r.date) + '</td>' +
+          '<td class="primary-cell roast-col-batch"><span class="roast-admin-id-chip">' + escapeHtml(r.roastId) + '</span></td>' +
+          '<td class="roast-col-bean"><strong>' + escapeHtml(r.beanName) + '</strong><div class="cell-sub">Level: ' + escapeHtml(lvlLabel) + (profileCell ? ' &bull; ' + profileCell : '') + '</div></td>' +
+          '<td class="roast-col-green-orders">' + gCompsWrap + '</td>' +
+          '<td class="mono roast-col-yield" style="text-align: right;"><strong>' + r.greenWeightGrams + 'g &rarr; ' + r.endWeightGrams + 'g</strong> <span class="metric-loss">(-' + Number(r.weightLossPct).toFixed(1) + '%)</span></td>' +
+          '<td class="roast-col-notes">' + escapeHtml(r.notes || '—') + '</td>' +
+          '<td class="roast-col-action" style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-roast="' + escapeHtml(r.roastId) + '">Edit</button></td>' +
           '</tr>';
       });
 
-      html += '</tbody></table>';
+      var yieldFootParts = [];
+      if (greenAgg !== 'hide') yieldFootParts.push(totGreenG.toLocaleString() + 'g');
+      if (endAgg !== 'hide') yieldFootParts.push(totEndG.toLocaleString() + 'g');
+      var yieldFootMain = yieldFootParts.length > 0 ? ('<strong>' + yieldFootParts.join(' &rarr; ') + '</strong> ') : '';
+      var yieldFootLoss = lossAgg !== 'hide' ? ('<span class="metric-loss">(-' + totLossPct + '%)</span>') : '';
+      var yieldFootAvail = availAgg !== 'hide' ? ('<div class="cell-sub">Avail: ' + totAvailLbs + ' lbs (' + totAvailG.toLocaleString() + 'g)</div>') : '';
+
+      html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+        '<td colspan="4">Summary (' + rows.length + ' roasts)</td>' +
+        '<td class="mono roast-col-yield" style="text-align: right;">' + yieldFootMain + yieldFootLoss + yieldFootAvail + '</td>' +
+        '<td colspan="2"></td>' +
+        '</tr></tfoot></table>';
       roastsTableWrap.innerHTML = html;
 
-      var navOrderLinks = roastsTableWrap.querySelectorAll('[data-nav-tab="orders"]');
-      navOrderLinks.forEach(function (link) {
+      roastsTableWrap.querySelectorAll('[data-nav-tab="orders"]').forEach(function (link) {
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          var oId = link.getAttribute('data-nav-id');
-          switchToTab('orders', oId);
+          switchToTab('orders', link.getAttribute('data-nav-id'));
         });
       });
 
-      var editRoastBtns = roastsTableWrap.querySelectorAll('[data-edit-roast]');
-      editRoastBtns.forEach(function (btn) {
+      roastsTableWrap.querySelectorAll('[data-edit-roast]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           startEditRoast(btn.getAttribute('data-edit-roast'));
         });
       });
 
-      var ths = roastsTableWrap.querySelectorAll('th[data-sort-col]');
-      ths.forEach(function (th) {
-        th.addEventListener('click', function () {
-          var col = th.getAttribute('data-sort-col');
-          if (roastLogSortCol === col) {
-            roastLogSortDir = roastLogSortDir === 'asc' ? 'desc' : 'asc';
-          } else {
-            roastLogSortCol = col;
-            var numCols = ['date', 'greenGrams', 'endGrams', 'lossPct', 'roastLevel'];
-            roastLogSortDir = numCols.indexOf(col) !== -1 ? 'desc' : 'asc';
-          }
-          renderRoastLogsTable();
-        });
-      });
+      bindSortHeaders(roastsTableWrap, function () {
+        return { col: roastLogSortCol, dir: roastLogSortDir };
+      }, function (c, d) {
+        roastLogSortCol = c;
+        roastLogSortDir = d;
+      }, ['date', 'lossPct'], renderRoastLogsTable);
     }
 
     function buildRoastOptionsHtml(selectedVal) {
       recomputeActiveBeanStocks(state, editingPkgId);
       var html = '';
-      var roastsSorted = state.roastLogs.slice().sort(function (a, b) {
-        if (a.date !== b.date) {
-          return b.date.localeCompare(a.date);
-        }
-        return b.roastId.localeCompare(a.roastId);
-      });
-      roastsSorted.forEach(function (r) {
-        if (r.availableGrams <= 0 && r.roastId !== selectedVal) {
-          return;
-        }
+      state.roastLogs.slice().sort(function (a, b) {
+        return a.date !== b.date ? b.date.localeCompare(a.date) : b.roastId.localeCompare(a.roastId);
+      }).forEach(function (r) {
+        if (r.availableGrams <= 0 && r.roastId !== selectedVal) return;
         var lvlObj = roastLevels[String(r.roastLevel)];
-        var specialtyName = lvlObj ? (lvlObj.specialty || lvlObj.name) : (r.roastLevel ? String(r.roastLevel) : '');
+        var specialtyName = lvlObj ? (lvlObj.specialty || lvlObj.name) : String(r.roastLevel || '');
         var lvlLabel = specialtyName ? (' · ' + specialtyName) : '';
         var isSel = r.roastId === selectedVal ? ' selected' : '';
+        var rAvailLbs = (r.availableGrams / GRAMS_PER_LB).toFixed(2);
+        var rTotalLbs = (r.endWeightGrams / GRAMS_PER_LB).toFixed(2);
         html += '<option value="' + escapeHtml(r.roastId) + '" data-avail-grams="' + r.availableGrams + '"' + isSel + '>' +
-          escapeHtml(r.roastId) + ' — ' + escapeHtml(r.beanName) + lvlLabel + ' (Avail: ' + r.availableGrams + 'g / ' + r.endWeightGrams + 'g, ' + escapeHtml(r.date) + ')' +
-          '</option>';
+          escapeHtml(r.roastId) + ' — ' + escapeHtml(r.beanName) + lvlLabel + ' (Avail: ' + rAvailLbs + ' lbs / ' + rTotalLbs + ' lbs [' + r.availableGrams + 'g], ' + escapeHtml(r.date) + ')</option>';
       });
       return html;
     }
 
     function getSelectedBagSizeGrams() {
-      if (!pkgBagSize) return 0;
       var opt = pkgBagSize.options[pkgBagSize.selectedIndex];
       if (opt && opt.getAttribute('data-weight-grams')) {
         return Number(opt.getAttribute('data-weight-grams')) || 0;
@@ -1805,39 +1633,32 @@
     }
 
     function updatePackagingPreview() {
-      if (!pkgBlendPreview || !pkgBagSize) return;
       var totalBagGrams = getSelectedBagSizeGrams();
       var sumGrams = 0;
       var sumPct = 0;
-      var rows = pkgCompsContainer.querySelectorAll('.roast-admin-component-row');
-      rows.forEach(function (row) {
-        var g = Number(row.querySelector('.pkg-comp-grams').value) || 0;
-        var p = Number(row.querySelector('.pkg-comp-pct').value) || 0;
-        sumGrams += g;
-        sumPct += p;
+      pkgCompsContainer.querySelectorAll('.roast-admin-component-row').forEach(function (row) {
+        sumGrams += Number(row.querySelector('.pkg-comp-grams').value) || 0;
+        sumPct += Number(row.querySelector('.pkg-comp-pct').value) || 0;
       });
 
-      var targetText = totalBagGrams > 0
-        ? (totalBagGrams + ' g (' + escapeHtml(pkgBagSize.value) + ')')
-        : 'Custom / Loose';
-
-      var pctText = totalBagGrams > 0
-        ? (sumPct.toFixed(1) + '%')
-        : '—';
-
+      var targetText = totalBagGrams > 0 ? (totalBagGrams + ' g (' + escapeHtml(pkgBagSize.value) + ')') : 'Custom / Loose';
+      var pctText = totalBagGrams > 0 ? (sumPct.toFixed(1) + '%') : '—';
       var statusColor = '';
       if (totalBagGrams > 0) {
-        if (sumGrams === totalBagGrams) {
-          statusColor = 'color: #27ae60;';
-        } else if (sumGrams > totalBagGrams) {
-          statusColor = 'color: #c0392b;';
-        }
+        if (sumGrams === totalBagGrams) statusColor = 'color: #27ae60;';
+        else if (sumGrams > totalBagGrams) statusColor = 'color: #c0392b;';
       }
 
+      var sumLbs = (sumGrams / GRAMS_PER_LB).toFixed(2);
+      var totalBagLbs = (totalBagGrams / GRAMS_PER_LB).toFixed(2);
+      var blendCheckText = (totalBagGrams > 0 && Math.abs(sumGrams - totalBagGrams) < 2) ? '100.0% &check;' : pctText;
+
       pkgBlendPreview.innerHTML =
-        '<span>Total Weight: <strong style="' + statusColor + '">' + sumGrams.toLocaleString() + ' g</strong></span>' +
-        '<span>Total Blend: <strong style="' + statusColor + '">' + pctText + '</strong></span>' +
-        '<span>Target: <strong>' + targetText + '</strong></span>';
+        '<div class="form-metric-item">Total Packaged: <strong style="' + statusColor + '">' + sumLbs + ' lbs (' + sumGrams.toLocaleString() + ' g)</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">Blend Check: <strong style="' + statusColor + '">' + blendCheckText + '</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">Target Bag: <strong>' + totalBagLbs + ' lbs (' + targetText + ')</strong></div>';
     }
 
     function syncComponentRowMax(row) {
@@ -1873,9 +1694,7 @@
       var gramsInput = row.querySelector('.pkg-comp-grams');
 
       enhanceSearchableSelect(sel, 'Search roast by bean name, roast ID, level...');
-      sel.addEventListener('change', function () {
-        syncComponentRowMax(row);
-      });
+      sel.addEventListener('change', function () { syncComponentRowMax(row); });
       syncComponentRowMax(row);
 
       pctInput.addEventListener('input', function () {
@@ -1900,8 +1719,7 @@
         updatePackagingPreview();
       });
 
-      var removeBtn = row.querySelector('.roast-admin-remove-btn');
-      removeBtn.addEventListener('click', function () {
+      row.querySelector('.roast-admin-remove-btn').addEventListener('click', function () {
         if (pkgCompsContainer.children.length > 1) {
           row.remove();
           updatePackagingPreview();
@@ -1937,40 +1755,33 @@
 
     function populateCustomerOrderDropdown() {
       var html = '<option value="">Select Customer Order (or enter Order ID below)...</option>';
-      var ordersReversed = state.customerOrders.slice().reverse();
       var activeOpts = '';
       var completedOpts = '';
 
-      ordersReversed.forEach(function (ord) {
+      state.customerOrders.slice().reverse().forEach(function (ord) {
         var status = String(ord.status || 'Received').trim();
         var isCompleted = status.toLowerCase() === 'delivered' || status.toLowerCase() === 'cancelled';
-        var lineItems = parseOrderLineItems(ord.items);
+        var lineItems = parseOrderLineItems(ord.items, bagSizes);
 
         if (lineItems.length === 0) {
           var optVal = escapeHtml(ord.orderId) + '||';
           var optHtml = '<option value="' + optVal + '" data-order-id="' + escapeHtml(ord.orderId) + '" data-product="" data-bag-size="">' +
-            '#' + escapeHtml(ord.orderId) + ' — ' + escapeHtml(ord.name) + ' [' + escapeHtml(status) + ']' +
-            '</option>';
+            '#' + escapeHtml(ord.orderId) + ' — ' + escapeHtml(ord.name) + ' [' + escapeHtml(status) + ']</option>';
           if (isCompleted) completedOpts += optHtml;
           else activeOpts += optHtml;
         } else {
           lineItems.forEach(function (item, idx) {
             var optVal = escapeHtml(ord.orderId) + '|' + idx;
             var optHtml = '<option value="' + optVal + '" data-order-id="' + escapeHtml(ord.orderId) + '" data-product="' + escapeHtml(item.product) + '" data-bag-size="' + escapeHtml(item.bagSize) + '">' +
-              '#' + escapeHtml(ord.orderId) + ' — ' + escapeHtml(ord.name) + ': ' + escapeHtml(item.label) + ' [' + escapeHtml(status) + ']' +
-              '</option>';
+              '#' + escapeHtml(ord.orderId) + ' — ' + escapeHtml(ord.name) + ': ' + escapeHtml(item.label) + ' [' + escapeHtml(status) + ']</option>';
             if (isCompleted) completedOpts += optHtml;
             else activeOpts += optHtml;
           });
         }
       });
 
-      if (activeOpts) {
-        html += '<optgroup label="Active Customer Orders">' + activeOpts + '</optgroup>';
-      }
-      if (completedOpts) {
-        html += '<optgroup label="Delivered / Cancelled Orders">' + completedOpts + '</optgroup>';
-      }
+      if (activeOpts) html += '<optgroup label="Active Customer Orders">' + activeOpts + '</optgroup>';
+      if (completedOpts) html += '<optgroup label="Delivered / Cancelled Orders">' + completedOpts + '</optgroup>';
       pkgOrderSelect.innerHTML = html;
     }
 
@@ -1994,13 +1805,9 @@
 
       pkgCompsContainer.innerHTML = '';
       var comps = pkg.roastComponents || [];
-      if (comps.length === 0) {
-        addPkgComponentRow();
-      } else {
-        comps.forEach(function (c) {
-          addPkgComponentRow(c.roastId, c.weightGrams);
-        });
-      }
+      if (comps.length === 0) addPkgComponentRow();
+      else comps.forEach(function (c) { addPkgComponentRow(c.roastId, c.weightGrams); });
+
       setDrawerState('pkg-entry-drawer', true);
       renderBlendPackagingTable();
       updatePackagingPreview();
@@ -2008,7 +1815,6 @@
 
     function copyPackagingLog(logId) {
       var pkg = state.blendPackagingLogs.find(function (p) { return p.logId === logId; });
-      if (!pkg) return;
       editingPkgId = null;
       pkgFormTitle.textContent = 'Record Master Blend & Packaging (Copy of ' + pkg.logId + ')';
       pkgCancelEditBtn.textContent = 'Cancel';
@@ -2017,7 +1823,7 @@
       pkgFeedback.style.display = 'none';
 
       pkgDate.value = todayIso();
-      pkgPurpose.value = pkg.purpose || 'Order';
+      pkgPurpose.value = pkg.purpose;
       syncPkgPurposeVisibility();
       pkgOrderSelect.value = '';
       pkgOrderId.value = '';
@@ -2027,22 +1833,14 @@
 
       pkgCompsContainer.innerHTML = '';
       var comps = pkg.roastComponents || [];
-      if (comps.length === 0) {
-        addPkgComponentRow();
-      } else {
-        comps.forEach(function (c) {
-          addPkgComponentRow(c.roastId, c.weightGrams);
-        });
-      }
+      if (comps.length === 0) addPkgComponentRow();
+      else comps.forEach(function (c) { addPkgComponentRow(c.roastId, c.weightGrams); });
+
       setDrawerState('pkg-entry-drawer', true);
       renderBlendPackagingTable();
       updatePackagingPreview();
-
-      if (pkgPurpose.value === 'Order') {
-        pkgOrderSelect.focus();
-      } else {
-        pkgProduct.focus();
-      }
+      if (pkgPurpose.value === 'Order') pkgOrderSelect.focus();
+      else pkgProduct.focus();
     }
 
     function cancelEditPkg() {
@@ -2058,7 +1856,7 @@
       pkgOrderId.value = '';
       pkgProduct.value = '';
       pkgNotes.value = '';
-      pkgBagSize.value = '12oz';
+      pkgBagSize.value = defaultBagSize.id;
       pkgCompsContainer.innerHTML = '';
       addPkgComponentRow();
       setDrawerState('pkg-entry-drawer', false);
@@ -2067,24 +1865,26 @@
     }
 
     function renderBlendPackagingTable() {
-      var filterYear = pkgFilterYear ? pkgFilterYear.value : 'all';
-      var filterMonth = pkgFilterMonth ? pkgFilterMonth.value : 'all';
-      var filterProduct = pkgFilterProduct ? pkgFilterProduct.value : 'all';
-      var filterBean = pkgFilterBean ? pkgFilterBean.value : 'all';
-      var filterBagSize = pkgFilterBagSize ? pkgFilterBagSize.value : 'all';
+      var filterYear = pkgFilterYear.value;
+      var filterMonth = pkgFilterMonth.value;
+      var filterProduct = pkgFilterProduct.value;
+      var filterBean = pkgFilterBean.value;
+      var filterPurpose = pkgFilterPurpose.value;
+      var filterBagSize = pkgFilterBagSize.value;
 
       var roastById = {};
-      for (var rIdx = 0; rIdx < state.roastLogs.length; rIdx++) {
-        roastById[state.roastLogs[rIdx].roastId] = state.roastLogs[rIdx];
-      }
+      state.roastLogs.forEach(function (r) {
+        roastById[r.roastId] = r;
+      });
 
-      var rows = state.blendPackagingLogs.filter(function (p) {
-        if (currentPkgFilter === 'orders') {
-          if (p.purpose !== 'Order' && !p.orderId) return false;
-        } else if (currentPkgFilter === 'non-orders') {
-          if (p.purpose === 'Order' || p.orderId) return false;
+      var filtered = state.blendPackagingLogs.filter(function (p) {
+        if (filterPurpose !== 'all') {
+          if (filterPurpose === 'Order') {
+            if (p.purpose !== 'Order' && !p.orderId) return false;
+          } else if (p.purpose !== filterPurpose) {
+            return false;
+          }
         }
-
         var ym = extractYearMonth(p.date);
         if (filterYear !== 'all' && ym.year !== filterYear) return false;
         if (filterMonth !== 'all' && ym.month !== filterMonth) return false;
@@ -2093,430 +1893,302 @@
 
         var comps = p.roastComponents || [];
         if (filterBean !== 'all') {
-          var matchesBean = (p.product === filterBean) || comps.some(function (c) {
+          var hasBean = comps.some(function (c) {
             var rObj = roastById[c.roastId];
             return rObj && rObj.beanName === filterBean;
           });
-          if (!matchesBean) return false;
+          if (!hasBean) return false;
         }
 
         var compText = comps.map(function (c) { return c.roastId; }).join(' ');
         return matchesSearch([p.logId, p.date, p.purpose, p.orderId, p.product, compText, p.bagSize, p.notes]);
-      }).slice().sort(function (a, b) {
-        var dir = pkgLogSortDir === 'asc' ? 1 : -1;
-        var cmp = 0;
-        if (pkgLogSortCol === 'logId') {
-          cmp = (a.logId || '').localeCompare(b.logId || '');
-        } else if (pkgLogSortCol === 'date') {
-          cmp = (a.date || '').localeCompare(b.date || '');
-        } else if (pkgLogSortCol === 'purpose') {
-          cmp = (a.purpose || '').localeCompare(b.purpose || '');
-        } else if (pkgLogSortCol === 'orderId') {
-          cmp = (a.orderId || '').localeCompare(b.orderId || '');
-        } else if (pkgLogSortCol === 'product') {
-          cmp = (a.product || '').localeCompare(b.product || '');
-        } else if (pkgLogSortCol === 'bagSize') {
-          cmp = (a.bagSize || '').localeCompare(b.bagSize || '');
-        } else if (pkgLogSortCol === 'weightGrams') {
-          var aGrams = (a.roastComponents || []).reduce(function (sum, c) { return sum + (Number(c.weightGrams) || 0); }, 0);
-          var bGrams = (b.roastComponents || []).reduce(function (sum, c) { return sum + (Number(c.weightGrams) || 0); }, 0);
-          cmp = aGrams - bGrams;
-        }
-        if (cmp !== 0) return cmp * dir;
-        return (b.date || '').localeCompare(a.date || '') || (b.logId || '').localeCompare(a.logId || '');
       });
 
-      if (rows.length === 0) {
-        packagingTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No master blend or packaging logs recorded yet.</div>';
+      if (filtered.length === 0) {
+        packagingTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No packaging logs match the selected filters.</div>';
         return;
       }
 
-      var html = '<table class="roast-admin-table">' +
-        '<thead><tr>' +
-        renderSortTh('Log & Date', 'logId', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Product & Purpose', 'product', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Bag & Weight', 'bagSize', pkgLogSortCol, pkgLogSortDir, false) +
-        '<th>Roast Batches Used</th>' +
-        '<th>Notes</th>' +
-        '<th style="text-align: right;">Action</th>' +
+      var weightAgg = pkgAggWeight.value;
+      var gCols = groupByCols.packaging;
+
+      var allPkgG = filtered.map(function (p) {
+        return (p.roastComponents || []).reduce(function (acc, c) { return acc + (Number(c.weightGrams) || 0); }, 0);
+      });
+      var totPkgG = Math.round(computeAgg(allPkgG, weightAgg));
+      var totPkgLbs = (totPkgG / GRAMS_PER_LB).toFixed(2);
+
+      if (gCols.length > 0) {
+        var groupsMap = {};
+        filtered.forEach(function (p) {
+          var ym = extractYearMonth(p.date);
+          var dimVals = {};
+          var keyParts = gCols.map(function (c) {
+            var v = '—';
+            if (c === 'month') v = ym.yearMonth;
+            else if (c === 'year') v = ym.year;
+            else if (c === 'date') v = p.date;
+            else if (c === 'product') v = p.product;
+            else if (c === 'bagSize') v = p.bagSize;
+            else if (c === 'purpose') v = p.purpose;
+            dimVals[c] = v;
+            return v;
+          });
+          var gKey = keyParts.join(' — ');
+          if (!groupsMap[gKey]) {
+            groupsMap[gKey] = {
+              key: gKey,
+              dimValues: dimVals,
+              packagedCount: 0,
+              weightVals: []
+            };
+          }
+          var compG = (p.roastComponents || []).reduce(function (acc, c) { return acc + (Number(c.weightGrams) || 0); }, 0);
+          groupsMap[gKey].packagedCount++;
+          groupsMap[gKey].weightVals.push(compG);
+        });
+
+        var groupedRows = Object.keys(groupsMap).map(function (k) {
+          var g = groupsMap[k];
+          g.packagedGramsUsed = Math.round(computeAgg(g.weightVals, weightAgg));
+          return g;
+        }).sort(function (a, b) {
+          var dir = pkgLogSortDir === 'asc' ? 1 : -1;
+          var cmp = 0;
+          if (pkgLogSortCol.indexOf('dim:') === 0) {
+            var dKey = pkgLogSortCol.slice(4);
+            cmp = String(a.dimValues[dKey]).localeCompare(String(b.dimValues[dKey]));
+          } else if (pkgLogSortCol === 'packages') cmp = a.packagedCount - b.packagedCount;
+          else if (pkgLogSortCol === 'packagedWeight') cmp = a.packagedGramsUsed - b.packagedGramsUsed;
+          else cmp = a.key.localeCompare(b.key);
+          return cmp !== 0 ? cmp * dir : b.key.localeCompare(a.key);
+        });
+
+        var gHtml = '<table class="roast-admin-table"><thead><tr>';
+        gCols.forEach(function (colId) {
+          gHtml += renderSortTh(DIMENSION_LABELS[colId] || colId, 'dim:' + colId, pkgLogSortCol, pkgLogSortDir, false);
+        });
+        gHtml += renderSortTh('Bags Packaged', 'packages', pkgLogSortCol, pkgLogSortDir, true);
+        if (weightAgg !== 'hide') gHtml += renderSortTh('Packaged Weight (' + weightAgg.toUpperCase() + ')', 'packagedWeight', pkgLogSortCol, pkgLogSortDir, true);
+        gHtml += '</tr></thead><tbody>';
+
+        groupedRows.forEach(function (r) {
+          var rowLbs = (r.packagedGramsUsed / GRAMS_PER_LB).toFixed(2);
+          gHtml += '<tr>';
+          gCols.forEach(function (colId) {
+            gHtml += '<td><strong>' + escapeHtml(r.dimValues[colId]) + '</strong></td>';
+          });
+          gHtml += '<td class="mono" style="text-align: right;">' + r.packagedCount + '</td>';
+          if (weightAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + rowLbs + ' lbs</strong><div class="cell-sub">' + r.packagedGramsUsed.toLocaleString() + ' g</div></td>';
+          gHtml += '</tr>';
+        });
+
+        gHtml += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+          '<td colspan="' + gCols.length + '">Total (' + filtered.length + ' packages)</td>' +
+          '<td class="mono" style="text-align: right;">' + filtered.length + '</td>';
+        if (weightAgg !== 'hide') gHtml += '<td class="mono" style="text-align: right;"><strong>' + totPkgLbs + ' lbs</strong><div class="cell-sub">' + totPkgG.toLocaleString() + ' g</div></td>';
+        gHtml += '</tr></tfoot></table>';
+
+        packagingTableWrap.innerHTML = gHtml;
+        bindSortHeaders(packagingTableWrap, function () {
+          return { col: pkgLogSortCol, dir: pkgLogSortDir };
+        }, function (c, d) {
+          pkgLogSortCol = c;
+          pkgLogSortDir = d;
+        }, ['packages', 'packagedWeight'], renderBlendPackagingTable);
+        return;
+      }
+
+      var rows = filtered.slice().sort(function (a, b) {
+        var dir = pkgLogSortDir === 'asc' ? 1 : -1;
+        var cmp = 0;
+        if (pkgLogSortCol === 'logId') cmp = a.logId.localeCompare(b.logId);
+        else if (pkgLogSortCol === 'date') cmp = a.date.localeCompare(b.date);
+        else if (pkgLogSortCol === 'orderId') cmp = (a.orderId || '').localeCompare(b.orderId || '');
+        else if (pkgLogSortCol === 'product') cmp = a.product.localeCompare(b.product);
+        else if (pkgLogSortCol === 'bagSize') cmp = a.bagSize.localeCompare(b.bagSize);
+        return cmp !== 0 ? cmp * dir : (b.date.localeCompare(a.date) || b.logId.localeCompare(a.logId));
+      });
+
+      var html = '<table class="roast-admin-table roast-admin-table--packaging"><thead><tr>' +
+        renderSortTh('Date', 'date', pkgLogSortCol, pkgLogSortDir, false, 'roast-col-date') +
+        renderSortTh('Pkg ID', 'logId', pkgLogSortCol, pkgLogSortDir, false, 'roast-col-id') +
+        renderSortTh('Order #', 'orderId', pkgLogSortCol, pkgLogSortDir, false, 'roast-col-order-id') +
+        renderSortTh('Product / Blend', 'product', pkgLogSortCol, pkgLogSortDir, false, 'roast-col-product') +
+        renderSortTh('Bag & Weight', 'bagSize', pkgLogSortCol, pkgLogSortDir, false, 'roast-col-bag') +
+        '<th class="roast-col-roast-batches">Roast Batches</th>' +
+        '<th class="roast-col-notes">Notes</th>' +
+        '<th class="roast-col-action" style="text-align: right;">Action</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (p) {
         var comps = p.roastComponents || [];
         var compsHtml = comps.map(function (c) {
           return '<a href="#tab=roasts&id=' + encodeURIComponent(c.roastId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-nav-tab="roasts" data-nav-id="' + escapeHtml(c.roastId) + '" title="View roast ' + escapeHtml(c.roastId) + '">' + escapeHtml(c.roastId) + '</a>';
-        }).join(' ');
+        }).join('');
+        var compsWrap = compsHtml ? ('<div class="roast-chip-stack">' + compsHtml + '</div>') : '—';
         var totalGrams = comps.reduce(function (acc, c) { return acc + (Number(c.weightGrams) || 0); }, 0);
-        var orderIdCell = '';
-        if (p.orderId) {
-          orderIdCell = '<a href="/order/admin/?search=' + encodeURIComponent(p.orderId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" target="_blank" rel="noopener" title="Open customer order #' + escapeHtml(p.orderId) + ' in Order Manager">#' + escapeHtml(p.orderId) + ' &nearr;</a>';
-        }
+        var totalLbs = (totalGrams / GRAMS_PER_LB).toFixed(2);
+        var orderIdCell = p.orderId
+          ? '<a href="/order/admin/?search=' + encodeURIComponent(p.orderId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" target="_blank" rel="noopener" title="Open customer order #' + escapeHtml(p.orderId) + ' in Order Manager">#' + escapeHtml(p.orderId) + ' &nearr;</a>'
+          : '—';
         var rowStyle = editingPkgId === p.logId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(p.logId) + '"' + rowStyle + '>' +
-          '<td class="primary-cell"><span class="roast-admin-id-chip">' + escapeHtml(p.logId) + '</span><div class="cell-sub mono">' + escapeHtml(p.date) + '</div></td>' +
-          '<td><strong>' + escapeHtml(p.product) + '</strong><div class="cell-sub">' + escapeHtml(p.purpose) + (orderIdCell ? ' &bull; ' + orderIdCell : '') + '</div></td>' +
-          '<td class="mono">' + escapeHtml(p.bagSize) + '<div class="cell-sub"><strong>' + totalGrams.toLocaleString() + ' g</strong></div></td>' +
-          '<td>' + (compsHtml || '—') + '</td>' +
-          '<td style="font-size: 0.74rem; color: #554439; max-width: 16rem;">' + escapeHtml(p.notes || '—') + '</td>' +
-          '<td style="text-align: right; white-space: nowrap;">' +
+          '<td class="mono roast-col-date">' + escapeHtml(p.date) + '</td>' +
+          '<td class="primary-cell roast-col-id"><span class="roast-admin-id-chip">' + escapeHtml(p.logId) + '</span></td>' +
+          '<td class="roast-col-order-id">' + orderIdCell + '</td>' +
+          '<td class="roast-col-product"><strong>' + escapeHtml(p.product) + '</strong><div class="cell-sub">' + escapeHtml(p.purpose) + '</div></td>' +
+          '<td class="mono roast-col-bag">' +
+          '  <div class="roast-dual-num-row">' +
+          '    <span class="roast-bag-size-label"><strong>' + escapeHtml(p.bagSize) + '</strong></span>' +
+          '    <span class="roast-num-part roast-num-part--bag-weight"><strong>' + totalLbs + ' lbs</strong></span>' +
+          '  </div>' +
+          '  <div class="cell-sub roast-dual-num-row">' +
+          '    <span class="roast-bag-size-label"></span>' +
+          '    <span class="roast-num-part roast-num-part--bag-weight">' + totalGrams.toLocaleString() + ' g</span>' +
+          '  </div>' +
+          '</td>' +
+          '<td class="roast-col-roast-batches">' + compsWrap + '</td>' +
+          '<td class="roast-col-notes">' + escapeHtml(p.notes || '—') + '</td>' +
+          '<td class="roast-col-action" style="text-align: right;">' +
           '<button type="button" class="order-admin-btn-sm" data-edit-pkg="' + escapeHtml(p.logId) + '">Edit</button> ' +
           '<button type="button" class="order-admin-btn-sm" data-copy-pkg="' + escapeHtml(p.logId) + '" title="Copy blend and bag size to new packaging log">Copy</button>' +
-          '</td>' +
-          '</tr>';
+          '</td></tr>';
       });
 
-      html += '</tbody></table>';
+      var pkgFootWeight = weightAgg !== 'hide'
+        ? ('<div class="roast-dual-num-row"><span class="roast-bag-size-label">' + escapeHtml(weightAgg.toUpperCase()) + '</span><span class="roast-num-part roast-num-part--bag-weight"><strong>' + totPkgLbs + ' lbs</strong></span></div>' +
+           '<div class="cell-sub roast-dual-num-row"><span class="roast-bag-size-label"></span><span class="roast-num-part roast-num-part--bag-weight">' + totPkgG.toLocaleString() + ' g</span></div>')
+        : '';
+
+      html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
+        '<td colspan="4">Summary (' + rows.length + ' packages)</td>' +
+        '<td class="mono roast-col-bag">' + pkgFootWeight + '</td>' +
+        '<td colspan="3"></td>' +
+        '</tr></tfoot></table>';
       packagingTableWrap.innerHTML = html;
 
-      var navRoastLinks = packagingTableWrap.querySelectorAll('[data-nav-tab="roasts"]');
-      navRoastLinks.forEach(function (link) {
+      packagingTableWrap.querySelectorAll('[data-nav-tab="roasts"]').forEach(function (link) {
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          var rId = link.getAttribute('data-nav-id');
-          switchToTab('roasts', rId);
+          switchToTab('roasts', link.getAttribute('data-nav-id'));
         });
       });
 
-      var editPkgBtns = packagingTableWrap.querySelectorAll('[data-edit-pkg]');
-      editPkgBtns.forEach(function (btn) {
+      packagingTableWrap.querySelectorAll('[data-edit-pkg]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           startEditPkg(btn.getAttribute('data-edit-pkg'));
         });
       });
 
-      var copyPkgBtns = packagingTableWrap.querySelectorAll('[data-copy-pkg]');
-      copyPkgBtns.forEach(function (btn) {
+      packagingTableWrap.querySelectorAll('[data-copy-pkg]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           copyPackagingLog(btn.getAttribute('data-copy-pkg'));
         });
       });
 
-      var ths = packagingTableWrap.querySelectorAll('th[data-sort-col]');
-      ths.forEach(function (th) {
-        th.addEventListener('click', function () {
-          var col = th.getAttribute('data-sort-col');
-          if (pkgLogSortCol === col) {
-            pkgLogSortDir = pkgLogSortDir === 'asc' ? 'desc' : 'asc';
-          } else {
-            pkgLogSortCol = col;
-            var numCols = ['date', 'weightGrams'];
-            pkgLogSortDir = numCols.indexOf(col) !== -1 ? 'desc' : 'asc';
-          }
-          renderBlendPackagingTable();
-        });
-      });
+      bindSortHeaders(packagingTableWrap, function () {
+        return { col: pkgLogSortCol, dir: pkgLogSortDir };
+      }, function (c, d) {
+        pkgLogSortCol = c;
+        pkgLogSortDir = d;
+      }, ['date'], renderBlendPackagingTable);
     }
 
     function populateTabFilterDropdowns() {
-      // 1. Years
       var yearsSet = {};
       state.greenBeanOrders.forEach(function (o) { yearsSet[extractYearMonth(o.date).year] = true; });
       state.roastLogs.forEach(function (r) { yearsSet[extractYearMonth(r.date).year] = true; });
       state.blendPackagingLogs.forEach(function (p) { yearsSet[extractYearMonth(p.date).year] = true; });
 
       var years = Object.keys(yearsSet).filter(function (y) { return y && y !== 'Unknown'; }).sort().reverse();
-      var yearOptions = '<option value="all">All Years</option>';
-      years.forEach(function (y) {
-        yearOptions += '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
-      });
+      var yearOptions = '<option value="all">All Years</option>' +
+        years.map(function (y) { return '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>'; }).join('');
 
-      var yearSelects = [ordersFilterYear, roastsFilterYear, pkgFilterYear, totalsFilterYear];
-      yearSelects.forEach(function (sel) {
-        if (!sel) return;
-        var prev = sel.value || 'all';
+      [ordersFilterYear, roastsFilterYear, pkgFilterYear].forEach(function (sel) {
+        var prev = sel.value;
         sel.innerHTML = yearOptions;
-        if (years.indexOf(prev) !== -1) {
-          sel.value = prev;
-        }
+        if (years.indexOf(prev) !== -1) sel.value = prev;
       });
 
-      // 2. Beans
       var beanNames = state.greenBeans.map(function (b) { return b.name; });
-      var beanOptions = '<option value="all">All Beans</option>';
-      beanNames.forEach(function (name) {
-        beanOptions += '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>';
-      });
+      var beanOptions = '<option value="all">All Beans</option>' +
+        beanNames.map(function (name) { return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>'; }).join('');
 
-      var beanSelects = [beansFilterBean, ordersFilterBean, roastsFilterBean, pkgFilterBean, totalsFilterBean];
-      beanSelects.forEach(function (sel) {
-        if (!sel) return;
-        var prev = sel.value || 'all';
+      [beansFilterBean, ordersFilterBean, roastsFilterBean, pkgFilterBean].forEach(function (sel) {
+        var prev = sel.value;
         sel.innerHTML = beanOptions;
-        if (beanNames.indexOf(prev) !== -1) {
-          sel.value = prev;
-        }
+        if (beanNames.indexOf(prev) !== -1) sel.value = prev;
       });
 
-      // 3. Suppliers
       var suppliersSet = {};
       state.greenBeans.forEach(function (b) { if (b.supplier) suppliersSet[b.supplier] = true; });
       state.greenBeanOrders.forEach(function (o) { if (o.supplier) suppliersSet[o.supplier] = true; });
       var suppliers = Object.keys(suppliersSet).sort();
-      var supplierOptions = '<option value="all">All Suppliers</option>';
-      suppliers.forEach(function (s) {
-        supplierOptions += '<option value="' + escapeHtml(s) + '">' + escapeHtml(s) + '</option>';
-      });
+      var supplierOptions = '<option value="all">All Suppliers</option>' +
+        suppliers.map(function (s) { return '<option value="' + escapeHtml(s) + '">' + escapeHtml(s) + '</option>'; }).join('');
 
-      var supplierSelects = [beansFilterSupplier, ordersFilterSupplier];
-      supplierSelects.forEach(function (sel) {
-        if (!sel) return;
-        var prev = sel.value || 'all';
+      [beansFilterSupplier, ordersFilterSupplier].forEach(function (sel) {
+        var prev = sel.value;
         sel.innerHTML = supplierOptions;
-        if (suppliers.indexOf(prev) !== -1) {
-          sel.value = prev;
-        }
+        if (suppliers.indexOf(prev) !== -1) sel.value = prev;
       });
 
-      // 4. Products / Blends
       var productsSet = {};
       state.blendPackagingLogs.forEach(function (p) { if (p.product) productsSet[p.product] = true; });
       var products = Object.keys(productsSet).sort();
-      var productOptions = '<option value="all">All Products</option>';
-      products.forEach(function (prod) {
-        productOptions += '<option value="' + escapeHtml(prod) + '">' + escapeHtml(prod) + '</option>';
-      });
-      if (pkgFilterProduct) {
-        var prevProd = pkgFilterProduct.value || 'all';
-        pkgFilterProduct.innerHTML = productOptions;
-        if (products.indexOf(prevProd) !== -1) {
-          pkgFilterProduct.value = prevProd;
-        }
-      }
-    }
-
-    function refreshTotalsGroupPills() {
-      if (!roastGroupPillsWrap) return;
-      var dims = ['month', 'year', 'bean', 'supplier'];
-      var currentActive = [];
-      var activePills = roastGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active');
-      activePills.forEach(function (p) {
-        var g = p.getAttribute('data-group');
-        if (dims.indexOf(g) !== -1) currentActive.push(g);
-      });
-      if (currentActive.length === 0) currentActive = ['month'];
-
-      var html = '';
-      dims.forEach(function (d) {
-        var isActive = currentActive.indexOf(d) !== -1;
-        html += '<button type="button" class="order-admin-filter-pill' + (isActive ? ' order-admin-filter-pill--active' : '') + '" data-group="' + d + '">' + escapeHtml(ROAST_DIMENSION_LABELS[d] || d) + '</button>';
-      });
-      roastGroupPillsWrap.innerHTML = html;
-
-      var pills = roastGroupPillsWrap.querySelectorAll('.order-admin-filter-pill');
-      pills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          pill.classList.toggle('order-admin-filter-pill--active');
-          var active = roastGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active');
-          if (active.length === 0) {
-            pill.classList.add('order-admin-filter-pill--active');
-          }
-          renderTotalsTab();
-        });
-      });
-    }
-
-    function renderTotalsTab() {
-      var groupBys = [];
-      if (roastGroupPillsWrap) {
-        var activePills = roastGroupPillsWrap.querySelectorAll('.order-admin-filter-pill--active');
-        activePills.forEach(function (p) {
-          var g = p.getAttribute('data-group');
-          if (g) groupBys.push(g);
-        });
-      } else if (totalsGroupBy) {
-        groupBys = [totalsGroupBy.value];
-      }
-      if (groupBys.length === 0) {
-        groupBys = ['month'];
-      }
-
-      var result = computeTotals(state, {
-        mode: currentTotalsMode,
-        groupBy: groupBys,
-        year: totalsFilterYear.value,
-        month: totalsFilterMonth.value,
-        beanName: totalsFilterBean.value,
-        purpose: totalsFilterPurpose ? totalsFilterPurpose.value : 'all'
-      });
-
-      var s = result.summary;
-      var roastedLbs = (s.greenWeightRoastedGrams / GRAMS_PER_LB).toFixed(2);
-      var endLbs = (s.endWeightGrams / GRAMS_PER_LB).toFixed(2);
-      var packagedLbs = (s.packagedGramsUsed / GRAMS_PER_LB).toFixed(2);
-
-      if (currentTotalsMode === 'roasting') {
-        totalsKpisWrap.innerHTML =
-          '<div class="roast-admin-kpi-box">' +
-          '<div class="roast-admin-kpi-label">Roasting Batches</div>' +
-          '<div class="roast-admin-kpi-value">' + s.roastCount + ' Roasts</div>' +
-          '<div class="roast-admin-kpi-sub">' + roastedLbs + ' lbs green input</div>' +
-          '</div>' +
-          '<div class="roast-admin-kpi-box">' +
-          '<div class="roast-admin-kpi-label">Roasted Output</div>' +
-          '<div class="roast-admin-kpi-value">' + endLbs + ' lbs</div>' +
-          '<div class="roast-admin-kpi-sub">Avg Weight Loss: ' + s.avgWeightLossPct.toFixed(1) + '%</div>' +
-          '</div>';
-
-        if (result.rows.length === 0) {
-          totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No roast records match the selected period/bean filters.</div>';
-          return;
-        }
-
-        var html = '<table class="roast-admin-table">' +
-          '<thead><tr>';
-        result.groupBys.forEach(function (dim) {
-          html += renderSortTh(ROAST_DIMENSION_LABELS[dim] || dim, 'dim:' + dim, roastTotalsSortCol, roastTotalsSortDir, false);
-        });
-        html += renderSortTh('Roasts', 'roasts', roastTotalsSortCol, roastTotalsSortDir, true) +
-          renderSortTh('Green Roasted', 'greenWeight', roastTotalsSortCol, roastTotalsSortDir, true) +
-          renderSortTh('End Weight', 'endWeight', roastTotalsSortCol, roastTotalsSortDir, true) +
-          renderSortTh('Loss %', 'lossPct', roastTotalsSortCol, roastTotalsSortDir, true) +
-          '</tr></thead><tbody>';
-
-        var displayRows = sortTotalsRows(result.rows, roastTotalsSortCol, roastTotalsSortDir);
-        displayRows.forEach(function (r) {
-          var greenLbs = (r.greenWeightRoastedGrams / GRAMS_PER_LB).toFixed(2);
-          var endLbs = (r.endWeightGrams / GRAMS_PER_LB).toFixed(2);
-          html += '<tr>';
-          result.groupBys.forEach(function (dim) {
-            var cellVal = r.dimValues && r.dimValues[dim] ? r.dimValues[dim] : r.label;
-            html += '<td><strong>' + escapeHtml(cellVal) + '</strong></td>';
-          });
-          html += '<td class="mono" style="text-align: right;">' + r.roastCount + '</td>' +
-            '<td class="mono" style="text-align: right;">' + greenLbs + ' lbs</td>' +
-            '<td class="mono" style="text-align: right;">' + endLbs + ' lbs</td>' +
-            '<td class="mono" style="text-align: right;">' + r.avgWeightLossPct.toFixed(1) + '%</td>' +
-            '</tr>';
-        });
-
-        html += '</tbody><tfoot>' +
-          '<tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
-          '<td colspan="' + result.groupBys.length + '">Total</td>' +
-          '<td class="mono" style="text-align: right;">' + s.roastCount + '</td>' +
-          '<td class="mono" style="text-align: right;">' + roastedLbs + ' lbs</td>' +
-          '<td class="mono" style="text-align: right;">' + endLbs + ' lbs</td>' +
-          '<td class="mono" style="text-align: right;">' + s.avgWeightLossPct.toFixed(1) + '%</td>' +
-          '</tr></tfoot></table>';
-        totalsTableWrap.innerHTML = html;
-
-        var thsRoast = totalsTableWrap.querySelectorAll('th[data-sort-col]');
-        thsRoast.forEach(function (th) {
-          th.addEventListener('click', function () {
-            var col = th.getAttribute('data-sort-col');
-            if (roastTotalsSortCol === col) {
-              roastTotalsSortDir = roastTotalsSortDir === 'asc' ? 'desc' : 'asc';
-            } else {
-              roastTotalsSortCol = col;
-              roastTotalsSortDir = (col === 'roasts' || col === 'greenWeight' || col === 'endWeight' || col === 'lossPct') ? 'desc' : 'asc';
-            }
-            renderTotalsTab();
-          });
-        });
-
-      } else if (currentTotalsMode === 'orders') {
-        totalsKpisWrap.innerHTML =
-          '<div class="roast-admin-kpi-box">' +
-          '<div class="roast-admin-kpi-label">Green Bean Orders</div>' +
-          '<div class="roast-admin-kpi-value">' + s.ordersCount + ' Orders</div>' +
-          '<div class="roast-admin-kpi-sub">' + s.orderedWeightLbs.toFixed(2) + ' lbs total</div>' +
-          '</div>' +
-          '<div class="roast-admin-kpi-box">' +
-          '<div class="roast-admin-kpi-label">Purchasing Spend</div>' +
-          '<div class="roast-admin-kpi-value">$' + s.totalSpend.toFixed(2) + '</div>' +
-          '<div class="roast-admin-kpi-sub">' + (s.orderedWeightLbs > 0 ? ('$' + (s.totalSpend / s.orderedWeightLbs).toFixed(2) + ' / lb avg') : '$0.00 / lb') + '</div>' +
-          '</div>';
-
-        if (result.rows.length === 0) {
-          totalsTableWrap.innerHTML = '<div class="order-admin-inspector-empty">No green bean order records match the selected period/bean filters.</div>';
-          return;
-        }
-
-        var html = '<table class="roast-admin-table">' +
-          '<thead><tr>';
-        result.groupBys.forEach(function (dim) {
-          html += renderSortTh(ROAST_DIMENSION_LABELS[dim] || dim, 'dim:' + dim, gbOrdersTotalsSortCol, gbOrdersTotalsSortDir, false);
-        });
-        html += renderSortTh('Orders', 'orders', gbOrdersTotalsSortCol, gbOrdersTotalsSortDir, true) +
-          renderSortTh('Ordered Weight', 'orderedWeight', gbOrdersTotalsSortCol, gbOrdersTotalsSortDir, true) +
-          renderSortTh('Spend ($)', 'spend', gbOrdersTotalsSortCol, gbOrdersTotalsSortDir, true) +
-          '</tr></thead><tbody>';
-
-        var displayRows = sortTotalsRows(result.rows, gbOrdersTotalsSortCol, gbOrdersTotalsSortDir);
-        displayRows.forEach(function (r) {
-          html += '<tr>';
-          result.groupBys.forEach(function (dim) {
-            var cellVal = r.dimValues && r.dimValues[dim] ? r.dimValues[dim] : r.label;
-            html += '<td><strong>' + escapeHtml(cellVal) + '</strong></td>';
-          });
-          html += '<td class="mono" style="text-align: right;">' + r.ordersCount + '</td>' +
-            '<td class="mono" style="text-align: right;">' + r.orderedWeightLbs.toFixed(2) + ' lbs</td>' +
-            '<td class="mono" style="text-align: right;">$' + r.totalSpend.toFixed(2) + '</td>' +
-            '</tr>';
-        });
-
-        html += '</tbody><tfoot>' +
-          '<tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
-          '<td colspan="' + result.groupBys.length + '">Total</td>' +
-          '<td class="mono" style="text-align: right;">' + s.ordersCount + '</td>' +
-          '<td class="mono" style="text-align: right;">' + s.orderedWeightLbs.toFixed(2) + ' lbs</td>' +
-          '<td class="mono" style="text-align: right;">$' + s.totalSpend.toFixed(2) + '</td>' +
-          '</tr></tfoot></table>';
-        totalsTableWrap.innerHTML = html;
-
-        var thsOrders = totalsTableWrap.querySelectorAll('th[data-sort-col]');
-        thsOrders.forEach(function (th) {
-          th.addEventListener('click', function () {
-            var col = th.getAttribute('data-sort-col');
-            if (gbOrdersTotalsSortCol === col) {
-              gbOrdersTotalsSortDir = gbOrdersTotalsSortDir === 'asc' ? 'desc' : 'asc';
-            } else {
-              gbOrdersTotalsSortCol = col;
-              gbOrdersTotalsSortDir = (col === 'orders' || col === 'orderedWeight' || col === 'spend') ? 'desc' : 'asc';
-            }
-            renderTotalsTab();
-          });
-        });
-      }
+      var prevProd = pkgFilterProduct.value;
+      pkgFilterProduct.innerHTML = '<option value="all">All Products</option>' +
+        products.map(function (prod) { return '<option value="' + escapeHtml(prod) + '">' + escapeHtml(prod) + '</option>'; }).join('');
+      if (products.indexOf(prevProd) !== -1) pkgFilterProduct.value = prevProd;
     }
 
     function updateOrderWeightPreview() {
       var lbs = Number(orderWeightLbs.value) || 0;
+      var cost = Number(orderCost.value) || 0;
       var baseGrams = lbsToGrams(lbs);
       var adjGrams = Number(orderAdjustGrams.value) || 0;
       var totalGrams = baseGrams + adjGrams;
+      var totalLbs = (totalGrams / GRAMS_PER_LB).toFixed(2);
+      var unitCost = lbs > 0 ? ('$' + (cost / lbs).toFixed(2) + ' / lb') : '$0.00 / lb';
       orderWeightPreview.innerHTML =
-        '<span>Base: <strong>' + baseGrams.toLocaleString() + ' g</strong> (' + lbs.toFixed(2) + ' lbs)</span>' +
-        '<span>Total Weight (g): <strong>' + totalGrams.toLocaleString() + ' g</strong></span>';
+        '<div class="form-metric-item">Base: <strong>' + lbs.toFixed(2) + ' lbs (' + baseGrams.toLocaleString() + ' g)</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">Total Weight: <strong style="color: #1e7e44;">' + totalLbs + ' lbs (' + totalGrams.toLocaleString() + ' g)</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">Unit Cost: <strong>' + unitCost + '</strong></div>';
     }
 
     function updateRoastLossPreview() {
       var greenG = 0;
-      var compInputs = roastCompsContainer.querySelectorAll('.roast-comp-grams');
-      compInputs.forEach(function (inp) {
+      roastCompsContainer.querySelectorAll('.roast-comp-grams').forEach(function (inp) {
         greenG += Number(inp.value) || 0;
       });
       var endG = Number(roastEndGrams.value) || 0;
       var loss = computeWeightLossPct(greenG, endG);
+      var lossGrams = greenG - endG;
+      var lossColor = (loss >= 11 && loss <= 18) ? '#1e7e44' : (loss > 18 ? '#b35300' : '#2c1e14');
       roastLossPreview.innerHTML =
-        '<span>Green Weight: <strong>' + greenG.toLocaleString() + ' g</strong></span>' +
-        '<span>Weight Loss: <strong>' + loss.toFixed(1) + '%</strong></span>';
+        '<div class="form-metric-item">Green Weight: <strong>' + greenG.toLocaleString() + ' g</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">End Weight: <strong>' + endG.toLocaleString() + ' g</strong></div>' +
+        '<span class="form-metric-divider">&bull;</span>' +
+        '<div class="form-metric-item">Weight Loss: <strong style="color: ' + lossColor + ';">-' + loss.toFixed(1) + '% (-' + lossGrams + ' g)</strong></div>';
     }
 
     function renderAll() {
-      renderStatsBar();
       populateOrderBeanDropdown();
       refreshRoastComponentDropdowns();
       populateCustomerOrderDropdown();
       refreshPkgComponentDropdowns();
       populateTabFilterDropdowns();
-      refreshTotalsGroupPills();
       renderActiveBeansTable();
       renderGreenBeanOrdersTable();
       renderRoastLogsTable();
       renderBlendPackagingTable();
-      renderTotalsTab();
       updatePackagingPreview();
+      ['beans', 'orders', 'roasts', 'pkg'].forEach(updateFilterBtnLabel);
     }
 
     function loadCustomerOrders(passcode) {
@@ -2536,7 +2208,13 @@
     }
 
     function showApiError(errMsg) {
-      statsContainer.innerHTML = '<span class="order-admin-stat-pill" style="background: rgba(192, 57, 43, 0.12); color: #c0392b; border-color: rgba(192, 57, 43, 0.35);">API Error: ' + escapeHtml(errMsg) + '</span>';
+      errorBanner.textContent = 'API Error: ' + errMsg;
+      errorBanner.style.display = 'block';
+    }
+
+    function hideApiError() {
+      errorBanner.style.display = 'none';
+      errorBanner.textContent = '';
     }
 
     function resolveAdminToken(passcode) {
@@ -2565,6 +2243,7 @@
               showApiError(data.error);
               callback(data.error);
             } else {
+              hideApiError();
               state.greenBeans = data.greenBeans || [];
               state.greenBeanOrders = data.greenBeanOrders || [];
               state.roastLogs = data.roastLogs || [];
@@ -2574,7 +2253,7 @@
             }
           })
           .catch(function (err) {
-            var msg = "Could not connect to live inventory API (" + (err.message || 'Network error') + ").";
+            var msg = 'Could not connect to live inventory API (' + (err.message || 'Network error') + ').';
             showApiError(msg);
             callback(msg);
           });
@@ -2582,10 +2261,8 @@
     }
 
     function submitAction(payload, callback) {
-      var currentKey = getStoredKey();
-      resolveAdminToken(currentKey).then(function (token) {
+      resolveAdminToken(getStoredKey()).then(function (token) {
         payload.adminKey = token;
-
         fetch(apiUrl, {
           method: 'POST',
           mode: 'cors',
@@ -2613,7 +2290,6 @@
       });
     }
 
-    // Event Listeners
     orderBeanSelect.addEventListener('change', function () {
       var val = orderBeanSelect.value;
       if (val === '__new__') {
@@ -2628,6 +2304,7 @@
       }
     });
 
+    orderCost.addEventListener('input', updateOrderWeightPreview);
     orderWeightLbs.addEventListener('input', updateOrderWeightPreview);
     orderAdjustGrams.addEventListener('input', updateOrderWeightPreview);
     orderCancelEditBtn.addEventListener('click', cancelEditOrder);
@@ -2660,17 +2337,13 @@
           cancelEditOrder();
           renderAll();
           orderFeedback.className = 'order-admin-feedback order-admin-feedback--success';
-          orderFeedback.textContent = isEditingOrder
-            ? ('✓ Updated Order ' + savedId)
-            : ('✓ Saved Order ' + savedId);
+          orderFeedback.textContent = isEditingOrder ? ('✓ Updated Order ' + savedId) : ('✓ Saved Order ' + savedId);
           orderFeedback.style.display = 'block';
         }
       });
     });
 
-    roastAddCompBtn.addEventListener('click', function () {
-      addRoastComponentRow();
-    });
+    roastAddCompBtn.addEventListener('click', function () { addRoastComponentRow(); });
     roastEndGrams.addEventListener('input', updateRoastLossPreview);
     roastCancelEditBtn.addEventListener('click', cancelEditRoast);
 
@@ -2678,22 +2351,19 @@
       e.preventDefault();
       recomputeActiveBeanStocks(state, editingPkgId, editingRoastId);
 
-      var compRows = roastCompsContainer.querySelectorAll('.roast-admin-component-row');
       var greenComponents = [];
       var requestedByOrder = {};
       var beanNamesUsed = [];
       var totalGreenGrams = 0;
 
-      compRows.forEach(function (r) {
+      roastCompsContainer.querySelectorAll('.roast-admin-component-row').forEach(function (r) {
         var oId = r.querySelector('.roast-comp-order').value;
         var gVal = Number(r.querySelector('.roast-comp-grams').value);
         greenComponents.push({ orderId: oId, weightGrams: gVal });
         requestedByOrder[oId] = (requestedByOrder[oId] || 0) + gVal;
         totalGreenGrams += gVal;
         var ordObj = state.greenBeanOrders.find(function (o) { return o.orderId === oId; });
-        if (ordObj && beanNamesUsed.indexOf(ordObj.name) === -1) {
-          beanNamesUsed.push(ordObj.name);
-        }
+        if (ordObj && beanNamesUsed.indexOf(ordObj.name) === -1) beanNamesUsed.push(ordObj.name);
       });
 
       for (var checkOrdId in requestedByOrder) {
@@ -2732,9 +2402,7 @@
           cancelEditRoast();
           renderAll();
           roastFeedback.className = 'order-admin-feedback order-admin-feedback--success';
-          roastFeedback.textContent = isEditingRoast
-            ? ('✓ Updated Roast ' + savedRoastId)
-            : ('✓ Saved Roast ' + savedRoastId);
+          roastFeedback.textContent = isEditingRoast ? ('✓ Updated Roast ' + savedRoastId) : ('✓ Saved Roast ' + savedRoastId);
           roastFeedback.style.display = 'block';
         }
       });
@@ -2745,8 +2413,7 @@
 
     function syncPkgBagSizeChange() {
       var total = getSelectedBagSizeGrams();
-      var rows = pkgCompsContainer.querySelectorAll('.roast-admin-component-row');
-      rows.forEach(function (row) {
+      pkgCompsContainer.querySelectorAll('.roast-admin-component-row').forEach(function (row) {
         var pctInput = row.querySelector('.pkg-comp-pct');
         var gramsInput = row.querySelector('.pkg-comp-grams');
         var pctVal = parseFloat(pctInput.value);
@@ -2765,31 +2432,24 @@
       var ordId = selectedOpt.getAttribute('data-order-id') || '';
       var prod = selectedOpt.getAttribute('data-product') || '';
       var bagSz = selectedOpt.getAttribute('data-bag-size') || '';
-      if (ordId) {
-        pkgOrderId.value = ordId;
-      }
-      if (prod) {
-        pkgProduct.value = prod;
-      }
+      if (ordId) pkgOrderId.value = ordId;
+      if (prod) pkgProduct.value = prod;
       if (bagSz && Array.from(pkgBagSize.options).some(function (o) { return o.value === bagSz; })) {
         pkgBagSize.value = bagSz;
         syncPkgBagSizeChange();
       }
     });
 
-    pkgAddCompBtn.addEventListener('click', function () {
-      addPkgComponentRow();
-    });
+    pkgAddCompBtn.addEventListener('click', function () { addPkgComponentRow(); });
     pkgCancelEditBtn.addEventListener('click', cancelEditPkg);
 
     pkgForm.addEventListener('submit', function (e) {
       e.preventDefault();
       recomputeActiveBeanStocks(state, editingPkgId);
 
-      var compRows = pkgCompsContainer.querySelectorAll('.roast-admin-component-row');
       var components = [];
       var requestedByRoast = {};
-      compRows.forEach(function (r) {
+      pkgCompsContainer.querySelectorAll('.roast-admin-component-row').forEach(function (r) {
         var rId = r.querySelector('.pkg-comp-roast').value;
         var gVal = Number(r.querySelector('.pkg-comp-grams').value);
         components.push({ roastId: rId, weightGrams: gVal });
@@ -2831,105 +2491,94 @@
           cancelEditPkg();
           renderAll();
           pkgFeedback.className = 'order-admin-feedback order-admin-feedback--success';
-          pkgFeedback.textContent = isEditingPkg
-            ? ('✓ Updated Packaging Log ' + savedLogId)
-            : ('✓ Saved Packaging Log ' + savedLogId);
+          pkgFeedback.textContent = isEditingPkg ? ('✓ Updated Packaging Log ' + savedLogId) : ('✓ Saved Packaging Log ' + savedLogId);
           pkgFeedback.style.display = 'block';
         }
       });
     });
 
-    showDepletedCheckbox.addEventListener('change', renderActiveBeansTable);
-
-    if (beansFilterBean) beansFilterBean.addEventListener('change', renderActiveBeansTable);
-    if (beansFilterSupplier) beansFilterSupplier.addEventListener('change', renderActiveBeansTable);
-
-    if (ordersFilterYear) ordersFilterYear.addEventListener('change', renderGreenBeanOrdersTable);
-    if (ordersFilterMonth) ordersFilterMonth.addEventListener('change', renderGreenBeanOrdersTable);
-    if (ordersFilterBean) ordersFilterBean.addEventListener('change', renderGreenBeanOrdersTable);
-    if (ordersFilterSupplier) ordersFilterSupplier.addEventListener('change', renderGreenBeanOrdersTable);
-
-    if (roastsFilterYear) roastsFilterYear.addEventListener('change', renderRoastLogsTable);
-    if (roastsFilterMonth) roastsFilterMonth.addEventListener('change', renderRoastLogsTable);
-    if (roastsFilterBean) roastsFilterBean.addEventListener('change', renderRoastLogsTable);
-
-    if (pkgFilterYear) pkgFilterYear.addEventListener('change', renderBlendPackagingTable);
-    if (pkgFilterMonth) pkgFilterMonth.addEventListener('change', renderBlendPackagingTable);
-    if (pkgFilterProduct) pkgFilterProduct.addEventListener('change', renderBlendPackagingTable);
-    if (pkgFilterBean) pkgFilterBean.addEventListener('change', renderBlendPackagingTable);
-    if (pkgFilterBagSize) pkgFilterBagSize.addEventListener('change', renderBlendPackagingTable);
-
-    if (roastTotalsModePills) {
-      var mPills = roastTotalsModePills.querySelectorAll('.order-admin-filter-pill');
-      mPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          mPills.forEach(function (p) { p.classList.remove('order-admin-filter-pill--active'); });
-          pill.classList.add('order-admin-filter-pill--active');
-          currentTotalsMode = pill.getAttribute('data-totals-mode') || 'roasting';
-          refreshTotalsGroupPills();
-          renderTotalsTab();
-        });
-      });
+    function rerenderModuleTable(mod) {
+      if (mod === 'beans') renderActiveBeansTable();
+      else if (mod === 'orders') renderGreenBeanOrdersTable();
+      else if (mod === 'roasts') renderRoastLogsTable();
+      else if (mod === 'packaging' || mod === 'pkg') renderBlendPackagingTable();
+      updateFilterBtnLabel(mod);
     }
 
-    refreshTotalsGroupPills();
+    showDepletedCheckbox.addEventListener('change', renderActiveBeansTable);
 
-    if (totalsGroupBy) totalsGroupBy.addEventListener('change', renderTotalsTab);
-    totalsFilterYear.addEventListener('change', renderTotalsTab);
-    totalsFilterMonth.addEventListener('change', renderTotalsTab);
-    totalsFilterBean.addEventListener('change', renderTotalsTab);
-    if (totalsFilterPurpose) totalsFilterPurpose.addEventListener('change', renderTotalsTab);
+    [beansFilterBean, beansFilterSupplier].forEach(function (sel) {
+      sel.addEventListener('change', function () { rerenderModuleTable('beans'); });
+    });
+    [ordersFilterYear, ordersFilterMonth, ordersFilterBean, ordersFilterSupplier].forEach(function (sel) {
+      sel.addEventListener('change', function () { rerenderModuleTable('orders'); });
+    });
+    [roastsFilterYear, roastsFilterMonth, roastsFilterBean, roastsFilterRoastLevel].forEach(function (sel) {
+      sel.addEventListener('change', function () { rerenderModuleTable('roasts'); });
+    });
+    [pkgFilterYear, pkgFilterMonth, pkgFilterProduct, pkgFilterBean, pkgFilterPurpose, pkgFilterBagSize].forEach(function (sel) {
+      sel.addEventListener('change', function () { rerenderModuleTable('pkg'); });
+    });
 
-    var tabBtns = tabsContainer.querySelectorAll('.roast-admin-tab-btn');
-    tabBtns.forEach(function (btn) {
+    document.querySelectorAll('[data-toggle-groupby]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var t = btn.getAttribute('data-tab');
-        switchToTab(t);
+        var parts = btn.getAttribute('data-toggle-groupby').split(':');
+        var mod = parts[0];
+        var col = parts[1];
+        var cur = groupByCols[mod];
+        var idx = cur.indexOf(col);
+        if (idx !== -1) {
+          cur.splice(idx, 1);
+          btn.classList.remove('order-admin-filter-pill--active');
+        } else {
+          cur.push(col);
+          btn.classList.add('order-admin-filter-pill--active');
+        }
+        rerenderModuleTable(mod);
       });
     });
 
-    var drawerToggles = document.querySelectorAll('.roast-admin-toggle-drawer-btn');
-    drawerToggles.forEach(function (btn) {
+    document.querySelectorAll('[data-clear-groupby]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var mod = btn.getAttribute('data-clear-groupby');
+        groupByCols[mod] = [];
+        document.querySelectorAll('[data-toggle-groupby^="' + mod + ':"]').forEach(function (p) {
+          p.classList.remove('order-admin-filter-pill--active');
+        });
+        rerenderModuleTable(mod);
+      });
+    });
+
+    document.querySelectorAll('[data-agg-mod]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        rerenderModuleTable(sel.getAttribute('data-agg-mod'));
+      });
+    });
+
+    tabsContainer.querySelectorAll('.roast-admin-tab-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        switchToTab(btn.getAttribute('data-tab'));
+      });
+    });
+
+    document.querySelectorAll('.roast-admin-toggle-drawer-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var targetId = btn.getAttribute('data-drawer-target');
         var drawer = document.getElementById(targetId);
-        if (!drawer) return;
         var isCurrentlyOpen = drawer.style.display !== 'none';
         if (isCurrentlyOpen) {
-          if (targetId === 'order-entry-drawer' && editingOrderId) {
-            cancelEditOrder();
-          } else if (targetId === 'roast-entry-drawer' && editingRoastId) {
-            cancelEditRoast();
-          } else if (targetId === 'pkg-entry-drawer' && editingPkgId) {
-            cancelEditPkg();
-          } else {
-            setDrawerState(targetId, false);
-          }
+          if (targetId === 'order-entry-drawer' && editingOrderId) cancelEditOrder();
+          else if (targetId === 'roast-entry-drawer' && editingRoastId) cancelEditRoast();
+          else if (targetId === 'pkg-entry-drawer' && editingPkgId) cancelEditPkg();
+          else setDrawerState(targetId, false);
         } else {
           setDrawerState(targetId, true);
-          if (targetId === 'order-entry-drawer') {
-            orderBeanSelect.focus();
-          } else if (targetId === 'roast-entry-drawer') {
-            roastDate.focus();
-          } else if (targetId === 'pkg-entry-drawer') {
-            pkgDate.focus();
-          }
+          if (targetId === 'order-entry-drawer') orderBeanSelect.focus();
+          else if (targetId === 'roast-entry-drawer') roastDate.focus();
+          else if (targetId === 'pkg-entry-drawer') pkgDate.focus();
         }
       });
     });
-
-    var pkgFilterPillsWrap = document.getElementById('pkg-filter-pills');
-    if (pkgFilterPillsWrap) {
-      var pkgPills = pkgFilterPillsWrap.querySelectorAll('.order-admin-filter-pill');
-      pkgPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          pkgPills.forEach(function (p) { p.classList.remove('order-admin-filter-pill--active'); });
-          pill.classList.add('order-admin-filter-pill--active');
-          currentPkgFilter = pill.getAttribute('data-pkg-filter') || 'all';
-          renderBlendPackagingTable();
-        });
-      });
-    }
 
     searchInput.addEventListener('input', function () {
       applySearch(searchInput.value);
@@ -2939,7 +2588,6 @@
       e.preventDefault();
       var key = passcodeInput.value.trim();
       if (!key) return;
-
       gateError.style.display = 'none';
 
       computeBrowserHash(key).then(function (hash) {
@@ -2953,9 +2601,7 @@
         showDashboard();
         loadCustomerOrders(key);
         loadInventory(key, function (err) {
-          if (!err) {
-            renderAll();
-          }
+          if (!err) renderAll();
         });
       });
     });
@@ -2972,9 +2618,7 @@
       loadInventory(key, function (err) {
         refreshBtn.disabled = false;
         refreshBtn.textContent = 'Refresh';
-        if (!err) {
-          renderAll();
-        }
+        if (!err) renderAll();
       });
     });
 
@@ -2984,13 +2628,9 @@
     });
 
     if (typeof window !== 'undefined' && window.location && window.location.search) {
-      try {
-        var qParams = new URLSearchParams(window.location.search);
-        var qSearch = qParams.get('search') || qParams.get('id');
-        if (qSearch) {
-          applySearch(qSearch);
-        }
-      } catch (paramErr) {}
+      var qParams = new URLSearchParams(window.location.search);
+      var qSearch = qParams.get('search') || qParams.get('id');
+      if (qSearch) applySearch(qSearch);
     }
 
     var storedKey = getStoredKey();
@@ -3042,7 +2682,6 @@
       e.preventDefault();
       var key = passcodeInput.value.trim();
       if (!key) return;
-
       gateError.style.display = 'none';
 
       computeBrowserHash(key).then(function (hash) {
@@ -3061,12 +2700,8 @@
       showPortalGate();
     });
 
-    var existing = localStorage.getItem(STORAGE_KEY);
-    if (existing) {
-      showPortalDashboard();
-    } else {
-      showPortalGate();
-    }
+    if (localStorage.getItem(STORAGE_KEY)) showPortalDashboard();
+    else showPortalGate();
   }
 
   return {
@@ -3074,15 +2709,8 @@
     initAdminPortal: initAdminPortal,
     lbsToGrams: lbsToGrams,
     computeWeightLossPct: computeWeightLossPct,
-    generateNextInternalId: generateNextInternalId,
-    generateGreenBeanOrderId: generateGreenBeanOrderId,
-    generateRoastLogId: generateRoastLogId,
-    generatePackagingLogId: generatePackagingLogId,
-    makeSemanticCode: makeSemanticCode,
     recomputeActiveBeanStocks: recomputeActiveBeanStocks,
-    computeTotals: computeTotals,
-    sortGreenBeanOrders: sortGreenBeanOrders,
-    sortTotalsRows: sortTotalsRows,
+    computeAgg: computeAgg,
     calculateBagSizeGrams: calculateBagSizeGrams,
     calculateGramsFromPercentage: calculateGramsFromPercentage,
     calculatePercentageFromGrams: calculatePercentageFromGrams,
@@ -3090,7 +2718,6 @@
     filterSelectOptions: filterSelectOptions,
     computeBrowserHash: computeBrowserHash,
     ADMIN_PASSWORD_HASH: ADMIN_PASSWORD_HASH,
-    DEFAULT_SALT: DEFAULT_SALT,
-    CANONICAL_MOCK_DATA: CANONICAL_MOCK_DATA
+    DEFAULT_SALT: DEFAULT_SALT
   };
 });
