@@ -2,7 +2,7 @@
 title: "Preening Bar"
 subtitle: "Exfoliating Coffee Bean Soap"
 slug: preening-bar
-published: true
+published: false
 category: pantry
 order: 2
 permalink: /pantry/preening-bar/
