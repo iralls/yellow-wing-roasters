@@ -486,6 +486,77 @@ button.roast-admin-id-chip {
     padding: 0.2rem 0.45rem;
     font-size: 0.73rem;
   }
+
+  .roast-admin-combobox-input {
+    padding-right: 1.4rem;
+  }
+}
+
+.roast-admin-combobox {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.roast-admin-combobox-input {
+  padding-right: 1.5rem;
+  text-overflow: ellipsis;
+}
+
+.roast-admin-combobox-chevron {
+  position: absolute;
+  right: 0.45rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.62rem;
+  color: #6e5e54;
+  line-height: 1;
+}
+
+.roast-admin-combobox-menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 14rem;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #2c1e14;
+  border-radius: 3px;
+  box-shadow: 0 4px 12px rgba(44, 30, 20, 0.16);
+}
+
+.roast-admin-combobox-option {
+  padding: 0.32rem 0.55rem;
+  font-size: 0.73rem;
+  color: #2c1e14;
+  cursor: pointer;
+  border-bottom: 1px solid #f0eae1;
+  line-height: 1.35;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.is-selected {
+    font-weight: 600;
+    background: #fbf9f6;
+  }
+
+  &.is-active,
+  &:hover {
+    background: #f4ede4;
+    color: #1a100a;
+  }
+}
+
+.roast-admin-combobox-empty {
+  padding: 0.45rem 0.55rem;
+  font-size: 0.72rem;
+  color: #8a7060;
+  font-style: italic;
 }
 
 #pkg-components-container .roast-admin-component-row {

@@ -24,6 +24,7 @@
     root.calculateBagSizeGrams = exp.calculateBagSizeGrams;
     root.calculateGramsFromPercentage = exp.calculateGramsFromPercentage;
     root.calculatePercentageFromGrams = exp.calculatePercentageFromGrams;
+    root.filterSelectOptions = exp.filterSelectOptions;
   }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
@@ -755,6 +756,248 @@
     });
   }
 
+  function filterSelectOptions(optionsList, query) {
+    var tokens = String(query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (tokens.length === 0) {
+      return optionsList.slice();
+    }
+    return optionsList.filter(function (opt) {
+      var hay = String(opt.text || '').toLowerCase();
+      return tokens.every(function (t) { return hay.indexOf(t) !== -1; });
+    });
+  }
+
+  function enhanceSearchableSelect(sel, placeholderText) {
+    if (sel._comboboxSync) {
+      sel._comboboxSync();
+      return;
+    }
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'roast-admin-combobox';
+    sel.parentNode.insertBefore(wrapper, sel);
+    wrapper.appendChild(sel);
+    sel.style.display = 'none';
+
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'roast-admin-input roast-admin-combobox-input';
+    input.autocomplete = 'off';
+    input.placeholder = placeholderText;
+    if (sel.required) {
+      input.required = true;
+      sel.required = false;
+    }
+
+    var chevron = document.createElement('span');
+    chevron.className = 'roast-admin-combobox-chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+    chevron.innerHTML = '&#9662;';
+
+    var menu = document.createElement('div');
+    menu.className = 'roast-admin-combobox-menu';
+    menu.setAttribute('role', 'listbox');
+    menu.style.display = 'none';
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(chevron);
+    wrapper.appendChild(menu);
+
+    if (sel.id) {
+      var assocLabel = document.querySelector('label[for="' + sel.id + '"]');
+      if (assocLabel) {
+        assocLabel.addEventListener('click', function (e) {
+          e.preventDefault();
+          input.focus();
+        });
+      }
+    }
+
+    var isOpen = false;
+    var isFiltering = false;
+    var activeIndex = -1;
+    var filteredOptions = [];
+
+    function getSelectedOptionText() {
+      var idx = sel.selectedIndex;
+      if (idx >= 0 && sel.options[idx]) {
+        return sel.options[idx].textContent;
+      }
+      return '';
+    }
+
+    function getAllOptions() {
+      return Array.from(sel.options).map(function (o) {
+        return { value: o.value, text: o.textContent };
+      });
+    }
+
+    function renderMenu() {
+      var allOpts = getAllOptions();
+      filteredOptions = isFiltering ? filterSelectOptions(allOpts, input.value) : allOpts;
+
+      if (!isFiltering) {
+        var selIdx = -1;
+        for (var i = 0; i < filteredOptions.length; i++) {
+          if (filteredOptions[i].value === sel.value) {
+            selIdx = i;
+            break;
+          }
+        }
+        activeIndex = selIdx >= 0 ? selIdx : (filteredOptions.length > 0 ? 0 : -1);
+      } else {
+        if (filteredOptions.length === 0) {
+          activeIndex = -1;
+        } else if (activeIndex < 0 || activeIndex >= filteredOptions.length) {
+          activeIndex = 0;
+        }
+      }
+
+      if (filteredOptions.length === 0) {
+        menu.innerHTML = '<div class="roast-admin-combobox-empty">No matching beans found</div>';
+        return;
+      }
+
+      var html = '';
+      filteredOptions.forEach(function (opt, idx) {
+        var classes = 'roast-admin-combobox-option';
+        if (opt.value === sel.value) classes += ' is-selected';
+        if (idx === activeIndex) classes += ' is-active';
+        html += '<div class="' + classes + '" role="option" data-value="' + escapeHtml(opt.value) + '" data-idx="' + idx + '">' +
+          escapeHtml(opt.text) +
+          '</div>';
+      });
+      menu.innerHTML = html;
+
+      if (isOpen && activeIndex >= 0) {
+        var activeEl = menu.querySelector('.roast-admin-combobox-option.is-active');
+        if (activeEl && typeof activeEl.scrollIntoView === 'function') {
+          activeEl.scrollIntoView({ block: 'nearest' });
+        }
+      }
+    }
+
+    function openMenu() {
+      isOpen = true;
+      menu.style.display = 'block';
+      renderMenu();
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      isFiltering = false;
+      menu.style.display = 'none';
+      input.value = getSelectedOptionText();
+    }
+
+    function selectValue(val) {
+      sel.value = val;
+      isFiltering = false;
+      input.value = getSelectedOptionText();
+      closeMenu();
+      sel.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    input.addEventListener('focus', function () {
+      isFiltering = false;
+      openMenu();
+      setTimeout(function () {
+        input.select();
+      }, 0);
+    });
+
+    input.addEventListener('click', function () {
+      if (!isOpen) {
+        isFiltering = false;
+        openMenu();
+        input.select();
+      }
+    });
+
+    input.addEventListener('input', function () {
+      isFiltering = true;
+      activeIndex = 0;
+      if (!isOpen) {
+        isOpen = true;
+        menu.style.display = 'block';
+      }
+      renderMenu();
+    });
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isOpen) {
+          isFiltering = false;
+          openMenu();
+        } else if (filteredOptions.length > 0) {
+          activeIndex = (activeIndex + 1) % filteredOptions.length;
+          renderMenu();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!isOpen) {
+          isFiltering = false;
+          openMenu();
+        } else if (filteredOptions.length > 0) {
+          activeIndex = (activeIndex - 1 + filteredOptions.length) % filteredOptions.length;
+          renderMenu();
+        }
+      } else if (e.key === 'Enter') {
+        if (isOpen) {
+          e.preventDefault();
+          if (activeIndex >= 0 && filteredOptions[activeIndex]) {
+            selectValue(filteredOptions[activeIndex].value);
+          }
+        }
+      } else if (e.key === 'Tab') {
+        if (isOpen && isFiltering && activeIndex >= 0 && filteredOptions[activeIndex]) {
+          selectValue(filteredOptions[activeIndex].value);
+        } else {
+          closeMenu();
+        }
+      } else if (e.key === 'Escape') {
+        if (isOpen) {
+          e.preventDefault();
+          closeMenu();
+        }
+      }
+    });
+
+    input.addEventListener('blur', function () {
+      closeMenu();
+    });
+
+    menu.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+      var optEl = e.target.closest('.roast-admin-combobox-option');
+      if (optEl) {
+        selectValue(optEl.getAttribute('data-value'));
+      }
+    });
+
+    sel._comboboxSync = function () {
+      if (!isFiltering) {
+        input.value = getSelectedOptionText();
+      }
+      if (isOpen) {
+        renderMenu();
+      }
+    };
+
+    sel.focus = function () {
+      input.focus();
+    };
+
+    sel._comboboxSync();
+  }
+
+  function syncSearchableSelect(sel) {
+    if (sel._comboboxSync) {
+      sel._comboboxSync();
+    }
+  }
+
   function initAdminRoasts(options) {
     var apiUrl = options.apiUrl;
     var orderApiUrl = options.orderApiUrl;
@@ -899,6 +1142,7 @@
     orderDate.value = todayIso();
     roastDate.value = todayIso();
     pkgDate.value = todayIso();
+    enhanceSearchableSelect(orderBeanSelect, 'Search green bean by name or supplier...');
 
     function getStoredKey() {
       try {
@@ -1089,6 +1333,7 @@
       if (prevVal && Array.from(orderBeanSelect.options).some(function (o) { return o.value === prevVal; })) {
         orderBeanSelect.value = prevVal;
       }
+      syncSearchableSelect(orderBeanSelect);
     }
 
     function startEditOrder(orderId) {
@@ -1104,6 +1349,7 @@
       } else {
         orderBeanSelect.value = '__new__';
       }
+      syncSearchableSelect(orderBeanSelect);
       orderBeanName.value = ord.name;
       orderSupplier.value = ord.supplier;
       orderSupplierId.value = ord.supplierOrderId || '';
@@ -1128,6 +1374,7 @@
       orderCancelEditBtn.style.display = 'none';
       orderSubmitBtn.textContent = 'Save Green Bean Order';
       orderBeanSelect.value = '__new__';
+      syncSearchableSelect(orderBeanSelect);
       orderBeanName.value = '';
       orderSupplier.value = '';
       orderSupplierId.value = '';
@@ -1325,6 +1572,7 @@
 
       var sel = row.querySelector('.roast-comp-order');
       var gramsInput = row.querySelector('.roast-comp-grams');
+      enhanceSearchableSelect(sel, 'Search green bean order by name, ID, supplier...');
       sel.addEventListener('change', function () {
         syncRoastComponentRowMax(row);
         updateRoastLossPreview();
@@ -1354,6 +1602,7 @@
         var sel = row.querySelector('.roast-comp-order');
         var currentVal = sel.value;
         sel.innerHTML = buildGreenOrderOptionsHtml(currentVal);
+        syncSearchableSelect(sel);
         syncRoastComponentRowMax(row);
       });
       updateRoastLossPreview();
@@ -1631,6 +1880,7 @@
       var pctInput = row.querySelector('.pkg-comp-pct');
       var gramsInput = row.querySelector('.pkg-comp-grams');
 
+      enhanceSearchableSelect(sel, 'Search roast by bean name, roast ID, level...');
       sel.addEventListener('change', function () {
         syncComponentRowMax(row);
       });
@@ -1680,6 +1930,7 @@
         var sel = row.querySelector('.pkg-comp-roast');
         var currentVal = sel.value;
         sel.innerHTML = buildRoastOptionsHtml(currentVal);
+        syncSearchableSelect(sel);
         syncComponentRowMax(row);
       });
     }
@@ -2852,6 +3103,7 @@
     calculateGramsFromPercentage: calculateGramsFromPercentage,
     calculatePercentageFromGrams: calculatePercentageFromGrams,
     parseOrderLineItems: parseOrderLineItems,
+    filterSelectOptions: filterSelectOptions,
     computeBrowserHash: computeBrowserHash,
     ADMIN_PASSWORD_HASH: ADMIN_PASSWORD_HASH,
     DEFAULT_SALT: DEFAULT_SALT,
