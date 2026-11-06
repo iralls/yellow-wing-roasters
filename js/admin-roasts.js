@@ -1872,7 +1872,7 @@
       row.innerHTML = '<select class="roast-admin-select pkg-comp-roast" required>' +
         buildRoastOptionsHtml(defaultRoastId) +
         '</select>' +
-        '<input type="number" class="roast-admin-input pkg-comp-pct" step="0.5" min="0" max="100" placeholder="%" value="' + defaultPct + '" title="Blend percentage (%)">' +
+        '<input type="number" class="roast-admin-input pkg-comp-pct" step="any" min="0" max="100" placeholder="%" value="' + defaultPct + '" title="Blend percentage (%)">' +
         '<input type="number" class="roast-admin-input pkg-comp-grams" step="1" min="1" placeholder="Grams (g)" value="' + (defaultGrams || '') + '" required>' +
         '<button type="button" class="roast-admin-remove-btn" title="Remove component">&times;</button>';
 
