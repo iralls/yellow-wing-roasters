@@ -75,6 +75,11 @@ sitemap: false
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
       </a>
 
+      <a href="{{ '/roasts/preview/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
+        <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem; background: #faf4ec; border-color: #cbbaa8;">/roasts/preview/ (UI Alternatives)</span>
+        <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
+      </a>
+
       <a href="{{ '/pigeon-post/email-composer/' | relative_url }}" class="order-admin-card-item" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.15rem;">
         <span class="roast-admin-id-chip" style="font-size: 0.95rem; padding: 0.3rem 0.75rem;">/pigeon-post/email-composer/</span>
         <span style="color: #8a7060; font-size: 1.1rem; font-weight: bold;">&rarr;</span>
