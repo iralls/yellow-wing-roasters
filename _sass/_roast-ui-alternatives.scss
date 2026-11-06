@@ -1,0 +1,939 @@
+// ----------------------------------------------------
+// Yellow Wing Roasters - Simplified Roast Admin Previews
+// Styles for Alternative UI Designs (Studio, Cards, Minimal Ledger)
+// ----------------------------------------------------
+
+.roast-preview-banner {
+  background: #2c1e14;
+  color: #fdfbf7;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  box-shadow: 0 4px 12px rgba(44, 30, 20, 0.08);
+
+  .roast-preview-banner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #d4a359;
+    color: #2c1e14;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+  }
+
+  .roast-preview-banner-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .roast-preview-banner-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .roast-preview-banner-link {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #e5ddd3;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    &--active {
+      background: #fdfbf7;
+      color: #2c1e14;
+
+      &:hover {
+        background: #ffffff;
+        color: #2c1e14;
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------
+// Common Preview Toolbar & Pill Navigation
+// ----------------------------------------------------
+
+.roast-preview-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.roast-preview-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.roast-preview-tab-btn {
+  background: #ffffff;
+  border: 1px solid #d5cbc0;
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #554439;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  &:hover {
+    background: #f8f4ee;
+    color: #2c1e14;
+    border-color: #baa795;
+  }
+
+  &--active {
+    background: #2c1e14;
+    color: #fdfbf7;
+    border-color: #2c1e14;
+
+    &:hover {
+      background: #402c1d;
+      color: #fdfbf7;
+    }
+  }
+
+  .tab-count {
+    font-size: 0.72rem;
+    opacity: 0.75;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+  }
+
+  &--active .tab-count {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.roast-preview-search-wrap {
+  position: relative;
+  min-width: 16rem;
+  flex: 0 1 20rem;
+
+  input {
+    width: 100%;
+    height: 36px;
+    padding: 0 0.85rem 0 2rem;
+    font-size: 0.84rem;
+    background: #ffffff;
+    border: 1px solid #d0c4b6;
+    border-radius: 6px;
+    color: #2c1e14;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #2c1e14;
+      box-shadow: 0 0 0 2px rgba(44, 30, 20, 0.08);
+    }
+  }
+
+  &::before {
+    content: "🔍";
+    position: absolute;
+    left: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+.roast-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roast-preview-btn-primary {
+  background: #2c1e14;
+  color: #fdfbf7;
+  border: 1px solid #2c1e14;
+  padding: 0.45rem 0.95rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #4a3424;
+    border-color: #4a3424;
+  }
+}
+
+.roast-preview-btn-secondary {
+  background: #ffffff;
+  color: #554439;
+  border: 1px solid #cbbaa8;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #f7f3ee;
+    color: #2c1e14;
+    border-color: #baa795;
+  }
+}
+
+// ----------------------------------------------------
+// Option 1: Master-Detail Studio View (Compact Ergonomic)
+// ----------------------------------------------------
+
+.roast-studio-workspace {
+  display: grid;
+  grid-template-columns: 19.5rem 1fr;
+  gap: 1rem;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roast-studio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 720px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.roast-studio-card {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 5px;
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+
+  &:hover {
+    border-color: #bfa993;
+    box-shadow: 0 2px 6px rgba(44, 30, 20, 0.04);
+  }
+
+  &--active {
+    border-color: #2c1e14;
+    background: #faf6f0;
+    box-shadow: 0 0 0 1px #2c1e14;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .card-sub {
+    font-size: 0.74rem;
+    color: #7d6b5e;
+    margin-bottom: 0.35rem;
+  }
+
+  .card-metrics {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: 0.74rem;
+    color: #554439;
+  }
+
+  .metric-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #f0eae1;
+    padding: 0.12rem 0.45rem;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+}
+
+.roast-studio-inspector {
+  position: sticky;
+  top: 1rem;
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 6px;
+  padding: 0.85rem 1.05rem;
+  box-shadow: 0 2px 8px rgba(44, 30, 20, 0.03);
+
+  .inspector-header {
+    border-bottom: 1px solid #ece4da;
+    padding-bottom: 0.55rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .inspector-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0 0 0.15rem;
+    line-height: 1.25;
+  }
+
+  .inspector-subtitle {
+    font-size: 0.76rem;
+    color: #7d6b5e;
+    margin: 0;
+
+    a {
+      color: #7d6b5e;
+      text-decoration: underline;
+
+      &:hover {
+        color: #2c1e14;
+      }
+    }
+  }
+
+  .inspector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .inspector-metric-box {
+    background: #fbf8f4;
+    border: 1px solid #eee5da;
+    border-radius: 5px;
+    padding: 0.4rem 0.6rem;
+
+    .metric-label {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #8c786a;
+      margin-bottom: 0.15rem;
+      font-weight: 600;
+    }
+
+    .metric-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #2c1e14;
+      line-height: 1.2;
+    }
+  }
+
+  .inspector-section {
+    margin-bottom: 0.75rem;
+
+    .section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: #554439;
+      margin-bottom: 0.35rem;
+      border-bottom: 1px dashed #ebd9c8;
+      padding-bottom: 0.18rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #554439;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: #3d2d22;
+    }
+  }
+
+  .inspector-notes-box {
+    font-size: 0.8rem;
+    color: #2c1e14;
+    background: #faf6f0;
+    padding: 0.5rem 0.65rem;
+    border-radius: 4px;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .inspector-actions-row {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #eee5da;
+    flex-wrap: wrap;
+
+    .roast-preview-btn-primary,
+    .roast-preview-btn-secondary {
+      padding: 0.32rem 0.68rem;
+      font-size: 0.76rem;
+      border-radius: 4px;
+    }
+  }
+}
+
+// ----------------------------------------------------
+// Option 2: Visual Roastery Desk (Cards & Gauges)
+// ----------------------------------------------------
+
+.roast-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.roast-deck-card {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 8px;
+  padding: 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(44, 30, 20, 0.03);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(44, 30, 20, 0.06);
+    border-color: #cbbaa8;
+  }
+
+  .deck-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .deck-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .deck-card-supplier {
+    font-size: 0.8rem;
+    color: #7d6b5e;
+    margin-top: 0.15rem;
+  }
+
+  .deck-stock-bar-wrap {
+    margin: 0.85rem 0 0.5rem;
+
+    .stock-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    .stock-progress-track {
+      height: 8px;
+      background: #ece4da;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stock-progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      background: #27ae60;
+
+      &--low {
+        background: #e67e22;
+      }
+
+      &--depleted {
+        background: #c0392b;
+      }
+    }
+  }
+
+  .deck-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.85rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #f0eae1;
+    font-size: 0.78rem;
+  }
+}
+
+// ----------------------------------------------------
+// Option 3: Streamlined Minimal Ledger (Compact Table)
+// ----------------------------------------------------
+
+.roast-ledger-wrap {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(44, 30, 20, 0.03);
+}
+
+.roast-ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  text-align: left;
+
+  th {
+    background: #faf6f0;
+    color: #554439;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dfd7cc;
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f0eae1;
+    color: #2c1e14;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: #fdfcf9;
+  }
+
+  .primary-cell {
+    font-weight: 600;
+    color: #2c1e14;
+    line-height: 1.3;
+
+    .cell-sub {
+      font-weight: 400;
+      font-size: 0.76rem;
+      color: #7d6b5e;
+      margin-top: 0.15rem;
+    }
+  }
+
+  .metric-chip {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+}
+
+// ----------------------------------------------------
+// Stock Status Badges
+// ----------------------------------------------------
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--in-stock {
+    background: rgba(39, 174, 96, 0.12);
+    color: #229954;
+    border: 1px solid rgba(39, 174, 96, 0.25);
+  }
+
+  &--low {
+    background: rgba(230, 126, 34, 0.12);
+    color: #d35400;
+    border: 1px solid rgba(230, 126, 34, 0.25);
+  }
+
+  &--depleted {
+    background: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
+    border: 1px solid rgba(192, 57, 43, 0.25);
+  }
+}
+
+// Comparison Overview Card
+.roast-preview-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 1.5rem 0 2rem;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roast-preview-compare-card {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(44, 30, 20, 0.04);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: #2c1e14;
+  }
+
+  .compare-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8c786a;
+    margin-bottom: 0.4rem;
+  }
+
+  .compare-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0 0 0.5rem;
+  }
+
+  .compare-desc {
+    font-size: 0.85rem;
+    color: #554439;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+
+  .compare-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+
+    li {
+      font-size: 0.8rem;
+      color: #6e5e54;
+      margin-bottom: 0.35rem;
+      padding-left: 1.1rem;
+      position: relative;
+
+      &::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #27ae60;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .compare-cta {
+    display: block;
+    text-align: center;
+    background: #2c1e14;
+    color: #fdfbf7;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: #4a3424;
+    }
+  }
+}
+
+// ----------------------------------------------------
+// Compact Form & Entry Styling
+// ----------------------------------------------------
+
+.roast-studio-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  .studio-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ece4da;
+    padding-bottom: 0.45rem;
+    margin-bottom: 0.25rem;
+
+    h4 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #2c1e14;
+    }
+  }
+
+  .studio-field-group {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .studio-field {
+    flex: 1;
+    min-width: 7.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    label {
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #7d6b5e;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.32rem 0.5rem;
+      font-family: inherit;
+      font-size: 0.78rem;
+      color: #2c1e14;
+      background: #fdfbf7;
+      border: 1px solid #d5cbc0;
+      border-radius: 4px;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #2c1e14;
+        background: #ffffff;
+      }
+    }
+  }
+
+  .studio-calc-box {
+    background: #faf6f0;
+    border: 1px solid #eee5da;
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.76rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #554439;
+
+    strong {
+      color: #2c1e14;
+    }
+  }
+
+  .studio-components-section {
+    border: 1px solid #eee5da;
+    border-radius: 4px;
+    padding: 0.45rem 0.6rem;
+    background: #faf8f5;
+
+    .components-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #7d6b5e;
+    }
+
+    .component-row {
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      margin-bottom: 0.3rem;
+
+      select {
+        flex: 1.4;
+        padding: 0.25rem 0.4rem;
+        font-size: 0.74rem;
+      }
+
+      input {
+        flex: 0.8;
+        padding: 0.25rem 0.4rem;
+        font-size: 0.74rem;
+      }
+
+      .btn-remove {
+        background: none;
+        border: none;
+        color: #c0392b;
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0 0.25rem;
+        line-height: 1;
+
+        &:hover {
+          color: #962d22;
+        }
+      }
+    }
+  }
+
+  .studio-form-actions {
+    display: flex;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid #eee5da;
+
+    button {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+    }
+  }
+}
+
+// ----------------------------------------------------
+// Modal for Option 2 & Option 3
+// ----------------------------------------------------
+
+.roast-preview-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(44, 30, 20, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+.roast-preview-modal {
+  background: #ffffff;
+  border: 1px solid #dfd7cc;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 30rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.clickable-chip {
+  cursor: pointer;
+  background: #f0eae1;
+  color: #2c1e14;
+  border: 1px solid #d5cbc0;
+  border-radius: 4px;
+  padding: 0.12rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #2c1e14;
+    color: #fdfbf7;
+    border-color: #2c1e14;
+  }
+}
+
+.roast-preview-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: #27ae60;
+  color: #ffffff;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  z-index: 10001;
+  animation: toastFadeIn 0.2s ease;
+}
+
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
