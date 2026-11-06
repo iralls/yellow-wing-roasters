@@ -394,6 +394,70 @@
     font-size: 0.72rem;
     font-variant-numeric: tabular-nums;
   }
+
+  .primary-cell {
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .cell-sub {
+    font-weight: 400;
+    font-size: 0.67rem;
+    color: #7d6b5e;
+    margin-top: 0.12rem;
+    line-height: 1.25;
+
+    a {
+      color: #7d6b5e;
+      text-decoration: underline;
+
+      &:hover {
+        color: #2c1e14;
+      }
+    }
+  }
+
+  .metric-chip {
+    font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.73rem;
+    font-weight: 600;
+  }
+
+  .metric-loss {
+    color: #b35300;
+    font-weight: 600;
+    font-size: 0.69rem;
+  }
+}
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--in-stock {
+    background: rgba(39, 174, 96, 0.12);
+    color: #1e7e44;
+    border: 1px solid rgba(39, 174, 96, 0.25);
+  }
+
+  &--low {
+    background: rgba(230, 126, 34, 0.12);
+    color: #b35300;
+    border: 1px solid rgba(230, 126, 34, 0.25);
+  }
+
+  &--depleted {
+    background: rgba(192, 57, 43, 0.12);
+    color: #a93226;
+    border: 1px solid rgba(192, 57, 43, 0.25);
+  }
 }
 
 .roast-admin-id-chip {

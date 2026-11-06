@@ -1274,10 +1274,10 @@
 
       var html = '<table class="roast-admin-table">' +
         '<thead><tr>' +
-        renderSortTh('Bean Name', 'name', activeBeansSortCol, activeBeansSortDir, false) +
-        renderSortTh('Supplier', 'supplier', activeBeansSortCol, activeBeansSortDir, false) +
-        renderSortTh('Active Stock (g)', 'stockGrams', activeBeansSortCol, activeBeansSortDir, false) +
-        renderSortTh('Active Stock (lbs)', 'stockLbs', activeBeansSortCol, activeBeansSortDir, false) +
+        renderSortTh('Green Bean & Supplier', 'name', activeBeansSortCol, activeBeansSortDir, false) +
+        '<th>Status</th>' +
+        renderSortTh('Active Stock', 'stockGrams', activeBeansSortCol, activeBeansSortDir, true) +
+        '<th style="text-align: right;">Capacity Left</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (b) {
@@ -1285,6 +1285,14 @@
         var nameCell = b.url
           ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(b.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(b.name) + '</strong>';
+
+        var totalPurchased = state.greenBeanOrders.filter(function (o) { return o.name === b.name; }).reduce(function (sum, o) {
+          return sum + (Number(o.weightGrams) || lbsToGrams(o.weightLbs));
+        }, 0);
+        var capacityPct = totalPurchased > 0 ? Math.round((b.activeStockGrams / totalPurchased) * 100) : 0;
+        var statusClass = b.activeStockGrams <= 0 ? 'depleted' : (b.activeStockGrams < GRAMS_PER_LB ? 'low' : 'in-stock');
+        var statusLabel = b.activeStockGrams <= 0 ? 'Depleted' : (b.activeStockGrams < GRAMS_PER_LB ? 'Low Stock' : 'In Stock');
+        var statusBadge = '<span class="stock-badge stock-badge--' + statusClass + '">' + statusLabel + '</span>';
 
         var rowClass = '';
         if (b.activeStockGrams <= 0) {
@@ -1296,10 +1304,10 @@
         }
 
         html += '<tr' + rowClass + '>' +
-          '<td>' + nameCell + '</td>' +
-          '<td>' + escapeHtml(b.supplier) + '</td>' +
-          '<td class="mono"><strong>' + b.activeStockGrams.toLocaleString() + ' g</strong></td>' +
-          '<td class="mono">' + lbs + ' lbs</td>' +
+          '<td class="primary-cell">' + nameCell + '<div class="cell-sub">' + escapeHtml(b.supplier) + '</div></td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td class="mono" style="text-align: right;"><strong>' + b.activeStockGrams.toLocaleString() + ' g</strong><div class="cell-sub">' + lbs + ' lbs</div></td>' +
+          '<td class="mono" style="text-align: right;"><strong>' + capacityPct + '%</strong><div class="cell-sub">of ordered</div></td>' +
           '</tr>';
       });
 
@@ -1455,16 +1463,11 @@
 
       var html = '<table class="roast-admin-table">' +
         '<thead><tr>' +
-        renderSortTh('Order ID', 'orderId', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Date', 'date', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Bean Name', 'name', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Supplier', 'supplier', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Supplier Order #', 'supplierOrderId', gbOrdersSortCol, gbOrdersSortDir, false) +
-        renderSortTh('Cost', 'cost', gbOrdersSortCol, gbOrdersSortDir, true) +
-        renderSortTh('Weight (lbs)', 'weightLbs', gbOrdersSortCol, gbOrdersSortDir, true) +
-        renderSortTh('Adj (g)', 'adjustGrams', gbOrdersSortCol, gbOrdersSortDir, true) +
-        renderSortTh('Total (g)', 'weightGrams', gbOrdersSortCol, gbOrdersSortDir, true) +
-        renderSortTh('Available (g)', 'availableGrams', gbOrdersSortCol, gbOrdersSortDir, true) +
+        renderSortTh('Order & Date', 'orderId', gbOrdersSortCol, gbOrdersSortDir, false) +
+        renderSortTh('Bean & Supplier', 'name', gbOrdersSortCol, gbOrdersSortDir, false) +
+        renderSortTh('Weight & Cost', 'weightLbs', gbOrdersSortCol, gbOrdersSortDir, true) +
+        renderSortTh('Stock Remaining', 'availableGrams', gbOrdersSortCol, gbOrdersSortDir, true) +
+        '<th style="text-align: right;">Action</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (o) {
@@ -1472,9 +1475,10 @@
         var adjVal = Number(o.adjustGrams) || 0;
         var adjStr = (adjVal > 0 ? '+' : '') + adjVal + ' g';
         var availGrams = o.availableGrams !== undefined ? o.availableGrams : orderGrams;
+        var availPct = orderGrams > 0 ? Math.round((availGrams / orderGrams) * 100) : 0;
         var availCell = availGrams > 0
-          ? ('<strong>' + availGrams.toLocaleString() + ' g</strong>')
-          : '<span style="color:#8a7060;">0 g (Depleted)</span>';
+          ? ('<strong style="color: #1e7e44;">' + availGrams.toLocaleString() + ' g</strong>')
+          : '<span style="color:#a93226; font-weight: 600;">0 g (Depleted)</span>';
         var beanLink = o.url
           ? '<a href="' + escapeHtml(o.url) + '" target="_blank" rel="noopener"><strong>' + escapeHtml(o.name) + '</strong> &nearr;</a>'
           : '<strong>' + escapeHtml(o.name) + '</strong>';
@@ -1485,16 +1489,14 @@
           : '';
 
         html += '<tr data-row-id="' + escapeHtml(o.orderId) + '"' + rowStyle + '>' +
-          '<td><button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-edit-order="' + escapeHtml(o.orderId) + '" title="Edit order ' + escapeHtml(o.orderId) + '">' + escapeHtml(o.orderId) + '</button></td>' +
-          '<td class="mono">' + escapeHtml(o.date) + '</td>' +
-          '<td>' + beanLink + '</td>' +
-          '<td>' + escapeHtml(o.supplier) + '</td>' +
-          '<td class="mono">' + supplierOrderCell + '</td>' +
-          '<td class="mono" style="text-align: right;">$' + Number(o.cost).toFixed(2) + '</td>' +
-          '<td class="mono" style="text-align: right;">' + Number(o.weightLbs).toFixed(2) + ' lbs</td>' +
-          '<td class="mono" style="text-align: right;">' + adjStr + '</td>' +
-          '<td class="mono" style="text-align: right;">' + orderGrams.toLocaleString() + ' g</td>' +
-          '<td class="mono" style="text-align: right;">' + availCell + '</td>' +
+          '<td class="primary-cell">' +
+          '  <button type="button" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-edit-order="' + escapeHtml(o.orderId) + '" title="Edit order ' + escapeHtml(o.orderId) + '">' + escapeHtml(o.orderId) + '</button>' +
+          '  <div class="cell-sub"><span class="mono">' + escapeHtml(o.date) + '</span>' + (supplierOrderCell ? ' &bull; PO: ' + supplierOrderCell : '') + '</div>' +
+          '</td>' +
+          '<td>' + beanLink + '<div class="cell-sub">' + escapeHtml(o.supplier) + '</div></td>' +
+          '<td class="mono" style="text-align: right;">' + Number(o.weightLbs).toFixed(2) + ' lbs ($' + Number(o.cost).toFixed(2) + ')<div class="cell-sub">' + orderGrams.toLocaleString() + ' g (' + adjStr + ')</div></td>' +
+          '<td class="mono" style="text-align: right;">' + availCell + '<div class="cell-sub">' + availPct + '% left</div></td>' +
+          '<td style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-order="' + escapeHtml(o.orderId) + '">Edit</button></td>' +
           '</tr>';
       });
 
@@ -1704,17 +1706,12 @@
 
       var html = '<table class="roast-admin-table">' +
         '<thead><tr>' +
-        renderSortTh('Roast ID', 'roastId', roastLogSortCol, roastLogSortDir, false) +
-        renderSortTh('Date', 'date', roastLogSortCol, roastLogSortDir, false) +
-        renderSortTh('Bean Name', 'beanName', roastLogSortCol, roastLogSortDir, false) +
+        renderSortTh('Batch & Date', 'roastId', roastLogSortCol, roastLogSortDir, false) +
+        renderSortTh('Bean & Roast Level', 'beanName', roastLogSortCol, roastLogSortDir, false) +
         '<th>Green Orders</th>' +
-        renderSortTh('Green (g)', 'greenGrams', roastLogSortCol, roastLogSortDir, true) +
-        renderSortTh('End (g)', 'endGrams', roastLogSortCol, roastLogSortDir, true) +
-        renderSortTh('Loss %', 'lossPct', roastLogSortCol, roastLogSortDir, true) +
-        renderSortTh('Roast Level', 'roastLevel', roastLogSortCol, roastLogSortDir, false) +
-        '<th>Profile</th>' +
+        renderSortTh('Yield & Loss', 'lossPct', roastLogSortCol, roastLogSortDir, true) +
         '<th>Notes</th>' +
-        '<th>Actions</th>' +
+        '<th style="text-align: right;">Action</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (r) {
@@ -1730,17 +1727,12 @@
         var rowStyle = editingRoastId === r.roastId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(r.roastId) + '"' + rowStyle + '>' +
-          '<td><span class="roast-admin-id-chip">' + escapeHtml(r.roastId) + '</span></td>' +
-          '<td class="mono">' + escapeHtml(r.date) + '</td>' +
-          '<td><strong>' + escapeHtml(r.beanName) + '</strong></td>' +
+          '<td class="primary-cell"><span class="roast-admin-id-chip">' + escapeHtml(r.roastId) + '</span><div class="cell-sub mono">' + escapeHtml(r.date) + '</div></td>' +
+          '<td><strong>' + escapeHtml(r.beanName) + '</strong><div class="cell-sub">Level: ' + escapeHtml(lvlLabel) + (profileCell ? ' &bull; ' + profileCell : '') + '</div></td>' +
           '<td>' + (gCompsHtml || '—') + '</td>' +
-          '<td class="mono">' + r.greenWeightGrams + ' g</td>' +
-          '<td class="mono">' + r.endWeightGrams + ' g</td>' +
-          '<td class="mono">' + Number(r.weightLossPct).toFixed(1) + '%</td>' +
-          '<td>' + escapeHtml(lvlLabel) + '</td>' +
-          '<td>' + profileCell + '</td>' +
-          '<td>' + escapeHtml(r.notes || '') + '</td>' +
-          '<td><button type="button" class="order-admin-btn-sm" data-edit-roast="' + escapeHtml(r.roastId) + '">Edit</button></td>' +
+          '<td class="mono" style="text-align: right;">' + r.greenWeightGrams + 'g &rarr; ' + r.endWeightGrams + 'g <span class="metric-loss">(-' + Number(r.weightLossPct).toFixed(1) + '%)</span></td>' +
+          '<td style="font-size: 0.74rem; color: #554439; max-width: 16rem;">' + escapeHtml(r.notes || '—') + '</td>' +
+          '<td style="text-align: right;"><button type="button" class="order-admin-btn-sm" data-edit-roast="' + escapeHtml(r.roastId) + '">Edit</button></td>' +
           '</tr>';
       });
 
@@ -2141,16 +2133,12 @@
 
       var html = '<table class="roast-admin-table">' +
         '<thead><tr>' +
-        renderSortTh('Log ID', 'logId', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Date', 'date', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Purpose', 'purpose', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Order ID', 'orderId', pkgLogSortCol, pkgLogSortDir, false) +
-        renderSortTh('Product / Label', 'product', pkgLogSortCol, pkgLogSortDir, false) +
-        '<th>Roast IDs</th>' +
-        renderSortTh('Weight (g)', 'weightGrams', pkgLogSortCol, pkgLogSortDir, true) +
-        renderSortTh('Bag Size', 'bagSize', pkgLogSortCol, pkgLogSortDir, false) +
+        renderSortTh('Log & Date', 'logId', pkgLogSortCol, pkgLogSortDir, false) +
+        renderSortTh('Product & Purpose', 'product', pkgLogSortCol, pkgLogSortDir, false) +
+        renderSortTh('Bag & Weight', 'bagSize', pkgLogSortCol, pkgLogSortDir, false) +
+        '<th>Roast Batches Used</th>' +
         '<th>Notes</th>' +
-        '<th>Actions</th>' +
+        '<th style="text-align: right;">Action</th>' +
         '</tr></thead><tbody>';
 
       rows.forEach(function (p) {
@@ -2159,23 +2147,19 @@
           return '<a href="#tab=roasts&id=' + encodeURIComponent(c.roastId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" data-nav-tab="roasts" data-nav-id="' + escapeHtml(c.roastId) + '" title="View roast ' + escapeHtml(c.roastId) + '">' + escapeHtml(c.roastId) + '</a>';
         }).join(' ');
         var totalGrams = comps.reduce(function (acc, c) { return acc + (Number(c.weightGrams) || 0); }, 0);
-        var orderIdCell = '—';
+        var orderIdCell = '';
         if (p.orderId) {
           orderIdCell = '<a href="/order/admin/?search=' + encodeURIComponent(p.orderId) + '" class="roast-admin-id-chip roast-admin-id-chip--clickable" target="_blank" rel="noopener" title="Open customer order #' + escapeHtml(p.orderId) + ' in Order Manager">#' + escapeHtml(p.orderId) + ' &nearr;</a>';
         }
         var rowStyle = editingPkgId === p.logId ? ' style="background: rgba(212, 163, 89, 0.14);"' : '';
 
         html += '<tr data-row-id="' + escapeHtml(p.logId) + '"' + rowStyle + '>' +
-          '<td><span class="roast-admin-id-chip">' + escapeHtml(p.logId) + '</span></td>' +
-          '<td class="mono">' + escapeHtml(p.date) + '</td>' +
-          '<td>' + escapeHtml(p.purpose) + '</td>' +
-          '<td>' + orderIdCell + '</td>' +
-          '<td><strong>' + escapeHtml(p.product) + '</strong></td>' +
-          '<td>' + compsHtml + '</td>' +
-          '<td class="mono"><strong>' + totalGrams.toLocaleString() + ' g</strong></td>' +
-          '<td>' + escapeHtml(p.bagSize) + '</td>' +
-          '<td>' + escapeHtml(p.notes || '') + '</td>' +
-          '<td style="white-space: nowrap;">' +
+          '<td class="primary-cell"><span class="roast-admin-id-chip">' + escapeHtml(p.logId) + '</span><div class="cell-sub mono">' + escapeHtml(p.date) + '</div></td>' +
+          '<td><strong>' + escapeHtml(p.product) + '</strong><div class="cell-sub">' + escapeHtml(p.purpose) + (orderIdCell ? ' &bull; ' + orderIdCell : '') + '</div></td>' +
+          '<td class="mono">' + escapeHtml(p.bagSize) + '<div class="cell-sub"><strong>' + totalGrams.toLocaleString() + ' g</strong></div></td>' +
+          '<td>' + (compsHtml || '—') + '</td>' +
+          '<td style="font-size: 0.74rem; color: #554439; max-width: 16rem;">' + escapeHtml(p.notes || '—') + '</td>' +
+          '<td style="text-align: right; white-space: nowrap;">' +
           '<button type="button" class="order-admin-btn-sm" data-edit-pkg="' + escapeHtml(p.logId) + '">Edit</button> ' +
           '<button type="button" class="order-admin-btn-sm" data-copy-pkg="' + escapeHtml(p.logId) + '" title="Copy blend and bag size to new packaging log">Copy</button>' +
           '</td>' +

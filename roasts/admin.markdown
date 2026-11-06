@@ -19,8 +19,9 @@ sitemap: false
   .ywr-admin-authenticated #roast-admin-dashboard-section { display: block !important; }
 </style>
 
+<div class="roast-minimal-vertical">
 <div class="roast-admin-terminal">
-<div class="order-admin-container">
+<div class="order-admin-container" style="max-width: 72rem;">
 
   <div class="order-admin-header-compact roast-admin-header-compact">
     <h1 class="order-admin-page-title">Roaster Inventory &amp; Roast Log</h1>
@@ -50,7 +51,6 @@ sitemap: false
       <div class="order-admin-header-row">
         <div id="roast-admin-stats" class="order-admin-stats"></div>
         <div class="order-admin-actions">
-          <a href="{{ '/roasts/preview/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none; background: #f0e6d8; color: #5a3d28; font-weight: 600;" title="Compare simplified roast admin alternatives">UI Previews</a>
           <a href="{{ '/admin/' | relative_url }}" class="order-admin-btn-sm" style="text-decoration: none;">Admin</a>
           <button type="button" id="roast-admin-refresh-btn" class="order-admin-btn-sm" title="Refresh inventory data">Refresh</button>
           <button type="button" id="roast-admin-logout-btn" class="order-admin-btn-sm order-admin-btn-sm--logout" title="Log out of console">Log Out</button>
@@ -518,6 +518,7 @@ sitemap: false
 
   </div>
 
+</div>
 </div>
 </div>
 
