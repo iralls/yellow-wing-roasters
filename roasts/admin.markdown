@@ -105,6 +105,7 @@ sitemap: false
             <div class="query-drawer-row">
               <span class="query-drawer-label">Group By:</span>
               <div class="order-admin-filters">
+                <button type="button" class="order-admin-filter-pill" data-toggle-groupby="beans:all">All (Total Rollup)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="beans:supplier">Supplier</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="beans:bean">Bean Name</button>
               </div>
@@ -260,6 +261,7 @@ sitemap: false
             <div class="query-drawer-row">
               <span class="query-drawer-label">Group By:</span>
               <div class="order-admin-filters">
+                <button type="button" class="order-admin-filter-pill" data-toggle-groupby="orders:all">All (Total Rollup)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="orders:month">Date (Month)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="orders:year">Date (Year)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="orders:date">Date (Day)</button>
@@ -441,6 +443,7 @@ sitemap: false
             <div class="query-drawer-row">
               <span class="query-drawer-label">Group By:</span>
               <div class="order-admin-filters">
+                <button type="button" class="order-admin-filter-pill" data-toggle-groupby="roasts:all">All (Total Rollup)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="roasts:month">Date (Month)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="roasts:year">Date (Year)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="roasts:date">Date (Day)</button>
@@ -656,6 +659,7 @@ sitemap: false
             <div class="query-drawer-row">
               <span class="query-drawer-label">Group By:</span>
               <div class="order-admin-filters">
+                <button type="button" class="order-admin-filter-pill" data-toggle-groupby="packaging:all">All (Total Rollup)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="packaging:month">Date (Month)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="packaging:year">Date (Year)</button>
                 <button type="button" class="order-admin-filter-pill" data-toggle-groupby="packaging:date">Date (Day)</button>

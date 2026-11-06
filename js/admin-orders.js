@@ -14,6 +14,7 @@
   var ADMIN_PASSWORD_HASH = 'fe65aec7e9795f3d9f4d55755b8c3bc82818e8955ac270c5ab5ebc09e28b3de9';
 
   var ORDER_DIMENSION_LABELS = {
+    all: 'Group',
     month: 'Month',
     year: 'Year',
     date: 'Date',
@@ -391,6 +392,7 @@
       var needsLineItemBreakout = groupBys.indexOf('roast') !== -1 || groupBys.indexOf('size') !== -1;
 
       function resolveOrderDim(dim, li) {
+        if (dim === 'all') return 'All Orders';
         if (dim === 'year') return dt.year;
         if (dim === 'month') return dt.yearMonth;
         if (dim === 'date') return dt.date;

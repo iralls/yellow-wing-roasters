@@ -96,6 +96,7 @@ sitemap: false
             <div class="query-drawer-row">
               <span class="query-drawer-label">Group By:</span>
               <div id="order-totals-group-pills" class="order-admin-filters">
+                <button type="button" class="order-admin-filter-pill" data-group="all">All (Total Rollup)</button>
                 <button type="button" class="order-admin-filter-pill" data-group="month">Month</button>
                 <button type="button" class="order-admin-filter-pill" data-group="year">Year</button>
                 <button type="button" class="order-admin-filter-pill" data-group="date">Date (Day)</button>

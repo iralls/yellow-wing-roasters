@@ -21,6 +21,7 @@
   var GRAMS_PER_LB = 453.592;
 
   var DIMENSION_LABELS = {
+    all: 'Group',
     month: 'Date (Month)',
     year: 'Date (Year)',
     date: 'Date (Day)',
@@ -764,7 +765,10 @@
         filtered.forEach(function (b) {
           var dimVals = {};
           var keyParts = gCols.map(function (c) {
-            var v = c === 'supplier' ? (b.supplier || 'Unknown') : b.name;
+            var v;
+            if (c === 'all') v = 'All Green Beans';
+            else if (c === 'supplier') v = b.supplier || 'Unknown';
+            else v = b.name;
             dimVals[c] = v;
             return v;
           });
@@ -1035,7 +1039,8 @@
           var dimVals = {};
           var keyParts = gCols.map(function (c) {
             var v = '—';
-            if (c === 'month') v = ym.yearMonth;
+            if (c === 'all') v = 'All Green Orders';
+            else if (c === 'month') v = ym.yearMonth;
             else if (c === 'year') v = ym.year;
             else if (c === 'date') v = o.date;
             else if (c === 'supplier') v = o.supplier;
@@ -1425,7 +1430,8 @@
           var dimVals = {};
           var keyParts = gCols.map(function (c) {
             var v = '—';
-            if (c === 'month') v = ym.yearMonth;
+            if (c === 'all') v = 'All Roasts';
+            else if (c === 'month') v = ym.yearMonth;
             else if (c === 'year') v = ym.year;
             else if (c === 'date') v = r.date;
             else if (c === 'bean') v = r.beanName || 'Unknown Bean';
@@ -1925,7 +1931,8 @@
           var dimVals = {};
           var keyParts = gCols.map(function (c) {
             var v = '—';
-            if (c === 'month') v = ym.yearMonth;
+            if (c === 'all') v = 'All Packaged Batches';
+            else if (c === 'month') v = ym.yearMonth;
             else if (c === 'year') v = ym.year;
             else if (c === 'date') v = p.date;
             else if (c === 'product') v = p.product;
