@@ -3,7 +3,7 @@ title: "Ethiopia Yirgacheffe"
 slug: ethiopia-yirgacheffe
 category: single origin
 order: 10
-roast_level: 2
+roast_level: 1
 region: Yirgacheffe, Gedeo Zone
 elevation: 1,900 – 2,200m
 descriptor: floral and delicate
