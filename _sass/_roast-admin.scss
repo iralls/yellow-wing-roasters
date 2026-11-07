@@ -566,6 +566,21 @@
     text-align: right;
   }
 
+  .order-col-customer {
+    min-width: 9.5rem;
+  }
+
+  .order-col-items {
+    min-width: 17rem;
+  }
+
+  .order-col-bags {
+    width: 3.2rem;
+    min-width: 2.8rem;
+    white-space: nowrap;
+    text-align: right;
+  }
+
   .order-col-orders {
     width: 6.5rem;
     min-width: 5.5rem;
@@ -574,15 +589,15 @@
   }
 
   .order-col-weight {
-    width: 8.5rem;
-    min-width: 7.5rem;
+    width: 5.2rem;
+    min-width: 4.6rem;
     white-space: nowrap;
     text-align: right;
   }
 
   .order-col-revenue {
-    width: 7.5rem;
-    min-width: 6.5rem;
+    width: 4.8rem;
+    min-width: 4.2rem;
     white-space: nowrap;
     text-align: right;
   }

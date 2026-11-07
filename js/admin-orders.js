@@ -204,6 +204,36 @@
     return parts;
   }
 
+  function formatOrderItemHtml(rawLine) {
+    if (!rawLine) return '';
+    var str = String(rawLine).trim();
+
+    var qty = 1;
+    var rest = str;
+    var qtyMatch = rest.match(/^(\d+)\s*[x×]\s*(.+)$/i);
+    if (qtyMatch) {
+      qty = parseInt(qtyMatch[1], 10);
+      rest = qtyMatch[2].trim();
+    }
+
+    // Extract trailing details in parentheses if any
+    var meta = '';
+    var parenMatch = rest.match(/\s*\((.*)\)\s*$/);
+    if (parenMatch) {
+      meta = parenMatch[1].trim();
+      rest = rest.replace(/\s*\(.*\)\s*$/, '').trim();
+    }
+
+    var html = '<div class="order-item-row">';
+    html += '<span class="order-item-qty">' + qty + '×</span>';
+    html += '<span class="order-item-name">' + escapeHtml(rest) + '</span>';
+    if (meta) {
+      html += '<span class="order-item-meta">' + escapeHtml(meta) + '</span>';
+    }
+    html += '</div>';
+    return html;
+  }
+
   function parseOrderLineItems(rawItems, bagSizes) {
     var lines = splitOrderItemsRaw(rawItems);
     var parsed = [];
@@ -653,9 +683,9 @@
       var itemLines = splitOrderItemsRaw(order.items);
       var itemsBoxHtml = itemLines.length === 0
         ? '<div class="order-admin-items-box">No items listed</div>'
-        : '<div class="order-admin-items-box"><ul class="order-admin-items-list">' +
-          itemLines.map(function (it) { return '<li>' + escapeHtml(it) + '</li>'; }).join('') +
-          '</ul></div>';
+        : '<div class="order-admin-items-box"><div class="order-items-flow">' +
+          itemLines.map(function (it) { return formatOrderItemHtml(it); }).join('') +
+          '</div></div>';
 
       var formattedTotal = formatPrice(order.total);
       var totalHtml = formattedTotal
@@ -997,9 +1027,9 @@
         var html = '<table class="roast-admin-table"><thead><tr>' +
           renderSortTh('Date', 'date', orderRawSortCol, orderRawSortDir, false) +
           renderSortTh('Order', 'orderId', orderRawSortCol, orderRawSortDir, false) +
-          renderSortTh('Customer', 'customer', orderRawSortCol, orderRawSortDir, false) +
-          '<th>Items</th>';
-        if (bagsAgg !== 'hide') html += renderSortTh('Bags', 'bags', orderRawSortCol, orderRawSortDir, true, 'order-col-orders');
+          renderSortTh('Customer', 'customer', orderRawSortCol, orderRawSortDir, false, 'order-col-customer') +
+          '<th class="order-col-items">Items</th>';
+        if (bagsAgg !== 'hide') html += renderSortTh('Bags', 'bags', orderRawSortCol, orderRawSortDir, true, 'order-col-bags');
         if (weightAgg !== 'hide') html += renderSortTh('Weight', 'weight', orderRawSortCol, orderRawSortDir, true, 'order-col-weight');
         if (revAgg !== 'hide') html += renderSortTh('Total', 'revenue', orderRawSortCol, orderRawSortDir, true, 'order-col-revenue');
         html += renderSortTh('Delivery', 'deliveryMethod', orderRawSortCol, orderRawSortDir, false) +
@@ -1011,16 +1041,18 @@
           var isSelected = r.orderId === selectedOrderId;
           var badgeClass = getStatusBadgeClass(r.status);
           var itemLines = splitOrderItemsRaw(r.items);
-          var itemsHtml = itemLines.map(function (line) {
-            return '<div style="font-size: 0.78rem; line-height: 1.35;">' + escapeHtml(line) + '</div>';
-          }).join('');
+          var itemsHtml = '<div class="order-items-flow">' +
+            itemLines.map(function (line) {
+              return formatOrderItemHtml(line);
+            }).join('') +
+            '</div>';
 
           html += '<tr class="order-admin-table-row-selectable' + (isSelected ? ' is-selected' : '') + '" data-order-id="' + escapeHtml(r.orderId) + '">' +
             '<td class="mono">' + escapeHtml(r.dateIso) + '</td>' +
             '<td class="mono"><strong>#' + escapeHtml(r.orderId) + '</strong></td>' +
-            '<td><strong>' + escapeHtml(r.customer) + '</strong><div class="cell-sub">' + escapeHtml(r.email) + '</div></td>' +
-            '<td>' + itemsHtml + '</td>';
-          if (bagsAgg !== 'hide') html += '<td class="mono order-col-orders" style="text-align: right;">' + r.bagsCount + '</td>';
+            '<td class="order-col-customer"><strong>' + escapeHtml(r.customer) + '</strong><div class="cell-sub">' + escapeHtml(r.email) + '</div></td>' +
+            '<td class="order-col-items">' + itemsHtml + '</td>';
+          if (bagsAgg !== 'hide') html += '<td class="mono order-col-bags" style="text-align: right;">' + r.bagsCount + '</td>';
           if (weightAgg !== 'hide') html += '<td class="mono order-col-weight" style="text-align: right;">' + r.weightLbs.toFixed(2) + ' lbs</td>';
           if (revAgg !== 'hide') html += '<td class="mono order-col-revenue" style="text-align: right;">$' + r.revenue.toFixed(2) + '</td>';
           html += '<td>' + escapeHtml(r.deliveryMethod) + (r.city ? '<div class="cell-sub">' + escapeHtml(r.city) + '</div>' : '') + '</td>' +
@@ -1032,7 +1064,7 @@
         var totBagsStr = bagsAgg === 'avg' ? totBags.toFixed(1) : Math.round(totBags);
         html += '</tbody><tfoot><tr style="font-weight: 700; background: #fdfbf7; border-top: 2px solid #ded5c9;">' +
           '<td colspan="4">Summary (' + rawRows.length + ' orders)</td>';
-        if (bagsAgg !== 'hide') html += '<td class="mono order-col-orders" style="text-align: right;">' + totBagsStr + '<div class="cell-sub">' + escapeHtml(bagsAgg.toUpperCase()) + '</div></td>';
+        if (bagsAgg !== 'hide') html += '<td class="mono order-col-bags" style="text-align: right;">' + totBagsStr + '<div class="cell-sub">' + escapeHtml(bagsAgg.toUpperCase()) + '</div></td>';
         if (weightAgg !== 'hide') html += '<td class="mono order-col-weight" style="text-align: right;">' + totWeight.toFixed(2) + ' lbs<div class="cell-sub">' + escapeHtml(weightAgg.toUpperCase()) + '</div></td>';
         if (revAgg !== 'hide') html += '<td class="mono order-col-revenue" style="text-align: right;">$' + totRev.toFixed(2) + '<div class="cell-sub">' + escapeHtml(revAgg.toUpperCase()) + '</div></td>';
         html += '<td colspan="3"></td></tr></tfoot></table>';
