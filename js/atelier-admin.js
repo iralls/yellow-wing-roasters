@@ -1514,14 +1514,13 @@
           '<h3 class="atelier-table-title">Live Customer Orders</h3>' +
           '<span class="atelier-count-pill">' + filtered.length + ' orders</span>' +
           '</div>' + banner + '<div class="atelier-table-wrap"><table class="atelier-table"><thead><tr>' +
-          renderSortTh('DATE', 'date', 'orders', false, '5.25rem') +
-          renderSortTh('ORDER #', 'orderId', 'orders', false, '4.5rem') +
-          renderSortTh('CUSTOMER', 'customer', 'orders', false, '10.5rem') +
-          '<th style="width: 44%; min-width: 18rem;">ORDERED ITEMS</th>' +
-          renderSortTh('TOTAL', 'total', 'orders', true, '4rem') +
-          renderSortTh('DELIVERY', 'deliveryMethod', 'orders', false, '5.75rem') +
+          renderSortTh('DATE', 'date', 'orders', false, '5rem') +
+          renderSortTh('ORDER #', 'orderId', 'orders', false, '4rem') +
+          renderSortTh('CUSTOMER', 'customer', 'orders', false, '26%') +
+          '<th style="width: 40%; min-width: 14rem;">ORDERED ITEMS</th>' +
+          renderSortTh('TOTAL', 'total', 'orders', true, '4.5rem') +
           renderSortTh('STATUS', 'status', 'orders', false, '7.5rem') +
-          '<th style="width: 4.25rem; text-align: right;">ACTION</th>' +
+          '<th style="width: 3.75rem; text-align: right;">ACTION</th>' +
           '</tr></thead><tbody>';
 
         filtered.forEach(function (ord) {
@@ -1534,10 +1533,9 @@
           html += '<tr class="' + (isSel ? 'is-selected' : '') + '" data-order-id="' + escapeHtml(ord.orderId) + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e; white-space: nowrap;">' + escapeHtml(String(ord.timestamp || '').split(',')[0]) + '</td>' +
             '<td style="white-space: nowrap;"><strong style="font-family: monospace; font-size: 0.85rem;">#' + escapeHtml(ord.orderId) + '</strong></td>' +
-            '<td style="max-width: 11rem; overflow-wrap: anywhere;"><strong style="color: #2c1e14;">' + escapeHtml(ord.name) + '</strong><div style="font-size: 0.72rem; color: #7d6b5e;">' + escapeHtml(ord.email) + '</div></td>' +
-            '<td style="min-width: 18rem;">' + itemsHtml + '</td>' +
+            '<td style="min-width: 13rem; overflow-wrap: anywhere;"><strong style="color: #2c1e14;">' + escapeHtml(ord.name) + '</strong><div style="font-size: 0.72rem; color: #7d6b5e;">' + escapeHtml(ord.email) + '</div></td>' +
+            '<td style="min-width: 14rem;">' + itemsHtml + '</td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700; color: #92400e; white-space: nowrap; padding-left: 0.5rem; padding-right: 0.5rem;">' + escapeHtml(formatCurrencyDisplay(ord.total)) + '</td>' +
-            '<td style="max-width: 6rem; padding-left: 0.5rem; padding-right: 0.5rem;"><span style="font-weight: 600; font-size: 0.75rem;">' + escapeHtml(ord.deliveryMethod) + '</span>' + (ord.city ? '<div style="font-size: 0.68rem; color: #7d6b5e;">' + escapeHtml(ord.city) + '</div>' : '') + '</td>' +
             '<td style="white-space: nowrap;">' + getStatusBadge(ord.status) + '</td>' +
             '<td style="text-align: right; white-space: nowrap;"><button type="button" class="atelier-btn-action" data-inspect-order="' + escapeHtml(ord.orderId) + '">View</button></td>' +
             '</tr>';
