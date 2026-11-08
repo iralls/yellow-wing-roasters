@@ -590,15 +590,6 @@
     return { year: 'Unknown', month: 'Unknown', yearMonth: 'Unknown' };
   }
 
-  function generateRandomGiftCode() {
-    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    var res = '';
-    for (var i = 0; i < 8; i++) {
-      res += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return 'GIFT-' + res;
-  }
-
   function formatRoastLevel(levelVal, roastLevelsMap) {
     if (levelVal === null || levelVal === undefined || levelVal === '') return '';
     var raw = String(levelVal).trim();
@@ -2434,7 +2425,6 @@
           '<h3 class="atelier-table-title">Digital Gift Cards &amp; Promo Codes</h3>' +
           '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
             '<span class="atelier-count-pill">' + filteredCodes.length + ' codes</span>' +
-            '<button type="button" class="atelier-btn-action" id="atelier-new-giftcard-btn">+ Gift Card</button>' +
             '<button type="button" class="atelier-btn-action" id="atelier-new-promocode-btn">+ Promo Code</button>' +
           '</div>' +
           '</div>' + gcBanner + '<div class="atelier-table-wrap"><table class="atelier-table"><thead><tr>' +
@@ -2465,14 +2455,6 @@
         wrap.innerHTML = gcHtml;
         wireSorting(wrap);
 
-        var newGcBtn = document.getElementById('atelier-new-giftcard-btn');
-        if (newGcBtn) {
-          newGcBtn.addEventListener('click', function () {
-            selectedItem = { __isNew: true, target: 'gift', code: generateRandomGiftCode() };
-            renderTable();
-            renderInspector();
-          });
-        }
         var newPromoBtn = document.getElementById('atelier-new-promocode-btn');
         if (newPromoBtn) {
           newPromoBtn.addEventListener('click', function () {
@@ -3393,22 +3375,34 @@
         var raw = selectedItem.raw || {};
 
         if (isGift) {
+          var partyInfo = '';
+          if (raw.recipientName || raw.purchaserName) {
+            partyInfo = '<div class="atelier-inspector-field">' +
+              '<label>Recipient &amp; Purchaser</label>' +
+              '<div class="atelier-inspector-value" style="font-size: 0.8rem; line-height: 1.45;">' +
+                (raw.recipientName ? '<div><strong>To:</strong> ' + escapeHtml(raw.recipientName) + (raw.recipientEmail ? ' <span style="color: #7d6b5e;">&lt;' + escapeHtml(raw.recipientEmail) + '&gt;</span>' : '') + '</div>' : '') +
+                (raw.purchaserName ? '<div><strong>From:</strong> ' + escapeHtml(raw.purchaserName) + (raw.purchaserEmail ? ' <span style="color: #7d6b5e;">&lt;' + escapeHtml(raw.purchaserEmail) + '&gt;</span>' : '') + '</div>' : '') +
+              '</div>' +
+            '</div>';
+          }
+
           insp.innerHTML = '' +
             '<div class="atelier-inspector-header">' +
               '<div>' +
                 '<div style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; color: #9c6d12; text-transform: uppercase;">Digital Gift Card</div>' +
-                '<h3 class="atelier-inspector-title">' + (isNewCode ? 'Issue Gift Card' : escapeHtml(selectedItem.code)) + '</h3>' +
+                '<h3 class="atelier-inspector-title">' + escapeHtml(selectedItem.code) + '</h3>' +
               '</div>' +
             '</div>' +
             '<div class="atelier-inspector-box" style="margin-top: 0;">' +
+              partyInfo +
               '<div class="atelier-inspector-field">' +
                 '<label>Gift Card Code</label>' +
-                '<input type="text" id="atelier-gc-code" class="atelier-input" value="' + escapeHtml(selectedItem.code || '') + '"' + (isNewCode ? '' : ' readonly style="background: #f3ede2;"') + '>' +
+                '<input type="text" id="atelier-gc-code" class="atelier-input" value="' + escapeHtml(selectedItem.code || '') + '" readonly style="background: #f3ede2;">' +
               '</div>' +
               '<div class="atelier-field-grid">' +
                 '<div class="atelier-inspector-field">' +
-                  '<label>' + (isNewCode ? 'Amount ($)' : 'Current Balance ($)') + '</label>' +
-                  '<input type="number" step="0.01" id="atelier-gc-val" class="atelier-input" value="' + escapeHtml(isNewCode ? '25' : (raw.currentBalance !== undefined ? raw.currentBalance : '')) + '">' +
+                  '<label>Current Balance ($)' + (raw.originalAmount ? ' <span style="font-weight: 400; color: #7d6b5e;">(Orig: $' + Number(raw.originalAmount).toFixed(2) + ')</span>' : '') + '</label>' +
+                  '<input type="number" step="0.01" id="atelier-gc-val" class="atelier-input" value="' + escapeHtml(raw.currentBalance !== undefined ? raw.currentBalance : '') + '">' +
                 '</div>' +
                 '<div class="atelier-inspector-field">' +
                   '<label>Expiration Date</label>' +
@@ -3419,12 +3413,12 @@
                 '<label>Description / Gift Message</label>' +
                 '<textarea id="atelier-gc-desc" class="atelier-textarea" rows="2">' + escapeHtml(raw.description || raw.giftMessage || '') + '</textarea>' +
               '</div>' +
-              '<button type="button" id="atelier-gc-save-btn" class="atelier-btn-primary" style="width: 100%; padding: 0.55rem;">' + (isNewCode ? 'Create Gift Card' : 'Save Gift Card') + '</button>' +
-              (!isNewCode ? '<div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">' +
+              '<button type="button" id="atelier-gc-save-btn" class="atelier-btn-primary" style="width: 100%; padding: 0.55rem;">Save Gift Card</button>' +
+              '<div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">' +
                 '<button type="button" id="atelier-gc-deactivate-btn" class="atelier-btn-action" style="flex: 1; font-size: 0.7rem;">Deactivate ($0)</button>' +
                 '<button type="button" id="atelier-gc-resend-recip" class="atelier-btn-action" style="flex: 1; font-size: 0.7rem;">Email Recipient</button>' +
                 '<button type="button" id="atelier-gc-resend-purch" class="atelier-btn-action" style="flex: 1; font-size: 0.7rem;">Email Purchaser</button>' +
-              '</div>' : '') +
+              '</div>' +
               '<div id="atelier-gc-feedback" class="atelier-feedback"></div>' +
             '</div>' +
             '<div style="margin-top: 0.85rem; text-align: right;">' +
