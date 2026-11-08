@@ -669,6 +669,7 @@
     var activeStatusFilter = 'all';
     var activeGroupBys = [];
     var searchQuery = '';
+    var supplierOrderFilter = '';
 
     if (typeof window !== 'undefined' && window.location && window.location.search) {
       var urlParams = new URLSearchParams(window.location.search);
@@ -1098,6 +1099,12 @@
                 '<button type="button" class="atelier-pill' + (activeStatusFilter === 'available' ? ' is-selected' : '') + '" data-status="available">In Stock (&gt;0g Remaining)</button>' +
               '</div>' +
             '</div>' +
+            (supplierOrderFilter ? '<div class="atelier-query-clause">' +
+              '<span class="atelier-clause-badge">WHERE SUPPLIER # =</span>' +
+              '<div class="atelier-filter-pills">' +
+                '<button type="button" class="atelier-pill is-selected" data-clear-supplier-order>' + escapeHtml(supplierOrderFilter) + ' ✕</button>' +
+              '</div>' +
+            '</div>' : '') +
             '<div class="atelier-search-box">' +
               '<input type="search" id="atelier-search-input" placeholder="Search GBO ID, supplier, bean name..." value="' + escapeHtml(searchQuery) + '">' +
             '</div>' +
@@ -1255,6 +1262,13 @@
             if (idx === -1) activeGroupBys.push(g);
             else activeGroupBys.splice(idx, 1);
           }
+          renderAll();
+        });
+      });
+
+      queryDeck.querySelectorAll('[data-clear-supplier-order]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          supplierOrderFilter = '';
           renderAll();
         });
       });
@@ -1659,6 +1673,7 @@
         var filteredGbo = gboList.filter(function (ord) {
           var avail = Number(ord.availableGrams) || 0;
           if (activeStatusFilter === 'available' && avail <= 0) return false;
+          if (supplierOrderFilter && String(ord.supplierOrderId) !== supplierOrderFilter) return false;
           if (searchQuery.trim()) {
             var q = searchQuery.toLowerCase();
             var hay = ((ord.orderId || '') + ' ' + (ord.supplierOrderId || '') + ' ' + (ord.name || '') + ' ' + (ord.supplier || '')).toLowerCase();
@@ -1774,6 +1789,7 @@
           renderSortTh('LOT / ORDER ID', 'orderId', 'bean_orders', false) +
           renderSortTh('BEAN NAME', 'name', 'bean_orders', false) +
           renderSortTh('SUPPLIER', 'supplier', 'bean_orders', false) +
+          renderSortTh('SUPPLIER #', 'supplierOrderId', 'bean_orders', false) +
           renderSortTh('PURCHASED (LBS)', 'weightLbs', 'bean_orders', true) +
           renderSortTh('REMAINING (G)', 'availableGrams', 'bean_orders', true) +
           renderSortTh('COST', 'cost', 'bean_orders', true) +
@@ -1786,11 +1802,13 @@
           var isSelected = selectedItem && selectedItem.orderId === ord.orderId && !selectedItem.__isNew;
           gboHtml += '<tr data-gbo-id="' + escapeHtml(ord.orderId) + '" style="' + (isSelected ? 'background: #fcf6e9;' : '') + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e;">' + escapeHtml(ord.date) + '</td>' +
-            '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(ord.orderId) + '</strong>' +
-              (ord.supplierOrderId ? '<div style="font-size: 0.7rem; color: #7d6b5e;">Supplier #' + escapeHtml(ord.supplierOrderId) + '</div>' : '') + '</td>' +
+            '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(ord.orderId) + '</strong></td>' +
             '<td><strong style="color: #2c1e14;">' + escapeHtml(ord.name) + '</strong>' +
               (ord.url ? ' <a href="' + escapeHtml(ord.url) + '" target="_blank" rel="noopener" style="font-size: 0.72rem; color: #b8860b;">↗</a>' : '') + '</td>' +
             '<td>' + escapeHtml(ord.supplier) + '</td>' +
+            '<td style="font-family: monospace; font-size: 0.8rem;">' +
+              (ord.supplierOrderId ? '<button type="button" class="atelier-link-btn atelier-supplier-order-link" data-supplier-order-id="' + escapeHtml(ord.supplierOrderId) + '" title="Filter by this supplier order">' + escapeHtml(ord.supplierOrderId) + '</button>' : '') +
+            '</td>' +
             '<td style="text-align: right; font-family: monospace;">' + (Number(ord.weightLbs) || 0) + ' lbs (' + (ord.weightGrams || 0) + 'g)</td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700; color: ' + (avail > 0 ? '#166534' : '#7d6b5e') + ';">' + avail + 'g</td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700; color: #92400e;">$' + costNum.toFixed(2) + '</td>' +
@@ -1809,6 +1827,12 @@
             renderInspector();
           });
         }
+        wrap.querySelectorAll('.atelier-supplier-order-link').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            supplierOrderFilter = btn.getAttribute('data-supplier-order-id');
+            renderAll();
+          });
+        });
         wrap.querySelectorAll('.atelier-inspect-gbo-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var id = btn.getAttribute('data-id');
@@ -2111,14 +2135,14 @@
 
         filteredPkg.forEach(function (p) {
           var comps = (p.roastComponents || []).map(function (c) {
-            return '<span class="atelier-item-meta">' + escapeHtml(c.roastId) + ' (' + c.weightGrams + 'g)</span>';
+            return '<span class="atelier-item-meta"><button type="button" class="atelier-link-btn atelier-pkg-roast-link" data-roast-id="' + escapeHtml(c.roastId) + '" title="Open roast batch">' + escapeHtml(c.roastId) + '</button> (' + c.weightGrams + 'g)</span>';
           }).join(' ');
           var isSelected = selectedItem && selectedItem.logId === p.logId && !selectedItem.__isNew;
           pHtml += '<tr style="' + (isSelected ? 'background: #fcf6e9;' : '') + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e;">' + escapeHtml(p.date) + '</td>' +
             '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(p.logId) + '</strong></td>' +
             '<td><strong style="color: #2c1e14;">' + escapeHtml(p.product) + '</strong></td>' +
-            '<td>' + escapeHtml(p.purpose) + (p.orderId ? ' (#' + escapeHtml(p.orderId) + ')' : '') + '</td>' +
+            '<td>' + escapeHtml(p.purpose) + (p.orderId ? ' (<button type="button" class="atelier-link-btn atelier-pkg-order-link" data-order-id="' + escapeHtml(p.orderId) + '" title="Open customer order">#' + escapeHtml(p.orderId) + '</button>)' : '') + '</td>' +
             '<td><span class="atelier-item-meta" style="font-weight: 700; color: #92400e; background: #fef3c7;">' + escapeHtml(p.bagSize || 'Custom') + '</span></td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700;">' + (p.weightGrams || 0) + 'g</td>' +
             '<td>' + comps + (p.notes ? '<div style="font-size: 0.74rem; color: #7d6b5e; margin-top: 0.2rem;">' + escapeHtml(p.notes) + '</div>' : '') + '</td>' +
@@ -2140,6 +2164,28 @@
             renderInspector();
           });
         }
+        wrap.querySelectorAll('.atelier-pkg-order-link').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var oId = btn.getAttribute('data-order-id');
+            var ord = ordersData.find(function (o) { return String(o.orderId) === oId; });
+            if (!ord) {
+              console.error('[packaging] Order #' + oId + ' not found in customer orders');
+              return;
+            }
+            jumpToRecord('orders', ord);
+          });
+        });
+        wrap.querySelectorAll('.atelier-pkg-roast-link').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var rId = btn.getAttribute('data-roast-id');
+            var roast = roastsData.roastLogs.find(function (r) { return String(r.roastId) === rId; });
+            if (!roast) {
+              console.error('[packaging] Roast batch ' + rId + ' not found in roast log');
+              return;
+            }
+            jumpToRecord('roasts', roast);
+          });
+        });
         wrap.querySelectorAll('.atelier-inspect-pkg-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var id = btn.getAttribute('data-id');
@@ -3560,6 +3606,17 @@
       renderInspector();
     }
 
+    // Cross-domain navigation: switch tabs with clean filters and open the record in the Inspector
+    function jumpToRecord(domain, item) {
+      currentDomain = domain;
+      activeStatusFilter = 'all';
+      activeGroupBys = [];
+      searchQuery = '';
+      supplierOrderFilter = '';
+      selectedItem = item;
+      renderAll();
+    }
+
     // Domain navigation switching
     document.querySelectorAll('.atelier-domain-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
@@ -3568,6 +3625,7 @@
         activeStatusFilter = 'all';
         activeGroupBys = [];
         searchQuery = '';
+        supplierOrderFilter = '';
         renderAll();
       });
     });

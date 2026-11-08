@@ -433,6 +433,21 @@
     white-space: nowrap;
   }
 
+  // Inline cross-reference link (e.g. supplier #, order #, roast ID)
+  .atelier-link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #b8860b;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: #2c1e14;
+    }
+  }
+
   // Tactile Status Badges
   .atelier-status-badge {
     display: inline-flex;
