@@ -26,7 +26,12 @@ function isValidAdminKey(providedKey) {
   if (!providedKey) return false;
   var trimmed = providedKey.toString().trim();
 
-  // 1. Check optional Script Properties (Google Cloud secret override)
+  // 1. Direct salted SHA-256 hash check (preferred: plaintext password never leaves browser)
+  if (trimmed === ADMIN_PASSWORD_HASH) {
+    return true;
+  }
+
+  // 2. Check optional Script Properties (Google Cloud secret override)
   var storedKey = "";
   try {
     storedKey = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
@@ -38,6 +43,6 @@ function isValidAdminKey(providedKey) {
     return true;
   }
 
-  // 2. Validate against salted SHA-256 hash
+  // 3. Validate against salted SHA-256 hash
   return computeAdminHash(trimmed) === ADMIN_PASSWORD_HASH;
 }

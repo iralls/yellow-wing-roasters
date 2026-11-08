@@ -1,0 +1,107 @@
+<div class="ywr-atelier-preview" id="atelier-admin-root">
+
+  <!-- Header Branding Lockup -->
+  <header class="atelier-header">
+    <div class="atelier-brand-lockup">
+      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="atelier-bird-logo">
+      <div>
+        <div class="atelier-title-tag">Owner Command Atelier &bull; Live Google Sheets Data</div>
+        <h1 class="atelier-title">{{ include.title | default: "Roastery Management Console" }}</h1>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+      <button type="button" id="atelier-refresh-btn" class="atelier-btn-action" style="background: transparent; color: #2c1e14; border: 1px solid #cbbaa8;" title="Refresh live Google Sheets data">&#8635; Refresh</button>
+      <a href="{{ '/pigeon-post/email-composer/' | relative_url }}" class="atelier-btn-action" style="text-decoration: none; background: transparent; color: #2c1e14; border: 1px solid #cbbaa8;">&#9993; Pigeon Post</a>
+      <button type="button" id="atelier-logout-btn" class="atelier-btn-action" style="background: #fdf2f2; color: #b91c1c; border: 1px solid #fecaca;">Log Out</button>
+    </div>
+  </header>
+
+  <!-- Passcode Gate View -->
+  <div id="atelier-admin-gate" style="display: none; max-width: 26rem; margin: 3rem auto; padding: 2rem; background: #ffffff; border: 1px solid #e8decb; border-radius: 8px; text-align: center; box-shadow: 0 4px 18px rgba(44, 30, 20, 0.05);">
+    <h2 style="font-family: 'Didot', Georgia, serif; font-size: 1.5rem; margin: 0 0 0.5rem; color: #2c1e14;">Owner Authentication</h2>
+    <p style="font-size: 0.85rem; color: #7d6b5e; margin: 0 0 1.25rem;">Enter your passcode to unlock real Google Sheets data across all consoles.</p>
+    <form id="atelier-gate-form">
+      <input type="password" id="atelier-passcode-input" class="order-admin-input" placeholder="Enter owner passcode..." required autofocus style="margin-bottom: 0.85rem;">
+      <button type="submit" class="atelier-btn-action" style="width: 100%; padding: 0.65rem;">Unlock Console</button>
+      <div id="atelier-gate-error" style="display: none; color: #b91c1c; font-size: 0.8rem; font-weight: 700; margin-top: 0.65rem;"></div>
+    </form>
+  </div>
+
+  <!-- Authenticated Atelier Workspace -->
+  <div id="atelier-admin-dashboard" style="display: none;">
+
+    <!-- Domain Switcher Tabs (All consoles in one unified roof) -->
+    <nav class="atelier-domain-nav" role="tablist">
+      <button type="button" class="atelier-domain-tab" data-domain="orders">
+        <span>Customer Orders</span>
+        <span class="atelier-tab-count" id="atelier-count-orders">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="beans">
+        <span>Active Green Beans</span>
+        <span class="atelier-tab-count" id="atelier-count-beans">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="bean_orders">
+        <span>Green Bean Orders</span>
+        <span class="atelier-tab-count" id="atelier-count-bean-orders">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="roasts">
+        <span>Roast Batch Log</span>
+        <span class="atelier-tab-count" id="atelier-count-roasts">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="packaging">
+        <span>Master Blend &amp; Packaging</span>
+        <span class="atelier-tab-count" id="atelier-count-packaging">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="subscriptions">
+        <span>Subscriptions</span>
+        <span class="atelier-tab-count" id="atelier-count-subscriptions">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="gift_subs">
+        <span>Gift Subscriptions</span>
+        <span class="atelier-tab-count" id="atelier-count-gift-subs">&ndash;</span>
+      </button>
+      <button type="button" class="atelier-domain-tab" data-domain="gift_codes">
+        <span>Gift &amp; Promo Codes</span>
+        <span class="atelier-tab-count" id="atelier-count-gift-codes">&ndash;</span>
+      </button>
+    </nav>
+
+    <!-- Top KPI Highlights Strip -->
+    <div id="atelier-kpi-container" class="atelier-kpi-grid"></div>
+
+    <!-- SQL-Style Query Deck (WHERE Filter & GROUP BY Pills & Search) -->
+    <div id="atelier-query-deck" class="atelier-query-deck"></div>
+
+    <!-- Workspace: Main Table & Inspector -->
+    <div id="atelier-workspace" class="atelier-workspace">
+      <div id="atelier-table-container" class="atelier-table-card"></div>
+      <aside id="atelier-inspector" class="atelier-inspector" style="display: none;"></aside>
+    </div>
+
+    <datalist id="atelier-catalog-roasts">
+      {% for r in site.roasts %}
+      <option value="{{ r.title }}"></option>
+      {% endfor %}
+    </datalist>
+
+  </div>
+
+</div>
+
+<script src="{{ '/js/admin-roasts.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/atelier-admin.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script>
+  initAtelierAdmin({
+    defaultDomain: {{ include.domain | default: 'orders' | jsonify }},
+    ordersApiUrl: {{ site.order_api_url | jsonify }},
+    roastsApiUrl: {{ site.roast_inventory_api_url | jsonify }},
+    subsApiUrl: {{ site.subscription_api_url | jsonify }},
+    giftCodesApiUrl: {{ site.discount_codes_api_url | jsonify }},
+    giftSubsApiUrl: {{ site.gift_subscription_api_url | jsonify }},
+    orderManageBaseUrl: {{ '/order/manage/' | relative_url | jsonify }},
+    subManageBaseUrl: {{ '/subscriptions/manage/' | relative_url | jsonify }},
+    orderApplyBaseUrl: {{ '/order/' | relative_url | jsonify }},
+    bagSizes: {{ site.data.bag_sizes | jsonify }},
+    roastLevels: {{ site.data.roast_levels | jsonify }}
+  });
+</script>

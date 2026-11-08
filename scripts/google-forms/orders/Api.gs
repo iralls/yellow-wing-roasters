@@ -245,7 +245,7 @@ function doPost(e) {
         return createJsonResponse({ error: "Unauthorized: Invalid Admin Key" });
       }
 
-      var adminOrderId = postData.orderId ? postData.orderId.toString().trim() : "";
+      var adminOrderId = postData.orderId ? postData.orderId.toString().trim().replace(/^#/, '') : "";
       var newStatus = postData.status ? postData.status.toString().trim() : "";
       var newStatusDetails = postData.statusDetails ? postData.statusDetails.toString().trim() : "";
 
@@ -256,7 +256,7 @@ function doPost(e) {
       var adminTargetRow = -1;
       for (var m = 1; m < data.length; m++) {
         var mRow = data[m];
-        var mOrderId = mRow[orderIdIdx] ? mRow[orderIdIdx].toString().trim() : "";
+        var mOrderId = mRow[orderIdIdx] ? mRow[orderIdIdx].toString().trim().replace(/^#/, '') : "";
         if (mOrderId === adminOrderId) {
           adminTargetRow = m + 1;
           break;
@@ -270,6 +270,10 @@ function doPost(e) {
       sheet.getRange(adminTargetRow, statusIdx + 1).setValue(newStatus);
       if (statusDetailsIdx !== -1) {
         sheet.getRange(adminTargetRow, statusDetailsIdx + 1).setValue(newStatusDetails);
+      }
+      if (postData.items !== undefined && itemsIdx !== -1) {
+        var newItems = postData.items.toString().trim();
+        sheet.getRange(adminTargetRow, itemsIdx + 1).setValue(newItems);
       }
 
       var lower = newStatus.toLowerCase();

@@ -1,0 +1,745 @@
+// -----------------------------------------------------------------------------
+// Yellow Wing Roasters - Atelier Roastery Admin Redesign Preview Styles
+// Matching the visual warmth, elegance, and tactile craft of yellowwingroasters.com
+// -----------------------------------------------------------------------------
+
+.ywr-atelier-preview {
+  max-width: 82rem;
+  margin: 0 auto 3rem;
+  padding: 0 1.25rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #2c1e14;
+
+  // Header Banner
+  .atelier-header {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #2c1e14;
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .atelier-brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .atelier-bird-logo {
+    height: 3.4rem;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .atelier-title-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #9c6d12;
+    margin-bottom: 0.15rem;
+  }
+
+  .atelier-title {
+    font-family: "Didot", "Playfair Display", "Times New Roman", serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #2c1e14;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .atelier-subtitle {
+    font-size: 0.84rem;
+    color: #7d6b5e;
+    margin: 0.25rem 0 0;
+  }
+
+  // Domain Switcher Navigation Tabs
+  .atelier-domain-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2d7c5;
+  }
+
+  .atelier-domain-tab {
+    background: #f7f4ee;
+    border: 1px solid #dfd5c7;
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #6e5e54;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+
+    &:hover {
+      color: #2c1e14;
+      background: #eee8dc;
+      border-color: #cbbaa8;
+    }
+
+    &.is-active {
+      background: #2c1e14;
+      border-color: #2c1e14;
+      color: #fdfbf7;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(44, 30, 20, 0.15);
+
+      .atelier-tab-count {
+        background: #f0c838;
+        color: #2c1e14;
+      }
+    }
+  }
+
+  .atelier-tab-count {
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: #e5ded2;
+    color: #4e3f35;
+    padding: 0.08rem 0.4rem;
+    border-radius: 4px;
+    font-family: "SF Mono", monospace;
+    transition: all 0.15s ease-in-out;
+  }
+
+  // Summary KPI Cards Strip
+  .atelier-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .atelier-kpi-card {
+    background: #ffffff;
+    border: 1px solid #ebd9c4;
+    border-radius: 8px;
+    padding: 0.95rem 1.15rem;
+    box-shadow: 0 4px 14px rgba(44, 30, 20, 0.03);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #d4a359;
+    }
+
+    &--green::before { background: #059669; }
+    &--roast::before { background: #92400e; }
+    &--gold::before { background: #f0c838; }
+
+    .atelier-kpi-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8a7060;
+      margin-bottom: 0.25rem;
+    }
+
+    .atelier-kpi-val {
+      font-family: "Didot", Georgia, serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #2c1e14;
+      line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+
+    .atelier-kpi-unit {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #8a7060;
+    }
+
+    .atelier-kpi-sub {
+      font-size: 0.75rem;
+      color: #7d6b5e;
+      margin-top: 0.35rem;
+    }
+  }
+
+  // Atelier Query Bar (SQL-like Filter, Group By, Search)
+  .atelier-query-deck {
+    background: #ffffff;
+    border: 1px solid #e8decb;
+    border-radius: 10px;
+    padding: 1.15rem 1.35rem;
+    box-shadow: 0 4px 18px rgba(44, 30, 20, 0.04);
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .atelier-query-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .atelier-query-clause {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .atelier-clause-badge {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.22rem 0.55rem;
+    border-radius: 4px;
+    background: #f7f3ec;
+    color: #6a5749;
+    border: 1px solid #e5dacd;
+  }
+
+  .atelier-filter-pills {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .atelier-pill {
+    background: #faf8f5;
+    border: 1px solid #decbbb;
+    color: #554439;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+
+    &:hover {
+      border-color: #2c1e14;
+      color: #2c1e14;
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    &.is-selected {
+      background: #2c1e14 !important;
+      color: #fdfbf7 !important;
+      border-color: #2c1e14 !important;
+      box-shadow: 0 2px 6px rgba(44, 30, 20, 0.2);
+    }
+  }
+
+  .atelier-search-box {
+    display: flex;
+    align-items: center;
+    background: #faf8f5;
+    border: 1px solid #d8cbba;
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    min-width: 17rem;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      background: #ffffff;
+      border-color: #2c1e14;
+      box-shadow: 0 0 0 2px rgba(44, 30, 20, 0.08);
+    }
+
+    input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.82rem;
+      width: 100%;
+      color: #2c1e14;
+
+      &::placeholder {
+        color: #9c8a7c;
+      }
+    }
+  }
+
+  // Data Surface Table & Inspector Split
+  .atelier-workspace {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+
+    &.has-inspector {
+      grid-template-columns: 1fr 24rem;
+    }
+  }
+
+  .atelier-table-card {
+    background: #ffffff;
+    border: 1px solid #e8decb;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(44, 30, 20, 0.04);
+    overflow: hidden;
+  }
+
+  .atelier-table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.15rem;
+    border-bottom: 1px solid #ede5da;
+    background: #fdfbf7;
+  }
+
+  .atelier-table-title {
+    font-family: "Didot", Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0;
+  }
+
+  .atelier-count-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #7d6b5e;
+    background: #efe8de;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  // Beautiful Table Styling
+  .atelier-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .atelier-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    text-align: left;
+
+    th {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #7d6b5e;
+      background: #faf7f2;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 2px solid #e0d4c5;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: #2c1e14;
+      }
+    }
+
+    td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid #f2ebdf;
+      vertical-align: middle;
+      color: #2c1e14;
+    }
+
+    tr {
+      transition: background 0.12s ease;
+      cursor: pointer;
+
+      &:hover td {
+        background: #faf6ef !important;
+      }
+
+      &.is-selected td {
+        background: #f4ede0 !important;
+      }
+    }
+
+    tfoot td {
+      background: #faf7f2;
+      border-top: 2px solid #2c1e14;
+      font-weight: 700;
+    }
+  }
+
+  // Item Pills inside table cells
+  .atelier-item-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .atelier-item-pill {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.45rem;
+    font-size: 0.78rem;
+  }
+
+  .atelier-item-qty {
+    display: inline-block;
+    font-family: "SF Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    border-radius: 4px;
+    padding: 0.05rem 0.32rem;
+  }
+
+  .atelier-item-name {
+    font-weight: 600;
+    color: #2c1e14;
+  }
+
+  .atelier-item-meta {
+    font-size: 0.72rem;
+    color: #7d6b5e;
+    background: #f4ede3;
+    padding: 0.06rem 0.38rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  // Tactile Status Badges
+  .atelier-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    white-space: nowrap;
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    &--received {
+      background: #f4fbf7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      &::before { background: #16a34a; }
+    }
+
+    &--delayed {
+      background: #fffbeb;
+      color: #9a3412;
+      border: 1px solid #fde68a;
+      &::before { background: #ea580c; }
+    }
+
+    &--roasted {
+      background: #f0f9ff;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      &::before { background: #0284c7; }
+    }
+
+    &--ready {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      &::before { background: #059669; }
+    }
+
+    &--delivered {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      &::before { background: #94a3b8; }
+    }
+
+    &--cancelled {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      &::before { background: #dc2626; }
+    }
+  }
+
+  // Action Buttons
+  .atelier-btn-action {
+    background: #2c1e14;
+    color: #fdfbf7;
+    border: 1px solid #2c1e14;
+    border-radius: 999px;
+    padding: 0.32rem 0.85rem;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f0c838;
+      color: #2c1e14;
+      border-color: #f0c838;
+      transform: translateY(-1px);
+    }
+  }
+
+  // Right Inspector Card
+  .atelier-inspector {
+    background: #ffffff;
+    border: 1px solid #e8decb;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(44, 30, 20, 0.04);
+    padding: 1.25rem;
+    position: sticky;
+    top: 1rem;
+    height: fit-content;
+  }
+
+  .atelier-inspector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 0.85rem;
+    border-bottom: 2px solid #2c1e14;
+    margin-bottom: 1rem;
+  }
+
+  .atelier-inspector-title {
+    font-family: "Didot", Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #2c1e14;
+    margin: 0;
+  }
+
+  .atelier-inspector-price {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #92400e;
+  }
+
+  .atelier-inspector-field {
+    margin-bottom: 0.85rem;
+
+    label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8a7060;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .atelier-inspector-value {
+    font-size: 0.88rem;
+    color: #2c1e14;
+    line-height: 1.35;
+  }
+
+  .atelier-input,
+  .atelier-select,
+  .atelier-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.83rem;
+    color: #2c1e14;
+    background: #fdfbf7;
+    border: 1px solid #d4c6b4;
+    border-radius: 6px;
+    padding: 0.45rem 0.65rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #9c6d12;
+      box-shadow: 0 0 0 3px rgba(240, 200, 56, 0.25);
+      background: #ffffff;
+    }
+  }
+
+  .atelier-textarea {
+    min-height: 4.2rem;
+    resize: vertical;
+  }
+
+  .atelier-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4a3a2c;
+    cursor: pointer;
+    margin: 0.45rem 0;
+
+    input[type="checkbox"] {
+      width: 0.95rem;
+      height: 0.95rem;
+      accent-color: #2c1e14;
+      cursor: pointer;
+    }
+  }
+
+  .atelier-notice-pill {
+    font-size: 0.74rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 6px;
+    background: #f5efe6;
+    color: #6e5e54;
+    border: 1px solid #e5dac9;
+    margin: 0.5rem 0;
+
+    &--notify {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #fde68a;
+      font-weight: 600;
+    }
+  }
+
+  .atelier-feedback {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin-top: 0.6rem;
+
+    &--success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    &--error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  }
+
+  .atelier-inspector-box {
+    background: #faf7f2;
+    border: 1px solid #e8decb;
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin-top: 0.85rem;
+  }
+
+  .atelier-inspector-box-title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2c1e14;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px solid #e5dac9;
+    padding-bottom: 0.35rem;
+  }
+
+  .atelier-field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  // Loading Pacifier (Spinner & Skeleton Overlay)
+  .atelier-pacifier {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.25rem;
+    background: #fdfbf7;
+    border: 1px solid #ebd9c4;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #6e5e54;
+    box-shadow: 0 4px 14px rgba(44, 30, 20, 0.05);
+  }
+
+  .atelier-spinner {
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 2px solid #e2d7c5;
+    border-top-color: #9c6d12;
+    border-radius: 50%;
+    animation: atelier-spin 0.7s linear infinite;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .atelier-pacifier-wrap {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .atelier-refreshing-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #9c6d12;
+    background: #fef9ee;
+    border: 1px solid #f2e2be;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    animation: atelier-pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes atelier-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes atelier-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+}
