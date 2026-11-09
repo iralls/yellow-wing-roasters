@@ -974,25 +974,20 @@
             '<div class="atelier-kpi-sub">Scheduled recurring roast fulfillment</div>' +
           '</div>';
       } else if (currentDomain === 'gift_subs') {
-        var activeGSubs = giftSubsData.filter(function (s) {
-          var st = String(s.status || '').toLowerCase();
-          return st !== 'completed' && st !== 'cancelled';
-        });
         var gSubRev = giftSubsData.reduce(function (acc, s) {
-          if (String(s.status || '').toLowerCase() === 'cancelled') return acc;
           return acc + parseCurrencyVal(s.cost);
         }, 0);
 
         kpiWrap.innerHTML = '' +
           '<div class="atelier-kpi-card atelier-kpi-card--gold">' +
-            '<div class="atelier-kpi-label">Active Gift Subscriptions</div>' +
-            '<div class="atelier-kpi-val">' + activeGSubs.length + ' <span class="atelier-kpi-unit">active</span></div>' +
-            '<div class="atelier-kpi-sub">Out of ' + giftSubsData.length + ' total gift subscriptions</div>' +
+            '<div class="atelier-kpi-label">Gift Subscriptions</div>' +
+            '<div class="atelier-kpi-val">' + giftSubsData.length + ' <span class="atelier-kpi-unit">purchases</span></div>' +
+            '<div class="atelier-kpi-sub">Total prepaid gift subscriptions logged</div>' +
           '</div>' +
           '<div class="atelier-kpi-card atelier-kpi-card--roast">' +
-            '<div class="atelier-kpi-label">Total Gift Subscription Revenue</div>' +
+            '<div class="atelier-kpi-label">Total Prepaid Revenue</div>' +
             '<div class="atelier-kpi-val">$' + gSubRev.toFixed(2) + '</div>' +
-            '<div class="atelier-kpi-sub">Prepaid gift coffee deliveries</div>' +
+            '<div class="atelier-kpi-sub">Across all gift subscription purchases</div>' +
           '</div>';
       } else if (currentDomain === 'gift_codes') {
         var cards = giftCodesData.giftCards || [];
@@ -1201,16 +1196,8 @@
       } else if (currentDomain === 'gift_subs') {
         filtersHtml = '' +
           '<div class="atelier-query-row">' +
-            '<div class="atelier-query-clause">' +
-              '<span class="atelier-clause-badge">WHERE STATUS =</span>' +
-              '<div class="atelier-filter-pills">' +
-                '<button type="button" class="atelier-pill' + (activeStatusFilter === 'all' ? ' is-selected' : '') + '" data-status="all">All Gift Subscriptions</button>' +
-                '<button type="button" class="atelier-pill' + (activeStatusFilter === 'Active' ? ' is-selected' : '') + '" data-status="Active">Active</button>' +
-                '<button type="button" class="atelier-pill' + (activeStatusFilter === 'Completed' ? ' is-selected' : '') + '" data-status="Completed">Completed</button>' +
-              '</div>' +
-            '</div>' +
-            '<div class="atelier-search-box">' +
-              '<input type="search" id="atelier-search-input" placeholder="Search recipient, purchaser, roast..." value="' + escapeHtml(searchQuery) + '">' +
+            '<div class="atelier-search-box" style="flex: 1; max-width: 28rem;">' +
+              '<input type="search" id="atelier-search-input" placeholder="Search recipient, purchaser, roast, duration..." value="' + escapeHtml(searchQuery) + '">' +
             '</div>' +
           '</div>';
       } else if (currentDomain === 'gift_codes') {
@@ -1615,9 +1602,6 @@
           if (bSort.col === 'stockLbs' || bSort.col === 'activeStockGrams') {
             av = Number(a.activeStockGrams) || 0;
             bv = Number(b.activeStockGrams) || 0;
-          } else if (bSort.col === 'totalPurchased') {
-            av = Number(a.orderedGrams) || 0;
-            bv = Number(b.orderedGrams) || 0;
           } else {
             av = a[bSort.col] || '';
             bv = b[bSort.col] || '';
@@ -1637,13 +1621,11 @@
           renderSortTh('SUPPLIER', 'supplier', 'beans', false) +
           renderSortTh('ACTIVE STOCK (LBS)', 'stockLbs', 'beans', true) +
           renderSortTh('STOCK (GRAMS)', 'activeStockGrams', 'beans', true) +
-          renderSortTh('TOTAL PURCHASED (LBS)', 'totalPurchased', 'beans', true) +
           '</tr></thead><tbody>';
 
         filteredBeans.forEach(function (b) {
           var stockGrams = Number(b.activeStockGrams) || 0;
           var stockLbs = (stockGrams / GRAMS_PER_LB).toFixed(2);
-          var purcLbs = b.orderedGrams ? ((Number(b.orderedGrams) || 0) / GRAMS_PER_LB).toFixed(2) : '—';
           var nameCell = b.url
             ? '<a href="' + escapeHtml(b.url) + '" target="_blank" rel="noopener" style="color: #2c1e14; text-decoration: underline;"><strong>' + escapeHtml(b.name) + '</strong></a>'
             : '<strong style="color: #2c1e14;">' + escapeHtml(b.name) + '</strong>';
@@ -1652,7 +1634,6 @@
             '<td><span style="font-weight: 600;">' + escapeHtml(b.supplier || '') + '</span></td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700; color: ' + (stockGrams < 1000 ? '#b91c1c' : '#166534') + ';">' + stockLbs + ' lbs</td>' +
             '<td style="text-align: right; font-family: monospace;">' + stockGrams + 'g</td>' +
-            '<td style="text-align: right; font-family: monospace; color: #7d6b5e;">' + (purcLbs !== '—' ? purcLbs + ' lbs' : '—') + '</td>' +
             '</tr>';
         });
         bHtml += '</tbody></table></div>';
@@ -2308,10 +2289,9 @@
 
       } else if (currentDomain === 'gift_subs') {
         var filteredGSubs = giftSubsData.filter(function (s) {
-          if (activeStatusFilter !== 'all' && String(s.status || '').toLowerCase() !== activeStatusFilter.toLowerCase()) return false;
           if (searchQuery.trim()) {
             var q = searchQuery.toLowerCase();
-            var hay = ((s.orderId || '') + ' ' + (s.recipientName || '') + ' ' + (s.purchaserName || '') + ' ' + (s.roast || '')).toLowerCase();
+            var hay = ((s.orderId || '') + ' ' + (s.recipientName || '') + ' ' + (s.purchaserName || '') + ' ' + (s.roast || '') + ' ' + (s.duration || '')).toLowerCase();
             if (hay.indexOf(q) === -1) return false;
           }
           return true;
@@ -2336,7 +2316,6 @@
           renderSortTh('ROAST', 'roast', 'gift_subs', false) +
           renderSortTh('DURATION', 'duration', 'gift_subs', false) +
           renderSortTh('TOTAL PAID', 'cost', 'gift_subs', true) +
-          renderSortTh('STATUS', 'status', 'gift_subs', false) +
           '<th style="text-align: right;">ACTION</th>' +
           '</tr></thead><tbody>';
 
@@ -2350,7 +2329,6 @@
             '<td><strong>' + escapeHtml(s.roast) + '</strong></td>' +
             '<td><span class="atelier-item-meta">' + escapeHtml(s.duration) + '</span></td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700; color: #92400e;">$' + costNum.toFixed(2) + '</td>' +
-            '<td>' + getStatusBadge(s.status) + '</td>' +
             '<td style="text-align: right;"><button type="button" class="atelier-btn-action atelier-inspect-gsub-btn" data-id="' + escapeHtml(s.orderId) + '">View</button></td>' +
             '</tr>';
         });
@@ -3229,7 +3207,7 @@
         });
 
       } else if (currentDomain === 'gift_subs') {
-        var gsStatuses = ['Active', 'Roasted', 'Ready for Pickup', 'Out for Delivery', 'Delivered', 'Paused', 'Completed', 'Cancelled'];
+        var gsStatuses = ['Active', 'Completed', 'Cancelled'];
         var gsOpts = gsStatuses.map(function (st) {
           var sel = String(selectedItem.status || 'Active').toLowerCase() === st.toLowerCase() ? ' selected' : '';
           return '<option value="' + escapeHtml(st) + '"' + sel + '>' + escapeHtml(st) + '</option>';
@@ -3257,9 +3235,11 @@
             '<label>Gift Plan</label>' +
             '<div class="atelier-inspector-value"><strong>' + escapeHtml(selectedItem.roast) + '</strong> • ' + escapeHtml(selectedItem.duration) + '</div>' +
           '</div>' +
+          (selectedItem.giftMessage ? '<div class="atelier-inspector-field"><label>Gift Message</label><div class="atelier-inspector-value" style="font-style: italic; color: #6e5e54;">"' + escapeHtml(selectedItem.giftMessage) + '"</div></div>' : '') +
+          (selectedItem.notes ? '<div class="atelier-inspector-field"><label>Special Delivery Instructions</label><div class="atelier-inspector-value">' + escapeHtml(selectedItem.notes) + '</div></div>' : '') +
           '<div class="atelier-inspector-box">' +
             '<div class="atelier-inspector-field">' +
-              '<label>Fulfillment Status</label>' +
+              '<label>Plan Status</label>' +
               '<select id="atelier-gsub-status-select" class="atelier-select">' + gsOpts + '</select>' +
             '</div>' +
             '<div class="atelier-inspector-field">' +
@@ -3267,12 +3247,12 @@
               '<textarea id="atelier-gsub-details" class="atelier-textarea" rows="2">' + escapeHtml(selectedItem.statusDetails || '') + '</textarea>' +
             '</div>' +
             '<label class="atelier-checkbox-label">' +
-              '<input type="checkbox" id="atelier-gsub-notify-recip" checked> Email Recipient' +
+              '<input type="checkbox" id="atelier-gsub-notify-recip"> Email Recipient' +
             '</label>' +
             '<label class="atelier-checkbox-label">' +
               '<input type="checkbox" id="atelier-gsub-notify-purch"> Email Purchaser' +
             '</label>' +
-            '<button type="button" id="atelier-gsub-save-btn" class="atelier-btn-primary" style="width: 100%; margin-top: 0.65rem; padding: 0.55rem;">Update Gift Subscription</button>' +
+            '<button type="button" id="atelier-gsub-save-btn" class="atelier-btn-primary" style="width: 100%; margin-top: 0.65rem; padding: 0.55rem;">Save Plan Status</button>' +
             '<div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">' +
               '<button type="button" id="atelier-gsub-resend-recip" class="atelier-btn-action" style="flex: 1; font-size: 0.7rem;">Resend Recipient Email</button>' +
               '<button type="button" id="atelier-gsub-resend-purch" class="atelier-btn-action" style="flex: 1; font-size: 0.7rem;">Resend Purchaser Receipt</button>' +
