@@ -4,7 +4,7 @@ subtitle: Thanksgiving Blend
 slug: gobble-wobble
 published: false
 category: seasonal
-order: 11
+order: 13
 roast_level: 3
 descriptor: warm and festive
 tasting_notes: blackcurrant, tart cranberry, roasted pecan, brown sugar

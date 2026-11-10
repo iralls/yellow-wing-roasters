@@ -6,7 +6,7 @@ mascot: bluebird
 mascot_file: audubon-bluebird-transparent.png
 rotating: true
 best_seller: true
-order: 3
+order: 5
 roast_level: 2
 region: Santander
 elevation: 1,500 – 1,950m

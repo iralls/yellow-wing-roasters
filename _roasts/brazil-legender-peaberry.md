@@ -2,7 +2,7 @@
 title: Brazil Legender Peaberry
 slug: brazil-legender-peaberry
 category: single origin
-order: 4
+order: 6
 roast_level: 3
 region: Machado, Sul de Minas
 elevation: 1,100 – 1,200m

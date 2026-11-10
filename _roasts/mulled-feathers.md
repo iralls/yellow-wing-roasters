@@ -4,7 +4,7 @@ subtitle: Holiday Blend
 slug: mulled-feathers
 published: false
 category: seasonal
-order: 12
+order: 14
 roast_level: 3
 descriptor: cozy and warming
 tasting_notes: dark chocolate, caramel & brown sugar, crisp red apple, toasted nuts

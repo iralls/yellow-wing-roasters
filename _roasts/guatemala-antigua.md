@@ -2,7 +2,7 @@
 title: Guatemala Antigua
 slug: guatemala-antigua
 category: single origin
-order: 4
+order: 6
 roast_level: 3
 region: Antigua Valley
 elevation: 1,500 – 1,700m

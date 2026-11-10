@@ -2,7 +2,7 @@
 title: "Ethiopia Guji"
 slug: ethiopia-guji
 category: single origin
-order: 7
+order: 9
 roast_level: 2
 region: Shakiso, Guji Zone
 elevation: 1,900 – 2,200m

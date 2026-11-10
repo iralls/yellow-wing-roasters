@@ -4,7 +4,7 @@ subtitle: New Year's Blend
 slug: feathered-fizz
 published: false
 category: seasonal
-order: 13
+order: 15
 roast_level: 2
 descriptor: effervescent and vibrant
 tasting_notes: black tea, bergamot, ripe blackberry, bittersweet chocolate

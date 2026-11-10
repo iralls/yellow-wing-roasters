@@ -2,7 +2,7 @@
 title: Bolivia Fair Trade Organic
 slug: bolivia-fair-trade-organic
 category: single origin
-order: 8
+order: 10
 roast_level: 3
 region: Caranavi, Yungas
 elevation: 1,400 – 1,800m

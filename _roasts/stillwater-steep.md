@@ -3,7 +3,7 @@ title: Stillwater Steep
 subtitle: Cold Brew Blend
 slug: stillwater-steep
 category: seasonal
-order: 8
+order: 10
 roast_level: 4
 descriptor: deep and refreshing
 tasting_notes: dark chocolate, toasted walnut, brown sugar

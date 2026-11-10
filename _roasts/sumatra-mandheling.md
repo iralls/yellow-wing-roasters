@@ -2,7 +2,7 @@
 title: Sumatra Mandheling Fair Trade Organic
 slug: sumatra-mandheling
 category: single origin
-order: 6
+order: 8
 roast_level: 5
 region: Mandheling, North Sumatra
 elevation: 1,100 – 1,600m

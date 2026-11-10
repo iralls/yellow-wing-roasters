@@ -4,7 +4,7 @@ subtitle: Valentine's Day Blend
 slug: sweet-beak
 published: false
 category: seasonal
-order: 14
+order: 16
 roast_level: 3
 descriptor: lush and delicate
 tasting_notes: sweet blueberry, milk chocolate, dark cherry, honeysuckle

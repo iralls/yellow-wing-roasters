@@ -226,7 +226,7 @@ subscription:
 title: Colombia Supremo
 slug: colombia-supremo
 category: single origin
-order: 3
+order: 5
 roast_level: 2
 region: Huila
 elevation: 1,500 – 1,800m

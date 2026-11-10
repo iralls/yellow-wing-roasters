@@ -2,7 +2,7 @@
 title: Peru Fair Trade Organic
 slug: peru-fair-trade-organic
 category: single origin
-order: 9
+order: 11
 roast_level: 3
 region: Cajamarca
 elevation: 1,400 – 1,800m

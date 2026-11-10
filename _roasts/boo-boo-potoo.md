@@ -3,7 +3,7 @@ title: Boo Boo Potoo
 subtitle: Halloween Blend
 slug: boo-boo-patoo
 category: seasonal
-order: 10
+order: 12
 roast_level: 4
 descriptor: sweet and indulgent
 tasting_notes: rich chocolate, toasted nuts

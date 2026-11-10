@@ -2,7 +2,7 @@
 title: Brazil Natural
 slug: brazil-natural
 category: single origin
-order: 3
+order: 5
 roast_level: 3
 region: Mogiana
 elevation: 850 – 1,100m

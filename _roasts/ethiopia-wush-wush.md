@@ -2,7 +2,7 @@
 title: "Ethiopia 'Wush Wush'"
 slug: ethiopia-wush-wush
 category: single origin
-order: 5
+order: 7
 roast_level: 2
 region: Kaffa
 elevation: 1,800 – 2,100m

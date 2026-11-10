@@ -2,7 +2,7 @@
 title: Brazil Estavam Mario
 slug: brazil-estavam-mario
 category: single origin
-order: 3
+order: 5
 roast_level: 3
 region: Sul de Minas
 elevation: 1,100 – 1,200m

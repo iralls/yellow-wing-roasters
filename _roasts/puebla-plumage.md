@@ -4,7 +4,7 @@ subtitle: Cinco de Mayo Blend
 slug: puebla-plumage
 published: false
 category: seasonal
-order: 15
+order: 17
 roast_level: 3
 descriptor: festive and layered
 tasting_notes: bittersweet chocolate, sweet fig, toasted hazelnut, cocoa

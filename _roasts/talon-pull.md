@@ -2,7 +2,7 @@
 title: "Talon Pull"
 slug: talon-pull
 category: seasonal
-order: 7
+order: 9
 roast_level: 3
 descriptor: clean and robust
 tasting_notes: clean, smooth, warm spice, dark chocolate
