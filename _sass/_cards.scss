@@ -1896,12 +1896,13 @@ $category-colors: (
 /* Top-left corner tags group */
 .sleek-card-tags-left {
   position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
+  top: 1rem;
+  left: 1rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
   z-index: 5;
+  pointer-events: none;
 }
 
 /* Category Pill: Rounded Square (e.g. BLEND, SEASONAL, SINGLE ORIGIN) */
