@@ -9,7 +9,7 @@ tasting_notes: cinnamon, spiced chocolate, dark fruit
 brewing_method: Espresso, Pour-over, Drip, French Press
 mascot: american-woodcock
 mascot_file: american-woodcock-transparent.png
-published: false
+status: just_hatched
 price:
   12oz: 12
   1lb: 15
@@ -28,10 +28,8 @@ history:
       - name: Ethiopia Guji
         slug: ethiopia-guji
         ratio: 50%
-description: |
-  Delivers a rich chocolate base dialed up with warm cinnamon spice, brown sugar sweetness, and hints of dark fruit and jammy sweetness.
-
-  While it performs exceptionally as an espresso—pulling a smooth, balanced shot with plenty of crema—it also brews remarkably well as drip coffee or in a French press.
+description: >-
+  A cozy, easygoing morning blend pairing rich chocolate and warm cinnamon spice with a touch of brown sugar and dark fruit. Pulls a great shot of espresso, but it's just as good in a regular drip coffee maker or French press.
 fun_fact: >-
   At dawn and dusk, male American woodcocks give a nasal "peent" call before spiraling 300 feet into the sky to perform a musical, fluttering courtship dance.
 ---
