@@ -6,7 +6,7 @@ category: seasonal
 order: 13
 roast_level: 3
 descriptor: warm and festive
-tasting_notes: dark chocolate, sweet cranberry, brown sugar
+tasting_notes: bittersweet chocolate, blackberry, dark fruit
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: turkey
 mascot_file: turkey-transparent.png
@@ -35,7 +35,7 @@ history:
         slug: guatemala-antigua
         ratio: 20%
 description: >-
-  Our Thanksgiving blend pairs smooth Peruvian and Guatemalan coffees with a splash of bright Kenya. It's rich and chocolatey with notes of brown sugar and a festive touch of sweet cranberry—perfect alongside a slice of pie.
+  Our Thanksgiving blend pairs smooth Peruvian and Guatemalan coffees with a splash of bright Kenya. It's rich and chocolatey with sweet notes of blackberry and dark fruit—perfect alongside a slice of pie.
 fun_fact: >-
   Despite their heavy build, wild turkeys can sprint at 20 miles per hour on the ground and burst into flight at up to 55 miles per hour.
 ---

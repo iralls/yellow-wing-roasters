@@ -1,4 +1,5 @@
 ---
+published: false
 title: "Morning Meep"
 slug: morning-meep
 category: seasonal
