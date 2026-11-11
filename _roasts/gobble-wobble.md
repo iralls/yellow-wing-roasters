@@ -4,7 +4,7 @@ subtitle: Thanksgiving Blend
 slug: gobble-wobble
 category: seasonal
 order: 13
-roast_level: 3
+roast_level: 2
 descriptor: warm and festive
 tasting_notes: bittersweet chocolate, blackberry, dark fruit
 brewing_method: Pour-over, Espresso, Drip, French Press
