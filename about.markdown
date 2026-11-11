@@ -7,7 +7,7 @@ permalink: /about/
 <div class="roast-minimal-vertical">
 
 <div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/audubon-duck-family-transparent.png' | relative_url }}" alt="Yellow Wing Roasters duck family" class="roast-mv-bird" aria-hidden="true" fetchpriority="high" decoding="async">
+  <img src="{{ '/images/audubon-duck-family-transparent.png' | relative_url }}" alt="Yellow Wing Roasters duck family" class="roast-mv-bird roast-mv-bird--xl" aria-hidden="true" fetchpriority="high" decoding="async">
 </div>
 
 <div class="roast-mv-center">
