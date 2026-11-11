@@ -23,10 +23,9 @@ layout: index
   </div>
 
   <div class="sleek-home-birds">
-    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="Robin mascot" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="Canary mascot" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="Hummingbird mascot" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-bluebird-transparent.png' | relative_url }}" alt="Bluebird mascot" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-osprey-transparent.png' | relative_url }}" alt="Osprey mascot" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="Robin mascot (Early Bird)" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="Canary mascot (Feather & Soot)" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="Chimney Swift mascot (Chimney Sweep)" fetchpriority="high" decoding="async">
+    <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="Hummingbird mascot (Lil' Sipper)" fetchpriority="high" decoding="async">
   </div>
 </section>
