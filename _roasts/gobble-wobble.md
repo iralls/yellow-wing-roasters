@@ -2,12 +2,11 @@
 title: Gobble Wobble
 subtitle: Thanksgiving Blend
 slug: gobble-wobble
-published: false
 category: seasonal
 order: 13
 roast_level: 3
 descriptor: warm and festive
-tasting_notes: blackcurrant, tart cranberry, roasted pecan, brown sugar
+tasting_notes: dark chocolate, sweet cranberry, brown sugar
 brewing_method: Pour-over, Espresso, Drip, French Press
 mascot: turkey
 mascot_file: turkey-transparent.png
@@ -21,11 +20,22 @@ price:
   5lb: 70
 
 origins:
-  - Ethiopia Washed
-  - Brazil Natural
+  - Peru Washed
+  - Guatemala Washed
   - Kenya Washed
+history:
+  - date: "2026-11"
+    components:
+      - name: Peru Fair Trade Organic
+        slug: peru-fair-trade-organic
+        ratio: 55%
+      - name: Guatemala Antigua
+        slug: guatemala-antigua
+        ratio: 20%
+      - name: Kenya AB Ichamama
+        ratio: 25%
 description: >-
-  A festive Thanksgiving blend roasted to a rich Full City profile. Delivers warm notes of roasted pecan and brown sugar balanced by a vibrant pop of blackcurrant and tart cranberry sweetness.
+  Our Thanksgiving blend pairs smooth Peruvian and Guatemalan coffees with a splash of bright Kenya. It's rich and chocolatey with notes of brown sugar and a festive touch of sweet cranberry—perfect alongside a slice of pie.
 fun_fact: >-
   Despite their heavy build, wild turkeys can sprint at 20 miles per hour on the ground and burst into flight at up to 55 miles per hour.
 ---
