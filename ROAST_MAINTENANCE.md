@@ -110,8 +110,9 @@ For blends (e.g., `early-bird`, `chimney-sweep`, `homeroom-hoot`), you can track
 
 ### Rules for `history`:
 1. **Newest recipe first**: The first entry under `history:` is treated as the current live recipe.
-2. If components link to an existing single origin in `_roasts/`, specify its `slug`.
-3. Keep `origins:` at the top level updated with the list of country/process descriptors used in the current recipe.
+2. **Component order by percentage (most to least)**: Always list blend components in descending order based on their percentage of the total blend (highest percentage first). The top-level `origins:` list must follow this same descending order.
+3. If components link to an existing single origin in `_roasts/`, specify its `slug`.
+4. Keep `origins:` at the top level updated with the list of country/process descriptors used in the current recipe.
 
 ```yaml
 origins:

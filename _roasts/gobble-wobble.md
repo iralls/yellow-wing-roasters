@@ -21,19 +21,19 @@ price:
 
 origins:
   - Peru Washed
-  - Guatemala Washed
   - Kenya Washed
+  - Guatemala Washed
 history:
   - date: "2026-11"
     components:
       - name: Peru Fair Trade Organic
         slug: peru-fair-trade-organic
         ratio: 55%
+      - name: Kenya AB Ichamama
+        ratio: 25%
       - name: Guatemala Antigua
         slug: guatemala-antigua
         ratio: 20%
-      - name: Kenya AB Ichamama
-        ratio: 25%
 description: >-
   Our Thanksgiving blend pairs smooth Peruvian and Guatemalan coffees with a splash of bright Kenya. It's rich and chocolatey with notes of brown sugar and a festive touch of sweet cranberry—perfect alongside a slice of pie.
 fun_fact: >-
