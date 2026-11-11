@@ -4,14 +4,21 @@ layout: index
 
 <!-- Hero Section (matching existing home) -->
 <section class="sleek-home-hero">
-  <h1 class="sleek-home-headline">Small-Batch<br>Coffee Roasting</h1>
+  <div class="sleek-home-brand-lockup">
+    <a href="{{ '/' | relative_url }}" class="sleek-home-brand-link">
+      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-home-feather-icon" width="231" height="800" fetchpriority="high" decoding="async">
+      <h1 class="sleek-home-brand-name">Yellow Wing</h1>
+      <div class="sleek-home-brand-sub">Roasters</div>
+    </a>
+  </div>
+
   <p class="sleek-home-sub">
     {{ site.slogan }}
   </p>
 
   <div class="sleek-home-cta-row">
     <a href="{{ '/roasts/' | relative_url }}" class="sleek-home-btn-primary">
-      Explore All Roasts &rarr;
+      Explore All Roasts
     </a>
   </div>
 

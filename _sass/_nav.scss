@@ -211,8 +211,8 @@
     align-items: center;
     padding: 0.95rem 1.75rem;
     background: transparent;
-    border-top: 1px solid rgba(44, 30, 20, 0.1);
-    border-bottom: 1px solid rgba(44, 30, 20, 0.1);
+    border-top: none;
+    border-bottom: none;
     border-radius: 0;
     max-width: 100%;
     width: 100%;
@@ -259,9 +259,11 @@
 
   .sleek-nav-links {
     justify-self: center;
+    margin-top: 1.5rem;
 
     @media (max-width: 768px) {
       justify-self: stretch !important;
+      margin-top: 0;
     }
   }
 
@@ -289,20 +291,55 @@
 
   .sleek-brand-lockup-inline {
     display: inline-flex;
+    flex-direction: column;
     justify-self: start;
     align-items: center;
+    text-align: center;
+    margin-left: 2.5rem;
+    margin-top: 0.6rem;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 
+    @media (max-width: 768px) {
+      margin-left: 0;
+      margin-top: 0.2rem;
+    }
+
     .sleek-brand-inline-icon {
-      height: 2.75rem;
+      height: 2.85rem;
+      width: auto;
+      aspect-ratio: 231 / 800;
+      object-fit: contain;
+      margin: 0 auto 0.25rem;
+      display: block;
+    }
+    .sleek-brand-inline-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
     .sleek-brand-inline-name {
-      font-size: 1.12rem;
+      font-size: 1.05rem;
+      text-align: center;
     }
     .sleek-brand-inline-sub {
-      font-size: 0.64rem;
+      font-size: 0.62rem;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .sleek-brand-inline-icon {
+        height: 2.35rem;
+        margin-bottom: 0.15rem;
+      }
+      .sleek-brand-inline-name {
+        font-size: 0.92rem;
+      }
+      .sleek-brand-inline-sub {
+        font-size: 0.54rem;
+      }
     }
   }
 
@@ -313,8 +350,8 @@
     align-items: center;
     padding: 0.95rem 1.75rem;
     background: transparent;
-    border-top: 1px solid rgba(44, 30, 20, 0.1);
-    border-bottom: 1px solid rgba(44, 30, 20, 0.1);
+    border-top: none;
+    border-bottom: none;
     border-radius: 0;
     max-width: 100%;
     width: 100%;
@@ -334,9 +371,11 @@
 
   .sleek-nav-links {
     justify-self: center;
+    margin-top: 1.5rem;
 
     @media (max-width: 768px) {
       justify-self: stretch !important;
+      margin-top: 0;
     }
   }
 
@@ -360,11 +399,12 @@
   gap: 1.5rem;
 }
 
-/* Inline Left Brand Lockup (Feather + Text to the Left) */
+/* Inline Left Brand Lockup (Vertical Lockup matching footer: Feather on top, centered text) */
 .sleek-brand-lockup-inline {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  text-align: center;
   text-decoration: none;
   color: inherit;
   flex-shrink: 0;
@@ -376,33 +416,40 @@
 }
 
 .sleek-brand-inline-icon {
-  height: 3.25rem;
+  height: 2.85rem;
   width: auto;
+  aspect-ratio: 231 / 800;
+  object-fit: contain;
   display: block;
+  margin: 0 auto 0.25rem;
 }
 
 .sleek-brand-inline-text {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .sleek-brand-inline-name {
   font-family: $font-display;
   font-weight: 500;
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   color: $color-gold;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  line-height: 1.05;
+  line-height: 1.1;
+  text-align: center;
 }
 
 .sleek-brand-inline-sub {
   font-family: $font-display;
   font-weight: 500;
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   color: #302010;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
+  text-align: center;
   margin-top: 0.15rem;
 }
 

@@ -1,0 +1,91 @@
+<!-- Streamlined Redesigned Footer (Menu Column Layout) -->
+<footer class="sleek-bottom-nav-footer" id="streamlined-footer">
+  <div class="sleek-footer-container">
+    <div class="sleek-footer-grid streamlined-footer-grid">
+      <!-- Col 1: Brand & Heritage -->
+      <div class="sleek-footer-col sleek-footer-col--brand" id="streamlined-footer-brand">
+        <a href="{{ '/' | relative_url }}" class="sleek-footer-brand-lockup" id="streamlined-brand-lockup">
+          <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-footer-feather-icon" width="231" height="800">
+          <div class="sleek-footer-brand-title brand-header-name">Yellow Wing</div>
+          <div class="sleek-footer-brand-sub brand-header-sub">Roasters</div>
+        </a>
+        <p class="sleek-footer-tagline">
+          {{ site.slogan }}
+        </p>
+      </div>
+
+      <!-- Col 2: Follow Us -->
+      <div class="sleek-footer-col">
+        <div class="sleek-footer-heading">Follow Us</div>
+        <div class="streamlined-footer-follow">
+          <a href="https://www.instagram.com/yellowwingroasters/" target="_blank" rel="noopener noreferrer" class="streamlined-footer-social-link" aria-label="Follow Yellow Wing Roasters on Instagram" title="Follow @yellowwingroasters on Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 3: Contact -->
+      <div class="sleek-footer-col">
+        <div class="sleek-footer-heading">Contact</div>
+        <ul class="sleek-footer-links-list">
+          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Pigeon Post -->
+      <div class="sleek-footer-col sleek-footer-col--signup">
+        <div class="sleek-footer-heading">Pigeon Post</div>
+        <p class="sleek-footer-signup-desc">
+          New micro-lots, seasonal roasts, and restocks delivered to your inbox.
+        </p>
+        <form action="{{ site.google_forms.pigeon_post.url }}" method="POST" class="sleek-footer-signup-form" id="streamlined-pigeon-post-form">
+          <input type="email" name="{{ site.google_forms.pigeon_post.entries.email }}" placeholder="your@email.com" aria-label="Email address for Pigeon Post" autocomplete="email" required class="sleek-footer-signup-input">
+          <button type="submit" class="sleek-footer-signup-btn" id="streamlined-pigeon-post-submit">Subscribe</button>
+        </form>
+        <div class="sleek-footer-signup-status" id="streamlined-pigeon-post-status" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Classic brand feather icon & est 2026 -->
+    <div class="sleek-footer-bottom-bar" id="streamlined-footer-bottom-bar">
+      <a href="{{ '/' | relative_url }}" class="site-footer-link site-footer-mark">
+        <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="site-footer-logo-icon" width="231" height="800" loading="lazy" decoding="async">
+        <div class="site-footer-est">est 2026</div>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('streamlined-pigeon-post-form');
+    if (!form) return;
+    var status = document.getElementById('streamlined-pigeon-post-status');
+    var submitBtn = document.getElementById('streamlined-pigeon-post-submit');
+
+    var iframe = document.createElement('iframe');
+    iframe.name = 'streamlined-pigeon-post-frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    form.target = 'streamlined-pigeon-post-frame';
+
+    form.addEventListener('submit', function () {
+      if (status) {
+        status.textContent = 'Sending…';
+        status.style.color = '#776558';
+      }
+      if (submitBtn) submitBtn.disabled = true;
+
+      iframe.onload = function () {
+        form.style.display = 'none';
+        var desc = form.previousElementSibling;
+        if (desc && desc.classList.contains('sleek-footer-signup-desc')) desc.style.display = 'none';
+        if (status) {
+          status.textContent = "You're subscribed! Keep an eye on your inbox. 🕊️";
+          status.style.color = '#2e7d32';
+          status.style.fontWeight = '700';
+        }
+      };
+    });
+  })();
+</script>
