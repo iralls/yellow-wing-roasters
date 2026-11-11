@@ -185,6 +185,22 @@
   }
 }
 
+.about-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  color: #2c1e14;
+  transform: translateY(1px);
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #9c6d12;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
 .roast-mv-comp-list {
   list-style: none;
   padding: 0;
