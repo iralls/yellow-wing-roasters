@@ -2,20 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title and page.title != "Home" %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  
+  <!-- Preconnect & Preload Figtree Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="preload" href="{{ '/fonts/figtree-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-{% include head.html %}
 </head>
-<body{% if page.bg_pattern %} style="background-image: url('{{ page.bg_pattern | relative_url }}'); background-repeat: repeat; background-size: {{ page.bg_pattern_size | default: '380px 380px' }};"{% endif %}>
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-  {% include sleek-header.html %}
-  <div class="container">
+<body{% if page.layout == 'index' or page.hide_header %} class="home-layout"{% endif %}>
+  <div class="site-wrap">
+    {% unless page.hide_header or page.layout == 'index' %}
+    <header class="site-header">
+      <div class="header-inner">
+        <nav class="nav-links">
+          <a href="{{ '/shop/' | relative_url }}" class="nav-link">Coffee</a>
+          <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
+          <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
+        </nav>
+        <a href="{{ '/' | relative_url }}" class="brand-wordmark">
+          <span class="brand-name">Yellow Wing</span>
+          <span class="brand-sub">Roasters</span>
+        </a>
+        <div class="header-actions">
+          <a href="{{ '/order/' | relative_url }}" class="cart-btn">Cart</a>
+        </div>
+      </div>
+    </header>
+    {% endunless %}
+
     <main id="main-content" class="main-content">
       {{ content }}
     </main>
+
+    {% unless page.hide_footer or page.layout == 'index' %}
+    <footer class="site-footer">
+      <p class="footer-slogan">{{ site.slogan }}</p>
+    </footer>
+    {% endunless %}
   </div>
-  {% include footer.html %}
-  <script src="{{ '/js/pill-select.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

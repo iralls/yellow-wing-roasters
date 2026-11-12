@@ -1,31 +1,120 @@
 ---
 layout: index
+title: Home
+hide_header: true
+hide_footer: true
 ---
 
-<!-- Hero Section (matching existing home) -->
-<section class="sleek-home-hero">
-  <div class="sleek-home-brand-lockup">
-    <a href="{{ '/' | relative_url }}" class="sleek-home-brand-link">
-      <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="sleek-home-feather-icon" width="231" height="800" fetchpriority="high" decoding="async">
-      <h1 class="sleek-home-brand-name">Yellow Wing</h1>
-      <div class="sleek-home-brand-sub">Roasters</div>
-    </a>
-  </div>
+<style>
+  /* ── Homepage Specific Layout (standalone centered landing) ── */
+  body.home-layout .site-wrap {
+    justify-content: center;
+  }
 
-  <p class="sleek-home-sub">
-    {{ site.slogan }}
-  </p>
+  body.home-layout .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+  }
 
-  <div class="sleek-home-cta-row">
-    <a href="{{ '/roasts/' | relative_url }}" class="sleek-home-btn-primary">
-      Explore All Roasts
-    </a>
-  </div>
+  .home-hero {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 38rem;
+    margin: 0 auto;
+  }
 
-  <div class="sleek-home-birds">
-    <img src="{{ '/images/audubon-robin-transparent.png' | relative_url }}" alt="Robin mascot (Early Bird)" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-canary-transparent.png' | relative_url }}" alt="Canary mascot (Feather & Soot)" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-chimney-swift-2-transparent.png' | relative_url }}" alt="Chimney Swift mascot (Chimney Sweep)" fetchpriority="high" decoding="async">
-    <img src="{{ '/images/audubon-hummingbird-transparent.png' | relative_url }}" alt="Hummingbird mascot (Lil' Sipper)" fetchpriority="high" decoding="async">
+  /* ── Main Feather Mark Above Text ── */
+  .home-feather-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+
+  .home-feather-img {
+    display: block;
+    width: auto;
+    height: 440px;
+    max-height: 48vh;
+    aspect-ratio: 231 / 800;
+    object-fit: contain;
+    /* Static feather: no hover scale or shape change */
+  }
+
+  /* ── Typographic Brand Wordmark ── */
+  .hero-brand-wordmark .brand-name {
+    font-family: 'Figtree', var(--font-sans, sans-serif);
+    font-size: clamp(2.5rem, 7vw, 4.25rem);
+    font-weight: 600;
+    color: #f0c838;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+
+  .hero-brand-wordmark .brand-sub {
+    font-family: 'Figtree', var(--font-sans, sans-serif);
+    font-size: clamp(1.3rem, 3.5vw, 1.95rem);
+    font-weight: 500;
+    color: #302010;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-top: 0.35rem;
+  }
+
+  /* ── Hero Description & Actions ── */
+  .hero-description {
+    font-family: 'Figtree', var(--font-sans, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #6e5e54;
+    letter-spacing: 0.01em;
+    margin-top: 0.25rem;
+  }
+
+  .hero-actions {
+    margin-top: 0.5rem;
+  }
+
+  .hero-btn {
+    font-family: 'Figtree', var(--font-sans, sans-serif);
+    display: inline-block;
+    padding: 0.85rem 2.25rem;
+    background: #302010;
+    color: #ffffff;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .hero-btn:hover {
+    background: #9c6d12;
+    color: #ffffff;
+    text-decoration: none;
+  }
+</style>
+
+<div class="home-hero">
+  <div class="home-feather-wrap">
+    <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters Feather" class="home-feather-img" fetchpriority="high" decoding="async">
   </div>
-</section>
+  <div class="brand-wordmark hero-brand-wordmark">
+    <span class="brand-name">Yellow Wing</span>
+    <span class="brand-sub">Roasters</span>
+  </div>
+  <p class="hero-description">Wake up with a chirp</p>
+  <div class="hero-actions">
+    <a href="{{ '/shop/' | relative_url }}" class="hero-btn">Explore Coffee</a>
+  </div>
+</div>

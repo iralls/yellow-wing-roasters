@@ -1,15 +1,10 @@
 ---
 layout: default
 ---
-
-<div class="roasts-header-row" style="margin-bottom: 4rem;">
-  <div class="roasts-header-main">
-    <h1 class="roasts-page-title">{{ page.title }}</h1>
-  </div>
+<div class="category-header">
+  <h1 class="page-title">{{ page.title }}</h1>
 </div>
 
-{{ content }}
-
-<div class="sleek-comparison-grid" style="margin-bottom: 4rem;">
-  {% include category-section.html category=page.category %}
+<div class="category-body">
+  {{ content }}
 </div>
