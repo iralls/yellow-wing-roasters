@@ -627,9 +627,7 @@ permalink: /hester-shop/
   #hester-preview-page .hester-page-title {
     font-family: var(--font-display, "Montserrat", sans-serif);
     font-size: 3rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 450;
     color: #302010;
     line-height: 1.15;
     margin: 0;

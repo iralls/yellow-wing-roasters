@@ -101,33 +101,9 @@
 
   <!-- Artwork Plate -->
   <div class="roast-trans-plate sleek-card-visual">
-    {% unless include.hide_badges %}
-      <!-- Upper-Left: Category Tag Pill & Status Badge -->
-      <div class="sleek-card-tags-left">
-        <span class="sleek-card-tag">
-          {% if r.category == "subscriptions" %}SUBSCRIPTION{% else %}{{ r.category | upcase }}{% endif %}
-          {% if is_100_fto %}
-            <span style="opacity: 0.7; margin-left: 0.2rem;">· FTO</span>
-          {% elsif is_100_organic %}
-            <span style="opacity: 0.7; margin-left: 0.2rem;">· Organic</span>
-          {% endif %}
-        </span>
-        {% if r.status and s_info.badge %}
-          <span class="sleek-card-status-badge sleek-card-status-badge--{{ r.status }}">{{ s_info.badge }}</span>
-        {% endif %}
-      </div>
-    {% endunless %}
-
     {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "gift-option" %}
       <span class="gift-type-badge">&#10003; Selected</span>
       <span class="pyo-hover-overlay">Select</span>
-    {% endif %}
-
-    <!-- Upper-Right: Roast Level Dots Meter (NO "Best Seller" pill) -->
-    {% if r.roast_level %}
-      <div class="roast-trans-roast-meter" title="Roast Level: {{ r.roast_level }}/5">
-        {% include roast-dots.html roast=r %}
-      </div>
     {% endif %}
 
     {% if r.mascot_file %}
@@ -171,20 +147,20 @@
       {% endunless %}
     </div>
 
-    <!-- Descriptor / Notes Summary -->
-    {% if r.descriptor %}
-      <p class="roast-trans-descriptor sleek-card-descriptor">{{ r.descriptor }}</p>
-    {% endif %}
+    <!-- Descriptor & Roast Level Row (Horizontally Aligned, Roast Level on Right) -->
+    {% if r.descriptor or (r.roast_level and include.hide_roast_level != true) %}
+      <div class="roast-trans-desc-row">
+        {% if r.descriptor %}
+          <p class="roast-trans-descriptor sleek-card-descriptor">{{ r.descriptor }}</p>
+        {% endif %}
 
-    <!-- Tasting Note Pills (Mimicking minimal/coffees/ notes tags) -->
-    {% if r.tasting_notes and r.category != "pantry" %}
-      {% assign notes_arr = r.tasting_notes | replace: ", ", " · " | split: " · " %}
-      <div class="roast-trans-notes">
-        {% for n in notes_arr limit:3 %}
-          <span class="roast-trans-note-tag">{{ n }}</span>
-        {% endfor %}
+        {% if r.roast_level and include.hide_roast_level != true %}
+          {% assign level_info = site.data.roast_levels[r.roast_level] %}
+          <span class="roast-card-level-text">{{ level_info.layman }}</span>
+        {% endif %}
       </div>
     {% endif %}
+
 
     <!-- Bottom Action Area / Actions -->
     {% unless include.hide_cta %}

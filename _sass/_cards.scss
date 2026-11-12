@@ -15,9 +15,7 @@
 .roasts-page-title {
   text-align: center;
   font-size: 3rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 450;
   color: #302010;
   line-height: 1.15;
   margin-bottom: 0;
@@ -2078,7 +2076,7 @@ $category-colors: (
 
 /* Sleek card body */
 .sleek-card-body {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -2408,7 +2406,7 @@ $category-colors: (
 }
 
 .roast-trans-body {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -2420,7 +2418,7 @@ $category-colors: (
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 1rem;
 }
 
 .roast-trans-title {
@@ -2451,6 +2449,7 @@ $category-colors: (
   white-space: nowrap;
   text-align: right;
   flex-shrink: 0;
+  line-height: 1.2;
 }
 
 .roast-trans-price-unit {
@@ -2460,14 +2459,35 @@ $category-colors: (
   margin-left: 0.2rem;
 }
 
+/* ── Descriptor & Roast Level Row (Horizontally Aligned) ── */
+.roast-trans-desc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .roast-trans-descriptor {
   font-family: $font-body;
   font-size: 0.96rem;
   font-weight: 400;
   font-style: italic;
-  color: #7d7065;
-  margin: 0 0 1rem;
+  color: #8a7060;
+  margin: 0;
   line-height: 1.4;
+}
+
+/* Roast level layman text: aligned to the right on the descriptor baseline */
+.roast-card-level-text {
+  font-family: $font-display;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #7d7065;
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .roast-trans-notes {
