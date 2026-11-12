@@ -36,17 +36,22 @@
   color: #999;
 }
 
-/* ── Sleek Comprehensive Bottom Navigation Footer ── */
+/* ── Sleek Minimalist Footer (Feather & Slogan 6rem) ── */
 .sleek-bottom-nav-footer {
-  background: #fbf9f5;
-  border-top: 1px solid rgba(44, 30, 20, 0.1);
-  padding: 4rem 1.5rem 2.5rem;
-  margin-top: 5rem;
+  background: transparent;
+  border-top: none;
+  border: none;
+  padding: 4.5rem 1.5rem 4rem;
+  margin-top: 4rem;
 }
 
 .sleek-footer-container {
-  max-width: 81.5rem;
+  max-width: 40rem;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* Minimal Pigeon Post Signup within Col 1 */
@@ -176,7 +181,7 @@
   text-align: center;
   text-decoration: none;
   color: inherit;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
 
   &:hover {
     text-decoration: none;
@@ -184,14 +189,24 @@
   }
 }
 
+.sleek-footer-feather-link {
+  display: inline-block;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .sleek-footer-feather-icon {
-  height: 3.8rem;
+  height: 6rem;
   width: auto;
   max-width: fit-content;
   aspect-ratio: 231 / 800;
   object-fit: contain;
   display: block;
-  margin: 0 auto 0.4rem;
+  margin: 0 auto;
 }
 
 .sleek-footer-brand-title {
@@ -216,12 +231,13 @@
 
 .sleek-footer-tagline {
   font-family: $font-body;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-style: italic;
   color: #6e5e54;
-  line-height: 1.55;
-  max-width: 20rem;
-  margin: 0 0 1rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .sleek-footer-contact-line a {

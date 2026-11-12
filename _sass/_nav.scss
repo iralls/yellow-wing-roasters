@@ -104,44 +104,28 @@
   display: block;
 }
 
-/* ── Sticky Navigation Bar Container (Floating Sticky) ── */
+/* ── Navigation Bar Container (Static / Does Not Follow Scroll) ── */
 .sleek-sticky-navbar-wrap {
-  --nav-sticky-top: 1rem;
-  --nav-sticky-top-edge: 0px;
-  position: sticky;
-  top: 0;
+  position: static;
+  top: auto;
   width: 100%;
   box-sizing: border-box;
   z-index: 999;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
   pointer-events: auto;
 
   &.header-mode-above {
-    top: var(--nav-sticky-top);
+    position: static;
+    top: auto;
   }
 
   &.header-mode-hairline {
-    top: var(--nav-sticky-top-edge);
+    position: static;
+    top: auto;
   }
 
   &.header-mode-left {
-    top: var(--nav-sticky-top-edge);
-  }
-
-  &.is-stuck.header-mode-above .sleek-navbar-container {
-    background: rgba(255, 255, 255, 0.95);
-    @include backdrop-blur(14px);
-    border-color: rgba(44, 30, 20, 0.18);
-  }
-
-  &.is-stuck.header-mode-hairline .sleek-navbar-container {
-    background: rgba(250, 248, 245, 0.96);
-    @include backdrop-blur(14px);
-  }
-
-  &.is-stuck.header-mode-left .sleek-navbar-container {
-    background: rgba(250, 248, 245, 0.96);
-    @include backdrop-blur(14px);
+    position: static;
+    top: auto;
   }
 }
 
@@ -281,59 +265,113 @@
   }
 }
 
-/* Mode 3: Lockup Left (Inline Full-Width) */
+/* Mode 3: Hester Wordmark Header (Menu Left, Centered Wordmark, Cart Right) */
 .header-mode-left {
   .sleek-brand-lockup-above-wrap {
     display: none;
   }
 
-  .sleek-brand-lockup-inline {
-    display: inline-flex;
-    justify-self: start;
-    align-items: center;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-
-    .sleek-brand-inline-icon {
-      height: 2.75rem;
-    }
-    .sleek-brand-inline-name {
-      font-size: 1.12rem;
-    }
-    .sleek-brand-inline-sub {
-      font-size: 0.64rem;
-    }
-  }
-
   .sleek-navbar-container {
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 0.95rem 1.75rem;
+    padding: 50px 2.5rem 1.25rem 2.5rem;
     background: transparent;
-    border-top: 1px solid rgba(44, 30, 20, 0.1);
-    border-bottom: 1px solid rgba(44, 30, 20, 0.1);
+    border: none;
+    border-top: none;
+    border-bottom: none;
     border-radius: 0;
-    max-width: 100%;
+    max-width: 92rem;
     width: 100%;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto;
     position: relative;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease, padding 0.25s ease;
 
     @media (max-width: 768px) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 1.25rem;
+      padding: 24px 1.25rem;
       box-sizing: border-box;
       width: 100%;
     }
   }
 
-  .sleek-nav-links {
+  .sleek-brand-lockup-inline {
+    order: 2;
     justify-self: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    margin: 0 auto;
+    text-decoration: none;
+
+    .sleek-brand-inline-icon {
+      display: none;
+    }
+
+    .sleek-brand-inline-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .sleek-brand-inline-name {
+      font-family: $font-display;
+      font-weight: 450;
+      font-size: 1.7rem;
+      color: $color-gold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+
+    .sleek-brand-inline-sub {
+      font-family: $font-display;
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #302010;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      order: 1;
+      margin: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+
+      .sleek-brand-inline-text {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .sleek-brand-inline-name {
+        font-size: 1.2rem;
+      }
+
+      .sleek-brand-inline-sub {
+        font-size: 0.78rem;
+      }
+    }
+  }
+
+  .sleek-nav-links {
+    order: 1;
+    justify-self: start;
+    margin: 0;
+    gap: 1rem;
 
     @media (max-width: 768px) {
       justify-self: stretch !important;
@@ -341,33 +379,52 @@
   }
 
   .sleek-nav-actions {
+    order: 3;
     justify-self: end;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     min-width: 0;
+
+    @media (max-width: 768px) {
+      order: 2;
+    }
+  }
+
+  .sleek-nav-item:first-child .sleek-nav-dropdown-menu {
+    left: 0;
+    transform: translateX(0) translateY(4px);
+  }
+
+  .sleek-nav-item:first-child:hover .sleek-nav-dropdown-menu,
+  .sleek-nav-item:first-child.is-open .sleek-nav-dropdown-menu {
+    transform: translateX(0) translateY(0);
   }
 }
 
 /* Primary Navbar Container */
 .sleek-navbar-container {
-  max-width: 81.5rem;
+  box-sizing: border-box;
+  max-width: 92rem;
+  width: 100%;
   margin: 0 auto;
-  padding: 0.65rem 1.5rem;
-  display: flex;
+  padding: 50px 2.5rem 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 1.5rem;
+  border: none;
 }
 
-/* Inline Left Brand Lockup (Feather + Text to the Left) */
+/* Inline Center Brand Lockup */
 .sleek-brand-lockup-inline {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
   color: inherit;
   flex-shrink: 0;
+  margin: 0 auto;
 
   &:hover {
     text-decoration: none;
@@ -376,41 +433,44 @@
 }
 
 .sleek-brand-inline-icon {
-  height: 3.25rem;
-  width: auto;
-  display: block;
+  display: none;
 }
 
 .sleek-brand-inline-text {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .sleek-brand-inline-name {
   font-family: $font-display;
-  font-weight: 500;
-  font-size: 1.12rem;
+  font-weight: 450;
+  font-size: 1.7rem;
   color: $color-gold;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1.05;
+  white-space: nowrap;
 }
 
 .sleek-brand-inline-sub {
   font-family: $font-display;
-  font-weight: 500;
-  font-size: 0.64rem;
+  font-weight: 400;
+  font-size: 1.1rem;
   color: #302010;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   margin-top: 0.15rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* Navigation Links & Dropdowns */
 .sleek-nav-links {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 1rem;
 
   @media (max-width: 768px) {
     display: none;

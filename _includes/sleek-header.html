@@ -37,10 +37,8 @@
         </button>
         <div class="sleek-nav-dropdown-menu">
           <div class="sleek-nav-menu-header">Roasts & Offerings</div>
-          <a href="{{ '/roasts/' | relative_url }}" class="sleek-nav-dropdown-link">All Roasts</a>
-          <a href="{{ '/blends/' | relative_url }}" class="sleek-nav-dropdown-link">Blends</a>
-          <a href="{{ '/single-origins/' | relative_url }}" class="sleek-nav-dropdown-link">Single Origins</a>
-          <a href="{{ '/seasonals/' | relative_url }}" class="sleek-nav-dropdown-link">Seasonals</a>
+          <a href="{{ '/roasts/' | relative_url }}" class="sleek-nav-dropdown-link">Coffee</a>
+          <a href="{{ '/subscriptions/' | relative_url }}" class="sleek-nav-dropdown-link">Subscriptions</a>
           <a href="{{ '/custom/' | relative_url }}" class="sleek-nav-dropdown-link">Custom</a>
           <div class="sleek-nav-menu-divider"></div>
           <div class="sleek-nav-menu-header">Tasting & Gifts</div>
@@ -51,7 +49,6 @@
         </div>
       </div>
 
-      <a href="{{ '/subscriptions/' | relative_url }}" class="sleek-nav-link">Subscriptions</a>
       <a href="{{ '/about/' | relative_url }}" class="sleek-nav-link">About Us</a>
 
       <!-- Orders Dropdown (Manage Order, Manage Subscriptions) -->
@@ -100,22 +97,6 @@
 {% include cart-drawer.html %}
 
 <script>
-  // Scroll Listener: Elevates Floating Navbar & Reveals Inline Brand Lockup on Left
-  const navbarWrapEl = document.getElementById('sleek-sticky-navbar-wrap');
-  let ticking = false;
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        if (navbarWrapEl) {
-          navbarWrapEl.classList.toggle('is-stuck', window.scrollY > 80);
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
   // Dropdown Menu Toggles for Mobile / Keyboard
   const navTriggers = document.querySelectorAll('.sleek-nav-trigger');
   navTriggers.forEach(trig => {

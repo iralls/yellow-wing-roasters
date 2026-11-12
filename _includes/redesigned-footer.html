@@ -14,17 +14,7 @@
         </p>
       </div>
 
-      <!-- Col 2: Follow Us -->
-      <div class="sleek-footer-col">
-        <div class="sleek-footer-heading">Follow Us</div>
-        <div class="streamlined-footer-follow">
-          <a href="https://www.instagram.com/yellowwingroasters/" target="_blank" rel="noopener noreferrer" class="streamlined-footer-social-link" aria-label="Follow Yellow Wing Roasters on Instagram" title="Follow @yellowwingroasters on Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Col 3: Contact -->
+      <!-- Col 2: Contact -->
       <div class="sleek-footer-col">
         <div class="sleek-footer-heading">Contact</div>
         <ul class="sleek-footer-links-list">
@@ -32,7 +22,7 @@
         </ul>
       </div>
 
-      <!-- Col 4: Pigeon Post -->
+      <!-- Col 3: Pigeon Post -->
       <div class="sleek-footer-col sleek-footer-col--signup">
         <div class="sleek-footer-heading">Pigeon Post</div>
         <p class="sleek-footer-signup-desc">
@@ -44,7 +34,18 @@
         </form>
         <div class="sleek-footer-signup-status" id="streamlined-pigeon-post-status" role="status" aria-live="polite"></div>
       </div>
+
+
     </div>
+
+    <!-- Centered Quick Links (Used in Centered Quick Links variant) -->
+    <nav class="streamlined-footer-quick-links" id="streamlined-footer-quick-links" aria-label="Footer Quick Links">
+      <a href="{{ '/about/' | relative_url }}" class="streamlined-footer-quick-link">About Us</a>
+      <span class="streamlined-footer-quick-sep" aria-hidden="true">•</span>
+      <a href="{{ '/pigeon-post/' | relative_url }}" class="streamlined-footer-quick-link">Pigeon Post</a>
+      <span class="streamlined-footer-quick-sep" aria-hidden="true">•</span>
+      <a href="{{ '/order/' | relative_url }}" class="streamlined-footer-quick-link streamlined-footer-quick-link--cart" id="streamlined-footer-cart-link">Cart</a>
+    </nav>
 
     <!-- Bottom Bar: Classic brand feather icon & est 2026 -->
     <div class="sleek-footer-bottom-bar" id="streamlined-footer-bottom-bar">
@@ -58,6 +59,16 @@
 
 <script>
   (function () {
+    var cartLink = document.getElementById('streamlined-footer-cart-link');
+    if (cartLink) {
+      cartLink.addEventListener('click', function (e) {
+        if (typeof window.ywrOpenCartDrawer === 'function') {
+          e.preventDefault();
+          window.ywrOpenCartDrawer();
+        }
+      });
+    }
+
     var form = document.getElementById('streamlined-pigeon-post-form');
     if (!form) return;
     var status = document.getElementById('streamlined-pigeon-post-status');

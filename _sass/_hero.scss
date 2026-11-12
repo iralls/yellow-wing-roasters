@@ -143,10 +143,18 @@
   font-size: 0.85rem;
   box-shadow: 0 4px 14px rgba(44, 30, 20, 0.12);
   text-decoration: none;
+  transform: none;
 
-  &:hover {
+  &:hover,
+  &:hover:not(:disabled) {
     text-decoration: none;
     color: #ffffff;
+    transform: none !important;
+  }
+
+  &:active,
+  &:active:not(:disabled) {
+    transform: none !important;
   }
 }
 
