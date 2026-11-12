@@ -77,7 +77,7 @@
   }
 
   .sleek-home-feather-icon {
-    height: 14rem;
+    height: 20rem;
     width: auto;
     aspect-ratio: 231 / 800;
     object-fit: contain;
@@ -87,7 +87,7 @@
 
   .sleek-home-brand-name {
     font-family: $font-display;
-    font-weight: 500;
+    font-weight: 450;
     font-size: clamp(1.75rem, 7vw, 2.6rem);
     color: $color-gold;
     letter-spacing: 0.1em;
@@ -99,8 +99,8 @@
 
   .sleek-home-brand-sub {
     font-family: $font-display;
-    font-weight: 500;
-    font-size: clamp(1.3rem, 5.2vw, 2rem);
+    font-weight: 400;
+    font-size: clamp(1.3rem, 5.2vw, 1.7rem);
     color: #302010;
     letter-spacing: 0.28em;
     text-transform: uppercase;
