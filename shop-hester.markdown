@@ -385,28 +385,30 @@ permalink: /shop-hester/
   </div>
 
   <!-- ── 4. Pantry Section ── -->
-  <div class="hester-section-header" id="pantry">
-    <h2 class="hester-section-title">Pantry</h2>
-  </div>
-
   {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-  <div class="hester-grid">
-    {% for item in active_pantry %}
-      {% assign img_path = '/images/' | append: item.mascot_file %}
-      <a href="{{ item.url | relative_url }}" class="hester-item">
-        <div class="hester-image-wrap">
-          <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="hester-image" loading="lazy" decoding="async">
-        </div>
-        <div class="hester-title-price">
-          <div class="hester-item-title">{{ item.title }}</div>
-          <div class="hester-item-price">${{ item.price }}</div>
-        </div>
-        <p class="hester-item-desc">
-          {{ item.descriptor | default: item.intro | default: "Small-batch pantry delicacy" }}
-        </p>
-      </a>
-    {% endfor %}
-  </div>
+  {% if active_pantry.size > 0 %}
+    <div class="hester-section-header" id="pantry">
+      <h2 class="hester-section-title">Pantry</h2>
+    </div>
+
+    <div class="hester-grid">
+      {% for item in active_pantry %}
+        {% assign img_path = '/images/' | append: item.mascot_file %}
+        <a href="{{ item.url | relative_url }}" class="hester-item">
+          <div class="hester-image-wrap">
+            <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="hester-image" loading="lazy" decoding="async">
+          </div>
+          <div class="hester-title-price">
+            <div class="hester-item-title">{{ item.title }}</div>
+            <div class="hester-item-price">${{ item.price }}</div>
+          </div>
+          <p class="hester-item-desc">
+            {{ item.descriptor | default: item.intro | default: "Small-batch pantry delicacy" }}
+          </p>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- ── 5. Gifts Section ── -->
   <div class="hester-section-header" id="gifts">

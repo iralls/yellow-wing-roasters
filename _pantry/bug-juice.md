@@ -2,7 +2,7 @@
 title: "Bug Juice"
 subtitle: "Coffee Liqueur"
 slug: bug-juice
-published: true
+published: false
 category: pantry
 order: 4
 permalink: /pantry/bug-juice/

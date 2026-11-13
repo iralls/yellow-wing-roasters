@@ -355,29 +355,31 @@ permalink: /shop-parlor/
   </div>
 
   <!-- ── Pantry Section ── -->
-  <div class="parlor-section-header" id="pantry">
-    <h2 class="parlor-section-title">Pantry</h2>
-  </div>
-
   {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-  <div class="parlor-grid">
-    {% for item in active_pantry %}
-      {% assign img_path = '/images/' | append: item.mascot_file %}
-      <a href="{{ item.url | relative_url }}" class="parlor-item">
-        <div class="parlor-item-image-wrap">
-          <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="parlor-item-image" loading="lazy" decoding="async">
-        </div>
-        <div class="parlor-item-meta">
-          <span class="parlor-item-eyebrow">Pantry</span>
-          <h3 class="parlor-item-title">{{ item.title }}</h3>
-          <p class="parlor-item-descriptor">
-            {{ item.descriptor | default: item.intro | default: item.overlay_notes }}
-          </p>
-          <p class="parlor-item-price">${{ item.price }}</p>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
+  {% if active_pantry.size > 0 %}
+    <div class="parlor-section-header" id="pantry">
+      <h2 class="parlor-section-title">Pantry</h2>
+    </div>
+
+    <div class="parlor-grid">
+      {% for item in active_pantry %}
+        {% assign img_path = '/images/' | append: item.mascot_file %}
+        <a href="{{ item.url | relative_url }}" class="parlor-item">
+          <div class="parlor-item-image-wrap">
+            <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="parlor-item-image" loading="lazy" decoding="async">
+          </div>
+          <div class="parlor-item-meta">
+            <span class="parlor-item-eyebrow">Pantry</span>
+            <h3 class="parlor-item-title">{{ item.title }}</h3>
+            <p class="parlor-item-descriptor">
+              {{ item.descriptor | default: item.intro | default: item.overlay_notes }}
+            </p>
+            <p class="parlor-item-price">${{ item.price }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- ── Gifts Section ── -->
   <div class="parlor-section-header" id="gifts">

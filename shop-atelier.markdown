@@ -386,26 +386,28 @@ permalink: /shop-atelier/
       </a>
 
       <!-- 4. Pantry & Sweets -->
-      <div class="atl-section-heading">04 &mdash; Pantry &amp; Treats</div>
       {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-      {% for item in active_pantry %}
-        {% assign img_path = '/images/' | append: item.mascot_file %}
-        <a href="{{ item.url | relative_url }}" class="atl-row"
-           data-img="{{ img_path | relative_url }}"
-           data-title="{{ item.title }}"
-           data-sub="Artisanal Pantry &bull; ${{ item.price }}">
-          <span class="atl-num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
-          <div class="atl-row-main">
-            <h3 class="atl-name">{{ item.title }}</h3>
-            <span class="atl-desc">{{ item.descriptor | default: item.intro }}</span>
-          </div>
-          <span class="atl-level">Pantry</span>
-          <div class="atl-price">${{ item.price }}</div>
-        </a>
-      {% endfor %}
+      {% if active_pantry.size > 0 %}
+        <div class="atl-section-heading">04 &mdash; Pantry &amp; Treats</div>
+        {% for item in active_pantry %}
+          {% assign img_path = '/images/' | append: item.mascot_file %}
+          <a href="{{ item.url | relative_url }}" class="atl-row"
+             data-img="{{ img_path | relative_url }}"
+             data-title="{{ item.title }}"
+             data-sub="Artisanal Pantry &bull; ${{ item.price }}">
+            <span class="atl-num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+            <div class="atl-row-main">
+              <h3 class="atl-name">{{ item.title }}</h3>
+              <span class="atl-desc">{{ item.descriptor | default: item.intro }}</span>
+            </div>
+            <span class="atl-level">Pantry</span>
+            <div class="atl-price">${{ item.price }}</div>
+          </a>
+        {% endfor %}
+      {% endif %}
 
       <!-- 5. Gifts -->
-      <div class="atl-section-heading">05 &mdash; Gifts</div>
+      <div class="atl-section-heading">{% if active_pantry.size > 0 %}05{% else %}04{% endif %} &mdash; Gifts</div>
       <a href="{{ '/gift/' | relative_url }}" class="atl-row"
          data-img="{{ '/images/qr-code2-full-transparent.png' | relative_url }}"
          data-title="Digital Gift Card"

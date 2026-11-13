@@ -642,38 +642,40 @@ permalink: /shop/
   </div>
 
   <!-- ── 4. Pantry Section ── -->
-  <div class="shop-section-header">
-    <h2 class="shop-section-title">Pantry</h2>
-  </div>
-
   {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-  <div class="shop-grid">
-    {% for item in active_pantry %}
-      {% assign img_path = '/images/' | append: item.mascot_file %}
-      <a href="{{ item.url | relative_url }}" class="shop-item">
-        <div class="shop-item-visual">
-          <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="pantry-item-img" loading="lazy" decoding="async">
+  {% if active_pantry.size > 0 %}
+    <div class="shop-section-header">
+      <h2 class="shop-section-title">Pantry</h2>
+    </div>
 
-          <div class="shop-item-overlay">
-            <div class="overlay-tag">Pantry</div>
-            {% if item.descriptor %}
-              <div class="overlay-descriptor">{{ item.descriptor }}</div>
-            {% endif %}
-            {% if item.intro %}
-              <p class="overlay-notes">{{ item.intro }}</p>
-            {% elsif item.overlay_notes %}
-              <p class="overlay-notes">{{ item.overlay_notes }}</p>
-            {% endif %}
+    <div class="shop-grid">
+      {% for item in active_pantry %}
+        {% assign img_path = '/images/' | append: item.mascot_file %}
+        <a href="{{ item.url | relative_url }}" class="shop-item">
+          <div class="shop-item-visual">
+            <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="pantry-item-img" loading="lazy" decoding="async">
+
+            <div class="shop-item-overlay">
+              <div class="overlay-tag">Pantry</div>
+              {% if item.descriptor %}
+                <div class="overlay-descriptor">{{ item.descriptor }}</div>
+              {% endif %}
+              {% if item.intro %}
+                <p class="overlay-notes">{{ item.intro }}</p>
+              {% elsif item.overlay_notes %}
+                <p class="overlay-notes">{{ item.overlay_notes }}</p>
+              {% endif %}
+            </div>
           </div>
-        </div>
 
-        <div class="shop-item-info">
-          <h2 class="shop-item-name">{{ item.title }}</h2>
-          <div class="shop-item-price">${{ item.price }}</div>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
+          <div class="shop-item-info">
+            <h2 class="shop-item-name">{{ item.title }}</h2>
+            <div class="shop-item-price">${{ item.price }}</div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- ── 5. Gifts Section ── -->
   <div class="shop-section-header">

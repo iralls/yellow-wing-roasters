@@ -376,29 +376,31 @@ permalink: /shop-minimal/
   </div>
 
   <!-- ── 4. Pantry ── -->
-  <div class="other-shop__section-header">
-    <h2 class="other-shop__section-title">Pantry</h2>
-  </div>
-
   {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-  <div class="other-shop__grid">
-    {% for item in active_pantry %}
-      {% assign img_path = '/images/' | append: item.mascot_file %}
-      <a href="{{ item.url | relative_url }}" class="other-shop__card">
-        <div class="other-shop__card-img-wrap">
-          <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" loading="lazy" decoding="async">
-        </div>
+  {% if active_pantry.size > 0 %}
+    <div class="other-shop__section-header">
+      <h2 class="other-shop__section-title">Pantry</h2>
+    </div>
 
-        <div class="other-shop__card-body">
-          <h2 class="other-shop__card-name">{{ item.title }}</h2>
-          <p class="other-shop__card-desc">
-            {{ item.descriptor | default: item.intro | default: item.overlay_notes }}
-          </p>
-          <p class="other-shop__card-price">${{ item.price }}</p>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
+    <div class="other-shop__grid">
+      {% for item in active_pantry %}
+        {% assign img_path = '/images/' | append: item.mascot_file %}
+        <a href="{{ item.url | relative_url }}" class="other-shop__card">
+          <div class="other-shop__card-img-wrap">
+            <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" loading="lazy" decoding="async">
+          </div>
+
+          <div class="other-shop__card-body">
+            <h2 class="other-shop__card-name">{{ item.title }}</h2>
+            <p class="other-shop__card-desc">
+              {{ item.descriptor | default: item.intro | default: item.overlay_notes }}
+            </p>
+            <p class="other-shop__card-price">${{ item.price }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- ── 5. Gifts ── -->
   <div class="other-shop__section-header">

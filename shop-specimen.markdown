@@ -330,28 +330,30 @@ permalink: /shop-specimen/
   </div>
 
   <!-- ── 4. Pantry & Sweets ── -->
-  <div class="specimen-section-header">
-    <h2 class="specimen-section-title">Pantry</h2>
-  </div>
-
   {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
-  <div class="specimen-grid">
-    {% for item in active_pantry %}
-      {% assign img_path = '/images/' | append: item.mascot_file %}
-      <a href="{{ item.url | relative_url }}" class="specimen-item">
-        <div class="specimen-visual">
-          <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="specimen-bird" loading="lazy" decoding="async">
-        </div>
-        <div class="specimen-meta">
-          <h3 class="specimen-name">{{ item.title }}</h3>
-          <p class="specimen-level-price">Pantry &bull; <span class="specimen-price">${{ item.price }}</span></p>
-          <p class="specimen-notes">
-            {{ item.descriptor | default: item.intro | default: "Small-batch artisanal treat" }}
-          </p>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
+  {% if active_pantry.size > 0 %}
+    <div class="specimen-section-header">
+      <h2 class="specimen-section-title">Pantry</h2>
+    </div>
+
+    <div class="specimen-grid">
+      {% for item in active_pantry %}
+        {% assign img_path = '/images/' | append: item.mascot_file %}
+        <a href="{{ item.url | relative_url }}" class="specimen-item">
+          <div class="specimen-visual">
+            <img src="{{ img_path | relative_url }}" alt="{{ item.mascot_alt | default: item.title }}" class="specimen-bird" loading="lazy" decoding="async">
+          </div>
+          <div class="specimen-meta">
+            <h3 class="specimen-name">{{ item.title }}</h3>
+            <p class="specimen-level-price">Pantry &bull; <span class="specimen-price">${{ item.price }}</span></p>
+            <p class="specimen-notes">
+              {{ item.descriptor | default: item.intro | default: "Small-batch artisanal treat" }}
+            </p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <!-- ── 5. Gifts ── -->
   <div class="specimen-section-header">

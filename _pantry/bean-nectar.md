@@ -2,7 +2,7 @@
 title: "Bean Nectar"
 subtitle: "Coffee Simple Syrup"
 slug: bean-nectar
-published: true
+published: false
 category: pantry
 order: 3
 permalink: /pantry/bean-nectar/

@@ -2,7 +2,7 @@
 title: "Penguin Pebbles"
 subtitle: "Dark Chocolate-Covered Coffee Beans"
 slug: penguin-pebbles
-published: true
+published: false
 category: pantry
 order: 1
 permalink: /pantry/penguin-pebbles/

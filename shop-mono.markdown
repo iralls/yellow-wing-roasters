@@ -324,10 +324,10 @@ permalink: /shop-mono/
     </a>
   </div>
 
-  <!-- ── 4. Pantry & Gifts ── -->
-  <div class="mono-section-title">Pantry &amp; Gifts</div>
+  <!-- ── 4. Gifts ── -->
+  {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
+  <div class="mono-section-title">{% if active_pantry.size > 0 %}Pantry &amp; Gifts{% else %}Gift Cards{% endif %}</div>
   <div class="mono-grid">
-    {% assign active_pantry = site.pantry | where: "published", true | sort: "order" %}
     {% for item in active_pantry %}
       {% assign img_path = '/images/' | append: item.mascot_file %}
       <a href="{{ item.url | relative_url }}" class="mono-cell">
