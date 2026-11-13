@@ -499,54 +499,11 @@ permalink: /shop/
     {% for r in all_roasts %}
       {% assign level_info = site.data.roast_levels[r.roast_level] %}
 
-      {% comment %}
-        Determine feather color:
-        - Blends: gradient of colors encompassed within the bird
-        - Single Origins: solid color incorporating the bird color
-        Can also be overridden by r.feather_color in frontmatter
-      {% endcomment %}
-      {% if r.feather_color %}
-        {% assign feather_style = r.feather_color %}
-      {% else %}
-        {% case r.slug %}
-          {% when "early-bird" %}
-            {% assign feather_style = "linear-gradient(180deg, #D4572A 0%, #3D3028 100%)" %}
-          {% when "feather-soot" %}
-            {% assign feather_style = "linear-gradient(180deg, #F0C838 0%, #201E18 100%)" %}
-          {% when "chimney-sweep" %}
-            {% assign feather_style = "linear-gradient(180deg, #8A7060 0%, #362822 100%)" %}
-          {% when "lil-sipper" %}
-            {% assign feather_style = "linear-gradient(180deg, #BA1C38 0%, #1E6446 100%)" %}
-          {% when "gobble-wobble" %}
-            {% assign feather_style = "linear-gradient(180deg, #B85C2A 0%, #384832 100%)" %}
-          {% when "colombia-supremo" %}
-            {% assign feather_style = "#2C6E9E" %}
-          {% when "guatemala-antigua" %}
-            {% assign feather_style = "#5A6848" %}
-          {% when "sumatra-mandheling" %}
-            {% assign feather_style = "#5A636C" %}
-          {% when "peru-fair-trade-organic" %}
-            {% assign feather_style = "#B0824E" %}
-          {% when "ethiopia-yirgacheffe" %}
-            {% assign feather_style = "#24444C" %}
-          {% else %}
-            {% if r.category == "blend" or r.category == "seasonal" %}
-              {% assign feather_style = "linear-gradient(180deg, #F0C838 0%, #9C6D12 100%)" %}
-            {% else %}
-              {% assign feather_style = "#9C6D12" %}
-            {% endif %}
-        {% endcase %}
-      {% endif %}
-
       <a href="{{ r.url | relative_url }}" class="shop-item">
         <div class="shop-item-visual">
-          {% if r.category == "blend" or r.category == "seasonal" %}
-            {% if r.mascot_file %}
-              {% assign bird_img = '/images/' | append: r.mascot_file %}
-              <img src="{{ bird_img | relative_url }}" alt="{{ r.title }} mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
-            {% endif %}
-          {% else %}
-            <span class="feather-mask" style="background: {{ feather_style }};" aria-label="{{ r.title }} feather mark"></span>
+          {% if r.mascot_file %}
+            {% assign bird_img = '/images/' | append: r.mascot_file %}
+            <img src="{{ bird_img | relative_url }}" alt="{{ r.title }} mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
           {% endif %}
 
           <div class="shop-item-overlay">
@@ -727,9 +684,7 @@ permalink: /shop/
     <!-- Digital Gift Card -->
     <a href="{{ '/gift/' | relative_url }}" class="shop-item">
       <div class="shop-item-visual">
-        <div class="feather-card-frame" aria-label="Digital Gift Card feather voucher mark">
-          <span class="feather-mask feather-gold-card"></span>
-        </div>
+        <img src="{{ '/images/qr-code2-full-transparent.png' | relative_url }}" alt="Digital Gift Card" class="coffee-mascot-img" loading="lazy" decoding="async">
 
         <div class="shop-item-overlay">
           <div class="overlay-tag">Instant Delivery</div>

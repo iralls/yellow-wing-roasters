@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Ultra-muted, small Thanksgiving pattern (small ear of corn & small potato) -->
+  <g fill-opacity="0.22" stroke-opacity="0.25">
+    
+    <!-- 1. Small Ear of Corn (Top Left) -->
+    <g transform="translate(45, 30) rotate(-18) scale(0.55)">
+      <path fill="#4a7c59" d="M 5 28 C 1 20, 2 12, 8 8 C 7 16, 9 24, 13 32 Z"/>
+      <path fill="#3a5a40" d="M 19 28 C 23 20, 22 12, 16 8 C 17 16, 15 24, 11 32 Z"/>
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+      <g fill="#fef08a">
+        <rect x="9.5" y="5" width="5" height="3" rx="1"/>
+        <rect x="8" y="9" width="3.8" height="3" rx="1"/>
+        <rect x="12.5" y="9" width="3.8" height="3" rx="1"/>
+        <rect x="7.5" y="13" width="4.2" height="3" rx="1"/>
+        <rect x="12.3" y="13" width="4.2" height="3" rx="1"/>
+        <rect x="7.5" y="17" width="4.2" height="3" rx="1"/>
+        <rect x="12.3" y="17" width="4.2" height="3" rx="1"/>
+        <rect x="8" y="21" width="3.8" height="3" rx="1"/>
+        <rect x="12.5" y="21" width="3.8" height="3" rx="1"/>
+        <rect x="9.5" y="25" width="5" height="3" rx="1"/>
+      </g>
+    </g>
+
+    <!-- 2. Small Russet Potato (Top Right) -->
+    <g transform="translate(170, 45) rotate(16) scale(0.45)">
+      <path fill="#a67c52" d="M 8 15 C 5 6, 20 2, 38 4 C 52 6, 58 15, 52 24 C 44 32, 26 33, 14 29 C 6 25, 10 20, 8 15 Z"/>
+      <circle cx="18" cy="12" r="1.3" fill="#5c3d1a"/>
+      <circle cx="34" cy="14" r="1.3" fill="#5c3d1a"/>
+      <circle cx="26" cy="22" r="1.3" fill="#5c3d1a"/>
+    </g>
+
+    <!-- 3. Small Sweet Potato (Bottom Left) -->
+    <g transform="translate(45, 160) rotate(-14) scale(0.45)">
+      <path fill="#c86d51" d="M 8 15 C 5 6, 20 2, 38 4 C 52 6, 58 15, 52 24 C 44 32, 26 33, 14 29 C 6 25, 10 20, 8 15 Z"/>
+      <circle cx="18" cy="12" r="1.3" fill="#6d2e1e"/>
+      <circle cx="34" cy="14" r="1.3" fill="#6d2e1e"/>
+    </g>
+
+    <!-- 4. Small Ear of Corn (Bottom Right) -->
+    <g transform="translate(170, 150) rotate(22) scale(0.55)">
+      <path fill="#4a7c59" d="M 5 28 C 1 20, 2 12, 8 8 C 7 16, 9 24, 13 32 Z"/>
+      <path fill="#3a5a40" d="M 19 28 C 23 20, 22 12, 16 8 C 17 16, 15 24, 11 32 Z"/>
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+      <g fill="#fef08a">
+        <rect x="9.5" y="5" width="5" height="3" rx="1"/>
+        <rect x="8" y="9" width="3.8" height="3" rx="1"/>
+        <rect x="12.5" y="9" width="3.8" height="3" rx="1"/>
+        <rect x="7.5" y="13" width="4.2" height="3" rx="1"/>
+        <rect x="12.3" y="13" width="4.2" height="3" rx="1"/>
+        <rect x="7.5" y="17" width="4.2" height="3" rx="1"/>
+        <rect x="12.3" y="17" width="4.2" height="3" rx="1"/>
+        <rect x="8" y="21" width="3.8" height="3" rx="1"/>
+        <rect x="12.5" y="21" width="3.8" height="3" rx="1"/>
+        <rect x="9.5" y="25" width="5" height="3" rx="1"/>
+      </g>
+    </g>
+
+    <!-- Corner Wrap Seamless Corn -->
+    <g transform="translate(-5, -5) rotate(15) scale(0.45)">
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+    </g>
+    <g transform="translate(235, -5) rotate(15) scale(0.45)">
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+    </g>
+    <g transform="translate(-5, 235) rotate(15) scale(0.45)">
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+    </g>
+    <g transform="translate(235, 235) rotate(15) scale(0.45)">
+      <path fill="#eab308" d="M 7 30 C 5 20, 5 8, 12 2 C 19 8, 19 20, 17 30 Z"/>
+    </g>
+
+    <circle cx="120" cy="115" r="2" fill="#eab308"/>
+
+  </g>
+</svg>

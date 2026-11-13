@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 108" width="100%" height="100%">
+  <!-- Perch Branch -->
+  <path d="M8,94 Q54,92 110,89" stroke="#3E2723" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+
+  <!-- Perching Feet -->
+  <g stroke="#2B1B17" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M50,89 L48,93 M50,89 L51,94 M50,89 L54,92"/>
+    <path d="M63,87 L61,92 M63,87 L64,93 M63,87 L67,91"/>
+  </g>
+
+  <!-- Tail Feathers -->
+  <path d="M37,69 L8,93 C9,97 13,98 17,95 L43,74 Z" fill="#991124"/>
+  <path d="M33,73 L14,90 C15,93 18,94 21,92 L39,77 Z" fill="#800D1E"/>
+
+  <!-- Body Silhouette with Crest -->
+  <path d="M43,75
+           C28,63 30,47 44,35
+           C48,31 53,19 50,6
+           C60,15 67,22 72,28
+           C81,35 83,46 81,56
+           C77,74 65,85 49,85
+           C44,85 42,81 43,75 Z"
+        fill="#C41E3A"/>
+
+  <!-- Folded Wing -->
+  <path d="M46,37
+           C56,37 66,47 62,66
+           C56,78 38,84 24,88
+           C28,82 34,73 39,62
+           C43,50 44,41 46,37 Z"
+        fill="#A61327"/>
+  <path d="M45,49 C51,54 54,64 48,74" stroke="#880E1E" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+  <path d="M40,57 C46,62 48,71 43,79" stroke="#880E1E" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+
+  <!-- Signature Black Mask -->
+  <path d="M69,27
+           C74,31 78,34 81,36
+           L86,39
+           C83,45 79,49 76,51
+           C72,54 68,51 66,45
+           C64,39 65,31 69,27 Z"
+        fill="#161616"/>
+
+  <!-- Conical Coral Beak -->
+  <path d="M81,36 L99,40 L79,47 Z" fill="#FF4F18"/>
+  <line x1="81" y1="40" x2="97" y2="40" stroke="#C41E3A" stroke-width="1"/>
+
+  <!-- Eye -->
+  <circle cx="73" cy="38" r="2.2" fill="#FFFFFF"/>
+  <circle cx="73.4" cy="38" r="1.3" fill="#161616"/>
+  <circle cx="73.9" cy="37.5" r="0.5" fill="#FFFFFF"/>
+</svg>

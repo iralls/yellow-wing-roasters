@@ -19,7 +19,7 @@
     <header class="site-header">
       <div class="header-inner">
         <nav class="nav-links">
-          <a href="{{ '/shop/' | relative_url }}" class="nav-link">Coffee</a>
+          <a href="{{ '/shop/' | relative_url }}" class="nav-link">Shop</a>
           <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
           <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
         </nav>
@@ -40,7 +40,18 @@
 
     {% unless page.hide_footer or page.layout == 'index' %}
     <footer class="site-footer">
-      <p class="footer-slogan">{{ site.slogan }}</p>
+      <a href="{{ '/' | relative_url }}" class="footer-feather-link" aria-label="Yellow Wing Roasters Home">
+        <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="footer-feather-icon" width="231" height="800" loading="lazy" decoding="async">
+      </a>
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="{{ '/shop/' | relative_url }}" class="footer-nav-link">Shop</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/about/' | relative_url }}" class="footer-nav-link">About Us</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/subscriptions/' | relative_url }}" class="footer-nav-link">Subscriptions</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/order/' | relative_url }}" class="footer-nav-link">Cart</a>
+      </nav>
     </footer>
     {% endunless %}
   </div>

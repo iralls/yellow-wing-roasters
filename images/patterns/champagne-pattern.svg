@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Subtle seamless champagne bottle & effervescent bubbles wallpaper pattern tile -->
+  <g fill-opacity="0.18">
+    
+    <!-- Champagne Bottle 1 (Top Left, tilted right) -->
+    <g transform="translate(45, 30) rotate(22) scale(0.65)">
+      <!-- Bottle Body -->
+      <path fill="#2d5a27" d="M12 2c-1.1 0-2 .9-2 2v8c0 1.5-1 3.5-2.5 5L5 20c-1.5 1.5-2 4-2 7v25c0 3.3 2.7 6 6 6h10c3.3 0 6-2.7 6-6V27c0-3-.5-5.5-2-7l-2.5-3c-1.5-1.5-2.5-3.5-2.5-5V4c0-1.1-.9-2-2-2z"/>
+      <!-- Gold Foil Neck & Cork -->
+      <path fill="#d4af37" d="M10 2h4v8h-4z"/>
+      <path fill="#e5c158" d="M9.5 0h5v2.5h-5z"/>
+      <!-- Label -->
+      <rect fill="#f5e6c8" x="5" y="28" width="14" height="16" rx="1"/>
+    </g>
+
+    <!-- Champagne Bottle 2 (Bottom Right, tilted left) -->
+    <g transform="translate(165, 140) rotate(-25) scale(0.7)">
+      <!-- Bottle Body -->
+      <path fill="#3b4d28" d="M12 2c-1.1 0-2 .9-2 2v8c0 1.5-1 3.5-2.5 5L5 20c-1.5 1.5-2 4-2 7v25c0 3.3 2.7 6 6 6h10c3.3 0 6-2.7 6-6V27c0-3-.5-5.5-2-7l-2.5-3c-1.5-1.5-2.5-3.5-2.5-5V4c0-1.1-.9-2-2-2z"/>
+      <!-- Gold Foil Neck -->
+      <path fill="#d4af37" d="M10 2h4v8h-4z"/>
+      <path fill="#e5c158" d="M9.5 0h5v2.5h-5z"/>
+      <!-- Label -->
+      <rect fill="#f5e6c8" x="5" y="28" width="14" height="16" rx="1"/>
+    </g>
+
+    <!-- Popping Cork & Flute Glass (Center Right) -->
+    <g transform="translate(180, 45) scale(0.6)">
+      <!-- Champagne Flute Glass -->
+      <path fill="#d4af37" d="M6 2v16c0 3.3 2.7 6 6 6s6-2.7 6-6V2H6zm6 22v12m-5 0h10"/>
+    </g>
+
+    <!-- Corner Wrap Bottle (Seamless Tiling for Top-Right / Bottom-Left) -->
+    <g transform="translate(-10, 160) rotate(15) scale(0.65)">
+      <path fill="#2d5a27" d="M12 2c-1.1 0-2 .9-2 2v8c0 1.5-1 3.5-2.5 5L5 20c-1.5 1.5-2 4-2 7v25c0 3.3 2.7 6 6 6h10c3.3 0 6-2.7 6-6V27c0-3-.5-5.5-2-7l-2.5-3c-1.5-1.5-2.5-3.5-2.5-5V4c0-1.1-.9-2-2-2z"/>
+      <path fill="#d4af37" d="M10 2h4v8h-4z"/>
+      <rect fill="#f5e6c8" x="5" y="28" width="14" height="16" rx="1"/>
+    </g>
+    <g transform="translate(230, 160) rotate(15) scale(0.65)">
+      <path fill="#2d5a27" d="M12 2c-1.1 0-2 .9-2 2v8c0 1.5-1 3.5-2.5 5L5 20c-1.5 1.5-2 4-2 7v25c0 3.3 2.7 6 6 6h10c3.3 0 6-2.7 6-6V27c0-3-.5-5.5-2-7l-2.5-3c-1.5-1.5-2.5-3.5-2.5-5V4c0-1.1-.9-2-2-2z"/>
+      <path fill="#d4af37" d="M10 2h4v8h-4z"/>
+      <rect fill="#f5e6c8" x="5" y="28" width="14" height="16" rx="1"/>
+    </g>
+
+    <!-- Effervescent Champagne Bubbles Floating Around -->
+    <!-- Bubble Group 1 -->
+    <circle cx="95" cy="40" r="3.5" fill="#f0c838"/>
+    <circle cx="105" cy="25" r="2" fill="#d4af37"/>
+    <circle cx="90" cy="20" r="2.5" fill="#ffe082"/>
+    <circle cx="115" cy="50" r="1.5" fill="#f0c838"/>
+
+    <!-- Bubble Group 2 -->
+    <circle cx="130" cy="120" r="3" fill="#f0c838"/>
+    <circle cx="142" cy="100" r="2" fill="#ffe082"/>
+    <circle cx="120" cy="90" r="4" fill="#d4af37"/>
+    <circle cx="150" cy="135" r="2" fill="#f0c838"/>
+
+    <!-- Bubble Group 3 -->
+    <circle cx="40" cy="130" r="2.5" fill="#d4af37"/>
+    <circle cx="55" cy="115" r="3.5" fill="#ffe082"/>
+    <circle cx="65" cy="140" r="2" fill="#f0c838"/>
+
+    <!-- Bubble Group 4 -->
+    <circle cx="210" cy="100" r="3" fill="#ffe082"/>
+    <circle cx="225" cy="80" r="2" fill="#f0c838"/>
+    <circle cx="195" cy="115" r="1.5" fill="#d4af37"/>
+
+    <!-- Sparkles -->
+    <path fill="#f0c838" d="M100 70l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/>
+    <path fill="#d4af37" d="M40 210l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z"/>
+    <path fill="#ffe082" d="M210 200l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/>
+  </g>
+</svg>
