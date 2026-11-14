@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body style="margin: 0; padding: 0; background-color: #faf8f5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2c1e14; -webkit-font-smoothing: antialiased;">
-    <div style="background-color: #faf8f5; padding: 40px 20px; text-align: center;">
-      <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+  <body style="margin: 0; padding: 0; background-color: #fcfbfa; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #2c1e14; -webkit-font-smoothing: antialiased;">
+    <div style="background-color: #fcfbfa; padding: 40px 20px; text-align: center;">
+      <div style="max-width: 520px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e8e4db; border-radius: 14px; padding: 36px 28px; text-align: center; box-sizing: border-box;">
 
         <!-- Brand Lockup -->
         <div style="text-align: center; margin-bottom: 28px;">
@@ -17,71 +18,71 @@
                  width="auto"
                  alt="Yellow Wing Roasters"
                  style="height: 48px; width: auto; display: block; margin: 0 auto 8px;" />
-            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #f0c838; line-height: 1.2;">
+            <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #f0c838; line-height: 1.2;">
               Yellow Wing
             </div>
-            <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: #8a7f6e; margin-top: 3px;">
+            <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 500; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: #6f655a; margin-top: 3px;">
               Roasters
             </div>
           </a>
         </div>
 
         <!-- Main Heading -->
-        <h1 style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 500; color: #2c1e14; letter-spacing: -0.01em; margin: 0 0 6px; line-height: 1.2;">
+        <h1 style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 700; color: #1a1612; letter-spacing: -0.02em; margin: 0 0 6px; line-height: 1.2;">
           A Coffee Gift for You
         </h1>
 
         <!-- Subtitle -->
-        <div style="font-family: Georgia, 'Lora', serif; font-style: italic; font-size: 15px; color: #8a7060; margin-bottom: 22px;">
+        <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; color: #6f655a; margin-bottom: 22px;">
           From <?= purchaserName || "A friend" ?>
         </div>
 
         <!-- Serif Greeting & Body -->
-        <p style="font-family: Georgia, 'Lora', serif; font-size: 15px; line-height: 1.7; color: #4a3b32; margin: 0 auto 20px; max-width: 440px;">
+        <p style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #2c1e14; margin: 0 auto 20px; max-width: 440px;">
           Hi <strong><?= recipientName || "there" ?></strong>,<br>
           Great news! <strong><?= purchaserName || "A friend" ?></strong> has gifted you freshly roasted, small-batch coffee from Yellow Wing Roasters!
         </p>
 
         <!-- Personal Gift Message (if provided) -->
         <? if (giftMessage) { ?>
-          <div style="background-color: #f5efe6; border-radius: 8px; padding: 16px 20px; margin: 0 auto 24px; max-width: 440px; text-align: left; box-sizing: border-box;">
-            <div style="font-family: Georgia, 'Lora', serif; font-style: italic; font-size: 14px; line-height: 1.6; color: #4a3b32;">
+          <div style="background-color: #f6f3ef; border-radius: 8px; padding: 16px 20px; margin: 0 auto 24px; max-width: 440px; text-align: left; box-sizing: border-box;">
+            <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #2c1e14;">
               &ldquo;<?= giftMessage ?>&rdquo;
             </div>
-            <div style="font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; margin-top: 8px; text-align: right;">
+            <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; margin-top: 8px; text-align: right;">
               &mdash; <?= purchaserName || "A friend" ?>
             </div>
           </div>
         <? } ?>
 
         <!-- Unboxed Toasted Linen Details (No Prices for Recipient) -->
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 440px; margin: 0 auto 26px; background-color: #f5efe6; border-radius: 12px; padding: 20px; text-align: left; box-sizing: border-box;">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 440px; margin: 0 auto 26px; background-color: #f6f3ef; border: 1px solid #e8e4db; border-radius: 12px; padding: 20px; text-align: left; box-sizing: border-box;">
           <tr>
-            <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top; width: 32%;">Coffee</td>
-            <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #2c1e14; vertical-align: top;"><?= roast ?></td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top; width: 32%;">Coffee</td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #2c1e14; vertical-align: top;"><?= roast ?></td>
           </tr>
           <tr>
-            <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top;">Bag Size</td>
-            <td style="padding: 6px 12px; font-family: Georgia, 'Lora', serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= size ?></td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Bag Size</td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= size ?></td>
           </tr>
           <? if (duration && duration !== 'One-time') { ?>
             <tr>
-              <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top;">Duration</td>
-              <td style="padding: 6px 12px; font-family: Georgia, 'Lora', serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= duration ?></td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Duration</td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= duration ?></td>
             </tr>
             <tr>
-              <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top;">Frequency</td>
-              <td style="padding: 6px 12px; font-family: Georgia, 'Lora', serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= frequency ?></td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Frequency</td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= frequency ?></td>
             </tr>
           <? } else { ?>
             <tr>
-              <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top;">Type</td>
-              <td style="padding: 6px 12px; font-family: Georgia, 'Lora', serif; font-size: 14px; color: #2c1e14; vertical-align: top;">One-time gift delivery</td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Type</td>
+              <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;">One-time gift delivery</td>
             </tr>
           <? } ?>
           <tr>
-            <td style="padding: 6px 12px; font-family: 'Montserrat', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #8a7060; vertical-align: top;">Delivery</td>
-            <td style="padding: 6px 12px; font-family: Georgia, 'Lora', serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= deliveryMethod ?></td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Delivery</td>
+            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= deliveryMethod ?></td>
           </tr>
         </table>
 
@@ -90,22 +91,22 @@
           <a href="https://yellowwingroasters.com/roasts/"
              target="_blank"
              rel="noopener noreferrer"
-             style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; padding: 13px 32px; border-radius: 999px; text-decoration: none; font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;">
+             style="display: inline-block; background-color: #302010; color: #ffffff !important; padding: 13px 32px; border-radius: 999px; text-decoration: none; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.01em;">
             Explore Our Roasts &rarr;
           </a>
         </div>
 
         <!-- Artisanal Sign-Off & Footer -->
-        <div style="text-align: center; margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(44, 30, 20, 0.08);">
-          <div style="font-family: Georgia, 'Lora', serif; font-style: italic; font-size: 16px; color: #8a7060; margin-bottom: 4px;">
+        <div style="text-align: center; margin-top: 36px; padding-top: 24px; border-top: 1px solid #e8e4db;">
+          <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; color: #6f655a; margin-bottom: 4px;">
             Chirp,
           </div>
-          <div style="font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #2c1e14;">
+          <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #2c1e14;">
             Yellow Wing Roasters
           </div>
-          <p style="font-family: Georgia, 'Lora', serif; font-size: 12px; font-style: italic; color: #998070; margin: 16px auto 0; max-width: 380px; line-height: 1.6;">
+          <p style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #6f655a; margin: 16px auto 0; max-width: 380px; line-height: 1.6;">
             Small-batch specialty coffee roasted fresh to order.<br>
-            <a href="https://yellowwingroasters.com" style="color: #8a7060; text-decoration: underline;">yellowwingroasters.com</a> &middot; <a href="mailto:orders@yellowwingroasters.com" style="color: #8a7060; text-decoration: underline;">orders@yellowwingroasters.com</a>
+            <a href="https://yellowwingroasters.com" style="color: #6f655a; text-decoration: underline;">yellowwingroasters.com</a> &middot; <a href="mailto:orders@yellowwingroasters.com" style="color: #6f655a; text-decoration: underline;">orders@yellowwingroasters.com</a>
           </p>
         </div>
 

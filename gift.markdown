@@ -9,7 +9,7 @@ price: "$15 – $90"
 mascot_file: qr-code2-full-transparent.png
 mascot_alt: "Digital Gift Card"
 permalink: /gift/
-intro: "Send a fresh coffee experience directly to their inbox. Prepaid digital gift cards are delivered immediately via email with a unique redemption code, redeemable toward any roast, flight, or subscription."
+intro: "Send a fresh coffee experience directly to their inbox. Digital gift cards come with a unique redemption code, credited toward any roast, flight, or subscription."
 ---
 
 <form class="hst-form" id="digital-gift-form" onsubmit="return false;">
@@ -60,8 +60,9 @@ intro: "Send a fresh coffee experience directly to their inbox. Prepaid digital 
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">How Redemption Works</button>
     <div class="hst-drawer-body">
-      <strong>Instant Digital Delivery:</strong> A unique digital gift card code is delivered via email immediately following purchase.<br>
-      <strong>Easy Checkout Redemption:</strong> The recipient can redeem their gift card by simply clicking their email magic link or entering their redemption code during checkout.
+      <strong>Payment from Purchaser:</strong> After you place the gift order, we will reach out directly to coordinate payment.<br>
+      <strong>Digital Code Delivery:</strong> A unique digital gift code is emailed to your recipient with your note.<br>
+      <strong>Credit Toward Purchase:</strong> When the recipient redeems their code at checkout, we will apply the gift credit directly toward their coffee order.
     </div>
   </div>
 
@@ -109,7 +110,7 @@ intro: "Send a fresh coffee experience directly to their inbox. Prepaid digital 
         type: "gift",
         slug: "digital-gift-card",
         title: `Digital Gift Card ($${amount})`,
-        subtitle: `To: ${rName} (${rEmail}) &bull; From: ${sName}`,
+        subtitle: `To: ${rName} (${rEmail}) · From: ${sName}`,
         size: `$${amount}`,
         price: amount,
         mascot: {{ page.mascot_file | jsonify }},

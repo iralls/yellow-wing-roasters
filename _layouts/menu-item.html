@@ -2,8 +2,6 @@
 layout: default
 ---
 
-<link rel="stylesheet" href="{{ '/css/menu-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-
 {% assign r_level = site.data.roast_levels[page.roast_level] %}
 {% assign latest_history = page.history | first %}
 {% assign p_status_info = nil %}
@@ -288,26 +286,15 @@ layout: default
         cart = [];
       }
 
-      const isSub = item.type === 'subscription';
-      const hasExistingSub = cart.some(c => c.type === 'subscription');
-      const hasExistingOneTime = cart.some(c => c.type !== 'subscription');
-
-      if (isSub && hasExistingOneTime) {
-        const ok = window.confirm('Your cart currently contains one-time items. Subscriptions are billed and delivered separately. Would you like to replace your cart with this subscription?');
-        if (!ok) return false;
-        cart = [];
-      } else if (!isSub && hasExistingSub) {
-        const ok = window.confirm('Your cart currently contains a subscription. One-time items cannot be combined with subscriptions. Would you like to replace your cart with this item?');
-        if (!ok) return false;
-        cart = [];
-      }
-
       const existingIdx = cart.findIndex(c =>
         c.slug === item.slug &&
         c.size === item.size &&
         c.grind === item.grind &&
         c.frequency === item.frequency &&
-        c.subtitle === item.subtitle
+        c.subtitle === item.subtitle &&
+        c.price === item.price &&
+        c.recipientEmail === item.recipientEmail &&
+        c.notes === item.notes
       );
 
       if (existingIdx >= 0) {

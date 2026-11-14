@@ -1089,3 +1089,16 @@ tbody tr.roast-admin-row--under-2lb:hover td {
   box-shadow: 0 2px 8px rgba(48, 32, 16, 0.18);
 }
 
+
+/* ── Admin Auth Gate Visibility (Flash-free before JS loads) ── */
+.ywr-admin-authenticated .order-admin-gate {
+  display: none !important;
+}
+
+.order-admin-dashboard {
+  display: none;
+}
+
+.ywr-admin-authenticated .order-admin-dashboard {
+  display: block !important;
+}

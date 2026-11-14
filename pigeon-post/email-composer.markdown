@@ -5,7 +5,6 @@ permalink: /pigeon-post/email-composer/
 sitemap: false
 ---
 
-<link rel="stylesheet" href="{{ '/css/menu-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <link rel="stylesheet" href="{{ '/css/admin-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 
 <div class="hst-wrap pp-composer-wrap">

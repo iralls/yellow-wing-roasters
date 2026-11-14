@@ -4,8 +4,6 @@ title: Cart
 permalink: /cart/
 ---
 
-<link rel="stylesheet" href="{{ '/css/menu-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-
 <div class="hst-wrap cart-page-wrap">
   <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
 
@@ -144,7 +142,11 @@ permalink: /cart/
   (function () {
     initOrderCheckout({
       discountApiUrl: {{ site.discount_codes_api_url | jsonify }},
-      thanksUrl: {{ '/thanks/' | relative_url | jsonify }}
+      thanksUrl: {{ '/thanks/' | relative_url | jsonify }},
+      orderEntries: {{ site.google_forms.order.entries | jsonify }},
+      subscriptionEntries: {{ site.google_forms.subscription.entries | jsonify }},
+      digitalGiftUrl: {{ site.google_forms.digital_gift.url | jsonify }},
+      digitalGiftEntries: {{ site.google_forms.digital_gift.entries | jsonify }}
     });
   })();
 </script>

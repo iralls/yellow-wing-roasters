@@ -207,3 +207,7 @@ exclude:
   - roastmasters_beans.csv
   - assets/source-plates
   - .agents
+  - "shop-*.markdown"
+  - "roast-*.markdown"
+  - "pantry.markdown"
+  - "_pantry"
