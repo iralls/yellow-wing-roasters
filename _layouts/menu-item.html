@@ -16,7 +16,9 @@ layout: default
 {% endif %}
 
 <div class="hst-wrap">
-  {% if is_sub %}
+  {% if page.back_url %}
+    <a href="{{ page.back_url | relative_url }}" class="hst-back-link">&larr; {{ page.back_label | default: 'Back' }}</a>
+  {% elsif is_sub %}
     <a href="{{ '/subscriptions-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
   {% else %}
     <a href="{{ '/shop-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
