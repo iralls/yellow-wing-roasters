@@ -22,12 +22,12 @@ layout: default
     <a href="{{ '/shop-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
   {% endif %}
 
-  <div class="hst-panel" id="product-{{ page.slug }}">
+  <div class="hst-panel" id="product-{{ page.slug | default: page.title | slugify }}">
     <!-- Visual Frame (Left Column) -->
     <div class="hst-frame">
       {% if page.mascot_file %}
         {% assign r_img = "/images/" | append: page.mascot_file %}
-        <img src="{{ r_img | relative_url }}" alt="{{ page.title }}" class="hst-mascot-img">
+        <img src="{{ r_img | relative_url }}" alt="{{ page.mascot_alt | default: page.title }}" class="hst-mascot-img"{% if page.mascot_style %} style="{{ page.mascot_style }}"{% endif %}>
       {% endif %}
     </div>
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Subscriptions Menu — Yellow Wing Roasters
+title: Subscriptions — Yellow Wing Roasters
 permalink: /subscriptions-menu/
 subtitle: >-
   Roasted to order and delivered on your schedule.<br>
@@ -178,7 +178,7 @@ subtitle: >-
 <div class="menu-listing-wrap">
   <!-- ── Header ── -->
   <header class="menu-header">
-    <h1 class="menu-title">Subscriptions Menu</h1>
+    <h1 class="menu-title">Subscriptions</h1>
     {% if page.subtitle %}
       <p class="menu-subtitle">{{ page.subtitle }}</p>
     {% endif %}
