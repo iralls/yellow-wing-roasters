@@ -211,3 +211,6 @@ exclude:
   - "roast-*.markdown"
   - "pantry.markdown"
   - "_pantry"
+  - "feather-colors.markdown"
+  - "subscriptions-menu.markdown"
+  - "quiz.markdown"
