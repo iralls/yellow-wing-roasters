@@ -24,7 +24,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A smooth, creamy cup featuring sweet dark chocolate with a touch of citrus brightness and a clean finish.

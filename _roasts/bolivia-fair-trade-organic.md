@@ -25,7 +25,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A smooth and full-bodied coffee featuring sweet milk chocolate notes, low acidity, and a rich, satisfying aroma. High-grown in the Bolivian Andes for exceptional balance and sweetness.

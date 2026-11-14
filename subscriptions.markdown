@@ -3,7 +3,7 @@ layout: default
 title: Subscriptions
 permalink: /subscriptions/
 subtitle: >-
-  Roasted to order and delivered on your schedule.<br>
+  Roasted to order and delivered every four weeks.<br>
   Pause, resume, or cancel anytime.
 ---
 

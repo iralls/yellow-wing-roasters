@@ -23,7 +23,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A balanced, easy-drinking cup pairing smooth dark chocolate with crisp red apple and sweet berries.

@@ -24,7 +24,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A full-bodied, earthy coffee with rich notes of smoky cedar, tobacco, and roasted hazelnut, balanced by a deep, syrupy mouthfeel and a smooth, low-acidity finish.

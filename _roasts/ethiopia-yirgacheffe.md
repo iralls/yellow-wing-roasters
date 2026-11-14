@@ -22,7 +22,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A classic washed Yirgacheffe with a smooth, full body. Expect sweet notes of maple and brown sugar, toasted chestnut, and warm spices on the finish.

@@ -24,7 +24,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A bold, fruit-forward coffee packed with rich flavors of blueberry and sweet cherry, rounded out by chocolate and toasted pecan.

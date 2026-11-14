@@ -25,7 +25,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 
 history:

@@ -24,7 +24,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   This coffee has a smooth, earthy body with sweet notes of fig and prune, balanced by a pleasant hazelnut finish. It is well-structured and works especially well as a single-origin espresso.

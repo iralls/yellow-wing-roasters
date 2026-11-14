@@ -38,7 +38,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 description: >-
   A rich, classic dark roast with a smooth milk chocolate finish and a heavy, satisfying body.

@@ -91,7 +91,7 @@ layout: default
             <label class="hst-label">Purchase Option</label>
             <div class="hst-toggle-group" role="radiogroup" aria-label="Purchase Option">
               <button type="button" class="hst-toggle-btn is-active" id="btn-option-onetime">One-Time</button>
-              <button type="button" class="hst-toggle-btn" id="btn-option-subscribe">Subscribe</button>
+              <button type="button" class="hst-toggle-btn" id="btn-option-subscribe">Subscribe (Monthly)</button>
             </div>
           </div>
         {% endif %}
@@ -119,33 +119,6 @@ layout: default
             <select class="hst-select" id="product-size-select">
               {% for sz in page.sizes %}
                 <option value="{{ sz }}">{{ sz }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        {% endif %}
-
-        <!-- Subscription Frequency -->
-        {% if is_sub %}
-          <div>
-            <label class="hst-label" for="product-freq-select">Delivery Frequency</label>
-            <select class="hst-select" id="product-freq-select">
-              {% for freq in page.frequencies %}
-                <option value="{{ freq }}"{% if forloop.first %} selected{% endif %}>{{ freq }}</option>
-              {% else %}
-                <option value="Monthly" selected>Monthly Dispatch</option>
-                <option value="Every 2 weeks">Every 2 Weeks</option>
-              {% endfor %}
-            </select>
-          </div>
-        {% elsif page.subscription %}
-          <div id="product-freq-wrap" style="display: none;">
-            <label class="hst-label" for="product-freq-select">Delivery Frequency</label>
-            <select class="hst-select" id="product-freq-select">
-              {% for freq in page.subscription.frequencies %}
-                <option value="{{ freq }}"{% if forloop.first %} selected{% endif %}>{{ freq }}</option>
-              {% else %}
-                <option value="Monthly" selected>Monthly Dispatch</option>
-                <option value="Every 2 weeks">Every 2 Weeks</option>
               {% endfor %}
             </select>
           </div>
@@ -252,7 +225,7 @@ layout: default
           <div class="hst-drawer open">
             <button type="button" class="hst-drawer-head">Subscription Details &amp; Perks</button>
             <div class="hst-drawer-body">
-              <strong>Fresh Roast Schedule:</strong> Small batches roasted fresh on demand and delivered on your schedule.<br>
+              <strong>Fresh Roast Schedule:</strong> Small batches roasted fresh on demand and delivered every four weeks.<br>
               <strong>Complete Flexibility:</strong> Easily pause, resume, change grind, or cancel anytime through our self-service portal.
             </div>
           </div>
@@ -316,7 +289,6 @@ layout: default
     let currentPurchaseOption = "onetime";
     const btnOneTime = document.getElementById("btn-option-onetime");
     const btnSubscribe = document.getElementById("btn-option-subscribe");
-    const freqWrap = document.getElementById("product-freq-wrap");
     const sizeSelect = document.getElementById("product-size-select");
     const display = document.getElementById("product-price-display");
 
@@ -327,7 +299,7 @@ layout: default
         const reg = opt.getAttribute("data-reg");
         const sale = opt.getAttribute("data-sale");
         if (currentPurchaseOption === "subscribe") {
-          display.innerHTML = `$${reg}.00 <span class="hst-freq-note">/ delivery</span>`;
+          display.innerHTML = `$${reg}.00 <span class="hst-freq-note">/ month</span>`;
         } else {
           if (sale) {
             display.innerHTML = `<s>$${reg}.00</s> <span class="hst-sale-price">$${sale}.00</span>`;
@@ -338,12 +310,11 @@ layout: default
       }
     }
 
-    if (btnOneTime && btnSubscribe && freqWrap) {
+    if (btnOneTime && btnSubscribe) {
       btnOneTime.addEventListener("click", () => {
         currentPurchaseOption = "onetime";
         btnOneTime.classList.add("is-active");
         btnSubscribe.classList.remove("is-active");
-        freqWrap.style.display = "none";
         updatePrice();
       });
 
@@ -351,7 +322,6 @@ layout: default
         currentPurchaseOption = "subscribe";
         btnSubscribe.classList.add("is-active");
         btnOneTime.classList.remove("is-active");
-        freqWrap.style.display = "block";
         updatePrice();
       });
     }
@@ -393,7 +363,7 @@ layout: default
         }
 
         const grindEl = document.getElementById("product-grind-select");
-        const freqEl = document.getElementById("product-freq-select");
+        const subFrequency = {% if is_sub %}{{ page.frequencies[0] | jsonify }}{% elsif page.subscription %}{{ page.subscription.frequencies[0] | jsonify }}{% else %}null{% endif %};
 
         const item = {
           type: isSub ? "subscription" : {{ page.category | jsonify }},
@@ -405,8 +375,8 @@ layout: default
           mascot: mascot
         };
 
-        if (isSub && freqEl) {
-          item.frequency = freqEl.value;
+        if (isSub) {
+          item.frequency = subFrequency;
         }
 
         const added = window.ywrAddToCart(item, 1);

@@ -30,7 +30,6 @@ price:
 
 subscription:
   frequencies:
-    - Every 2 weeks
     - Monthly
 temporary_price:
   12oz: 10
