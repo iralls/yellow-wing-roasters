@@ -2,7 +2,7 @@
 title: "Dust Bath"
 subtitle: "Smoky Coffee & Spice BBQ Rub"
 slug: dust-bath
-published: true
+published: false
 category: pantry
 order: 6
 permalink: /pantry/dust-bath/

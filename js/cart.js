@@ -16,8 +16,8 @@
   return function initYWRCart(config) {
     if (!config) return;
 
-    var ROASTS_URL = config.ROASTS_URL || '/roasts/';
-    var ORDER_URL = config.ORDER_URL || '/order/';
+    var ROASTS_URL = config.ROASTS_URL || '/shop/';
+    var ORDER_URL = config.ORDER_URL || '/cart/';
     var IMAGES_BASE = config.IMAGES_BASE || '/images/';
     var roastsData = config.roastsData || window.YWR_ROASTS_DATA || {};
 

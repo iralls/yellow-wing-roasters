@@ -1,0 +1,151 @@
+/* ── Typographic Menu Listing (Shop & Subscriptions) ── */
+.menu-listing-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3.5rem 24px 9rem;
+}
+
+/* ── Header ── */
+.menu-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.menu-header-mark {
+  display: inline-block;
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--menu-muted);
+  margin-bottom: 0.75rem;
+}
+
+.menu-title {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--menu-text);
+  margin: 0 0 1rem;
+}
+
+.menu-subtitle {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 1.05rem;
+  color: var(--menu-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Section Dividers ── */
+.menu-section {
+  margin-bottom: 4.5rem;
+}
+
+.menu-section-title {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--menu-muted);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--menu-line);
+  margin: 0 0 2rem;
+}
+
+/* ── Single Menu Listing Item ── */
+.menu-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 1rem 0;
+  transition: opacity 0.18s ease;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0.75;
+  }
+}
+
+/* Top row: Name on left, dots leader, price on right */
+.menu-item-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.menu-item-name {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--menu-text);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.menu-item-leader {
+  flex-grow: 1;
+  border-bottom: 1px dotted var(--menu-line);
+  margin: 0 0.25rem;
+  transform: translateY(-4px);
+}
+
+.menu-item-price {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--menu-text);
+  white-space: nowrap;
+
+  s {
+    color: #a89e94;
+    font-weight: 400;
+    font-size: 0.95rem;
+    margin-right: 0.35rem;
+  }
+
+  .sale-val {
+    color: var(--menu-sale);
+  }
+}
+
+/* Bottom row: Subtitle / notes */
+.menu-item-desc {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.9rem;
+  color: var(--menu-muted);
+}
+
+.menu-item-notes {
+  font-style: italic;
+}
+
+.menu-item-meta {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  text-align: right;
+}
+
+@media (max-width: 580px) {
+  .menu-item-leader {
+    display: none;
+  }
+  .menu-item-desc {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+}

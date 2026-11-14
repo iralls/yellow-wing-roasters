@@ -2,20 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title and page.title != "Home" %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  
+  <!-- Preconnect & Preload Figtree Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="preload" href="{{ '/fonts/figtree-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-{% include head.html %}
 </head>
-<body{% if page.bg_pattern %} style="background-image: url('{{ page.bg_pattern | relative_url }}'); background-repeat: repeat; background-size: {{ page.bg_pattern_size | default: '380px 380px' }};"{% endif %}>
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-  {% include sleek-header.html %}
-  <div class="container">
+<body{% if page.layout == 'index' or page.hide_header %} class="home-layout"{% endif %}>
+  <div class="site-wrap">
+    {% unless page.hide_header or page.layout == 'index' %}
+    <header class="site-header">
+      <div class="header-inner">
+        <nav class="nav-links">
+          <a href="{{ '/shop/' | relative_url }}" class="nav-link">Shop</a>
+          <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
+          <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
+        </nav>
+        <a href="{{ '/' | relative_url }}" class="brand-wordmark">
+          <span class="brand-name">Yellow Wing</span>
+          <span class="brand-sub">Roasters</span>
+        </a>
+        <div class="header-actions">
+          <a href="{{ '/cart/' | relative_url }}" class="cart-btn" aria-label="Cart">
+            <span>Cart</span>
+            <span class="cart-count-badge" id="header-cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <script>
+      (function () {
+        const el = document.getElementById('header-cart-count');
+
+        function updateNavCartCount() {
+          const raw = localStorage.getItem('ywr_cart');
+          if (!raw) {
+            el.textContent = '0';
+            el.classList.remove('has-items');
+            return;
+          }
+          let items = [];
+          try {
+            const parsed = JSON.parse(raw);
+            items = Array.isArray(parsed) ? parsed : Object.values(parsed);
+          } catch (e) {
+            items = [];
+          }
+          const total = items.reduce((sum, it) => sum + (it.qty || 1), 0);
+          el.textContent = total;
+          el.classList.toggle('has-items', total > 0);
+        }
+
+        updateNavCartCount();
+        window.addEventListener('cart:updated', updateNavCartCount);
+        window.addEventListener('ywr-cart-changed', updateNavCartCount);
+        window.addEventListener('storage', updateNavCartCount);
+      })();
+    </script>
+    {% endunless %}
+
     <main id="main-content" class="main-content">
       {{ content }}
     </main>
+
+    {% unless page.hide_footer or page.layout == 'index' %}
+    <footer class="site-footer">
+      <a href="{{ '/' | relative_url }}" class="footer-feather-link" aria-label="Yellow Wing Roasters Home">
+        <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="footer-feather-icon" width="231" height="800" loading="lazy" decoding="async">
+      </a>
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="{{ '/shop/' | relative_url }}" class="footer-nav-link">Shop</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/subscriptions/' | relative_url }}" class="footer-nav-link">Subscriptions</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/about/' | relative_url }}" class="footer-nav-link">About Us</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/cart/' | relative_url }}" class="footer-nav-link">Cart</a>
+      </nav>
+    </footer>
+    {% endunless %}
   </div>
-  {% include footer.html %}
-  <script src="{{ '/js/pill-select.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

@@ -6,7 +6,6 @@ category: subscription
 order: 3
 permalink: /subscriptions/fledglings/
 mascot_file: audubon-chicks-transparent.png
-descriptor: an approachable monthly coffee paired with a simple brew guide
 sizes:
   - 12oz
 frequencies:

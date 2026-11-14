@@ -1,186 +1,26 @@
 {% assign r = include.roast %}
-{% assign level_info = site.data.roast_levels[r.roast_level] %}
-{% assign r_dots = level_info.dots %}
-{% assign r_layman = level_info.layman %}
-{% assign r_specialty = level_info.specialty %}
-{% assign s_info = site.data.statuses[r.status] %}
 {% assign r_url = r.permalink | default: r.url %}
+{% assign level_info = site.data.roast_levels[r.roast_level] %}
 
-{% assign card_beans = "" | split: "," %}
-{% assign card_origins = "" | split: "," %}
-{% assign card_processes = "" | split: "," %}
-{% if r.origins %}
-  {% for o in r.origins %}
-    {% assign country = o | replace: " Wet-Hulled", "" | replace: " Washed", "" | replace: " Natural", "" | replace: " Honey", "" | strip %}
-    {% assign proc = "" %}
-    {% if o contains "Washed" %}
-      {% assign proc = "Washed" %}
-    {% elsif o contains "Natural" %}
-      {% assign proc = "Natural" %}
-    {% elsif o contains "Wet-Hulled" %}
-      {% assign proc = "Wet-Hulled" %}
-    {% elsif o contains "Honey" %}
-      {% assign proc = "Honey" %}
-    {% elsif r.processing_method %}
-      {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
-    {% endif %}
-    {% assign card_origins = card_origins | push: country %}
-    {% if proc != "" %}
-      {% assign card_processes = card_processes | push: proc %}
-      {% assign bean_str = country | append: ":" | append: proc %}
-      {% assign card_beans = card_beans | push: bean_str %}
-    {% else %}
-      {% assign bean_str = country | append: ":" %}
-      {% assign card_beans = card_beans | push: bean_str %}
-    {% endif %}
-  {% endfor %}
-{% elsif r.category == 'single origin' %}
-  {% assign country = r.title | split: " " | first %}
-  {% assign card_origins = card_origins | push: country %}
-  {% if r.processing_method %}
-    {% assign proc = r.processing_method | replace: " (Dry Process)", "" | strip %}
-    {% assign card_processes = card_processes | push: proc %}
-    {% assign bean_str = country | append: ":" | append: proc %}
-    {% assign card_beans = card_beans | push: bean_str %}
-  {% endif %}
-{% endif %}
-
-{% assign origin_list = card_origins | uniq | join: "," %}
-{% assign process_list = card_processes | uniq | join: "," %}
-{% assign bean_list = card_beans | uniq | join: "," %}
-
-{% assign is_100_fto = false %}
-{% assign is_100_organic = false %}
-{% if r.certification == "fair_trade_organic" %}
-  {% assign is_100_fto = true %}
-  {% assign is_100_organic = true %}
-{% elsif r.certification == "organic" %}
-  {% assign is_100_organic = true %}
-{% endif %}
-
-{% assign card_profiles = "" | split: "," %}
-{% assign card_text = r.tasting_notes | append: " " | append: r.descriptor | downcase %}
-{% for profile in site.data.flavor_profiles %}
-  {% assign matched = false %}
-  {% for kw in profile.keywords %}
-    {% if card_text contains kw %}
-      {% assign matched = true %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-  {% if matched %}
-    {% assign card_profiles = card_profiles | push: profile.id %}
-  {% endif %}
-{% endfor %}
-{% assign flavor_list = card_profiles | join: "," %}
-
-{% if include.is_picker or include.is_link == false %}
-<div class="roast-trans-card sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} roast-trans-card--dimmed sleek-roast-card--dimmed{% endif %}"
-{% else %}
-<a href="{{ r_url | relative_url }}" class="roast-trans-card sleek-roast-card roasts-entry{% if include.card_class %} {{ include.card_class }}{% endif %}{% if s_info.dim_card %} roast-trans-card--dimmed sleek-roast-card--dimmed{% endif %}"
-{% endif %}
-     data-surface="linen"
-     data-category="{{ r.category }}"
-     data-type="{{ r.category | slugify }}"
-     data-origins="{{ origin_list }}"
-     data-process="{{ process_list }}"
-     data-beans="{{ bean_list }}"
-     data-has-fto="{{ is_100_fto }}"
-     data-has-organic="{{ is_100_organic }}"
-     data-certification="{{ r.certification }}"
-     {% if r_dots %}data-roast-dots="{{ r_dots }}"{% endif %}
-     {% if r.brewing_method %}data-brewing="{{ r.brewing_method }}"{% endif %}
-     {% if r.roast_level %}data-roast-level="{{ r.roast_level }}"{% endif %}
-     {% if r.tasting_notes %}data-tasting-notes="{{ r.tasting_notes | escape }}"{% endif %}
-     {% if r.descriptor %}data-descriptor="{{ r.descriptor | escape }}"{% endif %}
-     data-flavors="{{ flavor_list }}"
-     {% if r.status %}data-status="{{ r.status }}"{% endif %}
-     data-roast="{{ r.data_roast | default: r.slug }}"
-     data-slug="{{ r.slug }}"
-     data-title="{{ r.title | escape }}">
-
-  <!-- Artwork Plate -->
-  <div class="roast-trans-plate sleek-card-visual">
-    {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "gift-option" %}
-      <span class="gift-type-badge">&#10003; Selected</span>
-      <span class="pyo-hover-overlay">Select</span>
-    {% endif %}
-
-    {% if r.mascot_file %}
-      <img src="{{ '/images/' | append: r.mascot_file | relative_url }}" alt="{{ r.mascot_alt | default: r.title | escape }}" class="roast-trans-img sleek-card-mascot" loading="lazy" decoding="async">
-    {% endif %}
-  </div>
-
-  <!-- Card Body -->
-  <div class="roast-trans-body sleek-card-body">
-    <!-- Title & Price Row (Price on the right side) -->
-    <div class="roast-trans-title-row">
-      <h3 class="roast-trans-title sleek-card-title">
-        <span>{{ r.card_title | default: r.title }}</span>
-      </h3>
-
-      {% unless include.hide_price %}
-        <div class="roast-trans-price sleek-card-price">
-          {% if r.temporary_price and r.temporary_price["12oz"] %}
-            <s>${{ r.price["12oz"] }}</s> <span style="color:#b45309;">${{ r.temporary_price["12oz"] }}</span>
-          {% elsif r.price and r.price["12oz"] %}
-            ${{ r.price["12oz"] }}
-          {% elsif r.price and r.price.first %}
-            ${{ r.price.first[1] }}
-          {% elsif r.price %}
-            {% assign p_str = r.price | append: "" %}
-            {% assign p_num = p_str | plus: 0 %}
-            {% assign p_num_str = p_num | append: "" %}
-            {% if p_str == p_num_str and p_num > 0 %}
-              ${{ r.price }}
-            {% else %}
-              {{ r.price }}
-            {% endif %}
-          {% elsif r.price_per_bag %}
-            ${{ r.price_per_bag }}
-          {% endif %}
-        </div>
-      {% else %}
-        {% if include.is_picker or include.card_class contains "pyo-option" or include.card_class contains "aviary-card" %}
-          <div class="roast-trans-price sleek-card-price" style="font-size:0.82rem; font-weight:500; color:#887060;">8oz bag</div>
-        {% endif %}
-      {% endunless %}
-    </div>
-
-    <!-- Descriptor & Roast Level Row (Horizontally Aligned, Roast Level on Right) -->
-    {% if r.descriptor or (r.roast_level and include.hide_roast_level != true) %}
-      <div class="roast-trans-desc-row">
-        {% if r.descriptor %}
-          <p class="roast-trans-descriptor sleek-card-descriptor">{{ r.descriptor }}</p>
-        {% endif %}
-
-        {% if r.roast_level and include.hide_roast_level != true %}
-          {% assign level_info = site.data.roast_levels[r.roast_level] %}
-          <span class="roast-card-level-text">{{ level_info.layman }}</span>
+<div class="product-card {{ include.card_class }}" data-category="{{ r.category | downcase }}">
+  <a href="{{ r_url | relative_url }}" class="product-card-link">
+    <div class="product-card-meta">
+      <h3 class="product-title">{{ r.card_title | default: r.title }}</h3>
+      {% if level_info %}
+        <div class="product-level">{{ level_info.layman | default: level_info.name }}</div>
+      {% endif %}
+      <div class="product-price">
+        {% if r.temporary_price and r.temporary_price["12oz"] %}
+          <s class="price-orig">${{ r.price["12oz"] }}</s>
+          <span class="price-sale">${{ r.temporary_price["12oz"] }}</span>
+        {% elsif r.price and r.price["12oz"] %}
+          ${{ r.price["12oz"] }}
+        {% elsif r.price and r.price.first %}
+          ${{ r.price.first[1] }}
+        {% elsif r.price %}
+          ${{ r.price }}
         {% endif %}
       </div>
-    {% endif %}
-
-
-    <!-- Bottom Action Area / Actions -->
-    {% unless include.hide_cta %}
-      {% if include.cta_text %}
-        <div class="roast-trans-actions">
-          <span class="roast-trans-archived-label">{{ include.cta_text }}</span>
-        </div>
-      {% elsif r.status == 'flown_south' %}
-        <div class="roast-trans-actions">
-          <span class="roast-trans-archived-label">Seasonal Archive</span>
-        </div>
-      {% elsif r.status == 'incubating' or s_info.dim_card %}
-        <div class="roast-trans-actions">
-          <span class="roast-trans-archived-label">Coming Soon</span>
-        </div>
-      {% endif %}
-    {% endunless %}
-  </div>
-{% if include.is_picker or include.is_link == false %}
+    </div>
+  </a>
 </div>
-{% else %}
-</a>
-{% endif %}

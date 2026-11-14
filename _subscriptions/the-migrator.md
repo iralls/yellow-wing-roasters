@@ -6,7 +6,6 @@ category: subscription
 order: 1
 permalink: /subscriptions/the-migrator/
 mascot_file: audubon-arctic-tern-transparent.png
-descriptor: a rotating roaster's choice single origin coffee each month
 sizes:
   - 12oz
 frequencies:

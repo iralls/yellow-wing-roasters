@@ -31,8 +31,13 @@
     var ORDER_FORM_ACTION = form.getAttribute('action');
     var SUB_FORM_ACTION = form.getAttribute('data-sub-action');
 
+    var nameInput = document.getElementById('order-name');
     var emailInput = document.getElementById('order-email');
     var phoneInput = document.getElementById('order-phone');
+    var deliveryFieldset = form.querySelector('.order-delivery');
+    var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
+    var addressFields = document.getElementById('order-address-fields');
+    var deliveryNote = document.getElementById('order-delivery-note');
     var itemsHidden = document.getElementById('order-items-hidden');
     var totalHidden = document.getElementById('order-total-hidden');
     var subPriceHidden = document.getElementById('sub-price-hidden');
@@ -41,8 +46,102 @@
     var subSizeHidden = document.getElementById('sub-size-hidden');
     var subFreqHidden = document.getElementById('sub-freq-hidden');
 
+    function setAddressFieldsState(isPickup) {
+      var inputs = addressFields.querySelectorAll('input, select');
+      for (var k = 0; k < inputs.length; k++) {
+        inputs[k].disabled = isPickup;
+        if (isPickup) {
+          inputs[k].removeAttribute('required');
+        } else {
+          inputs[k].setAttribute('required', 'true');
+        }
+      }
+    }
+
+    function updateDeliveryNote(isPickup) {
+      deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
+      deliveryNote.style.display = '';
+    }
+
+    function generateGiftCode() {
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      var code = 'GIFT-';
+      for (var i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    }
+
+    function computeTotals(items) {
+      var subtotal = 0;
+      var roastSubtotal = 0;
+      for (var t = 0; t < items.length; t++) {
+        var lineTotal = (items[t].data.price || 0) * items[t].qty;
+        subtotal += lineTotal;
+        if (items[t].type !== 'subscription' && items[t].type !== 'gift') {
+          roastSubtotal += lineTotal;
+        }
+      }
+
+      var discountValue = 0;
+      if (appliedDiscount && roastSubtotal > 0) {
+        if (appliedDiscount.type === 'percent') {
+          discountValue = Math.round(roastSubtotal * (appliedDiscount.value / 100) * 100) / 100;
+        } else if (appliedDiscount.type === 'flat') {
+          discountValue = Math.min(roastSubtotal, appliedDiscount.value);
+        }
+      }
+
+      return {
+        subtotal: subtotal,
+        roastSubtotal: roastSubtotal,
+        discountValue: discountValue,
+        grandTotal: Math.max(0, subtotal - discountValue),
+        orderTotal: Math.max(0, roastSubtotal - discountValue)
+      };
+    }
+
+    function formatOrderItemLines(items) {
+      return items.map(function (item) {
+        var details = [];
+        if (typeof item.data.price === 'number' || (item.data.price && !isNaN(parseFloat(item.data.price)))) {
+          details.push('Price: $' + parseFloat(item.data.price).toFixed(2));
+        }
+        if (item.subtitle) {
+          var prefix = 'Picks: ';
+          if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
+          else if (item.data.roast === 'bring-your-own-beans') prefix = 'Link: ';
+          else if (item.data.roast === 'book-your-own-bootcamp' || item.data.roast === 'bib-your-own-bath') prefix = 'Session: ';
+          details.push(prefix + item.subtitle);
+        }
+        if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
+        if (item.grind) details.push('Grind: ' + item.grind);
+        if (item.notes) details.push('Notes: ' + item.notes);
+        var detailsStr = details.length > 0 ? ' (' + details.join('; ') + ')' : '';
+        return item.qty + 'x ' + item.data.label + (item.data.size ? ' ' + item.data.size : '') + detailsStr;
+      }).join(', ');
+    }
+
     function loadCart() {
-      return window.ywrGetCart();
+      if (typeof window.ywrGetCart === 'function') {
+        return window.ywrGetCart();
+      }
+      try {
+        var raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        var changed = false;
+        (Array.isArray(raw) ? raw : Object.values(raw)).forEach(function(it) {
+          if (it && it.subtitle && typeof it.subtitle === 'string' && it.subtitle.indexOf('&bull;') !== -1) {
+            it.subtitle = it.subtitle.replace(/&bull;/g, '·');
+            changed = true;
+          }
+        });
+        if (changed) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
+        }
+        return raw;
+      } catch (e) {
+        return [];
+      }
     }
 
     function saveCart(c) {
@@ -133,7 +232,11 @@
 
     function render() {
       var cartList = Object.values(loadCart()).filter(function (it) { return it && it.qty > 0; });
+      var hasRoasts = cartList.some(function (it) { return it.type !== 'subscription' && it.type !== 'gift'; });
       var hasSubscriptions = cartList.some(function (it) { return it.type === 'subscription'; });
+      var hasGifts = cartList.some(function (it) { return it.type === 'gift'; });
+      var needsDelivery = hasRoasts || hasSubscriptions;
+
       var items = cartList.map(function (it) {
         var isSub = (it.type === 'subscription');
         var metaParts = [];
@@ -171,6 +274,10 @@
           roasts: it.roasts || null,
           notes: it.notes || '',
           type: it.type || '',
+          recipientName: it.recipientName || '',
+          recipientEmail: it.recipientEmail || '',
+          senderName: it.senderName || '',
+          senderEmail: it.senderEmail || '',
           isSubscription: isSub
         };
       });
@@ -185,34 +292,32 @@
       emptyEl.style.display = 'none';
       itemsEl.innerHTML = '';
 
-      currentMode = hasSubscriptions ? 'subscribe' : 'order';
+      currentMode = hasRoasts ? 'order' : (hasSubscriptions ? 'subscribe' : 'gift');
 
-      // Adapt form mode
-      if (currentMode === 'subscribe') {
-        form.action = SUB_FORM_ACTION;
-        if (emailInput) emailInput.name = 'entry.65766604';
-        if (phoneInput) phoneInput.name = 'entry.1484480937';
-        if (itemsHidden) itemsHidden.name = 'entry.1935997805';
-        if (totalHidden) totalHidden.removeAttribute('name');
-        if (subPriceHidden) subPriceHidden.name = 'entry.903789519';
-        if (subStatusHidden) subStatusHidden.name = 'entry.1261348961';
-        if (subStatusDetailsHidden) subStatusDetailsHidden.name = 'entry.1336119512';
-        if (subSizeHidden) subSizeHidden.name = 'entry.1606791078';
-        if (subFreqHidden) subFreqHidden.name = 'entry.2064801247';
+      // Pre-fill purchaser name & email from gift card item if inputs are blank
+      if (hasGifts) {
+        var firstGift = items.find(function (it) { return it.type === 'gift'; });
+        if (firstGift) {
+          if (!nameInput.value && firstGift.senderName) nameInput.value = firstGift.senderName;
+          if (!emailInput.value && firstGift.senderEmail) emailInput.value = firstGift.senderEmail;
+        }
+      }
 
-        // Subscriptions do not support discount codes
-        appliedDiscount = null;
-      } else {
-        form.action = ORDER_FORM_ACTION;
-        if (emailInput) emailInput.name = 'entry.40149380';
-        if (phoneInput) phoneInput.name = 'entry.1852073865';
-        if (itemsHidden) itemsHidden.name = 'entry.1935997805';
-        if (totalHidden) totalHidden.name = 'entry.552044967';
-        if (subPriceHidden) subPriceHidden.removeAttribute('name');
-        if (subStatusHidden) subStatusHidden.removeAttribute('name');
-        if (subStatusDetailsHidden) subStatusDetailsHidden.removeAttribute('name');
-        if (subSizeHidden) subSizeHidden.removeAttribute('name');
-        if (subFreqHidden) subFreqHidden.removeAttribute('name');
+      // Adapt delivery & address visibility
+      deliveryFieldset.style.display = needsDelivery ? '' : 'none';
+      var checkedDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
+      var isPickup = !needsDelivery || (!checkedDelivery || checkedDelivery.value === 'Pickup');
+      addressFields.style.display = (needsDelivery && !isPickup) ? '' : 'none';
+      setAddressFieldsState(isPickup);
+
+      if (submitBtn) {
+        if (!hasRoasts && !hasSubscriptions && hasGifts) {
+          submitBtn.textContent = 'Order Gift Card';
+        } else if (!hasRoasts && hasSubscriptions && !hasGifts) {
+          submitBtn.textContent = 'Start Subscription';
+        } else {
+          submitBtn.textContent = 'Place Order';
+        }
       }
 
       var totalQty = 0;
@@ -224,11 +329,11 @@
         summaryCountEl.textContent = totalQty + (totalQty === 1 ? ' item' : ' items');
       }
 
-      // Discount code display strictly depends on whether there is at least one subscription in the cart
+      // Discount codes apply only when there is at least one physical roast item
       if (discountSection) {
-        discountSection.style.display = hasSubscriptions ? 'none' : '';
+        discountSection.style.display = hasRoasts ? '' : 'none';
       }
-      if (hasSubscriptions) {
+      if (!hasRoasts) {
         appliedDiscount = null;
       } else {
         populateGiftCodeInput();
@@ -291,11 +396,14 @@
         if (item.subtitle) {
           var picksEl = document.createElement('div');
           picksEl.className = 'order-cart-card-picks';
-          var prefix = 'Picks: ';
-          if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
-          else if (item.data.roast === 'bring-your-own-beans') prefix = 'Bean Link: ';
-          else if (item.data.roast === 'book-your-own-bootcamp' || item.data.roast === 'bib-your-own-bath') prefix = 'Session: ';
-          picksEl.textContent = prefix + item.subtitle;
+          var prefix = '';
+          var roastSlug = item.data.roast || item.slug || '';
+          if (roastSlug === 'peck-your-own') prefix = 'Picks: ';
+          else if (roastSlug === 'build-your-own-blend') prefix = 'Recipe: ';
+          else if (roastSlug === 'bring-your-own-beans') prefix = 'Bean Link: ';
+          else if (roastSlug === 'book-your-own-bootcamp' || roastSlug === 'bib-your-own-bath') prefix = 'Session: ';
+          var cleanSub = (item.subtitle || '').replace(/&bull;/g, '·');
+          picksEl.textContent = prefix + cleanSub;
           info.appendChild(picksEl);
         }
 
@@ -331,34 +439,27 @@
 
         card.appendChild(actions);
 
-        (function (k) {
+        (function (k, idx) {
           removeBtn.addEventListener('click', function () {
             var c = loadCart();
-            delete c[k];
+            if (Array.isArray(c)) {
+              c.splice(idx, 1);
+            } else {
+              delete c[k];
+            }
             saveCart(c);
             render();
           });
-        })(item.key);
+        })(item.key, i);
 
         itemsEl.appendChild(card);
       }
 
       // Calculate totals
-      var subtotal = 0;
-      for (var t = 0; t < items.length; t++) {
-        subtotal += (items[t].data.price || 0) * items[t].qty;
-      }
-
-      var discountValue = 0;
-      if (appliedDiscount && currentMode === 'order') {
-        if (appliedDiscount.type === 'percent') {
-          discountValue = Math.round(subtotal * (appliedDiscount.value / 100) * 100) / 100;
-        } else if (appliedDiscount.type === 'flat') {
-          discountValue = Math.min(subtotal, appliedDiscount.value);
-        }
-      }
-
-      var grandTotal = Math.max(0, subtotal - discountValue);
+      var totals = computeTotals(items);
+      var subtotal = totals.subtotal;
+      var discountValue = totals.discountValue;
+      var grandTotal = totals.grandTotal;
 
       // Render totals section
       if (totalsEl) {
@@ -366,8 +467,7 @@
         var totalsWrap = document.createElement('div');
         totalsWrap.className = 'order-cart-summary-totals';
 
-        // Subtotal & discount rows only appear for one-time orders when a discount is active
-        if (currentMode !== 'subscribe' && discountValue > 0) {
+        if (discountValue > 0) {
           var subtotalRow = document.createElement('div');
           subtotalRow.className = 'order-cart-summary-row';
           subtotalRow.innerHTML = '<span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span>';
@@ -388,49 +488,17 @@
       }
 
       currentRenderedItems = items;
-
-      // Update hidden inputs for Google Forms
-      if (currentMode === 'subscribe') {
-        var subItem = items[0];
-        var roastVal = items.map(function (it) {
-          return it.data.roast + ' (Grind: ' + it.grind + ')';
-        }).join(', ');
-
-        if (itemsHidden) itemsHidden.value = roastVal;
-        if (subPriceHidden) subPriceHidden.value = '$' + grandTotal;
-        if (subSizeHidden) subSizeHidden.value = subItem.data.size;
-        if (subFreqHidden) subFreqHidden.value = subItem.frequency;
-        if (subStatusHidden) subStatusHidden.value = 'Active';
-      } else {
-        var itemLines = items.map(function (item) {
-          var details = [];
-          if (typeof item.data.price === 'number' || (item.data.price && !isNaN(parseFloat(item.data.price)))) {
-            details.push('Price: $' + parseFloat(item.data.price).toFixed(2));
-          }
-          if (item.subtitle) {
-            var prefix = 'Picks: ';
-            if (item.data.roast === 'build-your-own-blend') prefix = 'Recipe: ';
-            else if (item.data.roast === 'bring-your-own-beans') prefix = 'Link: ';
-            else if (item.data.roast === 'book-your-own-bootcamp' || item.data.roast === 'bib-your-own-bath') prefix = 'Session: ';
-            details.push(prefix + item.subtitle);
-          }
-          if (item.roastLevel) details.push('Roast: ' + item.roastLevel);
-          if (item.grind) details.push('Grind: ' + item.grind);
-          if (item.notes) details.push('Notes: ' + item.notes);
-          var detailsStr = details.length > 0 ? ' (' + details.join('; ') + ')' : '';
-          return item.qty + 'x ' + item.data.label + (item.data.size ? ' ' + item.data.size : '') + detailsStr;
-        }).join(', ');
-
-        if (itemsHidden) itemsHidden.value = itemLines;
-        if (totalHidden) totalHidden.value = '$' + grandTotal.toFixed(2);
-      }
     }
 
     // Discount Code & Gift Card Handling
+    function hasRoastItemsInCart(list) {
+      return list.some(function (it) { return it.type !== 'subscription' && it.type !== 'gift'; });
+    }
+
     function populateGiftCodeInput() {
-      if (currentMode !== 'order' || appliedDiscount || !discountInput) return;
+      if (appliedDiscount || !discountInput) return;
       var cartList = Object.values(loadCart()).filter(function (it) { return it && it.qty > 0; });
-      if (cartList.length === 0 || cartList.some(function (it) { return it.type === 'subscription'; })) return;
+      if (cartList.length === 0 || !hasRoastItemsInCart(cartList)) return;
 
       var savedCode = null;
       try {
@@ -444,7 +512,7 @@
 
     if (applyBtn && discountInput && discountStatus) {
       applyBtn.addEventListener('click', function () {
-        if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
+        if (!currentRenderedItems || !hasRoastItemsInCart(currentRenderedItems)) {
           appliedDiscount = null;
           return;
         }
@@ -509,7 +577,7 @@
       discountInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           e.preventDefault();
-          if (currentMode !== 'order' || (currentRenderedItems && currentRenderedItems.some(function (it) { return it.isSubscription; }))) {
+          if (!currentRenderedItems || !hasRoastItemsInCart(currentRenderedItems)) {
             appliedDiscount = null;
             return;
           }
@@ -523,32 +591,11 @@
     window.addEventListener('storage', render);
 
     // Delivery Method Radio Handling
-    var deliveryRadios = form.querySelectorAll('.order-delivery input[type="radio"]');
-    var addressFields = document.getElementById('order-address-fields');
-    var deliveryNote = document.getElementById('order-delivery-note');
-
-    function setAddressFieldsState(isPickup) {
-      var inputs = addressFields.querySelectorAll('input, select');
-      for (var k = 0; k < inputs.length; k++) {
-        inputs[k].disabled = isPickup;
-        if (isPickup) {
-          inputs[k].removeAttribute('required');
-        } else {
-          inputs[k].setAttribute('required', 'true');
-        }
-      }
-    }
-
-    function updateDeliveryNote(isPickup) {
-      deliveryNote.textContent = deliveryNote.getAttribute(isPickup ? 'data-pickup-msg' : 'data-delivery-msg');
-      deliveryNote.style.display = '';
-    }
-
     for (var di = 0; di < deliveryRadios.length; di++) {
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
         var isPickup = (v === 'Pickup');
-        if (addressFields) addressFields.style.display = isPickup ? 'none' : '';
+        addressFields.style.display = isPickup ? 'none' : '';
         updateDeliveryNote(isPickup);
         setAddressFieldsState(isPickup);
         render();
@@ -557,7 +604,6 @@
 
     var initialDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
     var isInitialPickup = (!initialDelivery || initialDelivery.value === 'Pickup');
-    setAddressFieldsState(isInitialPickup);
     updateDeliveryNote(isInitialPickup);
 
     // Auto-format and validate optional phone number
@@ -665,43 +711,24 @@
       }
       if (submitBtn) submitBtn.disabled = true;
 
-      // Handle Notes formatting
       var userNotes = document.getElementById('order-notes').value.trim();
-      var finalNotes = userNotes;
+      var totals = computeTotals(currentRenderedItems);
+      var discountValue = totals.discountValue;
 
-      var discountValue = 0;
-      if (appliedDiscount && currentMode === 'order') {
-        var subtotal = 0;
-        for (var t = 0; t < currentRenderedItems.length; t++) {
-          subtotal += (currentRenderedItems[t].data.price || 0) * currentRenderedItems[t].qty;
-        }
-
-        if (appliedDiscount.type === 'percent') {
-          discountValue = Math.round(subtotal * (appliedDiscount.value / 100) * 100) / 100;
-        } else if (appliedDiscount.type === 'flat') {
-          discountValue = Math.min(subtotal, appliedDiscount.value);
-        }
-
-        var notesPrefix = '[DISCOUNT: ' + appliedDiscount.code + ' (-$' + discountValue.toFixed(2) + ')]';
-        finalNotes = userNotes ? notesPrefix + ' | ' + userNotes : notesPrefix;
-      }
-
-      document.getElementById('order-notes').value = finalNotes;
-
-      // Dynamic gift card redemption lookup/subtraction (Order mode only)
+      // Dynamic gift card redemption lookup/subtraction
       var apiUrl = config.discountApiUrl;
-      if (currentMode === 'order' && appliedDiscount && appliedDiscount.code.indexOf('GIFT-') === 0 && apiUrl && apiUrl.trim() !== '') {
+      if (appliedDiscount && discountValue > 0 && appliedDiscount.code.indexOf('GIFT-') === 0 && apiUrl && apiUrl.trim() !== '') {
         var redeemUrl = apiUrl + '?action=redeem&code=' + encodeURIComponent(appliedDiscount.code) + '&amount=' + encodeURIComponent(discountValue);
 
         fetch(redeemUrl)
           .then(function (response) { return response.json(); })
-          .then(function () { proceedToSubmit(); })
+          .then(function () { proceedToSubmit(userNotes, discountValue, totals.orderTotal); })
           .catch(function (err) {
             console.error('Failed to deduct gift card amount:', err);
-            proceedToSubmit();
+            proceedToSubmit(userNotes, discountValue, totals.orderTotal);
           });
       } else {
-        proceedToSubmit();
+        proceedToSubmit(userNotes, discountValue, totals.orderTotal);
       }
     });
 
@@ -724,82 +751,141 @@
       window.dispatchEvent(new CustomEvent('ywr-cart-changed'));
     }
 
-    function proceedToSubmit() {
+    function postForm(url, params, errorLabel) {
+      return fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      }).catch(function (err) {
+        console.error(errorLabel, err);
+      });
+    }
+
+    function proceedToSubmit(userNotes, discountValue, orderTotal) {
+      var roastItems = currentRenderedItems.filter(function (it) { return it.type !== 'subscription' && it.type !== 'gift'; });
+      var subItems = currentRenderedItems.filter(function (it) { return it.type === 'subscription'; });
+      var giftItems = currentRenderedItems.filter(function (it) { return it.type === 'gift'; });
+
+      var needsDelivery = roastItems.length > 0 || subItems.length > 0;
+      var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
+      var isPickup = !needsDelivery || (!delivery || delivery.value === 'Pickup');
+      setAddressFieldsState(isPickup);
+
+      var customerName = nameInput.value;
+      var customerEmail = emailInput.value;
+      var customerPhone = phoneInput.value;
+      var deliveryMethod = isPickup ? 'Pickup' : 'Hand delivery';
+      var addressVal = isPickup ? '' : document.getElementById('order-address').value;
+      var cityVal = isPickup ? '' : document.getElementById('order-city').value;
+      var stateVal = isPickup ? '' : document.getElementById('order-state').value;
+      var zipVal = isPickup ? '' : document.getElementById('order-zip').value;
+
+      var requests = [];
+      var generatedGiftCodes = [];
+
+      // 1. Physical roasts: single batch submission
+      if (roastItems.length > 0) {
+        var oe = config.orderEntries;
+        var orderNotes = userNotes;
+        if (appliedDiscount && discountValue > 0) {
+          var notesPrefix = '[DISCOUNT: ' + appliedDiscount.code + ' (-$' + discountValue.toFixed(2) + ')]';
+          orderNotes = userNotes ? notesPrefix + ' | ' + userNotes : notesPrefix;
+        }
+
+        var orderParams = new URLSearchParams();
+        orderParams.append(oe.name, customerName);
+        orderParams.append(oe.email, customerEmail);
+        if (customerPhone) orderParams.append(oe.phone, customerPhone);
+        orderParams.append(oe.delivery, deliveryMethod);
+        if (!isPickup) {
+          orderParams.append(oe.address, addressVal);
+          orderParams.append(oe.city, cityVal);
+          orderParams.append(oe.state, stateVal);
+          orderParams.append(oe.zip, zipVal);
+        }
+        if (orderNotes) orderParams.append(oe.notes, orderNotes);
+        orderParams.append(oe.items, formatOrderItemLines(roastItems));
+        orderParams.append(oe.total, '$' + orderTotal.toFixed(2));
+        requests.push(postForm(ORDER_FORM_ACTION, orderParams, 'Order submission error:'));
+      }
+
+      // 2. Subscriptions: individual submission per subscription item
+      if (subItems.length > 0) {
+        var se = config.subscriptionEntries;
+        subItems.forEach(function (it) {
+          for (var q = 0; q < it.qty; q++) {
+            var subParams = new URLSearchParams();
+            subParams.append(se.name, customerName);
+            subParams.append(se.email, customerEmail);
+            if (customerPhone) subParams.append(se.phone, customerPhone);
+            subParams.append(se.delivery, deliveryMethod);
+            if (!isPickup) {
+              subParams.append(se.address, addressVal);
+              subParams.append(se.city, cityVal);
+              subParams.append(se.state, stateVal);
+              subParams.append(se.zip, zipVal);
+            }
+            if (userNotes) subParams.append(se.notes, userNotes);
+            subParams.append(se.roast, it.data.roast + ' (Grind: ' + it.grind + ')');
+            subParams.append(se.size, it.data.size);
+            subParams.append(se.frequency, it.frequency);
+            subParams.append(se.price, '$' + it.data.price);
+            subParams.append(se.status, 'Active');
+            subParams.append(se.status_details, '');
+            requests.push(postForm(SUB_FORM_ACTION, subParams, 'Subscription submission error:'));
+          }
+        });
+      }
+
+      // 3. Digital gift cards: individual submission per gift card
+      if (giftItems.length > 0) {
+        var ge = config.digitalGiftEntries;
+        var giftUrl = config.digitalGiftUrl;
+        giftItems.forEach(function (it) {
+          for (var q = 0; q < it.qty; q++) {
+            var giftCode = generateGiftCode();
+            generatedGiftCodes.push(giftCode);
+
+            var giftParams = new URLSearchParams();
+            giftParams.append(ge.purchaser_name, customerName || it.senderName || '');
+            giftParams.append(ge.purchaser_email, customerEmail || it.senderEmail || '');
+            giftParams.append(ge.amount, String(parseFloat(it.data.price)));
+            giftParams.append(ge.gift_code, giftCode);
+            giftParams.append(ge.recipient_name, it.recipientName || '');
+            giftParams.append(ge.recipient_email, it.recipientEmail || '');
+            giftParams.append(ge.gift_message, it.notes || '');
+            if (userNotes) giftParams.append(ge.notes, userNotes);
+            requests.push(postForm(giftUrl, giftParams, 'Gift card submission error:'));
+          }
+        });
+      }
+
       var redirected = false;
       function finish() {
         if (redirected) return;
         redirected = true;
         clearCart();
-        window.location.href = (config.thanksUrl || '/thanks/');
-      }
-
-      var delivery = form.querySelector('.order-delivery input[type="radio"]:checked');
-      var isPickup = (!delivery || delivery.value === 'Pickup');
-      setAddressFieldsState(isPickup);
-
-      if (currentMode === 'subscribe' && typeof window.fetch === 'function') {
-        var subItems = currentRenderedItems.filter(function (it) { return it.isSubscription; });
-        if (subItems.length === 0) {
-          finish();
-          return;
+        var dest = config.thanksUrl || '/thanks/';
+        if (generatedGiftCodes.length > 0) {
+          dest += '?code=' + encodeURIComponent(generatedGiftCodes.join(', '));
         }
-
-        var customerName = document.getElementById('order-name').value;
-        var customerEmail = emailInput.value;
-        var customerPhone = phoneInput ? phoneInput.value : '';
-        var deliveryMethod = isPickup ? 'Pickup' : 'Hand delivery';
-        var addressVal = isPickup ? '' : document.getElementById('order-address').value;
-        var cityVal = isPickup ? '' : document.getElementById('order-city').value;
-        var stateVal = isPickup ? '' : document.getElementById('order-state').value;
-        var zipVal = isPickup ? '' : document.getElementById('order-zip').value;
-        var notesVal = document.getElementById('order-notes').value;
-
-        var safetyTimer = setTimeout(finish, 4000);
-
-        var requests = subItems.map(function (it) {
-          var params = new URLSearchParams();
-          params.append('entry.1153405702', customerName);
-          params.append('entry.65766604', customerEmail);
-          if (customerPhone) params.append('entry.1484480937', customerPhone);
-          params.append('entry.1896226742', deliveryMethod);
-          if (!isPickup) {
-            params.append('entry.148046999', addressVal);
-            params.append('entry.1534670804', cityVal);
-            params.append('entry.414179858', stateVal);
-            params.append('entry.1472936948', zipVal);
-          }
-          if (notesVal) params.append('entry.1381358427', notesVal);
-
-          var roastVal = it.data.roast + ' (Grind: ' + it.grind + ')';
-          params.append('entry.1935997805', roastVal);
-          params.append('entry.1606791078', it.data.size);
-          params.append('entry.2064801247', it.frequency);
-          params.append('entry.903789519', '$' + it.data.price);
-          params.append('entry.1261348961', 'Active');
-          params.append('entry.1336119512', '');
-
-          return fetch(SUB_FORM_ACTION, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-          }).catch(function (err) {
-            console.error('Subscription submission error:', err);
-          });
-        });
-
-        Promise.all(requests).then(function () {
-          clearTimeout(safetyTimer);
-          finish();
-        }).catch(function () {
-          clearTimeout(safetyTimer);
-          finish();
-        });
-      } else {
-        iframe.onload = finish;
-        setTimeout(finish, 5000);
-        form.submit();
+        window.location.href = dest;
       }
+
+      if (requests.length === 0) {
+        finish();
+        return;
+      }
+
+      var safetyTimer = setTimeout(finish, 4000);
+      Promise.all(requests).then(function () {
+        clearTimeout(safetyTimer);
+        finish();
+      }).catch(function () {
+        clearTimeout(safetyTimer);
+        finish();
+      });
     }
 
     window.addEventListener('pageshow', function () {

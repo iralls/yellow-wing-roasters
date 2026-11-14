@@ -6,7 +6,6 @@ category: subscription
 order: 2
 permalink: /subscriptions/wingshot-collective/
 mascot_file: audubon-crosshair-transparent.png
-descriptor: a rotating roaster's choice espresso exploration pick each month
 sizes:
   - 12oz
 frequencies:

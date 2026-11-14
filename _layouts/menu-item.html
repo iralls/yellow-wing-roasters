@@ -1,0 +1,433 @@
+---
+layout: default
+---
+
+{% assign r_level = site.data.roast_levels[page.roast_level] %}
+{% assign latest_history = page.history | first %}
+{% assign p_status_info = nil %}
+{% if page.status %}
+  {% assign p_status_info = site.data.statuses[page.status] %}
+{% endif %}
+{% assign is_sub = false %}
+{% if page.category == 'subscription' or page.collection == 'subscriptions' %}
+  {% assign is_sub = true %}
+{% endif %}
+
+<div class="hst-wrap">
+  {% if page.back_url %}
+    <a href="{{ page.back_url | relative_url }}" class="hst-back-link">&larr; {{ page.back_label | default: 'Back' }}</a>
+  {% elsif is_sub %}
+    <a href="{{ '/subscriptions/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
+  {% else %}
+    <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
+  {% endif %}
+
+  <div class="hst-panel" id="product-{{ page.slug | default: page.title | slugify }}">
+    <!-- Visual Frame (Left Column) -->
+    <div class="hst-frame">
+      {% if page.mascot_file %}
+        {% assign r_img = "/images/" | append: page.mascot_file %}
+        <img src="{{ r_img | relative_url }}" alt="{{ page.mascot_alt | default: page.title }}" class="hst-mascot-img"{% if page.mascot_style %} style="{{ page.mascot_style }}"{% endif %}>
+      {% endif %}
+    </div>
+
+    <!-- Info Column (Right Column) -->
+    <div class="hst-info">
+      <div>
+        <div class="hst-header-meta">
+          {% if page.descriptor %}
+            <span class="hst-cat">{{ page.descriptor | capitalize }}</span>
+          {% endif %}
+          {% if p_status_info %}
+            <span class="hst-status-pill hst-status-pill--{{ page.status }}" title="{{ p_status_info.banner_text }}">
+              <span class="hst-status-dot"></span>
+              {{ p_status_info.badge }}
+            </span>
+          {% endif %}
+        </div>
+        <h1 class="hst-title">{{ page.title }}</h1>
+      </div>
+
+      <!-- Price Display -->
+      {% if page.price and page.price != "" %}
+      <div class="hst-price-row" id="product-price-display">
+        {% if page.temporary_price and page.temporary_price["12oz"] %}
+          <s>${{ page.price["12oz"] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price["12oz"] }}.00</span>{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+        {% elsif page.price["12oz"] %}
+          ${{ page.price["12oz"] }}.00{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+        {% elsif page.price %}
+          {% if page.price contains "$" or page.price contains "Quote" or page.price contains "Cost" %}{{ page.price }}{% else %}${{ page.price }}.00{% endif %}{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Minimal Status Context Note (if status banner text exists and not just active) -->
+      {% if p_status_info and page.status != 'just_hatched' and p_status_info.banner_text %}
+        <div class="hst-status-note{% if p_status_info.orderable == false %} hst-status-note--warning{% endif %}">
+          {{ p_status_info.banner_text }}
+        </div>
+      {% endif %}
+
+      <!-- Intro / Description -->
+      {% if page.description %}
+        <p class="hst-intro">{{ page.description }}</p>
+      {% elsif page.intro %}
+        <p class="hst-intro">{{ page.intro }}</p>
+      {% endif %}
+
+      <!-- Markdown body content if present -->
+      {% if content and content != "" %}
+        <div class="hst-body-content">
+          {{ content }}
+        </div>
+      {% endif %}
+
+      <!-- Order / Subscribe Form (for standard roasts, subscriptions, flights) -->
+      {% unless page.category == 'custom' or page.category == 'gift' or page.no_order %}
+      <form class="hst-form" id="product-order-form" onsubmit="return false;">
+        <!-- Purchase Option Toggle (for roasts with subscription option) -->
+        {% if page.subscription and is_sub == false %}
+          <div>
+            <label class="hst-label">Purchase Option</label>
+            <div class="hst-toggle-group" role="radiogroup" aria-label="Purchase Option">
+              <button type="button" class="hst-toggle-btn is-active" id="btn-option-onetime">One-Time</button>
+              <button type="button" class="hst-toggle-btn" id="btn-option-subscribe">Subscribe</button>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Bag Size (if multi-size pricing or sizes array exists) -->
+        {% if page.price["12oz"] and is_sub == false %}
+          <div>
+            <label class="hst-label" for="product-size-select">Bag Size</label>
+            <select class="hst-select" id="product-size-select">
+              {% for sz in site.data.bag_sizes %}
+                {% if page.price[sz.id] %}
+                  <option value="{{ sz.id }}"
+                          data-reg="{{ page.price[sz.id] }}"
+                          {% if page.temporary_price and page.temporary_price[sz.id] %}data-sale="{{ page.temporary_price[sz.id] }}"{% endif %}
+                          {% if sz.id == "12oz" %} selected{% endif %}>
+                    {{ sz.label }} &mdash; {% if page.temporary_price and page.temporary_price[sz.id] %}${{ page.temporary_price[sz.id] }}.00{% else %}${{ page.price[sz.id] }}.00{% endif %}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        {% elsif page.sizes and page.sizes.size > 1 %}
+          <div>
+            <label class="hst-label" for="product-size-select">Bag Size</label>
+            <select class="hst-select" id="product-size-select">
+              {% for sz in page.sizes %}
+                <option value="{{ sz }}">{{ sz }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
+        <!-- Subscription Frequency -->
+        {% if is_sub %}
+          <div>
+            <label class="hst-label" for="product-freq-select">Delivery Frequency</label>
+            <select class="hst-select" id="product-freq-select">
+              {% for freq in page.frequencies %}
+                <option value="{{ freq }}"{% if forloop.first %} selected{% endif %}>{{ freq }}</option>
+              {% else %}
+                <option value="Monthly" selected>Monthly Dispatch</option>
+                <option value="Every 2 weeks">Every 2 Weeks</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% elsif page.subscription %}
+          <div id="product-freq-wrap" style="display: none;">
+            <label class="hst-label" for="product-freq-select">Delivery Frequency</label>
+            <select class="hst-select" id="product-freq-select">
+              {% for freq in page.subscription.frequencies %}
+                <option value="{{ freq }}"{% if forloop.first %} selected{% endif %}>{{ freq }}</option>
+              {% else %}
+                <option value="Monthly" selected>Monthly Dispatch</option>
+                <option value="Every 2 weeks">Every 2 Weeks</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
+        <!-- Grind Style (for all coffee products except whole bean only) -->
+        {% unless page.category == 'gift' or page.no_grind %}
+          <div>
+            <label class="hst-label" for="product-grind-select">Grind Style</label>
+            <select class="hst-select" id="product-grind-select">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endunless %}
+
+        <!-- Action Button -->
+        {% if p_status_info and p_status_info.orderable == false %}
+          <button type="button" class="hst-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+            {{ p_status_info.badge }} &mdash; Unavailable
+          </button>
+        {% else %}
+          <button type="submit" class="hst-btn" id="product-atc-btn">
+            Add to Cart
+          </button>
+        {% endif %}
+      </form>
+      {% endunless %}
+
+      {% assign has_drawers = false %}
+      {% if page.category == "blend" and latest_history.components %}
+        {% assign has_drawers = true %}
+      {% elsif page.category == "single origin" and page.origins %}
+        {% assign has_drawers = true %}
+      {% elsif page.tasting_notes or page.fun_fact %}
+        {% assign has_drawers = true %}
+      {% elsif is_sub and page.no_order != true %}
+        {% assign has_drawers = true %}
+      {% endif %}
+
+      {% if has_drawers %}
+      <!-- Dynamic Drawers based on Item Type -->
+      <div class="hst-drawers">
+        <!-- 1. Origins & Components: for Blends only -->
+        {% if page.category == "blend" and latest_history.components %}
+          <div class="hst-drawer open">
+            <button type="button" class="hst-drawer-head">Origins &amp; Components</button>
+            <div class="hst-drawer-body">
+              <ul class="hst-component-list">
+                {% for c in latest_history.components %}
+                  <li>
+                    <span>{{ c.name }}</span>
+                    <strong>{{ c.ratio }}</strong>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        <!-- 2. Origin & Terroir: for Single Origins -->
+        {% elsif page.category == "single origin" %}
+          {% if page.origins or page.region %}
+          <div class="hst-drawer open">
+            <button type="button" class="hst-drawer-head">Origin &amp; Terroir</button>
+            <div class="hst-drawer-body">
+              {% if page.origins %}
+                <strong>Origins:</strong> {{ page.origins | join: ", " }}<br>
+              {% endif %}
+              {% if page.region %}
+                <strong>Region:</strong> {{ page.region }}<br>
+              {% endif %}
+              {% if page.elevation %}
+                <strong>Elevation:</strong> {{ page.elevation }}<br>
+              {% endif %}
+              {% if page.processing_method %}
+                <strong>Process:</strong> {{ page.processing_method }}
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        {% endif %}
+
+        <!-- 3. Sensory Profile & Tasting Notes -->
+        {% if page.tasting_notes %}
+          <div class="hst-drawer{% unless latest_history.components or page.origins %} open{% endunless %}">
+            <button type="button" class="hst-drawer-head">Profile &amp; Tasting Notes</button>
+            <div class="hst-drawer-body">
+              <strong>Notes:</strong> {{ page.tasting_notes }}<br>
+              {% if page.descriptor %}
+                <strong>Descriptor:</strong> {{ page.descriptor | capitalize }}<br>
+              {% endif %}
+              {% if page.brewing_method %}
+                <strong>Brew Style:</strong> {{ page.brewing_method }}<br>
+              {% endif %}
+              {% if r_level %}
+                <strong>Roast Level:</strong> {{ r_level.specialty }} ({{ r_level.layman }})
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- 4. Subscription Schedule & Flexibility (if subscription) -->
+        {% if is_sub and page.no_order != true %}
+          <div class="hst-drawer open">
+            <button type="button" class="hst-drawer-head">Subscription Details &amp; Perks</button>
+            <div class="hst-drawer-body">
+              <strong>Fresh Roast Schedule:</strong> Small batches roasted fresh on demand and delivered on your schedule.<br>
+              <strong>Complete Flexibility:</strong> Easily pause, resume, change grind, or cancel anytime through our self-service portal.
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- 5. Naturalist Field Observation (if fun_fact present) -->
+        {% if page.fun_fact %}
+          <div class="hst-drawer">
+            <button type="button" class="hst-drawer-head">Field Observation</button>
+            <div class="hst-drawer-body">
+              {{ page.fun_fact }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    window.ywrAddToCart = window.ywrAddToCart || function(item, qty) {
+      if (!item) return false;
+      qty = qty || 1;
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem('ywr_cart') || '[]');
+        if (!Array.isArray(cart)) cart = [];
+      } catch (e) {
+        cart = [];
+      }
+
+      const existingIdx = cart.findIndex(c =>
+        c.slug === item.slug &&
+        c.size === item.size &&
+        c.grind === item.grind &&
+        c.frequency === item.frequency &&
+        c.subtitle === item.subtitle &&
+        c.price === item.price &&
+        c.recipientEmail === item.recipientEmail &&
+        c.notes === item.notes
+      );
+
+      if (existingIdx >= 0) {
+        cart[existingIdx].qty = (cart[existingIdx].qty || 1) + qty;
+      } else {
+        item.qty = qty;
+        cart.push(item);
+      }
+
+      try {
+        localStorage.setItem('ywr_cart', JSON.stringify(cart));
+        window.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    let currentPurchaseOption = "onetime";
+    const btnOneTime = document.getElementById("btn-option-onetime");
+    const btnSubscribe = document.getElementById("btn-option-subscribe");
+    const freqWrap = document.getElementById("product-freq-wrap");
+    const sizeSelect = document.getElementById("product-size-select");
+    const display = document.getElementById("product-price-display");
+
+    function updatePrice() {
+      if (!display) return;
+      if (sizeSelect) {
+        const opt = sizeSelect.options[sizeSelect.selectedIndex];
+        const reg = opt.getAttribute("data-reg");
+        const sale = opt.getAttribute("data-sale");
+        if (currentPurchaseOption === "subscribe") {
+          display.innerHTML = `$${reg}.00 <span class="hst-freq-note">/ delivery</span>`;
+        } else {
+          if (sale) {
+            display.innerHTML = `<s>$${reg}.00</s> <span class="hst-sale-price">$${sale}.00</span>`;
+          } else {
+            display.innerHTML = `$${reg}.00`;
+          }
+        }
+      }
+    }
+
+    if (btnOneTime && btnSubscribe && freqWrap) {
+      btnOneTime.addEventListener("click", () => {
+        currentPurchaseOption = "onetime";
+        btnOneTime.classList.add("is-active");
+        btnSubscribe.classList.remove("is-active");
+        freqWrap.style.display = "none";
+        updatePrice();
+      });
+
+      btnSubscribe.addEventListener("click", () => {
+        currentPurchaseOption = "subscribe";
+        btnSubscribe.classList.add("is-active");
+        btnOneTime.classList.remove("is-active");
+        freqWrap.style.display = "block";
+        updatePrice();
+      });
+    }
+
+    if (sizeSelect) {
+      sizeSelect.addEventListener("change", updatePrice);
+    }
+
+    const orderForm = document.getElementById("product-order-form");
+    if (orderForm) {
+      orderForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const atcBtn = document.getElementById("product-atc-btn");
+        const isSub = {{ is_sub | jsonify }} || currentPurchaseOption === "subscribe";
+        const title = {{ page.title | jsonify }};
+        const slug = {{ page.slug | jsonify }};
+        const mascot = {{ page.mascot_file | jsonify }};
+
+        let price = 0;
+        let size = "12oz";
+        const sizeEl = document.getElementById("product-size-select");
+        if (sizeEl) {
+          size = sizeEl.value;
+          const opt = sizeEl.options[sizeEl.selectedIndex];
+          const sale = opt.getAttribute("data-sale");
+          const reg = opt.getAttribute("data-reg");
+          price = (currentPurchaseOption === "subscribe")
+            ? parseFloat(reg)
+            : parseFloat(sale || reg);
+        } else {
+          {% if page.price["12oz"] %}
+            price = {{ page.price["12oz"] }};
+          {% elsif page.price %}
+            price = {{ page.price | jsonify }};
+            if (typeof price === "string") {
+              price = parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
+            }
+          {% endif %}
+        }
+
+        const grindEl = document.getElementById("product-grind-select");
+        const freqEl = document.getElementById("product-freq-select");
+
+        const item = {
+          type: isSub ? "subscription" : {{ page.category | jsonify }},
+          slug: slug,
+          title: title,
+          size: size,
+          grind: grindEl ? grindEl.value : null,
+          price: price,
+          mascot: mascot
+        };
+
+        if (isSub && freqEl) {
+          item.frequency = freqEl.value;
+        }
+
+        const added = window.ywrAddToCart(item, 1);
+        if (added && atcBtn) {
+          const origText = atcBtn.textContent;
+          atcBtn.textContent = "Added to Cart!";
+          atcBtn.disabled = true;
+          setTimeout(() => {
+            atcBtn.textContent = origText;
+            atcBtn.disabled = false;
+          }, 1400);
+        } else if (!added) {
+          console.error("ywrAddToCart failed for item:", item);
+        }
+      });
+    }
+
+    document.querySelectorAll(".hst-drawer-head").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.closest(".hst-drawer").classList.toggle("open");
+      });
+    });
+  })();
+</script>

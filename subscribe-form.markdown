@@ -12,10 +12,10 @@ permalink: /subscribe/
 
 <script>
   (function () {
-    var dest = '{{ "/order/" | relative_url }}' + (window.location.search || '');
+    var dest = '{{ "/cart/" | relative_url }}' + (window.location.search || '');
     window.location.replace(dest);
   })();
 </script>
 <noscript>
-  <meta http-equiv="refresh" content="0; url={{ '/order/' | relative_url }}">
+  <meta http-equiv="refresh" content="0; url={{ '/cart/' | relative_url }}">
 </noscript>

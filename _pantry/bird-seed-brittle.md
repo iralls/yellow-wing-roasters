@@ -2,7 +2,7 @@
 title: "Bird Seed Brittle"
 subtitle: "Chocolate Quinoa & Espresso Crisps"
 slug: bird-seed-brittle
-published: true
+published: false
 category: pantry
 order: 5
 permalink: /pantry/bird-seed-brittle/

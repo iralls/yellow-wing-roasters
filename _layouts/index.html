@@ -1,30 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-{% include head.html %}
-</head>
-<body>
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-  <div class="container">
-    <main id="main-content" class="main-content">
-      {{ content }}
-    </main>
-  </div>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Yellow Wing Roasters",
-    "url": "https://yellowwingroasters.com",
-    "logo": "https://yellowwingroasters.com/images/audubon-feather-transparent.png",
-    "image": "https://yellowwingroasters.com/images/social/social-preview-og.png",
-    "description": "Small-batch coffee roasting in Connecticut.",
-    "email": "chirp@yellowwingroasters.com"
-  }
-  </script>
-</body>
-</html>
+---
+layout: default
+---
+{{ content }}

@@ -6,7 +6,6 @@ category: subscription
 order: 4
 permalink: /subscriptions/murmurations/
 mascot_file: flock-transparent.png
-descriptor: leftover beans from small-batch roasts — no two bags are the same
 sizes:
   - 12oz
 frequencies:

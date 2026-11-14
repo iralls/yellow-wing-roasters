@@ -7,10 +7,6 @@
     } catch (e) {}
   })();
 </script>
-<style>
-  .ywr-admin-authenticated #{{ include.prefix }}-admin-gate-section { display: none !important; }
-  .ywr-admin-authenticated #{{ include.prefix }}-admin-dashboard-section { display: block !important; }
-</style>
 
 <div class="roast-minimal-vertical">
 <div class="order-admin-container">
@@ -37,7 +33,7 @@
   </div>
 
   <!-- Authenticated Dashboard View -->
-  <div id="{{ include.prefix }}-admin-dashboard-section" style="display: none;">
+  <div id="{{ include.prefix }}-admin-dashboard-section" class="order-admin-dashboard">
     <!-- Top Bar Controls -->
     <div class="order-admin-topbar">
       <div class="order-admin-header-row">

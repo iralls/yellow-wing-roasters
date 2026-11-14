@@ -118,12 +118,6 @@
         '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Frequency</td>' +
         '<td style="padding: 4px 8px; font-family: Georgia, serif; font-size: 0.95rem; color: #2c1e14;">' + escapeHtml(sub.frequency) + '</td>' +
         '</tr>' +
-        (sub.cost ? (
-          '<tr>' +
-          '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Price / Period</td>' +
-          '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 1.05rem; font-weight: 600; color: #2c1e14;">' + escapeHtml(formatPrice(sub.cost)) + '</td>' +
-          '</tr>'
-        ) : '') +
         '</table>' +
         '</div>';
 
