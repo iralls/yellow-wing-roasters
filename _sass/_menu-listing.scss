@@ -141,11 +141,30 @@
 }
 
 @media (max-width: 580px) {
+  .menu-listing-wrap {
+    padding: 2rem 1.25rem 5rem;
+  }
+
+  .menu-item-name {
+    white-space: normal;
+    min-width: 0;
+  }
+
+  .menu-item-price {
+    flex-shrink: 0;
+  }
+
   .menu-item-leader {
     display: none;
   }
+
   .menu-item-desc {
     flex-direction: column;
     gap: 0.15rem;
+  }
+
+  .menu-item-meta {
+    white-space: normal;
+    text-align: left;
   }
 }
