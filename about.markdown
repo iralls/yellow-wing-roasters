@@ -1,8 +1,8 @@
 ---
 layout: menu-item
 title: About Us
-mascot_file: audubon-duck-family-transparent.png
-mascot_alt: "Yellow Wing Roasters duck family"
+mascot_file: albatross-family-transparent.png
+mascot_alt: "Yellow Wing Roasters albatross family"
 permalink: /about/
 no_order: true
 intro: "Established in 2026, Yellow Wing Roasters is a small-batch coffee roaster located in Guilford, Connecticut, dedicated to fresh, carefully roasted coffees."
