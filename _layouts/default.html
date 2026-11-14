@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title and page.title != "Home" %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  {% seo %}
+  <meta name="theme-color" content="#2c1e14">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ '/images/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/images/favicon.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
   
   <!-- Preconnect & Preload Figtree Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
