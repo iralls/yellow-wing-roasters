@@ -267,189 +267,105 @@ permalink: /roast-atelier/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="atl-wrap">
   <!-- ── Switcher ── -->
   <nav class="atl-switcher" aria-label="Atelier Switcher">
-    <button type="button" class="atl-switch-btn active" data-target="atl-eb">Atelier 01 &mdash; Early Bird</button>
-    <button type="button" class="atl-switch-btn" data-target="atl-cs">Atelier 02 &mdash; Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="atl-switch-btn{% if forloop.first %} active{% endif %}" data-target="atl-{{ r.slug }}">Atelier 0{{ forloop.index }} &mdash; {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="atl-panel active" id="atl-eb">
-    <!-- Left: The Dossier -->
-    <div class="atl-dossier">
-      <div class="atl-step">
-        <span class="atl-step-tag">01 // Identifier</span>
-        <h1 class="atl-title">{{ eb.title }}</h1>
-        <div class="atl-price-line" id="atl-eb-price">
-          {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-            <s>${{ eb.price["12oz"] }}</s> <span class="atl-sale-tag">${{ eb.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ eb.price["12oz"] }}
-          {% endif %}
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    {% assign mascot_name = site.data.mascots[r.mascot] | default: r.mascot %}
+    <div class="atl-panel{% if forloop.first %} active{% endif %}" id="atl-{{ r.slug }}">
+      <!-- Left: The Dossier -->
+      <div class="atl-dossier">
+        <div class="atl-step">
+          <span class="atl-step-tag">01 // Identifier</span>
+          <h1 class="atl-title">{{ r.title }}</h1>
+          <div class="atl-price-line" id="atl-{{ r.slug }}-price">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ r.price["12oz"] }}</s> <span class="atl-sale-tag">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ r.price["12oz"] }}
+            {% endif %}
+          </div>
         </div>
-      </div>
 
-      <div class="atl-step">
-        <span class="atl-step-tag">02 // Sensory Profile</span>
-        <blockquote class="atl-sensory-quote">&ldquo;{{ eb.tasting_notes | capitalize }}.&rdquo;</blockquote>
-        <p class="atl-body-p">{{ eb.description }}</p>
-      </div>
+        <div class="atl-step">
+          <span class="atl-step-tag">02 // Sensory Profile</span>
+          <blockquote class="atl-sensory-quote">&ldquo;{{ r.tasting_notes | capitalize }}.&rdquo;</blockquote>
+          <p class="atl-body-p">{{ r.description }}</p>
+        </div>
 
-      <div class="atl-step">
-        <span class="atl-step-tag">03 // Formulation &amp; Craft</span>
-        <table class="atl-comp-table">
-          {% assign latest_eb = eb.history | first %}
-          {% for c in latest_eb.components %}
+        <div class="atl-step">
+          <span class="atl-step-tag">03 // Formulation &amp; Craft</span>
+          <table class="atl-comp-table">
+            {% for c in latest_history.components %}
+              <tr>
+                <td>{{ c.name }}</td>
+                <td>{{ c.ratio }}</td>
+              </tr>
+            {% endfor %}
             <tr>
-              <td>{{ c.name }}</td>
-              <td>{{ c.ratio }}</td>
+              <td style="color: var(--atl-light);">Roast Profile</td>
+              <td>{{ r_level.name }} ({{ r_level.layman }})</td>
             </tr>
-          {% endfor %}
-          <tr>
-            <td style="color: var(--atl-light);">Roast Profile</td>
-            <td>{{ eb_level.name }} ({{ eb_level.layman }})</td>
-          </tr>
-          <tr>
-            <td style="color: var(--atl-light);">Extraction Method</td>
-            <td>{{ eb.brewing_method }}</td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="atl-step">
-        <span class="atl-step-tag">04 // Acquisition</span>
-        <div class="atl-form-row">
-          <label class="atl-form-label" for="atl-eb-size">Designate Bag Size</label>
-          <select class="atl-select" id="atl-eb-size">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ eb.price[sz.id] }}"
-                      {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}{% else %}${{ eb.price[sz.id] }}{% endif %}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="atl-form-row" style="margin-top: 0.75rem;">
-          <label class="atl-form-label" for="atl-eb-grind">Grind Specification</label>
-          <select class="atl-select" id="atl-eb-grind">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="button" class="atl-btn" style="margin-top: 1rem;">Acquire Blend</button>
-      </div>
-
-      <div class="atl-step" style="border-bottom: none;">
-        <span class="atl-step-tag">05 // Naturalist Note</span>
-        <p class="atl-body-p" style="font-size: 0.92rem;">{{ eb.fun_fact }}</p>
-      </div>
-    </div>
-
-    <!-- Right: Sticky Artwork Stage -->
-    <div class="atl-stage-col">
-      <div class="atl-stage">
-        {% assign eb_img = '/images/' | append: eb.mascot_file %}
-        <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="atl-bird-render">
-        <span class="atl-stage-caption">Atelier Artwork &bull; American Robin</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="atl-panel" id="atl-cs">
-    <!-- Left: The Dossier -->
-    <div class="atl-dossier">
-      <div class="atl-step">
-        <span class="atl-step-tag">01 // Identifier</span>
-        <h1 class="atl-title">{{ cs.title }}</h1>
-        <div class="atl-price-line" id="atl-cs-price">
-          ${{ cs.price["12oz"] }}
-        </div>
-      </div>
-
-      <div class="atl-step">
-        <span class="atl-step-tag">02 // Sensory Profile</span>
-        <blockquote class="atl-sensory-quote">&ldquo;{{ cs.tasting_notes | capitalize }}.&rdquo;</blockquote>
-        <p class="atl-body-p">{{ cs.description }}</p>
-      </div>
-
-      <div class="atl-step">
-        <span class="atl-step-tag">03 // Formulation &amp; Craft</span>
-        <table class="atl-comp-table">
-          {% assign latest_cs = cs.history | first %}
-          {% for c in latest_cs.components %}
             <tr>
-              <td>{{ c.name }}</td>
-              <td>{{ c.ratio }}</td>
+              <td style="color: var(--atl-light);">Extraction Method</td>
+              <td>{{ r.brewing_method }}</td>
             </tr>
-          {% endfor %}
-          <tr>
-            <td style="color: var(--atl-light);">Roast Profile</td>
-            <td>{{ cs_level.name }} ({{ cs_level.layman }})</td>
-          </tr>
-          <tr>
-            <td style="color: var(--atl-light);">Extraction Method</td>
-            <td>{{ cs.brewing_method }}</td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="atl-step">
-        <span class="atl-step-tag">04 // Acquisition</span>
-        <div class="atl-form-row">
-          <label class="atl-form-label" for="atl-cs-size">Designate Bag Size</label>
-          <select class="atl-select" id="atl-cs-size">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ cs.price[sz.id] }}"
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} &mdash; ${{ cs.price[sz.id] }}
-              </option>
-            {% endfor %}
-          </select>
+          </table>
         </div>
 
-        <div class="atl-form-row" style="margin-top: 0.75rem;">
-          <label class="atl-form-label" for="atl-cs-grind">Grind Specification</label>
-          <select class="atl-select" id="atl-cs-grind">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
+        <div class="atl-step">
+          <span class="atl-step-tag">04 // Acquisition</span>
+          <div class="atl-form-row">
+            <label class="atl-form-label" for="atl-{{ r.slug }}-size">Designate Bag Size</label>
+            <select class="atl-select atl-size-select" id="atl-{{ r.slug }}-size" data-target-price="atl-{{ r.slug }}-price">
+              {% for sz in site.data.bag_sizes %}
+                <option value="{{ sz.id }}"
+                        data-reg="{{ r.price[sz.id] }}"
+                        {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                        {% if sz.id == '12oz' %} selected{% endif %}>
+                  {{ sz.label }} &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}{% else %}${{ r.price[sz.id] }}{% endif %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="atl-form-row" style="margin-top: 0.75rem;">
+            <label class="atl-form-label" for="atl-{{ r.slug }}-grind">Grind Specification</label>
+            <select class="atl-select" id="atl-{{ r.slug }}-grind">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="button" class="atl-btn" style="margin-top: 1rem;">Acquire Blend</button>
         </div>
 
-        <button type="button" class="atl-btn" style="margin-top: 1rem;">Acquire Blend</button>
+        <div class="atl-step" style="border-bottom: none;">
+          <span class="atl-step-tag">05 // Naturalist Note</span>
+          <p class="atl-body-p" style="font-size: 0.92rem;">{{ r.fun_fact }}</p>
+        </div>
       </div>
 
-      <div class="atl-step" style="border-bottom: none;">
-        <span class="atl-step-tag">05 // Naturalist Note</span>
-        <p class="atl-body-p" style="font-size: 0.92rem;">{{ cs.fun_fact }}</p>
+      <!-- Right: Sticky Artwork Stage -->
+      <div class="atl-stage-col">
+        <div class="atl-stage">
+          {% assign r_img = '/images/' | append: r.mascot_file %}
+          <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="atl-bird-render">
+          <span class="atl-stage-caption">Atelier Artwork &bull; {{ mascot_name }}</span>
+        </div>
       </div>
     </div>
-
-    <!-- Right: Sticky Artwork Stage -->
-    <div class="atl-stage-col">
-      <div class="atl-stage">
-        {% assign cs_img = '/images/' | append: cs.mascot_file %}
-        <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="atl-bird-render">
-        <span class="atl-stage-caption">Atelier Artwork &bull; Chimney Swift</span>
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
@@ -464,33 +380,26 @@ permalink: /roast-atelier/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
-    const ebSelect = document.getElementById('atl-eb-size');
-    const ebPrice = document.getElementById('atl-eb-price');
-    if (ebSelect && ebPrice) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
+    document.querySelectorAll('.atl-size-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const targetId = sel.getAttribute('data-target-price');
+        const priceDisplay = document.getElementById(targetId);
+        const opt = sel.options[sel.selectedIndex];
         const reg = opt.getAttribute('data-reg');
         const sale = opt.getAttribute('data-sale');
         if (sale) {
-          ebPrice.innerHTML = `<s>$${reg}</s> <span class="atl-sale-tag">$${sale}</span>`;
+          priceDisplay.innerHTML = `<s>$${reg}</s> <span class="atl-sale-tag">$${sale}</span>`;
         } else {
-          ebPrice.innerHTML = `$${reg}`;
+          priceDisplay.innerHTML = `$${reg}`;
         }
       });
-    }
-
-    const csSelect = document.getElementById('atl-cs-size');
-    const csPrice = document.getElementById('atl-cs-price');
-    if (csSelect && csPrice) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csPrice.innerHTML = `$${reg}`;
-      });
-    }
+    });
   })();
 </script>

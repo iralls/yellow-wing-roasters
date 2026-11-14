@@ -279,47 +279,61 @@ permalink: /shop-mono/
   </div>
 
   <!-- ── 3. Custom Roasts ── -->
-  <div class="mono-section-title">Custom Roastery</div>
+  <div class="mono-section-title">BYOB &bull; Custom Roastery</div>
   <div class="mono-grid">
     <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="mono-cell">
       <div class="mono-cell-top">
-        <span>Custom / Blend</span>
+        <span>BYOB / Blend</span>
         <span class="mono-cell-price">$32</span>
       </div>
       <div class="mono-cell-visual">
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend" class="mono-cell-img" loading="lazy" decoding="async">
       </div>
       <div class="mono-cell-bottom">
-        <h2 class="mono-cell-title">Build Your Own Blend</h2>
+        <h2 class="mono-cell-title">BYOB &mdash; Build Your Own Blend</h2>
         <p class="mono-cell-notes">3-bean formulated profile</p>
       </div>
     </a>
 
     <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="mono-cell">
       <div class="mono-cell-top">
-        <span>Custom / Sourced</span>
+        <span>BYOB / Sourced</span>
         <span class="mono-cell-price">Quote</span>
       </div>
       <div class="mono-cell-visual">
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans" class="mono-cell-img" loading="lazy" decoding="async">
       </div>
       <div class="mono-cell-bottom">
-        <h2 class="mono-cell-title">Bring Your Own Beans</h2>
+        <h2 class="mono-cell-title">BYOB &mdash; Bring Your Own Beans</h2>
         <p class="mono-cell-notes">Send unroasted green beans</p>
       </div>
     </a>
 
     <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="mono-cell">
       <div class="mono-cell-top">
-        <span>Custom / Profile</span>
+        <span>BYOB / Profile</span>
         <span class="mono-cell-price">Bean Cost</span>
       </div>
       <div class="mono-cell-visual">
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner" class="mono-cell-img" loading="lazy" decoding="async">
       </div>
       <div class="mono-cell-bottom">
-        <h2 class="mono-cell-title">Bank Your Own Burner</h2>
+        <h2 class="mono-cell-title">BYOB &mdash; Bank Your Own Burner</h2>
         <p class="mono-cell-notes">Target custom single-origin roast degree</p>
+      </div>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="mono-cell">
+      <div class="mono-cell-top">
+        <span>BYOB / Bootcamp</span>
+        <span class="mono-cell-price">$30 + $15/guest</span>
+      </div>
+      <div class="mono-cell-visual">
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp" class="mono-cell-img" loading="lazy" decoding="async">
+      </div>
+      <div class="mono-cell-bottom">
+        <h2 class="mono-cell-title">BYOB &mdash; Book Your Own Bootcamp</h2>
+        <p class="mono-cell-notes">Hands-on live roasting session</p>
       </div>
     </a>
   </div>

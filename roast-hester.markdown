@@ -7,11 +7,11 @@ permalink: /roast-hester/
 <style>
   /* ── Hester Squarespace Gallery Roast Page Prototype ── */
   :root {
-    --hst-bg: #f5f4f0;
-    --hst-card-bg: #eceae3;
+    --hst-bg: #fcfbfa;
+    --hst-card-bg: #f6f3ef;
     --hst-text: #1a1612;
     --hst-muted: #6f655a;
-    --hst-border: #dedad0;
+    --hst-border: #e8e4db;
     --hst-accent: #9c6d12;
     --hst-sale: #b45309;
   }
@@ -102,11 +102,6 @@ permalink: /roast-hester/
     max-height: 80%;
     object-fit: contain;
     filter: drop-shadow(0 14px 24px rgba(26, 22, 18, 0.08));
-    transition: transform 0.3s ease;
-  }
-
-  .hst-frame:hover .hst-mascot-img {
-    transform: scale(1.03);
   }
 
   /* ── Right Column: Info & Action ── */
@@ -302,242 +297,148 @@ permalink: /roast-hester/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="hst-wrap">
   <!-- ── Switcher ── -->
-  <nav class="hst-switcher" aria-label="Hester Preview Switcher">
-    <button type="button" class="hst-switcher-btn active" data-target="hst-cs">Chimney Sweep</button>
-    <button type="button" class="hst-switcher-btn" data-target="hst-eb">Early Bird</button>
+  <nav class="hst-switcher" aria-label="Preview Switcher">
+    {% for r in house_blends %}
+      <button type="button" class="hst-switcher-btn{% if forloop.first %} active{% endif %}" data-target="hst-{{ r.slug }}">{{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="hst-panel active" id="hst-cs">
-    <!-- Visual Frame -->
-    <div class="hst-frame">
-      <span class="hst-frame-tag">{{ cs_level.layman }} Roast</span>
-      {% assign cs_img = '/images/' | append: cs.mascot_file %}
-      <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="hst-mascot-img">
-    </div>
-
-    <!-- Info Column -->
-    <div class="hst-info">
-      <div>
-        <div class="hst-cat">Signature Espresso Blend</div>
-        <h1 class="hst-title">{{ cs.title }}</h1>
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="hst-panel{% if forloop.first %} active{% endif %}" id="hst-{{ r.slug }}">
+      <!-- Visual Frame -->
+      <div class="hst-frame">
+        <span class="hst-frame-tag">{{ r_level.layman }} Roast</span>
+        {% assign r_img = "/images/" | append: r.mascot_file %}
+        <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="hst-mascot-img">
       </div>
 
-      <div class="hst-price-row" id="hst-cs-price-display">
-        ${{ cs.price["12oz"] }}.00
-      </div>
-
-      <p class="hst-intro">{{ cs.description }}</p>
-
-      <form class="hst-form" onsubmit="return false;">
+      <!-- Info Column -->
+      <div class="hst-info">
         <div>
-          <label class="hst-label" for="hst-cs-size">Bag Size</label>
-          <select class="hst-select" id="hst-cs-size">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ cs.price[sz.id] }}"
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} &mdash; ${{ cs.price[sz.id] }}.00
-              </option>
-            {% endfor %}
-          </select>
+          <div class="hst-cat">{{ r.descriptor | capitalize }}</div>
+          <h1 class="hst-title">{{ r.title }}</h1>
         </div>
 
-        <div>
-          <label class="hst-label" for="hst-cs-grind">Grind</label>
-          <select class="hst-select" id="hst-cs-grind">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
+        <div class="hst-price-row" id="hst-{{ r.slug }}-price-display">
+          {% if r.temporary_price and r.temporary_price["12oz"] %}
+            <s>${{ r.price["12oz"] }}.00</s> <span class="hst-sale-price">${{ r.temporary_price["12oz"] }}.00</span>
+          {% else %}
+            ${{ r.price["12oz"] }}.00
+          {% endif %}
         </div>
 
-        <button type="submit" class="hst-btn">Add to Cart</button>
-      </form>
+        <p class="hst-intro">{{ r.description }}</p>
 
-      <!-- Drawers -->
-      <div class="hst-drawers">
-        <div class="hst-drawer open">
-          <button type="button" class="hst-drawer-head">Origins &amp; Components</button>
-          <div class="hst-drawer-body">
-            {% assign latest_cs = cs.history | first %}
-            <ul class="hst-component-list">
-              {% for c in latest_cs.components %}
-                <li>
-                  <span>{{ c.name }}</span>
-                  <strong>{{ c.ratio }}</strong>
-                </li>
+        <form class="hst-form" onsubmit="return false;">
+          <div>
+            <label class="hst-label" for="hst-{{ r.slug }}-size">Bag Size</label>
+            <select class="hst-select hst-size-select" id="hst-{{ r.slug }}-size" data-target-display="hst-{{ r.slug }}-price-display">
+              {% for sz in site.data.bag_sizes %}
+                <option value="{{ sz.id }}"
+                        data-reg="{{ r.price[sz.id] }}"
+                        {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                        {% if sz.id == "12oz" %} selected{% endif %}>
+                  {{ sz.label }} &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}.00{% else %}${{ r.price[sz.id] }}.00{% endif %}
+                </option>
               {% endfor %}
-            </ul>
+            </select>
           </div>
-        </div>
 
-        <div class="hst-drawer">
-          <button type="button" class="hst-drawer-head">Profile &amp; Tasting Notes</button>
-          <div class="hst-drawer-body">
-            <strong>Notes:</strong> {{ cs.tasting_notes }}<br>
-            <strong>Descriptor:</strong> {{ cs.descriptor | capitalize }}<br>
-            <strong>Brew Style:</strong> {{ cs.brewing_method }}
-          </div>
-        </div>
-
-        <div class="hst-drawer">
-          <button type="button" class="hst-drawer-head">Field Observation</button>
-          <div class="hst-drawer-body">
-            {{ cs.fun_fact }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="hst-panel" id="hst-eb">
-    <!-- Visual Frame -->
-    <div class="hst-frame">
-      <span class="hst-frame-tag">{{ eb_level.layman }} Roast</span>
-      {% assign eb_img = '/images/' | append: eb.mascot_file %}
-      <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="hst-mascot-img">
-    </div>
-
-    <!-- Info Column -->
-    <div class="hst-info">
-      <div>
-        <div class="hst-cat">Signature House Blend</div>
-        <h1 class="hst-title">{{ eb.title }}</h1>
-      </div>
-
-      <div class="hst-price-row" id="hst-eb-price-display">
-        {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-          <s>${{ eb.price["12oz"] }}.00</s> <span class="hst-sale-price">${{ eb.temporary_price["12oz"] }}.00</span>
-        {% else %}
-          ${{ eb.price["12oz"] }}.00
-        {% endif %}
-      </div>
-
-      <p class="hst-intro">{{ eb.description }}</p>
-
-      <form class="hst-form" onsubmit="return false;">
-        <div>
-          <label class="hst-label" for="hst-eb-size">Bag Size</label>
-          <select class="hst-select" id="hst-eb-size">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ eb.price[sz.id] }}"
-                      {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}.00{% else %}${{ eb.price[sz.id] }}.00{% endif %}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div>
-          <label class="hst-label" for="hst-eb-grind">Grind</label>
-          <select class="hst-select" id="hst-eb-grind">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="submit" class="hst-btn">Add to Cart</button>
-      </form>
-
-      <!-- Drawers -->
-      <div class="hst-drawers">
-        <div class="hst-drawer open">
-          <button type="button" class="hst-drawer-head">Origins &amp; Components</button>
-          <div class="hst-drawer-body">
-            {% assign latest_eb = eb.history | first %}
-            <ul class="hst-component-list">
-              {% for c in latest_eb.components %}
-                <li>
-                  <span>{{ c.name }}</span>
-                  <strong>{{ c.ratio }}</strong>
-                </li>
+          <div>
+            <label class="hst-label" for="hst-{{ r.slug }}-grind">Grind</label>
+            <select class="hst-select" id="hst-{{ r.slug }}-grind">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
               {% endfor %}
-            </ul>
+            </select>
           </div>
-        </div>
 
-        <div class="hst-drawer">
-          <button type="button" class="hst-drawer-head">Profile &amp; Tasting Notes</button>
-          <div class="hst-drawer-body">
-            <strong>Notes:</strong> {{ eb.tasting_notes }}<br>
-            <strong>Descriptor:</strong> {{ eb.descriptor | capitalize }}<br>
-            <strong>Brew Style:</strong> {{ eb.brewing_method }}
+          <button type="submit" class="hst-btn">Add to Cart</button>
+        </form>
+
+        <!-- Drawers -->
+        <div class="hst-drawers">
+          <div class="hst-drawer open">
+            <button type="button" class="hst-drawer-head">Origins &amp; Components</button>
+            <div class="hst-drawer-body">
+              <ul class="hst-component-list">
+                {% for c in latest_history.components %}
+                  <li>
+                    <span>{{ c.name }}</span>
+                    <strong>{{ c.ratio }}</strong>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <div class="hst-drawer">
-          <button type="button" class="hst-drawer-head">Field Observation</button>
-          <div class="hst-drawer-body">
-            {{ eb.fun_fact }}
+          <div class="hst-drawer">
+            <button type="button" class="hst-drawer-head">Profile &amp; Tasting Notes</button>
+            <div class="hst-drawer-body">
+              <strong>Notes:</strong> {{ r.tasting_notes }}<br>
+              <strong>Descriptor:</strong> {{ r.descriptor | capitalize }}<br>
+              <strong>Brew Style:</strong> {{ r.brewing_method }}
+            </div>
+          </div>
+
+          <div class="hst-drawer">
+            <button type="button" class="hst-drawer-head">Field Observation</button>
+            <div class="hst-drawer-body">
+              {{ r.fun_fact }}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
   (function() {
     // Switcher Logic
-    const switcherBtns = document.querySelectorAll('.hst-switcher-btn');
-    const panels = document.querySelectorAll('.hst-panel');
+    const switcherBtns = document.querySelectorAll(".hst-switcher-btn");
+    const panels = document.querySelectorAll(".hst-panel");
 
     switcherBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        switcherBtns.forEach(b => b.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
+      btn.addEventListener("click", () => {
+        switcherBtns.forEach(b => b.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
 
-        btn.classList.add('active');
-        const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        btn.classList.add("active");
+        const targetId = btn.getAttribute("data-target");
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) targetPanel.classList.add("active");
       });
     });
 
     // Dynamic Price Logic
-    const csSelect = document.getElementById('hst-cs-size');
-    const csDisplay = document.getElementById('hst-cs-price-display');
-    if (csSelect && csDisplay) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csDisplay.innerHTML = `$${reg}.00`;
-      });
-    }
-
-    const ebSelect = document.getElementById('hst-eb-size');
-    const ebDisplay = document.getElementById('hst-eb-price-display');
-    if (ebSelect && ebDisplay) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        const sale = opt.getAttribute('data-sale');
-        if (sale) {
-          ebDisplay.innerHTML = `<s>$${reg}.00</s> <span class="hst-sale-price">$${sale}.00</span>`;
-        } else {
-          ebDisplay.innerHTML = `$${reg}.00`;
-        }
-      });
-    }
+    document.querySelectorAll(".hst-size-select").forEach(select => {
+      const displayId = select.getAttribute("data-target-display");
+      const display = document.getElementById(displayId);
+      if (display) {
+        select.addEventListener("change", () => {
+          const opt = select.options[select.selectedIndex];
+          const reg = opt.getAttribute("data-reg");
+          const sale = opt.getAttribute("data-sale");
+          if (sale) {
+            display.innerHTML = `<s>$${reg}.00</s> <span class="hst-sale-price">$${sale}.00</span>`;
+          } else {
+            display.innerHTML = `$${reg}.00`;
+          }
+        });
+      }
+    });
 
     // Accordion Toggle
-    document.querySelectorAll('.hst-drawer-head').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.closest('.hst-drawer').classList.toggle('open');
+    document.querySelectorAll(".hst-drawer-head").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.closest(".hst-drawer").classList.toggle("open");
       });
     });
   })();

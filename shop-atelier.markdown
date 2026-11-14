@@ -344,45 +344,58 @@ permalink: /shop-atelier/
       </a>
 
       <!-- 3. Custom Roasts -->
-      <div class="atl-section-heading">03 &mdash; Custom Roastery</div>
+      <div class="atl-section-heading">03 &mdash; Custom Roastery (BYOB)</div>
 
       <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="atl-row"
          data-img="{{ '/images/build-a-bird-transparent.png' | relative_url }}"
-         data-title="Build Your Own Blend"
+         data-title="BYOB &mdash; Build Your Own Blend"
          data-sub="Custom 3-Bean Blend &bull; $32">
         <span class="atl-num">01</span>
         <div class="atl-row-main">
-          <h3 class="atl-name">Build Your Own Blend</h3>
+          <h3 class="atl-name">BYOB &mdash; Build Your Own Blend</h3>
           <span class="atl-desc">Formulate a blend of up to 3 beans with custom roast levels</span>
         </div>
-        <span class="atl-level">Custom</span>
+        <span class="atl-level">BYOB</span>
         <div class="atl-price">$32.00</div>
       </a>
 
       <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="atl-row"
          data-img="{{ '/images/binocular-birds-transparent.png' | relative_url }}"
-         data-title="Bring Your Own Beans"
+         data-title="BYOB &mdash; Bring Your Own Beans"
          data-sub="Custom Roasting Service">
         <span class="atl-num">02</span>
         <div class="atl-row-main">
-          <h3 class="atl-name">Bring Your Own Beans</h3>
+          <h3 class="atl-name">BYOB &mdash; Bring Your Own Beans</h3>
           <span class="atl-desc">Send us your raw unroasted coffee beans for custom profiling</span>
         </div>
-        <span class="atl-level">Custom</span>
+        <span class="atl-level">BYOB</span>
         <div class="atl-price">Quote</div>
       </a>
 
       <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="atl-row"
          data-img="{{ '/images/bird-on-spit-transparent.png' | relative_url }}"
-         data-title="Bank Your Own Burner"
+         data-title="BYOB &mdash; Bank Your Own Burner"
          data-sub="Single-Origin Profile">
         <span class="atl-num">03</span>
         <div class="atl-row-main">
-          <h3 class="atl-name">Bank Your Own Burner</h3>
+          <h3 class="atl-name">BYOB &mdash; Bank Your Own Burner</h3>
           <span class="atl-desc">Pick any single-origin bean and designate your target roast level</span>
         </div>
-        <span class="atl-level">Custom</span>
+        <span class="atl-level">BYOB</span>
         <div class="atl-price">Bean Cost</div>
+      </a>
+
+      <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="atl-row"
+         data-img="{{ '/images/teacher-transparent.png' | relative_url }}"
+         data-title="BYOB &mdash; Book Your Own Bootcamp"
+         data-sub="Roasting Bootcamp &bull; $30 + $15/guest">
+        <span class="atl-num">04</span>
+        <div class="atl-row-main">
+          <h3 class="atl-name">BYOB &mdash; Book Your Own Bootcamp</h3>
+          <span class="atl-desc">Hands-on personalized roasting session for up to 3 guests</span>
+        </div>
+        <span class="atl-level">BYOB</span>
+        <div class="atl-price">$30 + $15/guest</div>
       </a>
 
       <!-- 4. Pantry & Sweets -->

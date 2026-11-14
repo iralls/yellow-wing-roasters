@@ -290,8 +290,8 @@ permalink: /shop-specimen/
 
   <!-- ── 3. Custom Roastery Section ── -->
   <div class="specimen-section-header">
-    <h2 class="specimen-section-title">Custom Roastery</h2>
-    <span class="specimen-section-meta">3 Options</span>
+    <h2 class="specimen-section-title">BYOB &bull; Custom Roastery</h2>
+    <span class="specimen-section-meta">4 Options</span>
   </div>
 
   <div class="specimen-grid">
@@ -300,7 +300,7 @@ permalink: /shop-specimen/
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend" class="specimen-bird" loading="lazy" decoding="async">
       </div>
       <div class="specimen-meta">
-        <h3 class="specimen-name">Build Your Own Blend</h3>
+        <h3 class="specimen-name">BYOB &mdash; Build Your Own Blend</h3>
         <p class="specimen-level-price">Custom 3-Bean Blend &bull; <span class="specimen-price">$32</span></p>
         <p class="specimen-notes">Formulate and profile your personalized roast</p>
       </div>
@@ -311,7 +311,7 @@ permalink: /shop-specimen/
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans" class="specimen-bird" loading="lazy" decoding="async">
       </div>
       <div class="specimen-meta">
-        <h3 class="specimen-name">Bring Your Own Beans</h3>
+        <h3 class="specimen-name">BYOB &mdash; Bring Your Own Beans</h3>
         <p class="specimen-level-price">Custom Sourced &bull; <span class="specimen-price">Quote</span></p>
         <p class="specimen-notes">Send unroasted green lots to our roastery</p>
       </div>
@@ -322,9 +322,20 @@ permalink: /shop-specimen/
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner" class="specimen-bird" loading="lazy" decoding="async">
       </div>
       <div class="specimen-meta">
-        <h3 class="specimen-name">Bank Your Own Burner</h3>
+        <h3 class="specimen-name">BYOB &mdash; Bank Your Own Burner</h3>
         <p class="specimen-level-price">Custom Roast Profile &bull; <span class="specimen-price">Bean Cost</span></p>
         <p class="specimen-notes">Select any single origin and target roast level</p>
+      </div>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="specimen-item">
+      <div class="specimen-visual">
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp" class="specimen-bird" loading="lazy" decoding="async">
+      </div>
+      <div class="specimen-meta">
+        <h3 class="specimen-name">BYOB &mdash; Book Your Own Bootcamp</h3>
+        <p class="specimen-level-price">Roasting Bootcamp &bull; <span class="specimen-price">$30 + $15/guest</span></p>
+        <p class="specimen-notes">Hands-on personalized roasting session for up to 3 guests</p>
       </div>
     </a>
   </div>

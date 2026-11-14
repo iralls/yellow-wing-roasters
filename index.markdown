@@ -115,6 +115,6 @@ hide_footer: true
   </div>
   <p class="hero-description">Wake up with a chirp</p>
   <div class="hero-actions">
-    <a href="{{ '/shop/' | relative_url }}" class="hero-btn">Explore Coffee</a>
+    <a href="{{ '/shop-menu/' | relative_url }}" class="hero-btn">Explore Coffee</a>
   </div>
 </div>

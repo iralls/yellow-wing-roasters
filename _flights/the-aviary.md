@@ -1,5 +1,5 @@
 ---
-layout: detail-page
+layout: menu-item
 title: The Aviary
 slug: the-aviary
 category: flight
@@ -13,7 +13,7 @@ notes: "Four blends, one box"
 descriptor: "a sample pack of our most popular blends"
 ---
 
-<p class="roast-mv-body">Four blends, each individually packaged in its own 8oz bag — a great way to explore the full range before committing to a full bag.</p>
+<p class="hst-intro" style="margin-top: 1rem;">Four blends, each individually packaged in its own 8oz bag &mdash; a great way to explore the full range before committing to a full bag.</p>
 
 {% assign aviary_slugs = "early-bird,feather-soot,chimney-sweep,lil-sipper" | split: "," %}
 
@@ -22,36 +22,15 @@ descriptor: "a sample pack of our most popular blends"
     {% assign r = site.roasts | where: "slug", slug | first %}
     <li class="aviary-list-item">
       <a href="{{ r.permalink | default: r.url | relative_url }}" class="aviary-list-name">{{ r.card_title | default: r.title }}</a>
-      <span class="aviary-list-level" title="Roast Level: {{ r.roast_level }}/5">
-        {% include roast-dots.html roast=r class="roast-dots-sm" %}
-        <span class="aviary-list-level-text">{{ site.data.roast_levels[r.roast_level].layman }}</span>
+      <span class="aviary-list-level">
+        {{ site.data.roast_levels[r.roast_level].layman }} Roast
       </span>
       <span class="aviary-list-notes">{{ r.tasting_notes }}</span>
     </li>
   {% endfor %}
 </ul>
 
-
-<p class="roast-mv-body" style="font-size: 0.85rem; color: #8a7060; font-style: italic; margin-top: 1.25rem; margin-bottom: 2rem;">Brewing method varies by blend — click any roast for full profile and brew details.</p>
-
-<div class="roast-mv-center" style="margin-bottom:1rem;">
-  <label for="aviary-grind-select" class="roast-mv-meta-label">Grind</label>
-  <select id="aviary-grind-select" class="subscribe-select" data-label="Grind" style="min-width: 12rem;">
-    {% include grind-options.html %}
-  </select>
-</div>
-
-<div class="roast-mv-center" id="add-to-cart-wrap" style="text-align:center;">
-  <button class="sleek-buy-add-btn add-to-order-btn" id="aviary-add-btn" style="width: auto; min-width: 14rem;">Add to Cart</button>
-</div>
-
-<script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-<script>
-  initAviaryFlight({
-    price: {{ page.price }},
-    mascot: {{ page.mascot_file | jsonify }}
-  });
-</script>
+<p style="font-size: 0.88rem; color: var(--hst-muted); font-style: italic; margin-top: 0.5rem; margin-bottom: 1.5rem;">Brewing method varies by blend &mdash; click any roast for full profile and brew details.</p>
 
 <script type="application/ld+json">
 {

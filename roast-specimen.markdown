@@ -291,185 +291,116 @@ permalink: /roast-specimen/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="spc-wrap">
   <!-- ── Switcher ── -->
   <nav class="spc-switcher" aria-label="Specimen Switcher">
-    <button type="button" class="spc-switcher-btn active" data-target="spc-eb">Plate 01 &bull; Early Bird</button>
-    <button type="button" class="spc-switcher-btn" data-target="spc-cs">Plate 02 &bull; Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="spc-switcher-btn{% if forloop.first %} active{% endif %}" data-target="spc-{{ r.slug }}">Plate 0{{ forloop.index }} &bull; {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <article class="spc-panel active" id="spc-eb">
-    <header class="spc-plate-header">
-      <span class="spc-plate-num">Plate No. 01 &mdash; Naturalist Specimen</span>
-      <span class="spc-plate-org">Yellow Wing Roasters Collection</span>
-    </header>
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    {% case r.slug %}
+      {% when 'early-bird' %}
+        {% assign latin_tag = 'Turdus migratorius' %}
+        {% assign latin_sub = 'American Robin &bull; Pre-Dawn Chorus' %}
+      {% when 'feather-soot' %}
+        {% assign latin_tag = 'Serinus canaria' %}
+        {% assign latin_sub = 'Island Canary &bull; Deep Shaft Guardian' %}
+      {% when 'chimney-sweep' %}
+        {% assign latin_tag = 'Chaetura pelagica' %}
+        {% assign latin_sub = 'Chimney Swift &bull; Aerial Velocity' %}
+      {% when 'lil-sipper' %}
+        {% assign latin_tag = 'Archilochus colubris' %}
+        {% assign latin_sub = 'Ruby-throated Hummingbird &bull; Nectar Hover' %}
+    {% endcase %}
+    <article class="spc-panel{% if forloop.first %} active{% endif %}" id="spc-{{ r.slug }}">
+      <header class="spc-plate-header">
+        <span class="spc-plate-num">Plate No. 0{{ forloop.index }} &mdash; Naturalist Specimen</span>
+        <span class="spc-plate-org">Yellow Wing Roasters Collection</span>
+      </header>
 
-    <div class="spc-plate-grid">
-      <!-- Illustrated Plate -->
-      <div class="spc-plate-artwork">
-        {% assign eb_img = '/images/' | append: eb.mascot_file %}
-        <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="spc-bird-render">
-        <h2 class="spc-latin-tag">Turdus migratorius</h2>
-        <span class="spc-latin-sub">American Robin &bull; Pre-Dawn Chorus</span>
-      </div>
-
-      <!-- Specimen Content -->
-      <div class="spc-plate-content">
-        <div>
-          <span style="font-family: 'Figtree', sans-serif; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--spc-accent);">
-            {{ eb_level.layman }} Roast // Level {{ eb.roast_level }}
-          </span>
-          <h1 class="spc-title">{{ eb.title }}</h1>
+      <div class="spc-plate-grid">
+        <!-- Illustrated Plate -->
+        <div class="spc-plate-artwork">
+          {% assign r_img = '/images/' | append: r.mascot_file %}
+          <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="spc-bird-render">
+          <h2 class="spc-latin-tag">{{ latin_tag }}</h2>
+          <span class="spc-latin-sub">{{ latin_sub }}</span>
         </div>
 
-        <div class="spc-price-box" id="spc-eb-price">
-          {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-            <s>${{ eb.price["12oz"] }}</s> <span class="sale-ink">${{ eb.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ eb.price["12oz"] }}
-          {% endif %}
-        </div>
+        <!-- Specimen Content -->
+        <div class="spc-plate-content">
+          <div>
+            <span style="font-family: 'Figtree', sans-serif; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--spc-accent);">
+              {{ r_level.layman }} Roast // Level {{ r.roast_level }}
+            </span>
+            <h1 class="spc-title">{{ r.title }}</h1>
+          </div>
 
-        <blockquote class="spc-notes-quote">&ldquo;{{ eb.tasting_notes | capitalize }}.&rdquo;</blockquote>
+          <div class="spc-price-box" id="spc-{{ r.slug }}-price">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ r.price["12oz"] }}</s> <span class="sale-ink">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ r.price["12oz"] }}
+            {% endif %}
+          </div>
 
-        <p class="spc-description">{{ eb.description }}</p>
+          <blockquote class="spc-notes-quote">&ldquo;{{ r.tasting_notes | capitalize }}.&rdquo;</blockquote>
 
-        <!-- Composition Specimen Data -->
-        <div class="spc-data-box">
-          <div class="spc-data-head">Blend Lot Formulation</div>
-          <table class="spc-data-table">
-            {% assign latest_eb = eb.history | first %}
-            {% for c in latest_eb.components %}
+          <p class="spc-description">{{ r.description }}</p>
+
+          <!-- Composition Specimen Data -->
+          <div class="spc-data-box">
+            <div class="spc-data-head">Blend Lot Formulation</div>
+            <table class="spc-data-table">
+              {% for c in latest_history.components %}
+                <tr>
+                  <td>{{ c.name }}</td>
+                  <td>{{ c.ratio }}</td>
+                </tr>
+              {% endfor %}
               <tr>
-                <td>{{ c.name }}</td>
-                <td>{{ c.ratio }}</td>
+                <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">Recommended Extraction</td>
+                <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">{{ r.brewing_method }}</td>
               </tr>
-            {% endfor %}
-            <tr>
-              <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">Recommended Extraction</td>
-              <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">{{ eb.brewing_method }}</td>
-            </tr>
-          </table>
+            </table>
+          </div>
+
+          <!-- Purchase Controls -->
+          <div class="spc-order-box">
+            <select class="spc-select spc-size-select" id="spc-{{ r.slug }}-size-select" data-target-price="spc-{{ r.slug }}-price">
+              {% for sz in site.data.bag_sizes %}
+                <option value="{{ sz.id }}"
+                        data-reg="{{ r.price[sz.id] }}"
+                        {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                        {% if sz.id == '12oz' %} selected{% endif %}>
+                  {{ sz.label }} Weight &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}{% else %}${{ r.price[sz.id] }}{% endif %}
+                </option>
+              {% endfor %}
+            </select>
+
+            <select class="spc-select">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }} Grind</option>
+              {% endfor %}
+            </select>
+
+            <button type="button" class="spc-atc-btn">Collect Specimen Bag</button>
+          </div>
+
+          <!-- Field Fact -->
+          <p style="font-family: 'Figtree', sans-serif; font-size: 0.86rem; color: var(--spc-muted); line-height: 1.5; margin: 0; border-top: 1px solid var(--spc-border); padding-top: 1rem;">
+            <em>Naturalist Observation:</em> {{ r.fun_fact }}
+          </p>
         </div>
-
-        <!-- Purchase Controls -->
-        <div class="spc-order-box">
-          <select class="spc-select" id="spc-eb-size-select">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ eb.price[sz.id] }}"
-                      {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} Weight &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}{% else %}${{ eb.price[sz.id] }}{% endif %}
-              </option>
-            {% endfor %}
-          </select>
-
-          <select class="spc-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }} Grind</option>
-            {% endfor %}
-          </select>
-
-          <button type="button" class="spc-atc-btn">Collect Specimen Bag</button>
-        </div>
-
-        <!-- Field Fact -->
-        <p style="font-family: 'Figtree', sans-serif; font-size: 0.86rem; color: var(--spc-muted); line-height: 1.5; margin: 0; border-top: 1px solid var(--spc-border); padding-top: 1rem;">
-          <em>Naturalist Observation:</em> {{ eb.fun_fact }}
-        </p>
       </div>
-    </div>
-  </article>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <article class="spc-panel" id="spc-cs">
-    <header class="spc-plate-header">
-      <span class="spc-plate-num">Plate No. 02 &mdash; Naturalist Specimen</span>
-      <span class="spc-plate-org">Yellow Wing Roasters Collection</span>
-    </header>
-
-    <div class="spc-plate-grid">
-      <!-- Illustrated Plate -->
-      <div class="spc-plate-artwork">
-        {% assign cs_img = '/images/' | append: cs.mascot_file %}
-        <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="spc-bird-render">
-        <h2 class="spc-latin-tag">Chaetura pelagica</h2>
-        <span class="spc-latin-sub">Chimney Swift &bull; Aerial Velocity</span>
-      </div>
-
-      <!-- Specimen Content -->
-      <div class="spc-plate-content">
-        <div>
-          <span style="font-family: 'Figtree', sans-serif; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--spc-accent);">
-            {{ cs_level.layman }} Roast // Level {{ cs.roast_level }}
-          </span>
-          <h1 class="spc-title">{{ cs.title }}</h1>
-        </div>
-
-        <div class="spc-price-box" id="spc-cs-price">
-          ${{ cs.price["12oz"] }}
-        </div>
-
-        <blockquote class="spc-notes-quote">&ldquo;{{ cs.tasting_notes | capitalize }}.&rdquo;</blockquote>
-
-        <p class="spc-description">{{ cs.description }}</p>
-
-        <!-- Composition Specimen Data -->
-        <div class="spc-data-box">
-          <div class="spc-data-head">Blend Lot Formulation</div>
-          <table class="spc-data-table">
-            {% assign latest_cs = cs.history | first %}
-            {% for c in latest_cs.components %}
-              <tr>
-                <td>{{ c.name }}</td>
-                <td>{{ c.ratio }}</td>
-              </tr>
-            {% endfor %}
-            <tr>
-              <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">Recommended Extraction</td>
-              <td style="color: var(--spc-light); font-size: 0.8rem; padding-top: 0.5rem;">{{ cs.brewing_method }}</td>
-            </tr>
-          </table>
-        </div>
-
-        <!-- Purchase Controls -->
-        <div class="spc-order-box">
-          <select class="spc-select" id="spc-cs-size-select">
-            {% for sz in site.data.bag_sizes %}
-              <option value="{{ sz.id }}"
-                      data-reg="{{ cs.price[sz.id] }}"
-                      {% if sz.id == '12oz' %} selected{% endif %}>
-                {{ sz.label }} Weight &mdash; ${{ cs.price[sz.id] }}
-              </option>
-            {% endfor %}
-          </select>
-
-          <select class="spc-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }} Grind</option>
-            {% endfor %}
-          </select>
-
-          <button type="button" class="spc-atc-btn">Collect Specimen Bag</button>
-        </div>
-
-        <!-- Field Fact -->
-        <p style="font-family: 'Figtree', sans-serif; font-size: 0.86rem; color: var(--spc-muted); line-height: 1.5; margin: 0; border-top: 1px solid var(--spc-border); padding-top: 1rem;">
-          <em>Naturalist Observation:</em> {{ cs.fun_fact }}
-        </p>
-      </div>
-    </div>
-  </article>
+    </article>
+  {% endfor %}
 </div>
 
 <script>
@@ -485,34 +416,27 @@ permalink: /roast-specimen/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
     // Dynamic Price Logic
-    const ebSelect = document.getElementById('spc-eb-size-select');
-    const ebPrice = document.getElementById('spc-eb-price');
-    if (ebSelect && ebPrice) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
+    document.querySelectorAll('.spc-size-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const targetId = sel.getAttribute('data-target-price');
+        const priceBox = document.getElementById(targetId);
+        const opt = sel.options[sel.selectedIndex];
         const reg = opt.getAttribute('data-reg');
         const sale = opt.getAttribute('data-sale');
         if (sale) {
-          ebPrice.innerHTML = `<s>$${reg}</s> <span class="sale-ink">$${sale}</span>`;
+          priceBox.innerHTML = `<s>$${reg}</s> <span class="sale-ink">$${sale}</span>`;
         } else {
-          ebPrice.innerHTML = `$${reg}`;
+          priceBox.innerHTML = `$${reg}`;
         }
       });
-    }
-
-    const csSelect = document.getElementById('spc-cs-size-select');
-    const csPrice = document.getElementById('spc-cs-price');
-    if (csSelect && csPrice) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csPrice.innerHTML = `$${reg}`;
-      });
-    }
+    });
   })();
 </script>

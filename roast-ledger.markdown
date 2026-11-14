@@ -295,229 +295,124 @@ permalink: /roast-ledger/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="mono-wrap">
   <!-- ── Switcher ── -->
   <nav class="mono-switcher" aria-label="Ledger Switcher">
-    <button type="button" class="mono-switch-btn active" data-target="mono-eb">LOT 01 // Early Bird</button>
-    <button type="button" class="mono-switch-btn" data-target="mono-cs">LOT 02 // Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="mono-switch-btn{% if forloop.first %} active{% endif %}" data-target="mono-{{ r.slug }}">LOT 0{{ forloop.index }} // {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <section class="mono-panel active" id="mono-eb">
-    <!-- Top Technical Banner -->
-    <div class="mono-top-banner">
-      <div class="mono-meta-cell">
-        <span>Classification</span>
-        Signature Blend
-      </div>
-      <div class="mono-meta-cell">
-        <span>Roast Profile</span>
-        {{ eb_level.name }}
-      </div>
-      <div class="mono-meta-cell">
-        <span>Extraction Target</span>
-        Pour-over / Espresso
-      </div>
-      <div class="mono-meta-cell">
-        <span>Status</span>
-        Active Production
-      </div>
-    </div>
-
-    <!-- Main Grid -->
-    <div class="mono-main-grid">
-      <!-- Left Column -->
-      <div class="mono-left-col">
-        <div class="mono-artwork-frame">
-          {% assign eb_img = '/images/' | append: eb.mascot_file %}
-          <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="mono-bird-img">
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <section class="mono-panel{% if forloop.first %} active{% endif %}" id="mono-{{ r.slug }}">
+      <!-- Top Technical Banner -->
+      <div class="mono-top-banner">
+        <div class="mono-meta-cell">
+          <span>Classification</span>
+          House Blend
         </div>
+        <div class="mono-meta-cell">
+          <span>Roast Profile</span>
+          {{ r_level.name }}
+        </div>
+        <div class="mono-meta-cell">
+          <span>Extraction Target</span>
+          {{ r.brewing_method }}
+        </div>
+        <div class="mono-meta-cell">
+          <span>Status</span>
+          {% if r.status == 'mid_molt' %}Mid Molt{% elsif r.best_seller %}Best Seller{% else %}Active Production{% endif %}
+        </div>
+      </div>
 
-        <div class="mono-specs-table">
-          <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
-            [ Component Lot Composition ]
+      <!-- Main Grid -->
+      <div class="mono-main-grid">
+        <!-- Left Column -->
+        <div class="mono-left-col">
+          <div class="mono-artwork-frame">
+            {% assign r_img = '/images/' | append: r.mascot_file %}
+            <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="mono-bird-img">
           </div>
-          {% assign latest_eb = eb.history | first %}
-          {% for c in latest_eb.components %}
-            <div class="mono-spec-item">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
+
+          <div class="mono-specs-table">
+            <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
+              [ Component Lot Composition ]
             </div>
-          {% endfor %}
-          <div class="mono-spec-item">
-            <span>Primary Origins</span>
-            <strong>{{ eb.origins | join: " / " }}</strong>
-          </div>
-          <div class="mono-spec-item">
-            <span>Sensory Descriptors</span>
-            <strong>{{ eb.descriptor | capitalize }}</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="mono-right-col">
-        <div>
-          <span class="mono-lot-id">ROAST RECORD // 001</span>
-          <h1 class="mono-title">{{ eb.title }}</h1>
-        </div>
-
-        <div class="mono-price-display" id="mono-eb-price">
-          {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-            <s>${{ eb.price["12oz"] }}</s> <span class="mono-sale-val">${{ eb.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ eb.price["12oz"] }}
-          {% endif %}
-        </div>
-
-        <p class="mono-notes-callout">
-          <strong>Tasting Notes:</strong> {{ eb.tasting_notes }}<br>
-          {{ eb.description }}
-        </p>
-
-        <!-- Size Matrix Buttons -->
-        <div class="mono-size-matrix">
-          <span class="mono-matrix-label">Select Volume (Weight)</span>
-          <div class="mono-matrix-grid" id="mono-eb-sizes">
-            {% for sz in site.data.bag_sizes %}
-              <button type="button" class="mono-matrix-btn{% if sz.id == '12oz' %} active{% endif %}"
-                      data-size="{{ sz.id }}"
-                      data-reg="{{ eb.price[sz.id] }}"
-                      {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}>
-                {{ sz.id }}
-              </button>
+            {% for c in latest_history.components %}
+              <div class="mono-spec-item">
+                <span>{{ c.name }}</span>
+                <strong>{{ c.ratio }}</strong>
+              </div>
             {% endfor %}
-          </div>
-        </div>
-
-        <!-- Grind Select -->
-        <div>
-          <span class="mono-matrix-label" style="display: block; margin-bottom: 0.4rem;">Designate Grind</span>
-          <select class="mono-grind-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="button" class="mono-order-btn">Commit to Cart [12oz]</button>
-
-        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.78rem; color: var(--ldg-light); line-height: 1.5; border-top: 1px solid var(--ldg-line); padding-top: 1rem;">
-          OBSERVATION: {{ eb.fun_fact }}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <section class="mono-panel" id="mono-cs">
-    <!-- Top Technical Banner -->
-    <div class="mono-top-banner">
-      <div class="mono-meta-cell">
-        <span>Classification</span>
-        Espresso Blend
-      </div>
-      <div class="mono-meta-cell">
-        <span>Roast Profile</span>
-        {{ cs_level.name }}
-      </div>
-      <div class="mono-meta-cell">
-        <span>Extraction Target</span>
-        Espresso / Moka
-      </div>
-      <div class="mono-meta-cell">
-        <span>Status</span>
-        Active Production
-      </div>
-    </div>
-
-    <!-- Main Grid -->
-    <div class="mono-main-grid">
-      <!-- Left Column -->
-      <div class="mono-left-col">
-        <div class="mono-artwork-frame">
-          {% assign cs_img = '/images/' | append: cs.mascot_file %}
-          <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="mono-bird-img">
-        </div>
-
-        <div class="mono-specs-table">
-          <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
-            [ Component Lot Composition ]
-          </div>
-          {% assign latest_cs = cs.history | first %}
-          {% for c in latest_cs.components %}
             <div class="mono-spec-item">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
+              <span>Primary Origins</span>
+              <strong>{{ r.origins | join: " / " }}</strong>
             </div>
-          {% endfor %}
-          <div class="mono-spec-item">
-            <span>Primary Origins</span>
-            <strong>{{ cs.origins | join: " / " }}</strong>
+            <div class="mono-spec-item">
+              <span>Sensory Descriptors</span>
+              <strong>{{ r.descriptor | capitalize }}</strong>
+            </div>
           </div>
-          <div class="mono-spec-item">
-            <span>Sensory Descriptors</span>
-            <strong>{{ cs.descriptor | capitalize }}</strong>
+        </div>
+
+        <!-- Right Column -->
+        <div class="mono-right-col">
+          <div>
+            <span class="mono-lot-id">ROAST RECORD // 00{{ forloop.index }}</span>
+            <h1 class="mono-title">{{ r.title }}</h1>
+          </div>
+
+          <div class="mono-price-display" id="mono-{{ r.slug }}-price">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ r.price["12oz"] }}</s> <span class="mono-sale-val">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ r.price["12oz"] }}
+            {% endif %}
+          </div>
+
+          <p class="mono-notes-callout">
+            <strong>Tasting Notes:</strong> {{ r.tasting_notes }}<br>
+            {{ r.description }}
+          </p>
+
+          <!-- Size Matrix Buttons -->
+          <div class="mono-size-matrix">
+            <span class="mono-matrix-label">Select Volume (Weight)</span>
+            <div class="mono-matrix-grid" id="mono-{{ r.slug }}-sizes">
+              {% for sz in site.data.bag_sizes %}
+                <button type="button" class="mono-matrix-btn{% if sz.id == '12oz' %} active{% endif %}"
+                        data-size="{{ sz.id }}"
+                        data-reg="{{ r.price[sz.id] }}"
+                        {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}>
+                  {{ sz.id }}
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Grind Select -->
+          <div>
+            <span class="mono-matrix-label" style="display: block; margin-bottom: 0.4rem;">Designate Grind</span>
+            <select class="mono-grind-select">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="button" class="mono-order-btn">Commit to Cart [12oz]</button>
+
+          <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.78rem; color: var(--ldg-light); line-height: 1.5; border-top: 1px solid var(--ldg-line); padding-top: 1rem;">
+            OBSERVATION: {{ r.fun_fact }}
           </div>
         </div>
       </div>
-
-      <!-- Right Column -->
-      <div class="mono-right-col">
-        <div>
-          <span class="mono-lot-id">ROAST RECORD // 002</span>
-          <h1 class="mono-title">{{ cs.title }}</h1>
-        </div>
-
-        <div class="mono-price-display" id="mono-cs-price">
-          ${{ cs.price["12oz"] }}
-        </div>
-
-        <p class="mono-notes-callout">
-          <strong>Tasting Notes:</strong> {{ cs.tasting_notes }}<br>
-          {{ cs.description }}
-        </p>
-
-        <!-- Size Matrix Buttons -->
-        <div class="mono-size-matrix">
-          <span class="mono-matrix-label">Select Volume (Weight)</span>
-          <div class="mono-matrix-grid" id="mono-cs-sizes">
-            {% for sz in site.data.bag_sizes %}
-              <button type="button" class="mono-matrix-btn{% if sz.id == '12oz' %} active{% endif %}"
-                      data-size="{{ sz.id }}"
-                      data-reg="{{ cs.price[sz.id] }}">
-                {{ sz.id }}
-              </button>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Grind Select -->
-        <div>
-          <span class="mono-matrix-label" style="display: block; margin-bottom: 0.4rem;">Designate Grind</span>
-          <select class="mono-grind-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="button" class="mono-order-btn">Commit to Cart [12oz]</button>
-
-        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.78rem; color: var(--ldg-light); line-height: 1.5; border-top: 1px solid var(--ldg-line); padding-top: 1rem;">
-          OBSERVATION: {{ cs.fun_fact }}
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+  {% endfor %}
 </div>
 
 <script>
@@ -533,22 +428,25 @@ permalink: /roast-ledger/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
     // Matrix Size Buttons Logic
-    function setupMatrix(gridId, priceId) {
-      const grid = document.getElementById(gridId);
-      const priceDisplay = document.getElementById(priceId);
-      if (!grid || !priceDisplay) return;
-
+    document.querySelectorAll('.mono-matrix-grid').forEach(grid => {
+      const panel = grid.closest('.mono-panel');
+      const priceDisplay = panel.querySelector('.mono-price-display');
+      const atcBtn = panel.querySelector('.mono-order-btn');
       const btns = grid.querySelectorAll('.mono-matrix-btn');
       btns.forEach(btn => {
         btn.addEventListener('click', () => {
           btns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
 
+          const size = btn.getAttribute('data-size');
           const reg = btn.getAttribute('data-reg');
           const sale = btn.getAttribute('data-sale');
           if (sale) {
@@ -556,11 +454,11 @@ permalink: /roast-ledger/
           } else {
             priceDisplay.innerHTML = `$${reg}`;
           }
+          if (atcBtn) {
+            atcBtn.textContent = `Commit to Cart [${size}]`;
+          }
         });
       });
-    }
-
-    setupMatrix('mono-eb-sizes', 'mono-eb-price');
-    setupMatrix('mono-cs-sizes', 'mono-cs-price');
+    });
   })();
 </script>

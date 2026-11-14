@@ -312,8 +312,8 @@ permalink: /shop-parlor/
 
   <!-- ── Custom Roastery Section ── -->
   <div class="parlor-section-header" id="custom">
-    <h2 class="parlor-section-title">Custom Roastery</h2>
-    <span class="parlor-section-count">3 options</span>
+    <h2 class="parlor-section-title">BYOB &bull; Custom Roastery</h2>
+    <span class="parlor-section-count">4 options</span>
   </div>
 
   <div class="parlor-grid">
@@ -322,8 +322,8 @@ permalink: /shop-parlor/
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend mascot" class="parlor-item-image" loading="lazy" decoding="async">
       </div>
       <div class="parlor-item-meta">
-        <span class="parlor-item-eyebrow">Custom Blend</span>
-        <h3 class="parlor-item-title">Build Your Own Blend</h3>
+        <span class="parlor-item-eyebrow">BYOB &bull; Custom Blend</span>
+        <h3 class="parlor-item-title">BYOB &mdash; Build Your Own Blend</h3>
         <p class="parlor-item-descriptor">Select up to three green coffees and customize roast levels for your personal blend.</p>
         <p class="parlor-item-price">$32.00</p>
       </div>
@@ -334,8 +334,8 @@ permalink: /shop-parlor/
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans mascot" class="parlor-item-image" loading="lazy" decoding="async">
       </div>
       <div class="parlor-item-meta">
-        <span class="parlor-item-eyebrow">Custom Sourced</span>
-        <h3 class="parlor-item-title">Bring Your Own Beans</h3>
+        <span class="parlor-item-eyebrow">BYOB &bull; Custom Sourced</span>
+        <h3 class="parlor-item-title">BYOB &mdash; Bring Your Own Beans</h3>
         <p class="parlor-item-descriptor">Send us your green unroasted coffee and we will roast it to perfection.</p>
         <p class="parlor-item-price">Custom Quote</p>
       </div>
@@ -346,10 +346,22 @@ permalink: /shop-parlor/
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner mascot" class="parlor-item-image" loading="lazy" decoding="async">
       </div>
       <div class="parlor-item-meta">
-        <span class="parlor-item-eyebrow">Custom Profile</span>
-        <h3 class="parlor-item-title">Bank Your Own Burner</h3>
+        <span class="parlor-item-eyebrow">BYOB &bull; Custom Profile</span>
+        <h3 class="parlor-item-title">BYOB &mdash; Bank Your Own Burner</h3>
         <p class="parlor-item-descriptor">Choose any single-origin bean in our catalog and pick your target roast degree.</p>
         <p class="parlor-item-price">Cost of Bean</p>
+      </div>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="parlor-item">
+      <div class="parlor-item-image-wrap">
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp mascot" class="parlor-item-image" loading="lazy" decoding="async">
+      </div>
+      <div class="parlor-item-meta">
+        <span class="parlor-item-eyebrow">BYOB &bull; Roasting Bootcamp</span>
+        <h3 class="parlor-item-title">BYOB &mdash; Book Your Own Bootcamp</h3>
+        <p class="parlor-item-descriptor">Step behind the roaster yourself. Pick any single origin, bring up to three guests, and roast live with us.</p>
+        <p class="parlor-item-price">$30 + $15/guest</p>
       </div>
     </a>
   </div>

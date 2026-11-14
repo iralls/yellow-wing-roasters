@@ -1,97 +1,207 @@
 ---
-layout: detail-page
+layout: menu-item
 title: Peck Your Own
 slug: peck-your-own
 category: flight
 order: 2
 permalink: /flights/peck-your-own/
+price: 40
 price_per_bag: 10
 min_bags: 4
+no_order: true
 mascot_file: peck-your-own-transparent.png
 mascot_alt: "Peck Your Own"
-intro: "Pick at least 4 of our available roasts — each one comes as an 8oz bag."
-descriptor: "choose four or more roasts to sample"
+intro: "Build your own custom sampler flight: pick any 4 or more of our fresh coffees in 8oz bags ($10/bag)."
+descriptor: "Sample Flight"
 ---
 
-{% assign default_min = page.min_bags %}
-{% assign default_price = default_min | times: page.price_per_bag %}
+{% assign all_roasts = site.roasts | sort: "order" %}
+{% assign active_roasts = all_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
 
-<div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 1.5rem auto 0;">
-  <!-- Top Controls & Action Bar -->
-  <div class="pyo-controls-bar">
-    <div class="pyo-controls-status">
-      <div class="pyo-price-wrap">
-        <span class="pyo-price-label">Flight Total</span>
-        <span class="pyo-price-val" id="pyo-price">${{ default_price }}</span>
-      </div>
-      <div class="pyo-status-divider" aria-hidden="true"></div>
-      <div class="pyo-count-wrap">
-        <span class="pyo-count-text" id="pyo-count">Select at least {{ default_min }} roasts</span>
-        <span class="pyo-count-sub" id="pyo-sub">{{ default_min }} &times; 8oz bags minimum (${{ page.price_per_bag }}/bag)</span>
-      </div>
+<form class="hst-form" id="pyo-form" onsubmit="return false;">
+  <!-- Roast Selector Dropdown -->
+  <div>
+    <label class="hst-label" for="pyo-roast-select">Select a Roast to Add</label>
+    <select id="pyo-roast-select" class="hst-select">
+      <option value="" disabled selected>-- Choose a roast to add to your flight --</option>
+      {% for r in active_roasts %}
+        {% assign lvl = site.data.roast_levels[r.roast_level] %}
+        <option value="{{ r.title | escape }}" data-slug="{{ r.slug }}" data-level="{{ lvl.specialty }} ({{ lvl.layman }})" data-cat="{{ r.category | capitalize }}">
+          {{ r.title }} &mdash; {{ lvl.specialty }} ({{ lvl.layman }})
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Appended Chosen Roasts List -->
+  <div style="margin-top: 0.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+      <label class="hst-label" style="margin: 0;">Selected Roasts in Flight</label>
+      <span id="pyo-count-indicator" class="pyo-status-badge">0 of 4 minimum selected</span>
     </div>
+    <ul id="pyo-chosen-list" class="pyo-chosen-list">
+      <li class="pyo-empty-placeholder" id="pyo-empty-msg">Choose a roast above to start building your sampler.</li>
+    </ul>
+  </div>
 
-    <div class="pyo-controls-actions">
-      <div class="pyo-grind-field">
-        <label for="pyo-grind-select" class="roast-mv-meta-label">Grind</label>
-        <select id="pyo-grind-select" class="subscribe-select" data-label="Grind">
-          {% include grind-options.html %}
-        </select>
-      </div>
-      <button type="button" class="sleek-buy-add-btn add-to-order-btn add-to-order-btn--disabled" id="pyo-add" disabled>Select {{ default_min }} more &mdash; ${{ default_price }}</button>
+  <!-- Grind Style -->
+  <div>
+    <label class="hst-label" for="pyo-grind-select">Grind Level</label>
+    <select id="pyo-grind-select" class="hst-select">
+      {% for g in site.data.grind_levels %}
+        <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <button type="submit" class="hst-btn" id="pyo-add-btn" disabled>Add to Cart</button>
+</form>
+
+<div class="hst-drawers" style="margin-top: 1.5rem;">
+  <div class="hst-drawer open">
+    <button type="button" class="hst-drawer-head">Flight Details &amp; Pricing</button>
+    <div class="hst-drawer-body">
+      <strong>Minimum Order:</strong> 4 coffees minimum ($40 flight total)<br>
+      <strong>Bag Size:</strong> 8oz individual sampler bag per coffee<br>
+      <strong>Additional Bags:</strong> $10 for each additional 8oz bag beyond 4<br>
+      <strong>Selection:</strong> Pick any combination of our signature blends and single origins
     </div>
   </div>
 
-  <!-- Cellar List Picker -->
-  <div class="min-cellar-list pyo-cellar-list" id="pyo-picker">
-    {% assign roasts = site.roasts | sort: "order" %}
-    {% for r in roasts %}
-      {% assign s_meta = site.data.statuses[r.status] %}
-      {% if s_meta == nil or s_meta.orderable != false %}
-        {% assign r_url = r.permalink | default: r.url %}
-        <div class="min-cellar-item pyo-option"
-             role="checkbox"
-             aria-checked="false"
-             tabindex="0"
-             data-category="{{ r.category }}"
-             data-roast-level="{{ r.roast_level }}"
-             data-title="{{ r.title | escape }}"
-             data-notes="{{ r.tasting_notes | escape }}"
-             data-slug="{{ r.slug }}">
-          <span class="pyo-check-indicator" aria-hidden="true">
-            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="pyo-check-icon">
-              <path d="M11.5 3.5L5.5 9.5L2.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <div class="min-cellar-info">
-            <span class="min-cellar-name">{{ r.card_title | default: r.title }}</span>
-            <span class="min-cellar-sub">{{ r.category }} &middot; {{ r.descriptor | default: r.subtitle }}</span>
-          </div>
-          <div class="min-cellar-level" title="Roast Level: {{ r.roast_level }}/5">
-            {% include roast-dots.html roast=r class="roast-dots-sm" %}
-            <span class="min-cellar-level-text">{{ site.data.roast_levels[r.roast_level].layman }}</span>
-          </div>
-          <span class="min-cellar-origin">
-            {% if r.origins %}
-              {{ r.origins | join: ", " }}
-            {% elsif r.category == 'single origin' %}
-              {{ r.title | split: " " | first }}
-            {% endif %}
-          </span>
-          <span class="min-cellar-notes">{{ r.tasting_notes }}</span>
-        </div>
-      {% endif %}
-    {% endfor %}
+  <div class="hst-drawer">
+    <button type="button" class="hst-drawer-head">Freshness &amp; Roasting</button>
+    <div class="hst-drawer-body">
+      Every bag in your flight is roasted to order in small batches, degassed, and sealed fresh with its roast profile.
+    </div>
   </div>
 </div>
 
-<script src="{{ '/js/flights.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
-  initPYOFlight({
-    pricePerBag: {{ page.price_per_bag }},
-    minBags: {{ page.min_bags }},
-    mascot: {{ page.mascot_file | jsonify }}
-  });
+  (function() {
+    const minBags = {{ page.min_bags }};
+    const pricePerBag = {{ page.price_per_bag }};
+    const roastSelect = document.getElementById("pyo-roast-select");
+    const chosenList = document.getElementById("pyo-chosen-list");
+    const countIndicator = document.getElementById("pyo-count-indicator");
+    const emptyMsg = document.getElementById("pyo-empty-msg");
+    const priceDisplay = document.getElementById("product-price-display");
+    const grindSelect = document.getElementById("pyo-grind-select");
+    const addBtn = document.getElementById("pyo-add-btn");
+    const form = document.getElementById("pyo-form");
+
+    let chosenRoasts = [];
+
+    function updateUI() {
+      const count = chosenRoasts.length;
+      const total = Math.max(minBags, count) * pricePerBag;
+
+      priceDisplay.textContent = "$" + total + ".00";
+
+      if (count === 0) {
+        countIndicator.textContent = "0 of " + minBags + " minimum selected";
+        countIndicator.classList.remove("met");
+        addBtn.disabled = true;
+      } else if (count < minBags) {
+        const remaining = minBags - count;
+        countIndicator.textContent = count + " of " + minBags + " selected (" + remaining + " more needed)";
+        countIndicator.classList.remove("met");
+        addBtn.disabled = true;
+      } else {
+        countIndicator.textContent = "✓ " + count + " roasts selected ($" + total + ".00)";
+        countIndicator.classList.add("met");
+        addBtn.disabled = false;
+      }
+
+      // Render list items
+      chosenList.innerHTML = "";
+      if (count === 0) {
+        chosenList.appendChild(emptyMsg);
+      } else {
+        chosenRoasts.forEach((r, idx) => {
+          const li = document.createElement("li");
+          li.className = "pyo-chosen-item";
+
+          const info = document.createElement("div");
+          info.className = "pyo-chosen-info";
+
+          const name = document.createElement("span");
+          name.className = "pyo-chosen-name";
+          name.textContent = r.title;
+          info.appendChild(name);
+
+          const meta = document.createElement("span");
+          meta.className = "pyo-chosen-meta";
+          meta.textContent = "8oz bag · " + r.level;
+          info.appendChild(meta);
+
+          li.appendChild(info);
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "pyo-remove-btn";
+          removeBtn.innerHTML = "&times;";
+          removeBtn.setAttribute("aria-label", "Remove " + r.title);
+          removeBtn.addEventListener("click", () => {
+            chosenRoasts.splice(idx, 1);
+            updateUI();
+          });
+          li.appendChild(removeBtn);
+
+          chosenList.appendChild(li);
+        });
+      }
+    }
+
+    roastSelect.addEventListener("change", () => {
+      const opt = roastSelect.options[roastSelect.selectedIndex];
+      if (!opt.value) return;
+
+      chosenRoasts.push({
+        title: opt.value,
+        slug: opt.getAttribute("data-slug"),
+        level: opt.getAttribute("data-level"),
+        cat: opt.getAttribute("data-cat")
+      });
+
+      // Reset dropdown back to default placeholder
+      roastSelect.selectedIndex = 0;
+      updateUI();
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (chosenRoasts.length < minBags) return;
+
+      const count = chosenRoasts.length;
+      const total = count * pricePerBag;
+
+      const item = {
+        type: "flight",
+        slug: "peck-your-own",
+        title: "Peck Your Own",
+        size: count + " x 8oz bags",
+        grind: grindSelect.value,
+        price: total,
+        subtitle: chosenRoasts.map(r => r.title).join(", "),
+        mascot: {{ page.mascot_file | jsonify }}
+      };
+
+      const added = window.ywrAddToCart(item, 1);
+      if (added) {
+        const origText = addBtn.textContent;
+        addBtn.textContent = "Added to Cart!";
+        addBtn.disabled = true;
+        setTimeout(() => {
+          addBtn.textContent = origText;
+          addBtn.disabled = false;
+        }, 1400);
+      } else {
+        console.error("ywrAddToCart failed for item:", item);
+      }
+    });
+
+    updateUI();
+  })();
 </script>
 
 <script type="application/ld+json">

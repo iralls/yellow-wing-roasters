@@ -325,18 +325,19 @@ permalink: /shop-minimal/
 
   <!-- ── 3. Custom Roastery ── -->
   <div class="other-shop__section-header">
-    <h2 class="other-shop__section-title">Custom Roasts</h2>
+    <h2 class="other-shop__section-title">BYOB &bull; Custom Roasts</h2>
   </div>
 
   <div class="other-shop__grid">
     <!-- BYOB: Build Your Own Blend -->
     <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="other-shop__card">
       <div class="other-shop__card-img-wrap">
+        <span class="other-shop__badge">BYOB</span>
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend mascot" loading="lazy" decoding="async">
       </div>
 
       <div class="other-shop__card-body">
-        <h2 class="other-shop__card-name">Build Your Own Blend</h2>
+        <h2 class="other-shop__card-name">BYOB &mdash; Build Your Own Blend</h2>
         <p class="other-shop__card-desc">
           Combine up to three green bean varieties and dial in individual roast levels for your personal house blend.
         </p>
@@ -347,11 +348,12 @@ permalink: /shop-minimal/
     <!-- BYOB: Bring Your Own Beans -->
     <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="other-shop__card">
       <div class="other-shop__card-img-wrap">
+        <span class="other-shop__badge">BYOB</span>
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans mascot" loading="lazy" decoding="async">
       </div>
 
       <div class="other-shop__card-body">
-        <h2 class="other-shop__card-name">Bring Your Own Beans</h2>
+        <h2 class="other-shop__card-name">BYOB &mdash; Bring Your Own Beans</h2>
         <p class="other-shop__card-desc">
           Send us your unroasted green beans and we'll craft your custom roast profile on our machines.
         </p>
@@ -362,15 +364,32 @@ permalink: /shop-minimal/
     <!-- BYOB: Bank Your Own Burner -->
     <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="other-shop__card">
       <div class="other-shop__card-img-wrap">
+        <span class="other-shop__badge">BYOB</span>
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner mascot" loading="lazy" decoding="async">
       </div>
 
       <div class="other-shop__card-body">
-        <h2 class="other-shop__card-name">Bank Your Own Burner</h2>
+        <h2 class="other-shop__card-name">BYOB &mdash; Bank Your Own Burner</h2>
         <p class="other-shop__card-desc">
           Pick any single-origin bean in stock and customize your desired roast level from City to Vienna.
         </p>
         <p class="other-shop__card-price">Cost of Bean</p>
+      </div>
+    </a>
+
+    <!-- BYOB: Book Your Own Bootcamp -->
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="other-shop__card">
+      <div class="other-shop__card-img-wrap">
+        <span class="other-shop__badge">BYOB</span>
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp mascot" loading="lazy" decoding="async">
+      </div>
+
+      <div class="other-shop__card-body">
+        <h2 class="other-shop__card-name">BYOB &mdash; Book Your Own Bootcamp</h2>
+        <p class="other-shop__card-desc">
+          Step behind the roaster yourself. Pick any single origin, bring up to three guests, and roast live with us.
+        </p>
+        <p class="other-shop__card-price">$30 + $15/guest</p>
       </div>
     </a>
   </div>

@@ -6,7 +6,6 @@ category: subscription
 order: 6
 permalink: /subscriptions/rubber-duck-club/
 mascot_file: audubon-rubber-duck-transparent.png
-descriptor: help us debug brand-new beans and experimental test roasts before release
 sizes:
   - 12oz
 frequencies:

@@ -6,7 +6,6 @@ category: subscription
 order: 5
 permalink: /subscriptions/runts-rations/
 mascot_file: audubon-runt-transparent.png
-descriptor: test roasts and experimental profiles that didn't quite make the cut
 sizes:
   - 12oz
 frequencies:

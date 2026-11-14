@@ -12,8 +12,8 @@ brewing_method: Pour-over, Drip, Chemex, Espresso
 processing_method: Washed
 origins:
   - Ethiopia Washed
-mascot: double-crested-cormorant
-mascot_file: double-crested-cormorant-transparent.png
+mascot: common-grackle
+mascot_file: common-grackle-transparent.png
 price:
   12oz: 12
   1lb: 16
@@ -27,5 +27,5 @@ subscription:
 description: >-
   A classic washed Yirgacheffe with a smooth, full body. Expect sweet notes of maple and brown sugar, toasted chestnut, and warm spices on the finish.
 fun_fact: >-
-  Unlike most waterbirds, cormorants have intentionally less oil on their feathers so they trap less air and can dive deeper and faster underwater.
+  Common grackles appear black from afar, but sunlight reveals an iridescent purple and bronze sheen across their plumage; they are also known for "anting," allowing ants to crawl through their feathers to secrete parasite-repelling formic acid.
 ---

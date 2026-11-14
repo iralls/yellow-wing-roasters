@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ '/css/admin-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+
 <div class="ywr-atelier-preview" id="atelier-admin-root">
 
   <!-- Header Branding Lockup -->
@@ -9,21 +11,21 @@
         <h1 class="atelier-title">{{ include.title | default: "Roastery Management Console" }}</h1>
       </div>
     </div>
-    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-      <button type="button" id="atelier-refresh-btn" class="atelier-btn-action" style="background: transparent; color: #2c1e14; border: 1px solid #cbbaa8;" title="Refresh live Google Sheets data">&#8635; Refresh</button>
-      <a href="{{ '/pigeon-post/email-composer/' | relative_url }}" class="atelier-btn-action" style="text-decoration: none; background: transparent; color: #2c1e14; border: 1px solid #cbbaa8;">&#9993; Pigeon Post</a>
-      <button type="button" id="atelier-logout-btn" class="atelier-btn-action" style="background: #fdf2f2; color: #b91c1c; border: 1px solid #fecaca;">Log Out</button>
+    <div class="atelier-header-actions">
+      <button type="button" id="atelier-refresh-btn" class="atelier-btn-action atelier-btn-outline" title="Refresh live Google Sheets data">&#8635; Refresh</button>
+      <a href="{{ '/pigeon-post/email-composer/' | relative_url }}" class="atelier-btn-action atelier-btn-outline">&#9993; Pigeon Post</a>
+      <button type="button" id="atelier-logout-btn" class="atelier-btn-action atelier-btn-danger">Log Out</button>
     </div>
   </header>
 
   <!-- Passcode Gate View -->
-  <div id="atelier-admin-gate" style="display: none; max-width: 26rem; margin: 3rem auto; padding: 2rem; background: #ffffff; border: 1px solid #e8decb; border-radius: 8px; text-align: center; box-shadow: 0 4px 18px rgba(44, 30, 20, 0.05);">
-    <h2 style="font-family: 'Didot', Georgia, serif; font-size: 1.5rem; margin: 0 0 0.5rem; color: #2c1e14;">Owner Authentication</h2>
-    <p style="font-size: 0.85rem; color: #7d6b5e; margin: 0 0 1.25rem;">Enter your passcode to unlock real Google Sheets data across all consoles.</p>
+  <div id="atelier-admin-gate" class="atelier-gate-card" style="display: none;">
+    <h2 class="atelier-gate-title">Owner Authentication</h2>
+    <p class="atelier-gate-desc">Enter your passcode to unlock real Google Sheets data across all consoles.</p>
     <form id="atelier-gate-form">
-      <input type="password" id="atelier-passcode-input" class="order-admin-input" placeholder="Enter owner passcode..." required autofocus style="margin-bottom: 0.85rem;">
-      <button type="submit" class="atelier-btn-action" style="width: 100%; padding: 0.65rem;">Unlock Console</button>
-      <div id="atelier-gate-error" style="display: none; color: #b91c1c; font-size: 0.8rem; font-weight: 700; margin-top: 0.65rem;"></div>
+      <input type="password" id="atelier-passcode-input" class="order-admin-input atelier-gate-input" placeholder="Enter owner passcode..." required autofocus>
+      <button type="submit" class="atelier-btn-action atelier-gate-btn">Unlock Console</button>
+      <div id="atelier-gate-error" style="display: none; color: #b91c1c; font-size: 0.85rem; font-weight: 700; margin-top: 0.85rem;"></div>
     </form>
   </div>
 
@@ -88,6 +90,7 @@
 
 </div>
 
+<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script src="{{ '/js/admin-roasts.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script src="{{ '/js/atelier-admin.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script>
@@ -100,7 +103,7 @@
     giftSubsApiUrl: {{ site.gift_subscription_api_url | jsonify }},
     orderManageBaseUrl: {{ '/order/manage/' | relative_url | jsonify }},
     subManageBaseUrl: {{ '/subscriptions/manage/' | relative_url | jsonify }},
-    orderApplyBaseUrl: {{ '/order/' | relative_url | jsonify }},
+    orderApplyBaseUrl: {{ '/cart/' | relative_url | jsonify }},
     bagSizes: {{ site.data.bag_sizes | jsonify }},
     roastLevels: {{ site.data.roast_levels | jsonify }}
   });

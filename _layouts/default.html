@@ -19,8 +19,8 @@
     <header class="site-header">
       <div class="header-inner">
         <nav class="nav-links">
-          <a href="{{ '/shop/' | relative_url }}" class="nav-link">Shop</a>
-          <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
+          <a href="{{ '/shop-menu/' | relative_url }}" class="nav-link">Shop</a>
+          <a href="{{ '/subscriptions-menu/' | relative_url }}" class="nav-link">Subscriptions</a>
           <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
         </nav>
         <a href="{{ '/' | relative_url }}" class="brand-wordmark">
@@ -28,10 +28,42 @@
           <span class="brand-sub">Roasters</span>
         </a>
         <div class="header-actions">
-          <a href="{{ '/order/' | relative_url }}" class="cart-btn">Cart</a>
+          <a href="{{ '/cart/' | relative_url }}" class="cart-btn" aria-label="Cart">
+            <span>Cart</span>
+            <span class="cart-count-badge" id="header-cart-count">0</span>
+          </a>
         </div>
       </div>
     </header>
+    <script>
+      (function () {
+        const el = document.getElementById('header-cart-count');
+
+        function updateNavCartCount() {
+          const raw = localStorage.getItem('ywr_cart');
+          if (!raw) {
+            el.textContent = '0';
+            el.classList.remove('has-items');
+            return;
+          }
+          let items = [];
+          try {
+            const parsed = JSON.parse(raw);
+            items = Array.isArray(parsed) ? parsed : Object.values(parsed);
+          } catch (e) {
+            items = [];
+          }
+          const total = items.reduce((sum, it) => sum + (it.qty || 1), 0);
+          el.textContent = total;
+          el.classList.toggle('has-items', total > 0);
+        }
+
+        updateNavCartCount();
+        window.addEventListener('cart:updated', updateNavCartCount);
+        window.addEventListener('ywr-cart-changed', updateNavCartCount);
+        window.addEventListener('storage', updateNavCartCount);
+      })();
+    </script>
     {% endunless %}
 
     <main id="main-content" class="main-content">
@@ -44,13 +76,13 @@
         <img src="{{ '/images/audubon-feather-transparent.png' | relative_url }}" alt="Yellow Wing Roasters" class="footer-feather-icon" width="231" height="800" loading="lazy" decoding="async">
       </a>
       <nav class="footer-nav" aria-label="Footer Navigation">
-        <a href="{{ '/shop/' | relative_url }}" class="footer-nav-link">Shop</a>
+        <a href="{{ '/shop-menu/' | relative_url }}" class="footer-nav-link">Shop</a>
+        <span class="footer-nav-sep" aria-hidden="true">•</span>
+        <a href="{{ '/subscriptions-menu/' | relative_url }}" class="footer-nav-link">Subscriptions</a>
         <span class="footer-nav-sep" aria-hidden="true">•</span>
         <a href="{{ '/about/' | relative_url }}" class="footer-nav-link">About Us</a>
         <span class="footer-nav-sep" aria-hidden="true">•</span>
-        <a href="{{ '/subscriptions/' | relative_url }}" class="footer-nav-link">Subscriptions</a>
-        <span class="footer-nav-sep" aria-hidden="true">•</span>
-        <a href="{{ '/order/' | relative_url }}" class="footer-nav-link">Cart</a>
+        <a href="{{ '/cart/' | relative_url }}" class="footer-nav-link">Cart</a>
       </nav>
     </footer>
     {% endunless %}

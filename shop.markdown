@@ -544,7 +544,7 @@ permalink: /shop/
 
   <!-- ── 2. Custom Roasts Section ── -->
   <div class="shop-section-header">
-    <h2 class="shop-section-title">Custom Roasts</h2>
+    <h2 class="shop-section-title">BYOB &bull; Custom Roasts</h2>
   </div>
 
   <div class="shop-grid">
@@ -554,13 +554,13 @@ permalink: /shop/
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
 
         <div class="shop-item-overlay">
-          <div class="overlay-tag">Custom Blend</div>
+          <div class="overlay-tag">BYOB &bull; Custom Blend</div>
           <p class="overlay-notes">Combine up to three varieties of green beans and select individual roast levels</p>
         </div>
       </div>
 
       <div class="shop-item-info">
-        <h2 class="shop-item-name">Build Your Own Blend</h2>
+        <h2 class="shop-item-name">BYOB &mdash; Build Your Own Blend</h2>
         <div class="shop-item-price">$32</div>
       </div>
     </a>
@@ -571,13 +571,13 @@ permalink: /shop/
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
 
         <div class="shop-item-overlay">
-          <div class="overlay-tag">Custom Sourced</div>
+          <div class="overlay-tag">BYOB &bull; Custom Sourced</div>
           <p class="overlay-notes">Send us your green unroasted beans and we'll craft your custom roast profile</p>
         </div>
       </div>
 
       <div class="shop-item-info">
-        <h2 class="shop-item-name">Bring Your Own Beans</h2>
+        <h2 class="shop-item-name">BYOB &mdash; Bring Your Own Beans</h2>
         <div class="shop-item-price">Custom Quote</div>
       </div>
     </a>
@@ -588,14 +588,31 @@ permalink: /shop/
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
 
         <div class="shop-item-overlay">
-          <div class="overlay-tag">Custom Profile</div>
+          <div class="overlay-tag">BYOB &bull; Custom Profile</div>
           <p class="overlay-notes">Pick any single origin bean and customize your desired roast level from City to Vienna</p>
         </div>
       </div>
 
       <div class="shop-item-info">
-        <h2 class="shop-item-name">Bank Your Own Burner</h2>
+        <h2 class="shop-item-name">BYOB &mdash; Bank Your Own Burner</h2>
         <div class="shop-item-price">Cost of Selected Bean</div>
+      </div>
+    </a>
+
+    <!-- BYOB: Book Your Own Bootcamp -->
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="shop-item">
+      <div class="shop-item-visual">
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp mascot" class="coffee-mascot-img" loading="lazy" decoding="async">
+
+        <div class="shop-item-overlay">
+          <div class="overlay-tag">BYOB &bull; Bootcamp</div>
+          <p class="overlay-notes">Step behind the roaster yourself. Pick any single origin, bring up to three guests, and roast live with us</p>
+        </div>
+      </div>
+
+      <div class="shop-item-info">
+        <h2 class="shop-item-name">BYOB &mdash; Book Your Own Bootcamp</h2>
+        <div class="shop-item-price">$30 + $15/guest</div>
       </div>
     </a>
   </div>

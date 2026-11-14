@@ -7,7 +7,7 @@ permalink: /roast-parlor/
 <style>
   /* ── Parlor Coffee Boutique Editorial Roast Prototype ── */
   :root {
-    --parlor-bg: #f9f7f2;
+    --parlor-bg: #fcfbfa;
     --parlor-surface: #ffffff;
     --parlor-text: #231b14;
     --parlor-muted: #796c5e;
@@ -104,11 +104,6 @@ permalink: /roast-parlor/
     max-height: 480px;
     object-fit: contain;
     filter: drop-shadow(0 20px 30px rgba(35, 27, 20, 0.08));
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .parlor-visual-stage:hover .parlor-bird-img {
-    transform: translateY(-6px) scale(1.02);
   }
 
   /* Product Details */
@@ -305,264 +300,160 @@ permalink: /roast-parlor/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="parlor-wrap">
   <!-- ── Preview Switcher ── -->
   <nav class="parlor-switcher" aria-label="Parlor Coffee Roast Switcher">
-    <button type="button" class="parlor-switcher-btn active" data-target="parlor-eb">Early Bird</button>
-    <button type="button" class="parlor-switcher-btn" data-target="parlor-cs">Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="parlor-switcher-btn{% if forloop.first %} active{% endif %}" data-target="parlor-{{ r.slug }}">{{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="parlor-panel active" id="parlor-eb">
-    <section class="parlor-hero">
-      <div class="parlor-visual-stage">
-        {% assign eb_img = '/images/' | append: eb.mascot_file %}
-        <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="parlor-bird-img">
-      </div>
-
-      <div class="parlor-details">
-        <span class="parlor-meta-tag">House Blend &bull; {{ eb_level.layman }} Roast</span>
-        <h1 class="parlor-title">{{ eb.title }}</h1>
-
-        <div class="parlor-price-row" id="parlor-eb-price">
-          {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-            <s>${{ eb.price["12oz"] }}</s> <span class="is-sale">${{ eb.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ eb.price["12oz"] }}
-          {% endif %}
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="parlor-panel{% if forloop.first %} active{% endif %}" id="parlor-{{ r.slug }}">
+      <section class="parlor-hero">
+        <div class="parlor-visual-stage">
+          {% assign r_img = "/images/" | append: r.mascot_file %}
+          <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="parlor-bird-img">
         </div>
 
-        <blockquote class="parlor-sensory-lead">
-          &ldquo;{{ eb.tasting_notes | capitalize }}.&rdquo;
-        </blockquote>
+        <div class="parlor-details">
+          <span class="parlor-meta-tag">House Blend &bull; {{ r_level.layman }} Roast</span>
+          <h1 class="parlor-title">{{ r.title }}</h1>
 
-        <p class="parlor-story-p">{{ eb.description }}</p>
-
-        <form class="parlor-form" onsubmit="return false;">
-          <div class="parlor-field">
-            <label class="parlor-label" for="parlor-eb-size">Bag Size</label>
-            <select class="parlor-select" id="parlor-eb-size">
-              {% for sz in site.data.bag_sizes %}
-                <option value="{{ sz.id }}"
-                        data-reg="{{ eb.price[sz.id] }}"
-                        {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                        {% if sz.id == '12oz' %} selected{% endif %}>
-                  {{ sz.label }} &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}{% else %}${{ eb.price[sz.id] }}{% endif %}
-                </option>
-              {% endfor %}
-            </select>
+          <div class="parlor-price-row" id="parlor-{{ r.slug }}-price">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ r.price["12oz"] }}</s> <span class="is-sale">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ r.price["12oz"] }}
+            {% endif %}
           </div>
 
-          <div class="parlor-field">
-            <label class="parlor-label" for="parlor-eb-grind">Grind Style</label>
-            <select class="parlor-select" id="parlor-eb-grind">
-              {% for g in site.data.grind_levels %}
-                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-              {% endfor %}
-            </select>
-          </div>
+          <blockquote class="parlor-sensory-lead">
+            &ldquo;{{ r.tasting_notes | capitalize }}.&rdquo;
+          </blockquote>
 
-          <button type="submit" class="parlor-atc-btn">Add to Cart</button>
-        </form>
-      </div>
-    </section>
+          <p class="parlor-story-p">{{ r.description }}</p>
 
-    <!-- 3-Column Editorial Specs -->
-    <section class="parlor-specs">
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">The Blend</h3>
-        <div class="parlor-spec-list">
-          {% assign latest_eb = eb.history | first %}
-          {% for c in latest_eb.components %}
-            <div class="parlor-spec-row">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
+          <form class="parlor-form" onsubmit="return false;">
+            <div class="parlor-field">
+              <label class="parlor-label" for="parlor-{{ r.slug }}-size">Bag Size</label>
+              <select class="parlor-select parlor-size-select" id="parlor-{{ r.slug }}-size" data-target-price="parlor-{{ r.slug }}-price">
+                {% for sz in site.data.bag_sizes %}
+                  <option value="{{ sz.id }}"
+                          data-reg="{{ r.price[sz.id] }}"
+                          {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                          {% if sz.id == "12oz" %} selected{% endif %}>
+                    {{ sz.label }} &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}{% else %}${{ r.price[sz.id] }}{% endif %}
+                  </option>
+                {% endfor %}
+              </select>
             </div>
-          {% endfor %}
-          <div style="font-size: 0.85rem; color: var(--parlor-light); margin-top: 0.5rem;">
-            Formulation dated: {{ latest_eb.date }}
-          </div>
-        </div>
-      </div>
 
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">Brewing Parameters</h3>
-        <div class="parlor-spec-list">
-          <div class="parlor-spec-row">
-            <span>Recommended Styles</span>
-            <strong>{{ eb.brewing_method }}</strong>
-          </div>
-          <div class="parlor-spec-row">
-            <span>Roast Degree</span>
-            <strong>{{ eb_level.name }}</strong>
-          </div>
-          <div class="parlor-spec-row">
-            <span>Status</span>
-            <strong>Mid Molt</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">Field Notes</h3>
-        <div class="parlor-spec-list">
-          <p style="margin: 0;">{{ eb.fun_fact }}</p>
-          <div style="font-size: 0.82rem; font-style: italic; color: var(--parlor-light);">
-            Mascot: American Robin (Turdus migratorius)
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="parlor-panel" id="parlor-cs">
-    <section class="parlor-hero">
-      <div class="parlor-visual-stage">
-        {% assign cs_img = '/images/' | append: cs.mascot_file %}
-        <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="parlor-bird-img">
-      </div>
-
-      <div class="parlor-details">
-        <span class="parlor-meta-tag">Espresso Blend &bull; {{ cs_level.layman }} Roast</span>
-        <h1 class="parlor-title">{{ cs.title }}</h1>
-
-        <div class="parlor-price-row" id="parlor-cs-price">
-          ${{ cs.price["12oz"] }}
-        </div>
-
-        <blockquote class="parlor-sensory-lead">
-          &ldquo;{{ cs.tasting_notes | capitalize }}.&rdquo;
-        </blockquote>
-
-        <p class="parlor-story-p">{{ cs.description }}</p>
-
-        <form class="parlor-form" onsubmit="return false;">
-          <div class="parlor-field">
-            <label class="parlor-label" for="parlor-cs-size">Bag Size</label>
-            <select class="parlor-select" id="parlor-cs-size">
-              {% for sz in site.data.bag_sizes %}
-                <option value="{{ sz.id }}"
-                        data-reg="{{ cs.price[sz.id] }}"
-                        {% if sz.id == '12oz' %} selected{% endif %}>
-                  {{ sz.label }} &mdash; ${{ cs.price[sz.id] }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="parlor-field">
-            <label class="parlor-label" for="parlor-cs-grind">Grind Style</label>
-            <select class="parlor-select" id="parlor-cs-grind">
-              {% for g in site.data.grind_levels %}
-                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <button type="submit" class="parlor-atc-btn">Add to Cart</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- 3-Column Editorial Specs -->
-    <section class="parlor-specs">
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">The Blend</h3>
-        <div class="parlor-spec-list">
-          {% assign latest_cs = cs.history | first %}
-          {% for c in latest_cs.components %}
-            <div class="parlor-spec-row">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
+            <div class="parlor-field">
+              <label class="parlor-label" for="parlor-{{ r.slug }}-grind">Grind Style</label>
+              <select class="parlor-select" id="parlor-{{ r.slug }}-grind">
+                {% for g in site.data.grind_levels %}
+                  <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+                {% endfor %}
+              </select>
             </div>
-          {% endfor %}
-          <div style="font-size: 0.85rem; color: var(--parlor-light); margin-top: 0.5rem;">
-            Formulation dated: {{ latest_cs.date }}
-          </div>
-        </div>
-      </div>
 
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">Brewing Parameters</h3>
-        <div class="parlor-spec-list">
-          <div class="parlor-spec-row">
-            <span>Recommended Styles</span>
-            <strong>{{ cs.brewing_method }}</strong>
-          </div>
-          <div class="parlor-spec-row">
-            <span>Roast Degree</span>
-            <strong>{{ cs_level.name }}</strong>
-          </div>
-          <div class="parlor-spec-row">
-            <span>Profile</span>
-            <strong>{{ cs.descriptor | capitalize }}</strong>
-          </div>
+            <button type="submit" class="parlor-atc-btn">Add to Cart</button>
+          </form>
         </div>
-      </div>
+      </section>
 
-      <div class="parlor-spec-col">
-        <h3 class="parlor-spec-title">Field Notes</h3>
-        <div class="parlor-spec-list">
-          <p style="margin: 0;">{{ cs.fun_fact }}</p>
-          <div style="font-size: 0.82rem; font-style: italic; color: var(--parlor-light);">
-            Mascot: Chimney Swift (Chaetura pelagica)
+      <!-- 3-Column Editorial Specs -->
+      <section class="parlor-specs">
+        <div class="parlor-spec-col">
+          <h3 class="parlor-spec-title">The Blend</h3>
+          <div class="parlor-spec-list">
+            {% for c in latest_history.components %}
+              <div class="parlor-spec-row">
+                <span>{{ c.name }}</span>
+                <strong>{{ c.ratio }}</strong>
+              </div>
+            {% endfor %}
+            {% if latest_history.date %}
+              <div style="font-size: 0.85rem; color: var(--parlor-light); margin-top: 0.5rem;">
+                Formulation dated: {{ latest_history.date }}
+              </div>
+            {% endif %}
           </div>
         </div>
-      </div>
-    </section>
-  </div>
+
+        <div class="parlor-spec-col">
+          <h3 class="parlor-spec-title">Brewing Parameters</h3>
+          <div class="parlor-spec-list">
+            <div class="parlor-spec-row">
+              <span>Recommended Styles</span>
+              <strong>{{ r.brewing_method }}</strong>
+            </div>
+            <div class="parlor-spec-row">
+              <span>Roast Degree</span>
+              <strong>{{ r_level.name }}</strong>
+            </div>
+            <div class="parlor-spec-row">
+              <span>Status</span>
+              <strong>{{ r.status | default: "Active Batch" | replace: "_", " " | capitalize }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="parlor-spec-col">
+          <h3 class="parlor-spec-title">Field Notes</h3>
+          <div class="parlor-spec-list">
+            <p style="margin: 0;">{{ r.fun_fact }}</p>
+            {% if r.mascot %}
+              <div style="font-size: 0.82rem; font-style: italic; color: var(--parlor-light); margin-top: 0.5rem;">
+                Mascot: {{ r.mascot | replace: "-", " " | capitalize }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    </div>
+  {% endfor %}
 </div>
 
 <script>
   (function() {
     // Switcher Logic
-    const switcherBtns = document.querySelectorAll('.parlor-switcher-btn');
-    const panels = document.querySelectorAll('.parlor-panel');
+    const switcherBtns = document.querySelectorAll(".parlor-switcher-btn");
+    const panels = document.querySelectorAll(".parlor-panel");
 
     switcherBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        switcherBtns.forEach(b => b.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
+      btn.addEventListener("click", () => {
+        switcherBtns.forEach(b => b.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
 
-        btn.classList.add('active');
-        const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        btn.classList.add("active");
+        const targetId = btn.getAttribute("data-target");
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) targetPanel.classList.add("active");
       });
     });
 
     // Dynamic Price on Bag Size Select
-    const ebSelect = document.getElementById('parlor-eb-size');
-    const ebPrice = document.getElementById('parlor-eb-price');
-    if (ebSelect && ebPrice) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        const sale = opt.getAttribute('data-sale');
-        if (sale) {
-          ebPrice.innerHTML = `<s>$${reg}</s> <span class="is-sale">$${sale}</span>`;
-        } else {
-          ebPrice.innerHTML = `$${reg}`;
-        }
-      });
-    }
-
-    const csSelect = document.getElementById('parlor-cs-size');
-    const csPrice = document.getElementById('parlor-cs-price');
-    if (csSelect && csPrice) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csPrice.innerHTML = `$${reg}`;
-      });
-    }
+    document.querySelectorAll(".parlor-size-select").forEach(select => {
+      const priceId = select.getAttribute("data-target-price");
+      const priceEl = document.getElementById(priceId);
+      if (priceEl) {
+        select.addEventListener("change", () => {
+          const opt = select.options[select.selectedIndex];
+          const reg = opt.getAttribute("data-reg");
+          const sale = opt.getAttribute("data-sale");
+          if (sale) {
+            priceEl.innerHTML = `<s>$${reg}</s> <span class="is-sale">$${sale}</span>`;
+          } else {
+            priceEl.innerHTML = `$${reg}`;
+          }
+        });
+      }
+    });
   })();
 </script>

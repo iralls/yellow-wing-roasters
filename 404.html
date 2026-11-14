@@ -1,34 +1,33 @@
 ---
 permalink: /404.html
-layout: default
-title: "404 — Flew the Coop"
+layout: menu-item
+title: Flew the Coop
+descriptor: Error 404
+mascot_file: owl-lost-transparent.png
+mascot_alt: "Lost Little Owl"
+no_order: true
+intro: "Looks like this page has migrated to another branch or never hatched. Don't worry, the roost is fully stocked."
 ---
 
-<div class="roast-minimal-vertical">
-
-<div class="roast-mv-center roast-mv-bird-wrap">
-  <img src="{{ '/images/owl-lost-transparent.png' | relative_url }}" alt="Little Owl perched on a branch" class="roast-mv-bird" style="height: auto; max-height: 14rem; max-width: 100%;" fetchpriority="high" decoding="async">
+<div style="display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 0.5rem;">
+  <a href="{{ '/shop-menu/' | relative_url }}" class="action-pill-btn btn-primary-pill">Browse Shop</a>
+  <a href="{{ '/' | relative_url }}" class="action-pill-btn btn-secondary-pill">Return Home</a>
 </div>
 
-<div class="roast-mv-center">
-  <h1 class="roast-mv-title">Flew the Coop</h1>
-</div>
-
-<div class="roast-mv-subtitle">Error 404 — Page Not Found</div>
-
-<p class="roast-mv-tasting">
-  Looks like this page has migrated to another branch or never hatched.
-</p>
-
-<div class="roast-mv-body" style="max-width: 36rem; margin: 0 auto; text-align: center;">
-  <p style="margin-bottom: 2rem; color: #4a3b32; font-size: 1.05rem; line-height: 1.6;">
-    Don’t worry, the roost is fully stocked. You can head back home or explore our coffees.
-  </p>
-
-  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
-    <a href="{{ '/' | relative_url }}" class="add-to-order-btn" style="max-width: 14rem; padding: 0.8rem 1.6rem; text-decoration: none;">Return to Roost</a>
-    <a href="{{ '/roasts/' | relative_url }}" class="add-to-order-btn" style="max-width: 14rem; padding: 0.8rem 1.6rem; text-decoration: none; background-color: transparent; color: #2c1e14; border-color: #2c1e14;">Browse Coffees</a>
+<div class="hst-drawers" style="margin-top: 2rem;">
+  <div class="hst-drawer open">
+    <button type="button" class="hst-drawer-head">Popular Destinations</button>
+    <div class="hst-drawer-body">
+      &bull; <a href="{{ '/shop-menu/' | relative_url }}">Shop Coffee Menu</a> — Browse our signature blends and single origins.<br>
+      &bull; <a href="{{ '/subscriptions-menu/' | relative_url }}">Subscriptions</a> — Roasted to order and delivered on your schedule.<br>
+      &bull; <a href="{{ '/cart/' | relative_url }}">Your Cart</a> — Review your pending items or checkout.
+    </div>
   </div>
-</div>
 
+  <div class="hst-drawer">
+    <button type="button" class="hst-drawer-head">Need Assistance?</button>
+    <div class="hst-drawer-body">
+      Looking for a specific coffee, custom blend, or tracking an order? Reach out directly to <a href="mailto:chirp@yellowwingroasters.com">chirp@yellowwingroasters.com</a>.
+    </div>
+  </div>
 </div>

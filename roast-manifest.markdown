@@ -283,225 +283,122 @@ permalink: /roast-manifest/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="rmnf-wrap">
   <!-- ── Switcher ── -->
   <nav class="rmnf-switcher" aria-label="Manifest Switcher">
-    <button type="button" class="rmnf-switch-btn active" data-target="rmnf-eb">Manifest 01 &bull; Early Bird</button>
-    <button type="button" class="rmnf-switch-btn" data-target="rmnf-cs">Manifest 02 &bull; Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="rmnf-switch-btn{% if forloop.first %} active{% endif %}" data-target="rmnf-{{ r.slug }}">Manifest 0{{ forloop.index }} &bull; {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="rmnf-panel active" id="rmnf-eb">
-    <header class="rmnf-header">
-      <div>
-        <div class="rmnf-eyebrow">Inventory Dossier &bull; {{ eb_level.layman }} Roast</div>
-        <h1 class="rmnf-title">{{ eb.title }}</h1>
-      </div>
-      <div class="rmnf-header-meta">
-        House Formulation &bull; Order 01<br>
-        Status: Mid Molt
-      </div>
-    </header>
-
-    <div class="rmnf-grid">
-      <!-- Left: Dossier -->
-      <div class="rmnf-dossier">
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Sensory Attributes</div>
-          <blockquote class="rmnf-sub-notes">&ldquo;{{ eb.tasting_notes | capitalize }}.&rdquo;</blockquote>
-          <p class="rmnf-block-body" style="margin-top: 0.75rem;">{{ eb.description }}</p>
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="rmnf-panel{% if forloop.first %} active{% endif %}" id="rmnf-{{ r.slug }}">
+      <header class="rmnf-header">
+        <div>
+          <div class="rmnf-eyebrow">Inventory Dossier &bull; {{ r_level.layman }} Roast</div>
+          <h1 class="rmnf-title">{{ r.title }}</h1>
         </div>
+        <div class="rmnf-header-meta">
+          House Formulation &bull; Order 0{{ r.order | default: forloop.index }}<br>
+          Status: {% if r.status == 'mid_molt' %}Mid Molt{% elsif r.best_seller %}Best Seller{% else %}Active{% endif %}
+        </div>
+      </header>
 
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Active Formulation Lots</div>
-          {% assign latest_eb = eb.history | first %}
-          {% for c in latest_eb.components %}
+      <div class="rmnf-grid">
+        <!-- Left: Dossier -->
+        <div class="rmnf-dossier">
+          <div class="rmnf-block">
+            <div class="rmnf-block-head">Sensory Attributes</div>
+            <blockquote class="rmnf-sub-notes">&ldquo;{{ r.tasting_notes | capitalize }}.&rdquo;</blockquote>
+            <p class="rmnf-block-body" style="margin-top: 0.75rem;">{{ r.description }}</p>
+          </div>
+
+          <div class="rmnf-block">
+            <div class="rmnf-block-head">Active Formulation Lots</div>
+            {% for c in latest_history.components %}
+              <div class="rmnf-item-line">
+                <span>{{ c.name }}</span>
+                <strong>{{ c.ratio }}</strong>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="rmnf-block">
+            <div class="rmnf-block-head">Roastery Specifications</div>
             <div class="rmnf-item-line">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
+              <span>Roast Degree</span>
+              <strong>{{ r_level.name }} ({{ r_level.layman }})</strong>
             </div>
-          {% endfor %}
-        </div>
-
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Roastery Specifications</div>
-          <div class="rmnf-item-line">
-            <span>Roast Degree</span>
-            <strong>{{ eb_level.name }} ({{ eb_level.layman }})</strong>
-          </div>
-          <div class="rmnf-item-line">
-            <span>Extraction Parameters</span>
-            <strong>{{ eb.brewing_method }}</strong>
-          </div>
-          <div class="rmnf-item-line">
-            <span>Primary Origins</span>
-            <strong>{{ eb.origins | join: ", " }}</strong>
-          </div>
-        </div>
-
-        <div class="rmnf-block" style="border-bottom: none;">
-          <div class="rmnf-block-head">Field Log Observation</div>
-          <p class="rmnf-block-body" style="font-size: 0.92rem; font-style: italic;">
-            {{ eb.fun_fact }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Right: Artwork & Buy Card -->
-      <div class="rmnf-right-col">
-        <div class="rmnf-artwork-frame">
-          {% assign eb_img = '/images/' | append: eb.mascot_file %}
-          <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="rmnf-bird-img">
-        </div>
-
-        <div class="rmnf-buy-card">
-          <div class="rmnf-price-row">
-            <span class="rmnf-label" style="margin: 0;">Fulfillment Price</span>
-            <div class="rmnf-price" id="rmnf-eb-price">
-              {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-                <s>${{ eb.price["12oz"] }}</s> <span class="rmnf-sale-tag">${{ eb.temporary_price["12oz"] }}</span>
-              {% else %}
-                ${{ eb.price["12oz"] }}
-              {% endif %}
+            <div class="rmnf-item-line">
+              <span>Extraction Parameters</span>
+              <strong>{{ r.brewing_method }}</strong>
+            </div>
+            <div class="rmnf-item-line">
+              <span>Primary Origins</span>
+              <strong>{{ r.origins | join: ", " }}</strong>
             </div>
           </div>
 
-          <div class="rmnf-form-group">
-            <label class="rmnf-label" for="rmnf-eb-size">Package Volume</label>
-            <select class="rmnf-select" id="rmnf-eb-size">
-              {% for sz in site.data.bag_sizes %}
-                <option value="{{ sz.id }}"
-                        data-reg="{{ eb.price[sz.id] }}"
-                        {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                        {% if sz.id == '12oz' %} selected{% endif %}>
-                  {{ sz.label }} &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}{% else %}${{ eb.price[sz.id] }}{% endif %}
-                </option>
-              {% endfor %}
-            </select>
+          <div class="rmnf-block" style="border-bottom: none;">
+            <div class="rmnf-block-head">Field Log Observation</div>
+            <p class="rmnf-block-body" style="font-size: 0.92rem; font-style: italic;">
+              {{ r.fun_fact }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Artwork & Buy Card -->
+        <div class="rmnf-right-col">
+          <div class="rmnf-artwork-frame">
+            {% assign r_img = '/images/' | append: r.mascot_file %}
+            <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="rmnf-bird-img">
           </div>
 
-          <div class="rmnf-form-group">
-            <label class="rmnf-label" for="rmnf-eb-grind">Grind Specification</label>
-            <select class="rmnf-select" id="rmnf-eb-grind">
-              {% for g in site.data.grind_levels %}
-                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-              {% endfor %}
-            </select>
-          </div>
+          <div class="rmnf-buy-card">
+            <div class="rmnf-price-row">
+              <span class="rmnf-label" style="margin: 0;">Fulfillment Price</span>
+              <div class="rmnf-price" id="rmnf-{{ r.slug }}-price">
+                {% if r.temporary_price and r.temporary_price["12oz"] %}
+                  <s>${{ r.price["12oz"] }}</s> <span class="rmnf-sale-tag">${{ r.temporary_price["12oz"] }}</span>
+                {% else %}
+                  ${{ r.price["12oz"] }}
+                {% endif %}
+              </div>
+            </div>
 
-          <button type="button" class="rmnf-btn">Order Manifest Entry</button>
+            <div class="rmnf-form-group">
+              <label class="rmnf-label" for="rmnf-{{ r.slug }}-size">Package Volume</label>
+              <select class="rmnf-select rmnf-size-select" id="rmnf-{{ r.slug }}-size" data-target-price="rmnf-{{ r.slug }}-price">
+                {% for sz in site.data.bag_sizes %}
+                  <option value="{{ sz.id }}"
+                          data-reg="{{ r.price[sz.id] }}"
+                          {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                          {% if sz.id == '12oz' %} selected{% endif %}>
+                    {{ sz.label }} &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}{% else %}${{ r.price[sz.id] }}{% endif %}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="rmnf-form-group">
+              <label class="rmnf-label" for="rmnf-{{ r.slug }}-grind">Grind Specification</label>
+              <select class="rmnf-select" id="rmnf-{{ r.slug }}-grind">
+                {% for g in site.data.grind_levels %}
+                  <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <button type="button" class="rmnf-btn">Order Manifest Entry</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="rmnf-panel" id="rmnf-cs">
-    <header class="rmnf-header">
-      <div>
-        <div class="rmnf-eyebrow">Inventory Dossier &bull; {{ cs_level.layman }} Roast</div>
-        <h1 class="rmnf-title">{{ cs.title }}</h1>
-      </div>
-      <div class="rmnf-header-meta">
-        Espresso Formulation &bull; Order 03<br>
-        Status: Best Seller
-      </div>
-    </header>
-
-    <div class="rmnf-grid">
-      <!-- Left: Dossier -->
-      <div class="rmnf-dossier">
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Sensory Attributes</div>
-          <blockquote class="rmnf-sub-notes">&ldquo;{{ cs.tasting_notes | capitalize }}.&rdquo;</blockquote>
-          <p class="rmnf-block-body" style="margin-top: 0.75rem;">{{ cs.description }}</p>
-        </div>
-
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Active Formulation Lots</div>
-          {% assign latest_cs = cs.history | first %}
-          {% for c in latest_cs.components %}
-            <div class="rmnf-item-line">
-              <span>{{ c.name }}</span>
-              <strong>{{ c.ratio }}</strong>
-            </div>
-          {% endfor %}
-        </div>
-
-        <div class="rmnf-block">
-          <div class="rmnf-block-head">Roastery Specifications</div>
-          <div class="rmnf-item-line">
-            <span>Roast Degree</span>
-            <strong>{{ cs_level.name }} ({{ cs_level.layman }})</strong>
-          </div>
-          <div class="rmnf-item-line">
-            <span>Extraction Parameters</span>
-            <strong>{{ cs.brewing_method }}</strong>
-          </div>
-          <div class="rmnf-item-line">
-            <span>Primary Origins</span>
-            <strong>{{ cs.origins | join: ", " }}</strong>
-          </div>
-        </div>
-
-        <div class="rmnf-block" style="border-bottom: none;">
-          <div class="rmnf-block-head">Field Log Observation</div>
-          <p class="rmnf-block-body" style="font-size: 0.92rem; font-style: italic;">
-            {{ cs.fun_fact }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Right: Artwork & Buy Card -->
-      <div class="rmnf-right-col">
-        <div class="rmnf-artwork-frame">
-          {% assign cs_img = '/images/' | append: cs.mascot_file %}
-          <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="rmnf-bird-img">
-        </div>
-
-        <div class="rmnf-buy-card">
-          <div class="rmnf-price-row">
-            <span class="rmnf-label" style="margin: 0;">Fulfillment Price</span>
-            <div class="rmnf-price" id="rmnf-cs-price">
-              ${{ cs.price["12oz"] }}
-            </div>
-          </div>
-
-          <div class="rmnf-form-group">
-            <label class="rmnf-label" for="rmnf-cs-size">Package Volume</label>
-            <select class="rmnf-select" id="rmnf-cs-size">
-              {% for sz in site.data.bag_sizes %}
-                <option value="{{ sz.id }}"
-                        data-reg="{{ cs.price[sz.id] }}"
-                        {% if sz.id == '12oz' %} selected{% endif %}>
-                  {{ sz.label }} &mdash; ${{ cs.price[sz.id] }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="rmnf-form-group">
-            <label class="rmnf-label" for="rmnf-cs-grind">Grind Specification</label>
-            <select class="rmnf-select" id="rmnf-cs-grind">
-              {% for g in site.data.grind_levels %}
-                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <button type="button" class="rmnf-btn">Order Manifest Entry</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
@@ -516,33 +413,26 @@ permalink: /roast-manifest/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
-    const ebSelect = document.getElementById('rmnf-eb-size');
-    const ebPrice = document.getElementById('rmnf-eb-price');
-    if (ebSelect && ebPrice) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
+    document.querySelectorAll('.rmnf-size-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const targetId = sel.getAttribute('data-target-price');
+        const priceDisplay = document.getElementById(targetId);
+        const opt = sel.options[sel.selectedIndex];
         const reg = opt.getAttribute('data-reg');
         const sale = opt.getAttribute('data-sale');
         if (sale) {
-          ebPrice.innerHTML = `<s>$${reg}</s> <span class="rmnf-sale-tag">$${sale}</span>`;
+          priceDisplay.innerHTML = `<s>$${reg}</s> <span class="rmnf-sale-tag">$${sale}</span>`;
         } else {
-          ebPrice.innerHTML = `$${reg}`;
+          priceDisplay.innerHTML = `$${reg}`;
         }
       });
-    }
-
-    const csSelect = document.getElementById('rmnf-cs-size');
-    const csPrice = document.getElementById('rmnf-cs-price');
-    if (csSelect && csPrice) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csPrice.innerHTML = `$${reg}`;
-      });
-    }
+    });
   })();
 </script>

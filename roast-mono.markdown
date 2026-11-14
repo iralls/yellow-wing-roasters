@@ -52,7 +52,7 @@ permalink: /roast-mono/
     transition: all 0.14s ease;
   }
 
-  .sm-switch-btn:first-child {
+  .sm-switch-btn:not(:last-child) {
     border-right: 1px solid var(--sm-line);
   }
 
@@ -296,229 +296,124 @@ permalink: /roast-mono/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="sm-wrap">
   <!-- ── Switcher ── -->
   <nav class="sm-switcher" aria-label="Swiss Grid Switcher">
-    <button type="button" class="sm-switch-btn active" data-target="sm-eb">MOD 01 // Early Bird</button>
-    <button type="button" class="sm-switch-btn" data-target="sm-cs">MOD 02 // Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="sm-switch-btn{% if forloop.first %} active{% endif %}" data-target="sm-{{ r.slug }}">MOD 0{{ forloop.index }} // {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="sm-panel active" id="sm-eb">
-    <!-- Left Column -->
-    <div class="sm-col-left">
-      <div class="sm-cell-header">
-        <span>ARCHITECTURAL CELL // 01</span>
-        <span>VISUAL ARTIFACT</span>
-      </div>
-
-      <div class="sm-visual-stage">
-        {% assign eb_img = '/images/' | append: eb.mascot_file %}
-        <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="sm-bird-img">
-      </div>
-
-      <div class="sm-meta-strip">
-        <div class="sm-meta-box">
-          <span>Roast Level</span>
-          {{ eb_level.layman }} ({{ eb.roast_level }}/5)
-        </div>
-        <div class="sm-meta-box">
-          <span>Status</span>
-          Mid Molt
-        </div>
-        <div class="sm-meta-box">
-          <span>Mascot Taxon</span>
-          Robin
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column -->
-    <div class="sm-col-right">
-      <div class="sm-cell-header">
-        <span>ARCHITECTURAL CELL // 02</span>
-        <span>SPECIFICATION &amp; ORDER</span>
-      </div>
-
-      <div class="sm-action-pad">
-        <div>
-          <span style="font-family: ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sm-muted);">
-            CLASS // SIGNATURE BLEND
-          </span>
-          <h1 class="sm-title">{{ eb.title }}</h1>
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="sm-panel{% if forloop.first %} active{% endif %}" id="sm-{{ r.slug }}">
+      <!-- Left Column -->
+      <div class="sm-col-left">
+        <div class="sm-cell-header">
+          <span>ARCHITECTURAL CELL // 01</span>
+          <span>VISUAL ARTIFACT</span>
         </div>
 
-        <div class="sm-price-tag" id="sm-eb-price">
-          {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-            <s>${{ eb.price["12oz"] }}</s> <span class="sm-sale-num">${{ eb.temporary_price["12oz"] }}</span>
-          {% else %}
-            ${{ eb.price["12oz"] }}
-          {% endif %}
+        <div class="sm-visual-stage">
+          {% assign r_img = '/images/' | append: r.mascot_file %}
+          <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="sm-bird-img">
         </div>
 
-        <p class="sm-desc">{{ eb.description }}</p>
-
-        <!-- Size Pills -->
-        <div class="sm-opt-row">
-          <span class="sm-opt-label">Package Volume</span>
-          <div class="sm-pills" id="sm-eb-pills">
-            {% for sz in site.data.bag_sizes %}
-              <button type="button" class="sm-pill-btn{% if sz.id == '12oz' %} active{% endif %}"
-                      data-size="{{ sz.id }}"
-                      data-reg="{{ eb.price[sz.id] }}"
-                      {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}>
-                {{ sz.id }}
-              </button>
-            {% endfor %}
+        <div class="sm-meta-strip">
+          <div class="sm-meta-box">
+            <span>Roast Level</span>
+            {{ r_level.layman }} ({{ r.roast_level }}/5)
+          </div>
+          <div class="sm-meta-box">
+            <span>Status</span>
+            {% if r.status == 'mid_molt' %}Mid Molt{% elsif r.best_seller %}Best Seller{% else %}Active{% endif %}
+          </div>
+          <div class="sm-meta-box">
+            <span>Mascot Taxon</span>
+            {{ site.data.mascots[r.mascot] | default: r.mascot }}
           </div>
         </div>
-
-        <!-- Grind -->
-        <div class="sm-opt-row">
-          <span class="sm-opt-label">Milling Specification</span>
-          <select class="sm-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="button" class="sm-btn">Add to Cart &mdash; Order</button>
       </div>
 
-      <!-- Formulation Specs -->
-      <div class="sm-specs-pad">
-        <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
-          [ Blend Component Breakdown ]
+      <!-- Right Column -->
+      <div class="sm-col-right">
+        <div class="sm-cell-header">
+          <span>ARCHITECTURAL CELL // 02</span>
+          <span>SPECIFICATION &amp; ORDER</span>
         </div>
-        {% assign latest_eb = eb.history | first %}
-        {% for c in latest_eb.components %}
+
+        <div class="sm-action-pad">
+          <div>
+            <span style="font-family: ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sm-muted);">
+              CLASS // HOUSE BLEND
+            </span>
+            <h1 class="sm-title">{{ r.title }}</h1>
+          </div>
+
+          <div class="sm-price-tag" id="sm-{{ r.slug }}-price">
+            {% if r.temporary_price and r.temporary_price["12oz"] %}
+              <s>${{ r.price["12oz"] }}</s> <span class="sm-sale-num">${{ r.temporary_price["12oz"] }}</span>
+            {% else %}
+              ${{ r.price["12oz"] }}
+            {% endif %}
+          </div>
+
+          <p class="sm-desc">{{ r.description }}</p>
+
+          <!-- Size Pills -->
+          <div class="sm-opt-row">
+            <span class="sm-opt-label">Package Volume</span>
+            <div class="sm-pills" id="sm-{{ r.slug }}-pills">
+              {% for sz in site.data.bag_sizes %}
+                <button type="button" class="sm-pill-btn{% if sz.id == '12oz' %} active{% endif %}"
+                        data-size="{{ sz.id }}"
+                        data-reg="{{ r.price[sz.id] }}"
+                        {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}>
+                  {{ sz.id }}
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Grind -->
+          <div class="sm-opt-row">
+            <span class="sm-opt-label">Milling Specification</span>
+            <select class="sm-select">
+              {% for g in site.data.grind_levels %}
+                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="button" class="sm-btn">Add to Cart &mdash; Order</button>
+        </div>
+
+        <!-- Formulation Specs -->
+        <div class="sm-specs-pad">
+          <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
+            [ Blend Component Breakdown ]
+          </div>
+          {% for c in latest_history.components %}
+            <div class="sm-spec-line">
+              <span>{{ c.name }}</span>
+              <strong>{{ c.ratio }}</strong>
+            </div>
+          {% endfor %}
           <div class="sm-spec-line">
-            <span>{{ c.name }}</span>
-            <strong>{{ c.ratio }}</strong>
+            <span>Flavor Notes</span>
+            <strong>{{ r.tasting_notes }}</strong>
           </div>
-        {% endfor %}
-        <div class="sm-spec-line">
-          <span>Flavor Notes</span>
-          <strong>{{ eb.tasting_notes }}</strong>
-        </div>
-        <div class="sm-spec-line">
-          <span>Brew Guide</span>
-          <strong>{{ eb.brewing_method }}</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="sm-panel" id="sm-cs">
-    <!-- Left Column -->
-    <div class="sm-col-left">
-      <div class="sm-cell-header">
-        <span>ARCHITECTURAL CELL // 01</span>
-        <span>VISUAL ARTIFACT</span>
-      </div>
-
-      <div class="sm-visual-stage">
-        {% assign cs_img = '/images/' | append: cs.mascot_file %}
-        <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="sm-bird-img">
-      </div>
-
-      <div class="sm-meta-strip">
-        <div class="sm-meta-box">
-          <span>Roast Level</span>
-          {{ cs_level.layman }} ({{ cs.roast_level }}/5)
-        </div>
-        <div class="sm-meta-box">
-          <span>Status</span>
-          Best Seller
-        </div>
-        <div class="sm-meta-box">
-          <span>Mascot Taxon</span>
-          Swift
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column -->
-    <div class="sm-col-right">
-      <div class="sm-cell-header">
-        <span>ARCHITECTURAL CELL // 02</span>
-        <span>SPECIFICATION &amp; ORDER</span>
-      </div>
-
-      <div class="sm-action-pad">
-        <div>
-          <span style="font-family: ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sm-muted);">
-            CLASS // ESPRESSO BLEND
-          </span>
-          <h1 class="sm-title">{{ cs.title }}</h1>
-        </div>
-
-        <div class="sm-price-tag" id="sm-cs-price">
-          ${{ cs.price["12oz"] }}
-        </div>
-
-        <p class="sm-desc">{{ cs.description }}</p>
-
-        <!-- Size Pills -->
-        <div class="sm-opt-row">
-          <span class="sm-opt-label">Package Volume</span>
-          <div class="sm-pills" id="sm-cs-pills">
-            {% for sz in site.data.bag_sizes %}
-              <button type="button" class="sm-pill-btn{% if sz.id == '12oz' %} active{% endif %}"
-                      data-size="{{ sz.id }}"
-                      data-reg="{{ cs.price[sz.id] }}">
-                {{ sz.id }}
-              </button>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Grind -->
-        <div class="sm-opt-row">
-          <span class="sm-opt-label">Milling Specification</span>
-          <select class="sm-select">
-            {% for g in site.data.grind_levels %}
-              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <button type="button" class="sm-btn">Add to Cart &mdash; Order</button>
-      </div>
-
-      <!-- Formulation Specs -->
-      <div class="sm-specs-pad">
-        <div style="font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;">
-          [ Blend Component Breakdown ]
-        </div>
-        {% assign latest_cs = cs.history | first %}
-        {% for c in latest_cs.components %}
           <div class="sm-spec-line">
-            <span>{{ c.name }}</span>
-            <strong>{{ c.ratio }}</strong>
+            <span>Brew Guide</span>
+            <strong>{{ r.brewing_method }}</strong>
           </div>
-        {% endfor %}
-        <div class="sm-spec-line">
-          <span>Flavor Notes</span>
-          <strong>{{ cs.tasting_notes }}</strong>
-        </div>
-        <div class="sm-spec-line">
-          <span>Brew Guide</span>
-          <strong>{{ cs.brewing_method }}</strong>
         </div>
       </div>
     </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
@@ -533,15 +428,16 @@ permalink: /roast-mono/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
-    function setupPills(pillsId, priceId) {
-      const container = document.getElementById(pillsId);
-      const display = document.getElementById(priceId);
-      if (!container || !display) return;
-
+    document.querySelectorAll('.sm-pills').forEach(container => {
+      const panel = container.closest('.sm-panel');
+      const display = panel.querySelector('.sm-price-tag');
       const pills = container.querySelectorAll('.sm-pill-btn');
       pills.forEach(pill => {
         pill.addEventListener('click', () => {
@@ -557,9 +453,6 @@ permalink: /roast-mono/
           }
         });
       });
-    }
-
-    setupPills('sm-eb-pills', 'sm-eb-price');
-    setupPills('sm-cs-pills', 'sm-cs-price');
+    });
   })();
 </script>

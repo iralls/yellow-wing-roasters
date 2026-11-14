@@ -262,14 +262,14 @@ permalink: /shop-manifest/
 
   <!-- ── 3. Custom Roastery ── -->
   <div class="mnf-section-header">
-    <h2 class="mnf-section-title">Custom Roasts</h2>
-    <span class="mnf-section-count">3 Services</span>
+    <h2 class="mnf-section-title">BYOB &bull; Custom Roasts</h2>
+    <span class="mnf-section-count">4 Services</span>
   </div>
 
   <div class="mnf-grid">
     <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="mnf-item">
       <div class="mnf-item-head">
-        <h3 class="mnf-item-name">Build Your Own Blend</h3>
+        <h3 class="mnf-item-name">BYOB &mdash; Build Your Own Blend</h3>
         <div class="mnf-item-price">$32.00</div>
       </div>
       <div class="mnf-item-sub">Custom Blend &bull; Formulated Profile</div>
@@ -278,7 +278,7 @@ permalink: /shop-manifest/
 
     <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="mnf-item">
       <div class="mnf-item-head">
-        <h3 class="mnf-item-name">Bring Your Own Beans</h3>
+        <h3 class="mnf-item-name">BYOB &mdash; Bring Your Own Beans</h3>
         <div class="mnf-item-price">Quote</div>
       </div>
       <div class="mnf-item-sub">Custom Roasting Service</div>
@@ -287,11 +287,20 @@ permalink: /shop-manifest/
 
     <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="mnf-item">
       <div class="mnf-item-head">
-        <h3 class="mnf-item-name">Bank Your Own Burner</h3>
+        <h3 class="mnf-item-name">BYOB &mdash; Bank Your Own Burner</h3>
         <div class="mnf-item-price">Bean Cost</div>
       </div>
       <div class="mnf-item-sub">Single Origin Custom Degree</div>
       <p class="mnf-item-notes">Pick any single-origin bean in our catalog and designate your target roast degree.</p>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="mnf-item">
+      <div class="mnf-item-head">
+        <h3 class="mnf-item-name">BYOB &mdash; Book Your Own Bootcamp</h3>
+        <div class="mnf-item-price">$30 + $15/guest</div>
+      </div>
+      <div class="mnf-item-sub">BYOB Roasting Bootcamp &bull; Hands-On Session</div>
+      <p class="mnf-item-notes">Step behind the roaster yourself. Pick any single origin, bring up to three guests, and roast live with us.</p>
     </a>
   </div>
 

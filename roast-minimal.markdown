@@ -372,228 +372,125 @@ permalink: /roast-minimal/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="roast-min-wrap">
   <!-- ── Roast Preview Switcher ── -->
   <nav class="roast-switcher" aria-label="Roast Preview Selector">
     <span class="switcher-label">Preview Roast:</span>
-    <button type="button" class="switcher-btn active" data-target="panel-early-bird">Early Bird</button>
-    <button type="button" class="switcher-btn" data-target="panel-chimney-sweep">Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="switcher-btn{% if forloop.first %} active{% endif %}" data-target="panel-{{ r.slug }}">{{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="roast-panel active" id="panel-early-bird">
-    <!-- Visual Stage -->
-    <div class="roast-min-gallery">
-      <div class="roast-min-stage">
-        <span class="roast-min-badge">{{ eb_level.layman }} Roast</span>
-        {% assign eb_img = '/images/' | append: eb.mascot_file %}
-        <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }} mascot" class="roast-min-img">
-      </div>
-    </div>
-
-    <!-- Product Info -->
-    <div class="roast-min-info">
-      <div>
-        <div class="roast-min-eyebrow">Signature House Blend</div>
-        <h1 class="roast-min-title">{{ eb.title }}</h1>
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="roast-panel{% if forloop.first %} active{% endif %}" id="panel-{{ r.slug }}">
+      <!-- Visual Stage -->
+      <div class="roast-min-gallery">
+        <div class="roast-min-stage">
+          <span class="roast-min-badge">{{ r_level.layman }} Roast</span>
+          {% assign r_img = '/images/' | append: r.mascot_file %}
+          <img src="{{ r_img | relative_url }}" alt="{{ r.title }} mascot" class="roast-min-img">
+        </div>
       </div>
 
-      <div class="roast-min-price-row">
-        {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-          <div class="roast-min-price is-sale" id="eb-price-display">
-            <s>${{ eb.price["12oz"] }}</s> ${{ eb.temporary_price["12oz"] }}
+      <!-- Product Info -->
+      <div class="roast-min-info">
+        <div>
+          <div class="roast-min-eyebrow">Signature House Blend</div>
+          <h1 class="roast-min-title">{{ r.title }}</h1>
+        </div>
+
+        <div class="roast-min-price-row">
+          {% if r.temporary_price and r.temporary_price["12oz"] %}
+            <div class="roast-min-price is-sale" id="{{ r.slug }}-price-display">
+              <s>${{ r.price["12oz"] }}</s> ${{ r.temporary_price["12oz"] }}
+            </div>
+          {% else %}
+            <div class="roast-min-price" id="{{ r.slug }}-price-display">${{ r.price["12oz"] }}</div>
+          {% endif %}
+        </div>
+
+        <p class="roast-min-desc">{{ r.description }}</p>
+
+        <!-- Size Selection -->
+        <div class="roast-opt-group">
+          <div class="roast-opt-label">
+            <span>Bag Size</span>
+            <span id="{{ r.slug }}-size-selected-label">12oz</span>
           </div>
-        {% else %}
-          <div class="roast-min-price" id="eb-price-display">${{ eb.price["12oz"] }}</div>
-        {% endif %}
-      </div>
-
-      <p class="roast-min-desc">{{ eb.description }}</p>
-
-      <!-- Size Selection -->
-      <div class="roast-opt-group">
-        <div class="roast-opt-label">
-          <span>Bag Size</span>
-          <span id="eb-size-selected-label">12oz</span>
-        </div>
-        <div class="roast-pills" id="eb-size-pills">
-          {% for sz in site.data.bag_sizes %}
-            <button type="button" class="roast-pill{% if sz.id == '12oz' %} active{% endif %}"
-                    data-size="{{ sz.id }}"
-                    data-regular="{{ eb.price[sz.id] }}"
-                    {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}>
-              {{ sz.label }}
-            </button>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Grind Selection -->
-      <div class="roast-opt-group">
-        <div class="roast-opt-label">
-          <span>Grind</span>
-        </div>
-        <select class="roast-select" id="eb-grind-select">
-          {% for g in site.data.grind_levels %}
-            <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <!-- Add to Cart -->
-      <button type="button" class="roast-atc-btn">Add to Cart</button>
-
-      <!-- Accordion Drawers -->
-      <div class="roast-accordion">
-        <div class="roast-accordion-item open">
-          <button type="button" class="roast-accordion-header">Flavor &amp; Sensory Notes</button>
-          <div class="roast-accordion-body">
-            <strong>Tasting Notes:</strong> {{ eb.tasting_notes }}<br>
-            <strong>Roast Level:</strong> {{ eb_level.name }} ({{ eb_level.layman }})<br>
-            <strong>Descriptor:</strong> {{ eb.descriptor | capitalize }}
+          <div class="roast-pills" id="{{ r.slug }}-size-pills">
+            {% for sz in site.data.bag_sizes %}
+              <button type="button" class="roast-pill{% if sz.id == '12oz' %} active{% endif %}"
+                      data-size="{{ sz.id }}"
+                      data-regular="{{ r.price[sz.id] }}"
+                      {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}>
+                {{ sz.label }}
+              </button>
+            {% endfor %}
           </div>
         </div>
 
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Blend Components &amp; Origins</button>
-          <div class="roast-accordion-body">
-            Active Formulation:
-            <div class="ratio-bar-wrap">
-              {% assign latest_history = eb.history | first %}
-              {% for comp in latest_history.components %}
-                <div class="ratio-bar-item">
-                  <span>{{ comp.name }}</span>
-                  <strong>{{ comp.ratio }}</strong>
-                </div>
-              {% endfor %}
+        <!-- Grind Selection -->
+        <div class="roast-opt-group">
+          <div class="roast-opt-label">
+            <span>Grind</span>
+          </div>
+          <select class="roast-select" id="{{ r.slug }}-grind-select">
+            {% for g in site.data.grind_levels %}
+              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Add to Cart -->
+        <button type="button" class="roast-atc-btn">Add to Cart</button>
+
+        <!-- Accordion Drawers -->
+        <div class="roast-accordion">
+          <div class="roast-accordion-item open">
+            <button type="button" class="roast-accordion-header">Flavor &amp; Sensory Notes</button>
+            <div class="roast-accordion-body">
+              <strong>Tasting Notes:</strong> {{ r.tasting_notes }}<br>
+              <strong>Roast Level:</strong> {{ r_level.name }} ({{ r_level.layman }})<br>
+              <strong>Descriptor:</strong> {{ r.descriptor | capitalize }}
+            </div>
+          </div>
+
+          <div class="roast-accordion-item">
+            <button type="button" class="roast-accordion-header">Blend Components &amp; Origins</button>
+            <div class="roast-accordion-body">
+              Active Formulation:
+              <div class="ratio-bar-wrap">
+                {% for comp in latest_history.components %}
+                  <div class="ratio-bar-item">
+                    <span>{{ comp.name }}</span>
+                    <strong>{{ comp.ratio }}</strong>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="roast-accordion-item">
+            <button type="button" class="roast-accordion-header">Brewing Methods</button>
+            <div class="roast-accordion-body">
+              Recommended for: {{ r.brewing_method }}.
+            </div>
+          </div>
+
+          <div class="roast-accordion-item">
+            <button type="button" class="roast-accordion-header">Naturalist Field Note</button>
+            <div class="roast-accordion-body">
+              {{ r.fun_fact }}
             </div>
           </div>
         </div>
-
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Brewing Methods</button>
-          <div class="roast-accordion-body">
-            Recommended for: {{ eb.brewing_method }}.
-          </div>
-        </div>
-
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Naturalist Field Note</button>
-          <div class="roast-accordion-body">
-            {{ eb.fun_fact }}
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="roast-panel" id="panel-chimney-sweep">
-    <!-- Visual Stage -->
-    <div class="roast-min-gallery">
-      <div class="roast-min-stage">
-        <span class="roast-min-badge">{{ cs_level.layman }} Roast</span>
-        {% assign cs_img = '/images/' | append: cs.mascot_file %}
-        <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }} mascot" class="roast-min-img">
-      </div>
-    </div>
-
-    <!-- Product Info -->
-    <div class="roast-min-info">
-      <div>
-        <div class="roast-min-eyebrow">Signature Espresso Blend</div>
-        <h1 class="roast-min-title">{{ cs.title }}</h1>
-      </div>
-
-      <div class="roast-min-price-row">
-        <div class="roast-min-price" id="cs-price-display">${{ cs.price["12oz"] }}</div>
-      </div>
-
-      <p class="roast-min-desc">{{ cs.description }}</p>
-
-      <!-- Size Selection -->
-      <div class="roast-opt-group">
-        <div class="roast-opt-label">
-          <span>Bag Size</span>
-          <span id="cs-size-selected-label">12oz</span>
-        </div>
-        <div class="roast-pills" id="cs-size-pills">
-          {% for sz in site.data.bag_sizes %}
-            <button type="button" class="roast-pill{% if sz.id == '12oz' %} active{% endif %}"
-                    data-size="{{ sz.id }}"
-                    data-regular="{{ cs.price[sz.id] }}">
-              {{ sz.label }}
-            </button>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Grind Selection -->
-      <div class="roast-opt-group">
-        <div class="roast-opt-label">
-          <span>Grind</span>
-        </div>
-        <select class="roast-select" id="cs-grind-select">
-          {% for g in site.data.grind_levels %}
-            <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <!-- Add to Cart -->
-      <button type="button" class="roast-atc-btn">Add to Cart</button>
-
-      <!-- Accordion Drawers -->
-      <div class="roast-accordion">
-        <div class="roast-accordion-item open">
-          <button type="button" class="roast-accordion-header">Flavor &amp; Sensory Notes</button>
-          <div class="roast-accordion-body">
-            <strong>Tasting Notes:</strong> {{ cs.tasting_notes }}<br>
-            <strong>Roast Level:</strong> {{ cs_level.name }} ({{ cs_level.layman }})<br>
-            <strong>Descriptor:</strong> {{ cs.descriptor | capitalize }}
-          </div>
-        </div>
-
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Blend Components &amp; Origins</button>
-          <div class="roast-accordion-body">
-            Active Formulation:
-            <div class="ratio-bar-wrap">
-              {% assign cs_history = cs.history | first %}
-              {% for comp in cs_history.components %}
-                <div class="ratio-bar-item">
-                  <span>{{ comp.name }}</span>
-                  <strong>{{ comp.ratio }}</strong>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Brewing Methods</button>
-          <div class="roast-accordion-body">
-            Recommended for: {{ cs.brewing_method }}.
-          </div>
-        </div>
-
-        <div class="roast-accordion-item">
-          <button type="button" class="roast-accordion-header">Naturalist Field Note</button>
-          <div class="roast-accordion-body">
-            {{ cs.fun_fact }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
@@ -609,18 +506,20 @@ permalink: /roast-minimal/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
     // ── 2. Pill Size & Price Logic ──
-    function setupSizePills(containerId, displayId, labelId) {
-      const container = document.getElementById(containerId);
-      const display = document.getElementById(displayId);
-      const label = document.getElementById(labelId);
-      if (!container || !display || !label) return;
-
+    document.querySelectorAll('.roast-pills').forEach(container => {
+      const panel = container.closest('.roast-panel');
+      const display = panel.querySelector('.roast-min-price');
+      const label = panel.querySelector('.roast-opt-label span:last-child');
       const pills = container.querySelectorAll('.roast-pill');
+
       pills.forEach(pill => {
         pill.addEventListener('click', () => {
           pills.forEach(p => p.classList.remove('active'));
@@ -640,10 +539,7 @@ permalink: /roast-minimal/
           }
         });
       });
-    }
-
-    setupSizePills('eb-size-pills', 'eb-price-display', 'eb-size-selected-label');
-    setupSizePills('cs-size-pills', 'cs-price-display', 'cs-size-selected-label');
+    });
 
     // ── 3. Accordion Toggle Logic ──
     document.querySelectorAll('.roast-accordion-header').forEach(header => {

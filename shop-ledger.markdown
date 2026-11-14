@@ -12,8 +12,7 @@ permalink: /shop-ledger/
     --ldg-muted: #666666;
     --ldg-light: #999999;
     --ldg-line: #e5e5e5;
-    --ldg-hover: #111111;
-    --ldg-hover-text: #ffffff;
+    --ldg-hover: #f5f5f5;
     --ldg-sale: #c2410c;
   }
 
@@ -93,7 +92,7 @@ permalink: /shop-ledger/
   /* ── Table Header ── */
   .ldg-table-head {
     display: grid;
-    grid-template-columns: 70px 1.8fr 1.1fr 2fr 110px 40px;
+    grid-template-columns: 1.8fr 1.1fr 2fr 110px 40px;
     gap: 1.5rem;
     padding: 0.6rem 1rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -113,7 +112,7 @@ permalink: /shop-ledger/
 
   .ldg-row {
     display: grid;
-    grid-template-columns: 70px 1.8fr 1.1fr 2fr 110px 40px;
+    grid-template-columns: 1.8fr 1.1fr 2fr 110px 40px;
     gap: 1.5rem;
     align-items: baseline;
     padding: 1.1rem 1rem;
@@ -125,27 +124,15 @@ permalink: /shop-ledger/
 
   .ldg-row:hover {
     text-decoration: none;
+    color: inherit;
     background-color: var(--ldg-hover);
-    color: var(--ldg-hover-text);
-  }
-
-  .ldg-row:hover .ldg-mono-muted,
-  .ldg-row:hover .ldg-desc,
-  .ldg-row:hover .ldg-old-price {
-    color: rgba(255, 255, 255, 0.7);
   }
 
   .ldg-row:hover .ldg-arrow {
     transform: translateX(4px);
-    color: #ffffff;
+    color: var(--ldg-text);
   }
 
-  .ldg-mono-muted {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    color: var(--ldg-light);
-    letter-spacing: 0.05em;
-  }
 
   .ldg-name {
     font-family: 'Figtree', var(--font-sans, sans-serif);
@@ -186,9 +173,7 @@ permalink: /shop-ledger/
     color: var(--ldg-sale);
   }
 
-  .ldg-row:hover .ldg-sale-price {
-    color: #fca5a5;
-  }
+
 
   .ldg-arrow {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -205,7 +190,7 @@ permalink: /shop-ledger/
     }
 
     .ldg-row {
-      grid-template-columns: 50px 1fr auto;
+      grid-template-columns: 1fr auto;
       gap: 0.75rem;
       padding: 1rem 0.5rem;
     }
@@ -236,11 +221,10 @@ permalink: /shop-ledger/
   {% assign all_roasts = site.roasts | sort: "order" %}
   <div class="ldg-cat-head">
     <h2 class="ldg-cat-title">01 &bull; Coffee Catalog</h2>
-    <span class="ldg-cat-count">{{ all_roasts.size }} Lots</span>
+    <span class="ldg-cat-count">{{ all_roasts.size }} Coffees</span>
   </div>
 
   <div class="ldg-table-head">
-    <span>Lot No.</span>
     <span>Coffee</span>
     <span>Category / Profile</span>
     <span>Sensory Notes &amp; Origins</span>
@@ -252,7 +236,6 @@ permalink: /shop-ledger/
     {% for r in all_roasts %}
       {% assign level_info = site.data.roast_levels[r.roast_level] %}
       <a href="{{ r.url | relative_url }}" class="ldg-row">
-        <span class="ldg-mono-muted">CF-{{ forloop.index | prepend: '00' | slice: -2, 2 }}</span>
         <span class="ldg-name">{{ r.card_title | default: r.title }}</span>
         <span class="ldg-profile">{{ r.category | capitalize }}{% if level_info %} &bull; {{ level_info.layman }}{% endif %}</span>
         <span class="ldg-desc">
@@ -278,7 +261,6 @@ permalink: /shop-ledger/
   </div>
 
   <div class="ldg-table-head">
-    <span>Lot No.</span>
     <span>Flight Package</span>
     <span>Format</span>
     <span>Inclusions</span>
@@ -288,7 +270,6 @@ permalink: /shop-ledger/
 
   <div class="ldg-table">
     <a href="{{ '/flights/the-aviary/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">FL-01</span>
       <span class="ldg-name">The Aviary Sampler</span>
       <span class="ldg-profile">4 x 8oz Set</span>
       <span class="ldg-desc">Early Bird, Feather Soot, Chimney Sweep, Lil' Sipper</span>
@@ -297,7 +278,6 @@ permalink: /shop-ledger/
     </a>
 
     <a href="{{ '/flights/peck-your-own/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">FL-02</span>
       <span class="ldg-name">Peck Your Own Flight</span>
       <span class="ldg-profile">Min. 4 x 8oz</span>
       <span class="ldg-desc">Customer-selected 8oz tasting bags from active catalog</span>
@@ -308,12 +288,11 @@ permalink: /shop-ledger/
 
   <!-- ── 3. Custom Roastery ── -->
   <div class="ldg-cat-head" style="margin-top: 5rem;">
-    <h2 class="ldg-cat-title">03 &bull; Custom Roastery Programs</h2>
-    <span class="ldg-cat-count">3 Programs</span>
+    <h2 class="ldg-cat-title">03 &bull; BYOB &bull; Custom Roastery Programs</h2>
+    <span class="ldg-cat-count">4 Programs</span>
   </div>
 
   <div class="ldg-table-head">
-    <span>Lot No.</span>
     <span>Service</span>
     <span>Scope</span>
     <span>Details</span>
@@ -323,8 +302,7 @@ permalink: /shop-ledger/
 
   <div class="ldg-table">
     <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">CR-01</span>
-      <span class="ldg-name">Build Your Own Blend</span>
+      <span class="ldg-name">BYOB &mdash; Build Your Own Blend</span>
       <span class="ldg-profile">Recipe Profile</span>
       <span class="ldg-desc">Custom ratio formulation across up to three origins and roast levels</span>
       <span class="ldg-price">$32.00</span>
@@ -332,8 +310,7 @@ permalink: /shop-ledger/
     </a>
 
     <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">CR-02</span>
-      <span class="ldg-name">Bring Your Own Beans</span>
+      <span class="ldg-name">BYOB &mdash; Bring Your Own Beans</span>
       <span class="ldg-profile">Toll Roasting</span>
       <span class="ldg-desc">Customer supplied green coffee roasted to your exact batch profile</span>
       <span class="ldg-price">Quote</span>
@@ -341,11 +318,18 @@ permalink: /shop-ledger/
     </a>
 
     <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">CR-03</span>
-      <span class="ldg-name">Bank Your Own Burner</span>
+      <span class="ldg-name">BYOB &mdash; Bank Your Own Burner</span>
       <span class="ldg-profile">Single Origin Custom</span>
       <span class="ldg-desc">Select any catalog origin and pick your custom target roast degree</span>
       <span class="ldg-price">Bean Cost</span>
+      <span class="ldg-arrow">&rarr;</span>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="ldg-row">
+      <span class="ldg-name">BYOB &mdash; Book Your Own Bootcamp</span>
+      <span class="ldg-profile">Bootcamp Session</span>
+      <span class="ldg-desc">Hands-on personalized roasting session for up to 3 guests</span>
+      <span class="ldg-price">$30 + $15/guest</span>
       <span class="ldg-arrow">&rarr;</span>
     </a>
   </div>
@@ -356,7 +340,6 @@ permalink: /shop-ledger/
   </div>
 
   <div class="ldg-table-head">
-    <span>Lot No.</span>
     <span>Item</span>
     <span>Category</span>
     <span>Notes</span>
@@ -366,7 +349,6 @@ permalink: /shop-ledger/
 
   <div class="ldg-table">
     <a href="{{ '/gift/' | relative_url }}" class="ldg-row">
-      <span class="ldg-mono-muted">GC-01</span>
       <span class="ldg-name">Digital Gift Card</span>
       <span class="ldg-profile">Voucher</span>
       <span class="ldg-desc">Instant digital code delivered via email for all catalog offerings</span>

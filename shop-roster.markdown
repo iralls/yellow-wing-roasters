@@ -462,8 +462,8 @@ permalink: /shop-roster/
 
   <!-- ── 3. Custom Roastery ── -->
   <div class="roster-section-head" style="margin-top: 5rem;">
-    <h2 class="roster-section-title">Custom Roasts</h2>
-    <span class="roster-section-count">3 Services</span>
+    <h2 class="roster-section-title">BYOB &bull; Custom Roasts</h2>
+    <span class="roster-section-count">4 Services</span>
   </div>
 
   <div class="roster-col-labels">
@@ -480,7 +480,7 @@ permalink: /shop-roster/
         <span class="roster-icon-generic">&#9881;</span>
       </div>
       <div class="roster-cell-title">
-        <div class="roster-item-name">Build Your Own Blend</div>
+        <div class="roster-item-name">BYOB &mdash; Build Your Own Blend</div>
         <p class="roster-item-sub">Custom Recipe &bull; Micro-Batch Profiling</p>
       </div>
       <div class="roster-cell-notes">
@@ -502,7 +502,7 @@ permalink: /shop-roster/
         <span class="roster-icon-generic">&#128230;</span>
       </div>
       <div class="roster-cell-title">
-        <div class="roster-item-name">Bring Your Own Beans</div>
+        <div class="roster-item-name">BYOB &mdash; Bring Your Own Beans</div>
         <p class="roster-item-sub">Green Lot Roasting Service</p>
       </div>
       <div class="roster-cell-notes">
@@ -524,7 +524,7 @@ permalink: /shop-roster/
         <span class="roster-icon-generic">&#128293;</span>
       </div>
       <div class="roster-cell-title">
-        <div class="roster-item-name">Bank Your Own Burner</div>
+        <div class="roster-item-name">BYOB &mdash; Bank Your Own Burner</div>
         <p class="roster-item-sub">Bespoke Single Roast Curve</p>
       </div>
       <div class="roster-cell-notes">
@@ -533,6 +533,28 @@ permalink: /shop-roster/
       <div class="roster-cell-price">
         Bean Cost
         <span class="roster-unit">base price</span>
+      </div>
+      <div class="roster-cell-action">
+        <svg class="roster-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="roster-row">
+      <div class="roster-cell-visual">
+        <span class="roster-icon-generic">&#127891;</span>
+      </div>
+      <div class="roster-cell-title">
+        <div class="roster-item-name">BYOB &mdash; Book Your Own Bootcamp</div>
+        <p class="roster-item-sub">Hands-On Roasting Session &bull; Max 3 Guests</p>
+      </div>
+      <div class="roster-cell-notes">
+        <span class="roster-cell-notes-italic">Step behind the roaster yourself. Pick any single origin and roast live with us.</span>
+      </div>
+      <div class="roster-cell-price">
+        $30 + $15/guest
+        <span class="roster-unit">per session</span>
       </div>
       <div class="roster-cell-action">
         <svg class="roster-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

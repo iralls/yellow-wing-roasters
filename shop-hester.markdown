@@ -345,8 +345,8 @@ permalink: /shop-hester/
 
   <!-- ── 3. Custom Roastery Section ── -->
   <div class="hester-section-header" id="custom">
-    <h2 class="hester-section-title">Custom Roastery</h2>
-    <span class="hester-section-count">3 items</span>
+    <h2 class="hester-section-title">BYOB &bull; Custom Roastery</h2>
+    <span class="hester-section-count">4 items</span>
   </div>
 
   <div class="hester-grid">
@@ -355,7 +355,7 @@ permalink: /shop-hester/
         <img src="{{ '/images/build-a-bird-transparent.png' | relative_url }}" alt="Build Your Own Blend mascot" class="hester-image" loading="lazy" decoding="async">
       </div>
       <div class="hester-title-price">
-        <div class="hester-item-title">Build Your Own Blend</div>
+        <div class="hester-item-title">BYOB &mdash; Build Your Own Blend</div>
         <div class="hester-item-price">$32.00</div>
       </div>
       <p class="hester-item-desc">Custom Blend &bull; Up to 3 varieties with individual roast degrees</p>
@@ -366,7 +366,7 @@ permalink: /shop-hester/
         <img src="{{ '/images/binocular-birds-transparent.png' | relative_url }}" alt="Bring Your Own Beans mascot" class="hester-image" loading="lazy" decoding="async">
       </div>
       <div class="hester-title-price">
-        <div class="hester-item-title">Bring Your Own Beans</div>
+        <div class="hester-item-title">BYOB &mdash; Bring Your Own Beans</div>
         <div class="hester-item-price">Quote</div>
       </div>
       <p class="hester-item-desc">Custom Sourced &bull; Send us green beans for personalized roasting</p>
@@ -377,10 +377,21 @@ permalink: /shop-hester/
         <img src="{{ '/images/bird-on-spit-transparent.png' | relative_url }}" alt="Bank Your Own Burner mascot" class="hester-image" loading="lazy" decoding="async">
       </div>
       <div class="hester-title-price">
-        <div class="hester-item-title">Bank Your Own Burner</div>
+        <div class="hester-item-title">BYOB &mdash; Bank Your Own Burner</div>
         <div class="hester-item-price">Bean Cost</div>
       </div>
       <p class="hester-item-desc">Custom Profile &bull; Dial in your chosen single-origin roast level</p>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="hester-item">
+      <div class="hester-image-wrap">
+        <img src="{{ '/images/teacher-transparent.png' | relative_url }}" alt="Book Your Own Bootcamp mascot" class="hester-image" loading="lazy" decoding="async">
+      </div>
+      <div class="hester-title-price">
+        <div class="hester-item-title">BYOB &mdash; Book Your Own Bootcamp</div>
+        <div class="hester-item-price">$30 + $15/guest</div>
+      </div>
+      <p class="hester-item-desc">Roasting Bootcamp &bull; Step behind the roaster for a hands-on session</p>
     </a>
   </div>
 

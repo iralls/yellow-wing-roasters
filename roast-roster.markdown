@@ -265,209 +265,114 @@ permalink: /roast-roster/
   }
 </style>
 
+{% assign house_blends = site.roasts | where: "category", "blend" | sort: "order" | slice: 0, 4 %}
+
 <div class="rstr-wrap">
   <!-- ── Switcher ── -->
   <nav class="rstr-switcher" aria-label="Roster Item Switcher">
-    <button type="button" class="rstr-switch-btn active" data-target="rstr-eb">Roster Item 01 &bull; Early Bird</button>
-    <button type="button" class="rstr-switch-btn" data-target="rstr-cs">Roster Item 02 &bull; Chimney Sweep</button>
+    {% for r in house_blends %}
+      <button type="button" class="rstr-switch-btn{% if forloop.first %} active{% endif %}" data-target="rstr-{{ r.slug }}">Roster Item 0{{ forloop.index }} &bull; {{ r.card_title | default: r.title }}</button>
+    {% endfor %}
   </nav>
 
-  <!-- ════════════════════════════════════════════
-       PANEL 1: EARLY BIRD
-       ════════════════════════════════════════════ -->
-  {% assign eb = site.roasts | where: "slug", "early-bird" | first %}
-  {% assign eb_level = site.data.roast_levels[eb.roast_level] %}
-  <div class="rstr-panel active" id="rstr-eb">
-    <!-- Top Hero Banner -->
-    <div class="rstr-top-row">
-      <div class="rstr-top-left">
-        <div class="rstr-icon-circle">
-          {% assign eb_img = '/images/' | append: eb.mascot_file %}
-          <img src="{{ eb_img | relative_url }}" alt="{{ eb.title }}" class="rstr-bird-thumb">
+  {% for r in house_blends %}
+    {% assign r_level = site.data.roast_levels[r.roast_level] %}
+    {% assign latest_history = r.history | first %}
+    <div class="rstr-panel{% if forloop.first %} active{% endif %}" id="rstr-{{ r.slug }}">
+      <!-- Top Hero Banner -->
+      <div class="rstr-top-row">
+        <div class="rstr-top-left">
+          <div class="rstr-icon-circle">
+            {% assign r_img = '/images/' | append: r.mascot_file %}
+            <img src="{{ r_img | relative_url }}" alt="{{ r.title }}" class="rstr-bird-thumb">
+          </div>
+          <div>
+            <h1 class="rstr-hero-title">{{ r.title }}</h1>
+            <p class="rstr-hero-sub">Signature House Blend &bull; {{ r_level.layman }} Roast</p>
+          </div>
         </div>
-        <div>
-          <h1 class="rstr-hero-title">{{ eb.title }}</h1>
-          <p class="rstr-hero-sub">Signature House Blend &bull; {{ eb_level.layman }} Roast</p>
-        </div>
-      </div>
 
-      <div class="rstr-hero-price" id="rstr-eb-price">
-        {% if eb.temporary_price and eb.temporary_price["12oz"] %}
-          <s>${{ eb.price["12oz"] }}</s> <span class="rstr-sale-txt">${{ eb.temporary_price["12oz"] }}</span>
-        {% else %}
-          ${{ eb.price["12oz"] }}
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Tabular Specification Rows -->
-    <div class="rstr-rows-wrap">
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Sensory Profile</span>
-        <div class="rstr-row-val">
-          <strong>{{ eb.tasting_notes | capitalize }}</strong> &mdash; {{ eb.descriptor | capitalize }}.
-          <div style="color: var(--rstr-muted); margin-top: 0.35rem;">{{ eb.description }}</div>
+        <div class="rstr-hero-price" id="rstr-{{ r.slug }}-price">
+          {% if r.temporary_price and r.temporary_price["12oz"] %}
+            <s>${{ r.price["12oz"] }}</s> <span class="rstr-sale-txt">${{ r.temporary_price["12oz"] }}</span>
+          {% else %}
+            ${{ r.price["12oz"] }}
+          {% endif %}
         </div>
       </div>
 
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Roast Degree</span>
-        <div class="rstr-row-val">
-          <strong>{{ eb_level.name }}</strong> (Specialty {{ eb_level.specialty }}, Level {{ eb.roast_level }}/5)
+      <!-- Tabular Specification Rows -->
+      <div class="rstr-rows-wrap">
+        <div class="rstr-row-item">
+          <span class="rstr-row-key">Sensory Profile</span>
+          <div class="rstr-row-val">
+            <strong>{{ r.tasting_notes | capitalize }}</strong> &mdash; {{ r.descriptor | capitalize }}.
+            <div style="color: var(--rstr-muted); margin-top: 0.35rem;">{{ r.description }}</div>
+          </div>
         </div>
-      </div>
 
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Blend Formulation</span>
-        <div class="rstr-row-val">
-          {% assign latest_eb = eb.history | first %}
-          <div class="rstr-comp-chips">
-            {% for c in latest_eb.components %}
-              <span class="rstr-chip">{{ c.name }}: <strong>{{ c.ratio }}</strong></span>
-            {% endfor %}
+        <div class="rstr-row-item">
+          <span class="rstr-row-key">Roast Degree</span>
+          <div class="rstr-row-val">
+            <strong>{{ r_level.name }}</strong> (Specialty {{ r_level.specialty }}, Level {{ r.roast_level }}/5)
+          </div>
+        </div>
+
+        <div class="rstr-row-item">
+          <span class="rstr-row-key">Blend Formulation</span>
+          <div class="rstr-row-val">
+            <div class="rstr-comp-chips">
+              {% for c in latest_history.components %}
+                <span class="rstr-chip">{{ c.name }}: <strong>{{ c.ratio }}</strong></span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="rstr-row-item">
+          <span class="rstr-row-key">Brew Guide</span>
+          <div class="rstr-row-val">{{ r.brewing_method }}</div>
+        </div>
+
+        <div class="rstr-row-item">
+          <span class="rstr-row-key">Field Observation</span>
+          <div class="rstr-row-val" style="font-style: italic; color: var(--rstr-muted);">
+            &ldquo;{{ r.fun_fact }}&rdquo;
           </div>
         </div>
       </div>
 
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Brew Guide</span>
-        <div class="rstr-row-val">{{ eb.brewing_method }}</div>
-      </div>
-
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Field Observation</span>
-        <div class="rstr-row-val" style="font-style: italic; color: var(--rstr-muted);">
-          &ldquo;{{ eb.fun_fact }}&rdquo;
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Console -->
-    <div class="rstr-action-bar">
-      <div>
-        <label for="rstr-eb-size" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Package Size</label>
-        <select class="rstr-select" id="rstr-eb-size" style="width: 100%;">
-          {% for sz in site.data.bag_sizes %}
-            <option value="{{ sz.id }}"
-                    data-reg="{{ eb.price[sz.id] }}"
-                    {% if eb.temporary_price and eb.temporary_price[sz.id] %}data-sale="{{ eb.temporary_price[sz.id] }}"{% endif %}
-                    {% if sz.id == '12oz' %} selected{% endif %}>
-              {{ sz.label }} &mdash; {% if eb.temporary_price and eb.temporary_price[sz.id] %}${{ eb.temporary_price[sz.id] }}{% else %}${{ eb.price[sz.id] }}{% endif %}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div>
-        <label for="rstr-eb-grind" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Grind Selection</label>
-        <select class="rstr-select" id="rstr-eb-grind" style="width: 100%;">
-          {% for g in site.data.grind_levels %}
-            <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div style="align-self: flex-end;">
-        <button type="button" class="rstr-order-btn">Add to Cart</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       PANEL 2: CHIMNEY SWEEP
-       ════════════════════════════════════════════ -->
-  {% assign cs = site.roasts | where: "slug", "chimney-sweep" | first %}
-  {% assign cs_level = site.data.roast_levels[cs.roast_level] %}
-  <div class="rstr-panel" id="rstr-cs">
-    <!-- Top Hero Banner -->
-    <div class="rstr-top-row">
-      <div class="rstr-top-left">
-        <div class="rstr-icon-circle">
-          {% assign cs_img = '/images/' | append: cs.mascot_file %}
-          <img src="{{ cs_img | relative_url }}" alt="{{ cs.title }}" class="rstr-bird-thumb">
-        </div>
+      <!-- Order Console -->
+      <div class="rstr-action-bar">
         <div>
-          <h1 class="rstr-hero-title">{{ cs.title }}</h1>
-          <p class="rstr-hero-sub">Signature Espresso Blend &bull; {{ cs_level.layman }} Roast</p>
-        </div>
-      </div>
-
-      <div class="rstr-hero-price" id="rstr-cs-price">
-        ${{ cs.price["12oz"] }}
-      </div>
-    </div>
-
-    <!-- Tabular Specification Rows -->
-    <div class="rstr-rows-wrap">
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Sensory Profile</span>
-        <div class="rstr-row-val">
-          <strong>{{ cs.tasting_notes | capitalize }}</strong> &mdash; {{ cs.descriptor | capitalize }}.
-          <div style="color: var(--rstr-muted); margin-top: 0.35rem;">{{ cs.description }}</div>
-        </div>
-      </div>
-
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Roast Degree</span>
-        <div class="rstr-row-val">
-          <strong>{{ cs_level.name }}</strong> (Specialty {{ cs_level.specialty }}, Level {{ cs.roast_level }}/5)
-        </div>
-      </div>
-
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Blend Formulation</span>
-        <div class="rstr-row-val">
-          {% assign latest_cs = cs.history | first %}
-          <div class="rstr-comp-chips">
-            {% for c in latest_cs.components %}
-              <span class="rstr-chip">{{ c.name }}: <strong>{{ c.ratio }}</strong></span>
+          <label for="rstr-{{ r.slug }}-size" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Package Size</label>
+          <select class="rstr-select rstr-size-select" id="rstr-{{ r.slug }}-size" data-target-price="rstr-{{ r.slug }}-price" style="width: 100%;">
+            {% for sz in site.data.bag_sizes %}
+              <option value="{{ sz.id }}"
+                      data-reg="{{ r.price[sz.id] }}"
+                      {% if r.temporary_price and r.temporary_price[sz.id] %}data-sale="{{ r.temporary_price[sz.id] }}"{% endif %}
+                      {% if sz.id == '12oz' %} selected{% endif %}>
+                {{ sz.label }} &mdash; {% if r.temporary_price and r.temporary_price[sz.id] %}${{ r.temporary_price[sz.id] }}{% else %}${{ r.price[sz.id] }}{% endif %}
+              </option>
             {% endfor %}
-          </div>
+          </select>
         </div>
-      </div>
 
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Brew Guide</span>
-        <div class="rstr-row-val">{{ cs.brewing_method }}</div>
-      </div>
+        <div>
+          <label for="rstr-{{ r.slug }}-grind" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Grind Selection</label>
+          <select class="rstr-select" id="rstr-{{ r.slug }}-grind" style="width: 100%;">
+            {% for g in site.data.grind_levels %}
+              <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-      <div class="rstr-row-item">
-        <span class="rstr-row-key">Field Observation</span>
-        <div class="rstr-row-val" style="font-style: italic; color: var(--rstr-muted);">
-          &ldquo;{{ cs.fun_fact }}&rdquo;
+        <div style="align-self: flex-end;">
+          <button type="button" class="rstr-order-btn">Add to Cart</button>
         </div>
       </div>
     </div>
-
-    <!-- Order Console -->
-    <div class="rstr-action-bar">
-      <div>
-        <label for="rstr-cs-size" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Package Size</label>
-        <select class="rstr-select" id="rstr-cs-size" style="width: 100%;">
-          {% for sz in site.data.bag_sizes %}
-            <option value="{{ sz.id }}"
-                    data-reg="{{ cs.price[sz.id] }}"
-                    {% if sz.id == '12oz' %} selected{% endif %}>
-              {{ sz.label }} &mdash; ${{ cs.price[sz.id] }}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div>
-        <label for="rstr-cs-grind" class="rstr-row-key" style="display: block; margin-bottom: 0.35rem;">Grind Selection</label>
-        <select class="rstr-select" id="rstr-cs-grind" style="width: 100%;">
-          {% for g in site.data.grind_levels %}
-            <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div style="align-self: flex-end;">
-        <button type="button" class="rstr-order-btn">Add to Cart</button>
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 <script>
@@ -482,33 +387,26 @@ permalink: /roast-roster/
 
         btn.classList.add('active');
         const targetId = btn.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
       });
     });
 
-    const ebSelect = document.getElementById('rstr-eb-size');
-    const ebPrice = document.getElementById('rstr-eb-price');
-    if (ebSelect && ebPrice) {
-      ebSelect.addEventListener('change', () => {
-        const opt = ebSelect.options[ebSelect.selectedIndex];
+    document.querySelectorAll('.rstr-size-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const targetId = sel.getAttribute('data-target-price');
+        const priceDisplay = document.getElementById(targetId);
+        const opt = sel.options[sel.selectedIndex];
         const reg = opt.getAttribute('data-reg');
         const sale = opt.getAttribute('data-sale');
         if (sale) {
-          ebPrice.innerHTML = `<s>$${reg}</s> <span class="rstr-sale-txt">$${sale}</span>`;
+          priceDisplay.innerHTML = `<s>$${reg}</s> <span class="rstr-sale-txt">$${sale}</span>`;
         } else {
-          ebPrice.innerHTML = `$${reg}`;
+          priceDisplay.innerHTML = `$${reg}`;
         }
       });
-    }
-
-    const csSelect = document.getElementById('rstr-cs-size');
-    const csPrice = document.getElementById('rstr-cs-price');
-    if (csSelect && csPrice) {
-      csSelect.addEventListener('change', () => {
-        const opt = csSelect.options[csSelect.selectedIndex];
-        const reg = opt.getAttribute('data-reg');
-        csPrice.innerHTML = `$${reg}`;
-      });
-    }
+    });
   })();
 </script>

@@ -152,9 +152,36 @@ a {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
 
   &:hover {
     color: var(--color-accent);
+    text-decoration: none;
+  }
+}
+
+.cart-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background-color: rgba(48, 32, 16, 0.08);
+  color: var(--color-text-muted);
+  line-height: 1;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+
+  &.has-items {
+    background-color: #b45309;
+    color: #ffffff;
   }
 }
 

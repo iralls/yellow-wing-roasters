@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Shop (Menu Listing) — Yellow Wing Roasters
+title: Shop
 permalink: /shop-menu/
 ---
 
 <style>
   /* ── Fine Dining / Wine List Minimalist Listing Prototype ── */
   :root {
-    --menu-bg: #faf7f2;
+    --menu-bg: #fcfbfa;
     --menu-text: #241d17;
     --menu-muted: #7a7065;
     --menu-accent: #9c6d12;
@@ -50,7 +50,7 @@ permalink: /shop-menu/
     line-height: 1.1;
     letter-spacing: -0.02em;
     color: var(--menu-text);
-    margin: 0 0 1rem;
+    margin: 0;
   }
 
   .menu-subtitle {
@@ -58,7 +58,7 @@ permalink: /shop-menu/
     font-size: 1.05rem;
     color: var(--menu-muted);
     line-height: 1.6;
-    margin: 0;
+    margin: 1rem 0 0;
   }
 
   /* ── Section Dividers ── */
@@ -175,11 +175,10 @@ permalink: /shop-menu/
 <div class="menu-listing-wrap">
   <!-- ── Header ── -->
   <header class="menu-header">
-    <div class="menu-header-mark">Yellow Wing Roasters</div>
-    <h1 class="menu-title">Coffee Roster</h1>
-    <p class="menu-subtitle">
-      A small-batch collection roasted to order in Massachusetts.
-    </p>
+    <h1 class="menu-title">Shop</h1>
+    {% if page.subtitle %}
+      <p class="menu-subtitle">{{ page.subtitle }}</p>
+    {% endif %}
   </header>
 
   <!-- ── 1. Coffee: Signature Blends ── -->
@@ -314,11 +313,11 @@ permalink: /shop-menu/
 
   <!-- ── 5. Custom Roastery ── -->
   <section class="menu-section">
-    <h2 class="menu-section-title">Custom Roastery</h2>
+    <h2 class="menu-section-title">BYOB &bull; Custom Roastery</h2>
 
     <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="menu-item">
       <div class="menu-item-row">
-        <h3 class="menu-item-name">Build Your Own Blend</h3>
+        <h3 class="menu-item-name">BYOB &mdash; Build Your Own Blend</h3>
         <div class="menu-item-leader" aria-hidden="true"></div>
         <div class="menu-item-price">$32.00</div>
       </div>
@@ -330,7 +329,7 @@ permalink: /shop-menu/
 
     <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="menu-item">
       <div class="menu-item-row">
-        <h3 class="menu-item-name">Bring Your Own Beans</h3>
+        <h3 class="menu-item-name">BYOB &mdash; Bring Your Own Beans</h3>
         <div class="menu-item-leader" aria-hidden="true"></div>
         <div class="menu-item-price">Quote</div>
       </div>
@@ -342,13 +341,25 @@ permalink: /shop-menu/
 
     <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="menu-item">
       <div class="menu-item-row">
-        <h3 class="menu-item-name">Bank Your Own Burner</h3>
+        <h3 class="menu-item-name">BYOB &mdash; Bank Your Own Burner</h3>
         <div class="menu-item-leader" aria-hidden="true"></div>
         <div class="menu-item-price">Bean Cost</div>
       </div>
       <div class="menu-item-desc">
         <span class="menu-item-notes">Designate your target roast level on any single-origin bean in our catalog</span>
         <span class="menu-item-meta">Profile Spec</span>
+      </div>
+    </a>
+
+    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="menu-item">
+      <div class="menu-item-row">
+        <h3 class="menu-item-name">BYOB &mdash; Book Your Own Bootcamp</h3>
+        <div class="menu-item-leader" aria-hidden="true"></div>
+        <div class="menu-item-price">$30 + $15/guest</div>
+      </div>
+      <div class="menu-item-desc">
+        <span class="menu-item-notes">Hands-on personalized roasting session for up to 3 guests</span>
+        <span class="menu-item-meta">Bootcamp Session</span>
       </div>
     </a>
   </section>
