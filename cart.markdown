@@ -7,7 +7,7 @@ permalink: /cart/
 <link rel="stylesheet" href="{{ '/css/menu-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 
 <div class="hst-wrap cart-page-wrap">
-  <a href="{{ '/shop-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
+  <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
 
   <div class="cart-header-section" style="margin-bottom: 2.5rem;">
     <div class="hst-cat">Checkout &amp; Delivery</div>
@@ -22,7 +22,7 @@ permalink: /cart/
     <h2 style="font-family: 'Figtree', var(--font-sans, sans-serif); font-size: 1.5rem; font-weight: 600; color: var(--hst-text); margin-bottom: 0.5rem;">Your nest is empty.</h2>
     <p style="color: var(--hst-muted); font-size: 1rem; margin-bottom: 2rem;">Discover our small-batch coffees, custom roasts, and subscription offerings.</p>
     <div style="display: flex; gap: 0.75rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 0.5rem;">
-      <a href="{{ '/shop-menu/' | relative_url }}" class="action-pill-btn btn-primary-pill">Browse Coffees</a>
+      <a href="{{ '/shop/' | relative_url }}" class="action-pill-btn btn-primary-pill">Browse Coffees</a>
       <a href="{{ '/order/manage/' | relative_url }}" class="action-pill-btn btn-secondary-pill">Manage Order</a>
     </div>
   </div>

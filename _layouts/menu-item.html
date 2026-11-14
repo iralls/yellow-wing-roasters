@@ -19,9 +19,9 @@ layout: default
   {% if page.back_url %}
     <a href="{{ page.back_url | relative_url }}" class="hst-back-link">&larr; {{ page.back_label | default: 'Back' }}</a>
   {% elsif is_sub %}
-    <a href="{{ '/subscriptions-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
+    <a href="{{ '/subscriptions/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
   {% else %}
-    <a href="{{ '/shop-menu/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
+    <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
   {% endif %}
 
   <div class="hst-panel" id="product-{{ page.slug | default: page.title | slugify }}">

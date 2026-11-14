@@ -62,6 +62,6 @@ intro: "Check your recurring delivery schedule, or pause, resume, or cancel your
 <script>
   initManageSubscriptions({
     apiUrl: {{ site.subscription_api_url | jsonify }},
-    resubscribeUrl: {{ '/subscriptions-menu/' | relative_url | jsonify }}
+    resubscribeUrl: {{ '/subscriptions/' | relative_url | jsonify }}
   });
 </script>

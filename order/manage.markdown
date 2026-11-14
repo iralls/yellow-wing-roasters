@@ -67,7 +67,7 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
 <script>
   initManageOrders({
     apiUrl: {{ site.order_api_url | jsonify }},
-    catalogUrl: {{ '/shop-menu/' | relative_url | jsonify }},
+    catalogUrl: {{ '/shop/' | relative_url | jsonify }},
     roastsData: window.YWR_ROASTS_DATA,
     bagSizes: window.YWR_BAG_SIZES,
     defaultGrind: window.YWR_DEFAULT_GRIND
