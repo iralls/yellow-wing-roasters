@@ -17,23 +17,26 @@ origins:
 history:
   - date: "2026-10"
     components:
-      - name: Brazil Cerrado Mineiro
-        ratio: 50%
-      - name: Guatemala Antigua
+      - name: Brazil Brazil Legender Especial Peaberry Natural
+        ratio: 25%
+      - name: Brazil Estavam Mario Natural
+        slug: brazil-estavam-mario
+        ratio: 25%
+      - name: Guatemala Antigua Washed
         slug: guatemala-antigua
         ratio: 30%
-      - name: Ethiopia Guji
+      - name: Ethiopia Guji Uraga Natural
         slug: ethiopia-guji
         ratio: 20%
   - date: "2026-06"
     components:
-      - name: Brazil Estavam Mario
+      - name: Brazil Estavam Mario Natural
         slug: brazil-estavam-mario
         ratio: 60%
-      - name: Guatemala Antigua
+      - name: Guatemala Antigua Washed
         slug: guatemala-antigua
         ratio: 20%
-      - name: Ethiopia Guji
+      - name: Ethiopia Guji Uraga Natural
         slug: ethiopia-guji
         ratio: 20%
 price:
