@@ -36,9 +36,7 @@ shop_meta: "Custom Sourced"
   <div>
     <label class="hst-label" for="byob-grind">Grind Style</label>
     <select id="byob-grind" class="hst-select">
-      {% for g in site.data.grind_levels %}
-        <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-      {% endfor %}
+      {% include grind-options.html %}
     </select>
   </div>
 

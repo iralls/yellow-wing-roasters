@@ -115,9 +115,7 @@ mascot_alt: "Build Your Own Blend mascot"
   <div>
     <label class="hst-label" for="byob-blend-grind">Grind Style</label>
     <select id="byob-blend-grind" class="hst-select">
-      {% for g in site.data.grind_levels %}
-        <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-      {% endfor %}
+      {% include grind-options.html %}
     </select>
   </div>
 

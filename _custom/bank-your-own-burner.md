@@ -43,18 +43,14 @@ shop_meta: "Profile Spec"
   <div>
     <label class="hst-label" for="byob-size-select">Bag Size</label>
     <select id="byob-size-select" class="hst-select">
-      {% for sz in site.data.bag_sizes %}
-        <option value="{{ sz.id }}"{% if sz.id == "12oz" %} selected{% endif %}>{{ sz.label }}</option>
-      {% endfor %}
+      {% include bag-size-options.html %}
     </select>
   </div>
 
   <div>
     <label class="hst-label" for="byob-grind-select">Grind Style</label>
     <select id="byob-grind-select" class="hst-select">
-      {% for g in site.data.grind_levels %}
-        <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-      {% endfor %}
+      {% include grind-options.html %}
     </select>
   </div>
 

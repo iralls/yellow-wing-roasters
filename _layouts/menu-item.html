@@ -135,9 +135,7 @@ layout: default
           <div>
             <label class="hst-label" for="product-grind-select">Grind Style</label>
             <select class="hst-select" id="product-grind-select">
-              {% for g in site.data.grind_levels %}
-                <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-              {% endfor %}
+              {% include grind-options.html %}
             </select>
           </div>
         {% endunless %}

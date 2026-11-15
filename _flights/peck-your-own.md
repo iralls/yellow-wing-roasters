@@ -49,9 +49,7 @@ shop_notes: "Build a custom tasting flight with four or more 8oz bags from our a
   <div>
     <label class="hst-label" for="pyo-grind-select">Grind Level</label>
     <select id="pyo-grind-select" class="hst-select">
-      {% for g in site.data.grind_levels %}
-        <option value="{{ g.value }}"{% if g.default %} selected{% endif %}>{{ g.label }}</option>
-      {% endfor %}
+      {% include grind-options.html %}
     </select>
   </div>
 
