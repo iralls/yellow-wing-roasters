@@ -17,23 +17,16 @@ subtitle: >-
   </header>
 
   <!-- ── 1. Curated Roaster's Choice Clubs ── -->
+  {% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
   {% assign all_subs = site.subscriptions | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">Curated Roaster's Choice Clubs</h2>
 
     {% for sub in all_subs %}
       {% if sub.order <= 3 %}
-        <a href="{{ sub.url | relative_url }}" class="menu-item">
-          <div class="menu-item-row">
-            <h3 class="menu-item-name">{{ sub.title }}</h3>
-            <div class="menu-item-leader" aria-hidden="true"></div>
-            <div class="menu-item-price">${{ sub.price["12oz"] }} / mo</div>
-          </div>
-          <div class="menu-item-desc">
-            <span class="menu-item-notes">{{ sub.subtitle }}</span>
-            <span class="menu-item-meta">12oz Monthly</span>
-          </div>
-        </a>
+        {% capture sub_price %}${{ sub.price[default_bag_size] }} / mo{% endcapture %}
+        {% capture sub_meta %}{{ sub.sizes[0] }} {{ sub.frequencies[0] }}{% endcapture %}
+        {% include menu-listing-item.html url=sub.url title=sub.title price=sub_price notes=sub.subtitle meta=sub_meta %}
       {% endif %}
     {% endfor %}
   </section>
@@ -44,17 +37,9 @@ subtitle: >-
 
     {% for sub in all_subs %}
       {% if sub.order > 3 %}
-        <a href="{{ sub.url | relative_url }}" class="menu-item">
-          <div class="menu-item-row">
-            <h3 class="menu-item-name">{{ sub.title }}</h3>
-            <div class="menu-item-leader" aria-hidden="true"></div>
-            <div class="menu-item-price">${{ sub.price["12oz"] }} / mo</div>
-          </div>
-          <div class="menu-item-desc">
-            <span class="menu-item-notes">{{ sub.subtitle }}</span>
-            <span class="menu-item-meta">12oz Monthly</span>
-          </div>
-        </a>
+        {% capture sub_price %}${{ sub.price[default_bag_size] }} / mo{% endcapture %}
+        {% capture sub_meta %}{{ sub.sizes[0] }} {{ sub.frequencies[0] }}{% endcapture %}
+        {% include menu-listing-item.html url=sub.url title=sub.title price=sub_price notes=sub.subtitle meta=sub_meta %}
       {% endif %}
     {% endfor %}
   </section>
@@ -63,33 +48,13 @@ subtitle: >-
   <section class="menu-section">
     <h2 class="menu-section-title">All Catalog Roasts &bull; Individual Subscriptions</h2>
 
-    <a href="{{ '/shop/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">Signature Blends &amp; Single Origins</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">Subscribe on Page</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Have a favorite house roast? Every coffee in our regular lineup can be ordered as a recurring subscription directly from its individual roast page.</span>
-        <span class="menu-item-meta">View Coffee Catalog &rarr;</span>
-      </div>
-    </a>
+    {% include menu-listing-item.html url="/shop/" title="Signature Blends &amp; Single Origins" price="Subscribe on Page" notes="Have a favorite house roast? Every coffee in our regular lineup can be ordered as a recurring subscription directly from its individual roast page." meta="View Coffee Catalog &rarr;" %}
   </section>
 
   <!-- ── 4. Subscriber Services & Management ── -->
   <section class="menu-section">
     <h2 class="menu-section-title">Membership Services &amp; Account</h2>
 
-    <a href="{{ '/subscriptions/manage/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">Manage Existing Subscription</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">Self-Service</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Secure magic link lookup to pause, resume, change grind, or cancel anytime</span>
-        <span class="menu-item-meta">Member Portal</span>
-      </div>
-    </a>
+    {% include menu-listing-item.html url="/subscriptions/manage/" title="Manage Existing Subscription" price="Self-Service" notes="Secure magic link lookup to pause, resume, change grind, or cancel anytime" meta="Member Portal" %}
   </section>
 </div>

@@ -16,37 +16,13 @@ subtitle: >-
   </header>
 
   <!-- ── 1. Coffee: Signature Blends ── -->
-  {% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
   {% assign active_roasts = site.roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'archived'" %}
   {% assign blends = active_roasts | where: "category", "blend" | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">Coffee &mdash; Signature Blends</h2>
 
     {% for r in blends %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] %}
-      <a href="{{ r.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
-              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
-            {% else %}
-              ${{ r.price[default_bag_size] }}
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">
-            {% if r.descriptor %}{{ r.descriptor | capitalize }}{% endif %}
-            {% if r.tasting_notes %} &mdash; {{ r.tasting_notes }}{% endif %}
-          </span>
-          <span class="menu-item-meta">
-            {% if level_info %}{{ level_info.layman }} Roast{% endif %}
-          </span>
-        </div>
-      </a>
+      {% include menu-listing-item.html roast=r %}
     {% endfor %}
   </section>
 
@@ -56,30 +32,7 @@ subtitle: >-
     <h2 class="menu-section-title">Coffee &mdash; Single Origins</h2>
 
     {% for r in single_origins %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] %}
-      <a href="{{ r.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
-              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
-            {% else %}
-              ${{ r.price[default_bag_size] }}
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">
-            {% if r.descriptor %}{{ r.descriptor | capitalize }}{% endif %}
-            {% if r.tasting_notes %} &mdash; {{ r.tasting_notes }}{% endif %}
-          </span>
-          <span class="menu-item-meta">
-            {% if level_info %}{{ level_info.layman }} Roast{% endif %}
-          </span>
-        </div>
-      </a>
+      {% include menu-listing-item.html roast=r %}
     {% endfor %}
   </section>
 
@@ -90,30 +43,7 @@ subtitle: >-
     <h2 class="menu-section-title">Coffee &mdash; Seasonal Roasts</h2>
 
     {% for r in seasonals %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] %}
-      <a href="{{ r.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
-              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
-            {% else %}
-              ${{ r.price[default_bag_size] }}
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">
-            {% if r.descriptor %}{{ r.descriptor | capitalize }}{% endif %}
-            {% if r.tasting_notes %} &mdash; {{ r.tasting_notes }}{% endif %}
-          </span>
-          <span class="menu-item-meta">
-            {% if level_info %}{{ level_info.layman }} Roast{% endif %}
-          </span>
-        </div>
-      </a>
+      {% include menu-listing-item.html roast=r %}
     {% endfor %}
   </section>
   {% endif %}
@@ -124,19 +54,9 @@ subtitle: >-
     <h2 class="menu-section-title">Tasting Flights</h2>
 
     {% for f in flights_list %}
-      <a href="{{ f.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ f.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price">
-            {% if f.price_per_bag %}${{ f.price_per_bag }}.00 / bag{% else %}${{ f.price }}.00{% endif %}
-          </div>
-        </div>
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">{{ f.shop_notes }}</span>
-          <span class="menu-item-meta">{% if f.min_bags %}Min. {{ f.min_bags }} Bags{% else %}{{ f.shop_meta }}{% endif %}</span>
-        </div>
-      </a>
+      {% capture f_price %}{% if f.price_per_bag %}${{ f.price_per_bag }}.00 / bag{% else %}${{ f.price }}.00{% endif %}{% endcapture %}
+      {% capture f_meta %}{% if f.min_bags %}Min. {{ f.min_bags }} Bags{% else %}{{ f.shop_meta }}{% endif %}{% endcapture %}
+      {% include menu-listing-item.html url=f.url title=f.title price=f_price notes=f.shop_notes meta=f_meta %}
     {% endfor %}
   </section>
 
@@ -146,38 +66,18 @@ subtitle: >-
     <h2 class="menu-section-title">BYOB &bull; Custom Roastery</h2>
 
     {% for c in custom_list %}
-      <a href="{{ c.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ c.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price">
-            {% if c.shop_price %}{{ c.shop_price }}{% elsif c.price contains "$" %}{{ c.price }}{% else %}${{ c.price }}.00{% endif %}
-          </div>
-        </div>
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">{{ c.overlay_notes }}</span>
-          <span class="menu-item-meta">{{ c.shop_meta }}</span>
-        </div>
-      </a>
+      {% capture c_price %}{% if c.shop_price %}{{ c.shop_price }}{% elsif c.price contains "$" %}{{ c.price }}{% else %}${{ c.price }}.00{% endif %}{% endcapture %}
+      {% include menu-listing-item.html url=c.url title=c.title price=c_price notes=c.overlay_notes meta=c.shop_meta %}
     {% endfor %}
   </section>
 
   <!-- ── 6. Gift Cards ── -->
   {% assign gift_page = site.pages | where: "slug", "digital-gift-card" | first %}
+  {% assign gift_notes = gift_page.descriptor | capitalize %}
   <section class="menu-section">
     <h2 class="menu-section-title">Gift Cards</h2>
 
-    <a href="{{ gift_page.url | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">{{ gift_page.title }}</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">{{ gift_page.price }}</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">{{ gift_page.descriptor | capitalize }}</span>
-        <span class="menu-item-meta">{{ gift_page.shop_meta }}</span>
-      </div>
-    </a>
+    {% include menu-listing-item.html url=gift_page.url title=gift_page.title price=gift_page.price notes=gift_notes meta=gift_page.shop_meta %}
   </section>
 
   <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--menu-line);">

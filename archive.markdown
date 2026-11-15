@@ -24,24 +24,7 @@ subtitle: >-
     <h2 class="menu-section-title">Single Origins &mdash; Archived</h2>
 
     {% for r in archived_single_origins %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] %}
-      <a href="{{ r.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price" style="font-size: 0.9rem; font-weight: 500; color: var(--menu-muted);">Archived</div>
-        </div>
-
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">
-            {% if r.descriptor %}{{ r.descriptor | capitalize }}{% endif %}
-            {% if r.tasting_notes %} &mdash; {{ r.tasting_notes }}{% endif %}
-          </span>
-          <span class="menu-item-meta">
-            {% if level_info %}{{ level_info.layman }} Roast{% endif %}
-          </span>
-        </div>
-      </a>
+      {% include menu-listing-item.html roast=r status_label="Archived" %}
     {% endfor %}
   </section>
   {% endif %}
@@ -53,24 +36,7 @@ subtitle: >-
     <h2 class="menu-section-title">Seasonal Roasts &mdash; Flown South</h2>
 
     {% for r in flown_seasonals %}
-      {% assign level_info = site.data.roast_levels[r.roast_level] %}
-      <a href="{{ r.url | relative_url }}" class="menu-item">
-        <div class="menu-item-row">
-          <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
-          <div class="menu-item-leader" aria-hidden="true"></div>
-          <div class="menu-item-price" style="font-size: 0.9rem; font-weight: 500; color: var(--menu-muted);">Flown South</div>
-        </div>
-
-        <div class="menu-item-desc">
-          <span class="menu-item-notes">
-            {% if r.descriptor %}{{ r.descriptor | capitalize }}{% endif %}
-            {% if r.tasting_notes %} &mdash; {{ r.tasting_notes }}{% endif %}
-          </span>
-          <span class="menu-item-meta">
-            {% if level_info %}{{ level_info.layman }} Roast{% endif %}
-          </span>
-        </div>
-      </a>
+      {% include menu-listing-item.html roast=r status_label="Flown South" %}
     {% endfor %}
   </section>
   {% endif %}
