@@ -442,7 +442,11 @@
 }
 
 .atelier-workspace.has-top-inspector {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.atelier-workspace.has-top-inspector > * {
+  min-width: 0;
 }
 
 .atelier-workspace.has-top-inspector .atelier-inspector {
@@ -1116,16 +1120,20 @@ tbody tr.roast-admin-row--under-2lb:hover td {
 .atelier-searchable-select {
   position: relative;
   width: 100%;
+  min-width: 0;
 }
 
 .atelier-searchable-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .atelier-searchable-input {
+  min-width: 0;
   padding-right: 1.85rem;
+  text-overflow: ellipsis;
 }
 
 .atelier-searchable-caret {

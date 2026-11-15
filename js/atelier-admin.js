@@ -1794,7 +1794,7 @@
           if (supplierOrderFilter && String(ord.supplierOrderId) !== supplierOrderFilter) return false;
           if (searchQuery.trim()) {
             var q = searchQuery.toLowerCase();
-            var hay = ((ord.orderId || '') + ' ' + (ord.supplierOrderId || '') + ' ' + (ord.name || '') + ' ' + (ord.supplier || '')).toLowerCase();
+            var hay = ((ord.orderId || '') + ' ' + formatSemanticIdDate(ord.orderId) + ' ' + (ord.date || '') + ' ' + (ord.supplierOrderId || '') + ' ' + (ord.name || '') + ' ' + (ord.supplier || '')).toLowerCase();
             if (hay.indexOf(q) === -1) return false;
           }
           return true;
@@ -1967,7 +1967,7 @@
           if (searchQuery.trim()) {
             var q = searchQuery.toLowerCase();
             var lvlLabel = formatRoastLevel(r.roastLevel, roastLevels);
-            var hay = ((r.roastId || '') + ' ' + (r.beanName || '') + ' ' + lvlLabel + ' ' + (r.notes || '')).toLowerCase();
+            var hay = ((r.roastId || '') + ' ' + formatSemanticIdDate(r.roastId) + ' ' + (r.date || '') + ' ' + (r.beanName || '') + ' ' + lvlLabel + ' ' + (r.notes || '')).toLowerCase();
             if (hay.indexOf(q) === -1) return false;
           }
           return true;
@@ -2136,7 +2136,7 @@
           if (activeStatusFilter !== 'all' && String(p.purpose || '').toLowerCase() !== activeStatusFilter.toLowerCase()) return false;
           if (searchQuery.trim()) {
             var q = searchQuery.toLowerCase();
-            var hay = ((p.logId || '') + ' ' + (p.product || '') + ' ' + (p.notes || '') + ' ' + (p.orderId || '')).toLowerCase();
+            var hay = ((p.logId || '') + ' ' + formatSemanticIdDate(p.logId) + ' ' + (p.date || '') + ' ' + (p.product || '') + ' ' + (p.notes || '') + ' ' + (p.orderId || '')).toLowerCase();
             if (hay.indexOf(q) === -1) return false;
           }
           return true;
@@ -2616,6 +2616,13 @@
       var insp = document.getElementById('atelier-inspector');
       if (!ws || !insp) return;
 
+      if (!insp.dataset.dirtyWired) {
+        insp.dataset.dirtyWired = '1';
+        insp.addEventListener('input', function () { insp.dataset.dirty = '1'; });
+        insp.addEventListener('change', function () { insp.dataset.dirty = '1'; });
+      }
+      insp.dataset.dirty = '';
+
       if (!selectedItem || currentDomain === 'beans') {
         ws.classList.remove('has-inspector', 'has-top-inspector');
         insp.style.display = 'none';
@@ -2963,7 +2970,7 @@
         });
 
         var compRowsHtml = existingComps.map(function (c) {
-          return '<div class="atelier-roast-comp-row" style="display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;">' +
+          return '<div class="atelier-roast-comp-row" style="display: grid; grid-template-columns: minmax(0, 44rem) 130px; gap: 0.5rem; margin-bottom: 0.4rem;">' +
             buildSearchableSelectHtml('atelier-roast-comp-order', c.orderId, gboItems, 'Search green bean lot...') +
             '<input type="number" class="atelier-input atelier-roast-comp-grams" placeholder="Grams" value="' + escapeHtml(c.weightGrams || '') + '">' +
           '</div>';
@@ -3022,7 +3029,7 @@
           var wrapEl = document.getElementById('atelier-roast-comps-wrap');
           var div = document.createElement('div');
           div.className = 'atelier-roast-comp-row';
-          div.style.cssText = 'display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;';
+          div.style.cssText = 'display: grid; grid-template-columns: minmax(0, 44rem) 130px; gap: 0.5rem; margin-bottom: 0.4rem;';
           div.innerHTML = buildSearchableSelectHtml('atelier-roast-comp-order', '', gboItems, 'Search green bean lot...') +
             '<input type="number" class="atelier-input atelier-roast-comp-grams" placeholder="Grams">';
           wrapEl.appendChild(div);
@@ -3129,7 +3136,7 @@
           }).join('');
 
         var pkgRowsHtml = pkgComps.map(function (c) {
-          return '<div class="atelier-pkg-comp-row" style="display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;">' +
+          return '<div class="atelier-pkg-comp-row" style="display: grid; grid-template-columns: minmax(0, 44rem) 130px; gap: 0.5rem; margin-bottom: 0.4rem;">' +
             buildSearchableSelectHtml('atelier-pkg-comp-roast', c.roastId, roastItems, 'Search roast batch...') +
             '<input type="number" class="atelier-input atelier-pkg-comp-grams" placeholder="Grams" value="' + escapeHtml(c.weightGrams || '') + '">' +
           '</div>';
@@ -3222,7 +3229,7 @@
           var wrapEl = document.getElementById('atelier-pkg-comps-wrap');
           var div = document.createElement('div');
           div.className = 'atelier-pkg-comp-row';
-          div.style.cssText = 'display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;';
+          div.style.cssText = 'display: grid; grid-template-columns: minmax(0, 44rem) 130px; gap: 0.5rem; margin-bottom: 0.4rem;';
           div.innerHTML = buildSearchableSelectHtml('atelier-pkg-comp-roast', '', roastItems, 'Search roast batch...') +
             '<input type="number" class="atelier-input atelier-pkg-comp-grams" placeholder="Grams">';
           wrapEl.appendChild(div);
@@ -3758,12 +3765,18 @@
       }
     }
 
-    function renderAll() {
+    function renderAll(options) {
       updateRefreshButtonState();
       syncActiveTabSelection();
       renderKPICards();
       renderQueryDeck();
       renderTable();
+      if (options && options.preserveInspector) {
+        var insp = document.getElementById('atelier-inspector');
+        var isEditing = insp && insp.style.display !== 'none' && selectedItem &&
+          (insp.dataset.dirty === '1' || insp.contains(document.activeElement));
+        if (isEditing) return;
+      }
       renderInspector();
     }
 
@@ -3844,7 +3857,7 @@
             ordersData = ords;
             setTabCount('atelier-count-orders', ords.length);
           }
-          renderAll();
+          renderAll({ preserveInspector: true });
         });
 
         // 2. Load Green Beans, Green Bean Orders, Roast Logs, and Master Blend Packaging
@@ -3857,7 +3870,7 @@
             setTabCount('atelier-count-roasts', (rData.roastLogs || []).length);
             setTabCount('atelier-count-packaging', (rData.blendPackagingLogs || []).length);
           }
-          renderAll();
+          renderAll({ preserveInspector: true });
         });
 
         // 3. Load Subscriptions
@@ -3866,7 +3879,7 @@
             subsData = subs;
             setTabCount('atelier-count-subscriptions', subs.length);
           }
-          renderAll();
+          renderAll({ preserveInspector: true });
         });
 
         // 4. Load Gift Subscriptions
@@ -3875,7 +3888,7 @@
             giftSubsData = gSubs;
             setTabCount('atelier-count-gift-subs', gSubs.length);
           }
-          renderAll();
+          renderAll({ preserveInspector: true });
         });
 
         // 5. Load Gift Cards & Promo Codes
@@ -3885,7 +3898,7 @@
             var totalCodes = (gCodes.giftCards ? gCodes.giftCards.length : 0) + (gCodes.promoCodes ? gCodes.promoCodes.length : 0);
             setTabCount('atelier-count-gift-codes', totalCodes);
           }
-          renderAll();
+          renderAll({ preserveInspector: true });
         });
       });
     }
