@@ -24,7 +24,7 @@ subtitle: >-
     <h2 class="menu-section-title">Single Origins &mdash; Archived</h2>
 
     {% for r in archived_single_origins %}
-      {% include menu-listing-item.html roast=r status_label="Archived" %}
+      {% include menu-listing-item.html roast=r %}
     {% endfor %}
   </section>
   {% endif %}
@@ -36,7 +36,7 @@ subtitle: >-
     <h2 class="menu-section-title">Seasonal Roasts &mdash; Flown South</h2>
 
     {% for r in flown_seasonals %}
-      {% include menu-listing-item.html roast=r status_label="Flown South" %}
+      {% include menu-listing-item.html roast=r %}
     {% endfor %}
   </section>
   {% endif %}
