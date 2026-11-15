@@ -2,6 +2,7 @@
 layout: default
 title: "Feather Icon CSS Color Preview"
 permalink: /feather-preview/
+published: false
 ---
 
 <div class="feather-preview-page">
