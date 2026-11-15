@@ -1220,3 +1220,91 @@ tbody tr.roast-admin-row--under-2lb:hover td {
   font-size: 0.8rem;
   color: var(--admin-text-muted);
 }
+
+/* ── Roast Component Hover Popover ─────────────────────────────────────────── */
+.atelier-roast-popover {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(44, 30, 20, 0.16);
+  padding: 0.65rem 0.85rem;
+  min-width: 230px;
+  max-width: 320px;
+  font-family: var(--admin-font);
+  font-size: 0.78rem;
+  color: var(--admin-text);
+  line-height: 1.4;
+}
+
+.atelier-roast-popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.atelier-roast-popover-id {
+  font-family: var(--admin-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--admin-accent);
+}
+
+.atelier-roast-popover-date {
+  font-family: var(--admin-mono);
+  font-size: 0.7rem;
+  color: var(--admin-text-muted);
+}
+
+.atelier-roast-popover-bean {
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--admin-text);
+  margin-bottom: 0.2rem;
+}
+
+.atelier-roast-popover-level {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--admin-text-muted);
+  background: #f4ede3;
+  padding: 0.08rem 0.42rem;
+  border-radius: 4px;
+  margin-bottom: 0.45rem;
+}
+
+.atelier-roast-popover-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--admin-border-light);
+  font-size: 0.72rem;
+}
+
+.atelier-roast-popover-stat-label {
+  display: block;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-text-muted);
+}
+
+.atelier-roast-popover-stat-val {
+  font-family: var(--admin-mono);
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.atelier-roast-popover-notes {
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--admin-border-light);
+  font-size: 0.72rem;
+  color: var(--admin-text-muted);
+}

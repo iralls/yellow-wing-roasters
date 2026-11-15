@@ -1464,6 +1464,42 @@
       var wrap = document.getElementById('atelier-table-container');
       if (!wrap) return;
 
+      var hoverPopoverEl = document.getElementById('atelier-hover-popover');
+      if (!hoverPopoverEl) {
+        hoverPopoverEl = document.createElement('div');
+        hoverPopoverEl.id = 'atelier-hover-popover';
+        hoverPopoverEl.className = 'atelier-roast-popover';
+        hoverPopoverEl.style.display = 'none';
+        document.body.appendChild(hoverPopoverEl);
+      }
+
+      function hideHoverPopover() {
+        hoverPopoverEl.style.display = 'none';
+      }
+
+      function showHoverPopover(anchorEl, html) {
+        if (!html) return;
+        hoverPopoverEl.innerHTML = html;
+        hoverPopoverEl.style.display = 'block';
+        var rect = anchorEl.getBoundingClientRect();
+        var popRect = hoverPopoverEl.getBoundingClientRect();
+        var top = rect.top - popRect.height - 8;
+        if (top < 8) top = rect.bottom + 8;
+        var left = rect.left + (rect.width / 2) - (popRect.width / 2);
+        left = Math.max(8, Math.min(left, window.innerWidth - popRect.width - 8));
+        hoverPopoverEl.style.top = top + 'px';
+        hoverPopoverEl.style.left = left + 'px';
+      }
+
+      function wireHoverPopover(el, getHtml) {
+        el.addEventListener('mouseenter', function () { showHoverPopover(el, getHtml()); });
+        el.addEventListener('mouseleave', hideHoverPopover);
+        el.addEventListener('focus', function () { showHoverPopover(el, getHtml()); });
+        el.addEventListener('blur', hideHoverPopover);
+      }
+
+      hideHoverPopover();
+
       if (currentDomain === 'orders') {
         var filtered = ordersData.filter(function (o) {
           var s = String(o.status || '').toLowerCase();
@@ -2095,11 +2131,21 @@
           var avail = Number(r.availableGrams) || 0;
           var loss = r.weightLossPct || (green > 0 ? (((green - end) / green) * 100).toFixed(1) : '0.0');
           var isSelected = selectedItem && selectedItem.roastId === r.roastId && !selectedItem.__isNew;
+          var gbComps = r.greenBeanComponents || [];
+          var beanLotHtml = '<strong style="color: #2c1e14;">' + escapeHtml(r.beanName || '') + '</strong>';
+          if (gbComps.length === 1) {
+            beanLotHtml = '<button type="button" class="atelier-link-btn atelier-roast-gbo-link" data-order-id="' + escapeHtml(gbComps[0].orderId) + '" style="font-weight: 700; text-align: left;">' + escapeHtml(r.beanName || '') + '</button>';
+          } else if (gbComps.length > 1) {
+            beanLotHtml += '<div style="margin-top: 0.2rem; display: flex; flex-wrap: wrap; gap: 0.25rem;">' +
+              gbComps.map(function (c) {
+                return '<span class="atelier-item-meta"><button type="button" class="atelier-link-btn atelier-roast-gbo-link" data-order-id="' + escapeHtml(c.orderId) + '">' + escapeHtml(c.orderId) + '</button> (' + c.weightGrams + 'g)</span>';
+              }).join('') + '</div>';
+          }
           rHtml += '<tr style="' + (isSelected ? 'background: #fcf6e9;' : '') + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e;">' + escapeHtml(r.date) + '</td>' +
             '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(r.roastId) + '</strong>' +
               (r.profileUrl ? ' <a href="' + escapeHtml(r.profileUrl) + '" target="_blank" rel="noopener" style="font-size: 0.72rem; color: #b8860b;">↗</a>' : '') + '</td>' +
-            '<td><strong style="color: #2c1e14;">' + escapeHtml(r.beanName || '') + '</strong>' +
+            '<td>' + beanLotHtml +
               (r.notes ? '<div style="font-size: 0.7rem; color: #7d6b5e;">' + escapeHtml(r.notes) + '</div>' : '') + '</td>' +
             '<td><span class="atelier-item-meta">' + escapeHtml(formatRoastLevel(r.roastLevel, roastLevels)) + '</span></td>' +
             '<td style="text-align: right; font-family: monospace;">' + green + 'g</td>' +
@@ -2112,6 +2158,45 @@
         rHtml += '</tbody></table></div>';
         wrap.innerHTML = rHtml;
         wireSorting(wrap);
+
+        var gboById = {};
+        ((roastsData && roastsData.greenBeanOrders) || []).forEach(function (ord) {
+          gboById[String(ord.orderId)] = ord;
+        });
+
+        function buildGreenBeanOrderPopoverHtml(orderId) {
+          var gbo = gboById[String(orderId)];
+          if (!gbo) return '';
+          var availG = Number(gbo.availableGrams) || 0;
+          var costNum = Number(gbo.cost) || 0;
+          return '<div class="atelier-roast-popover-head">' +
+              '<span class="atelier-roast-popover-id">' + escapeHtml(gbo.orderId) + '</span>' +
+              '<span class="atelier-roast-popover-date">' + escapeHtml(gbo.date) + '</span>' +
+            '</div>' +
+            '<div class="atelier-roast-popover-bean">' + escapeHtml(gbo.name) + '</div>' +
+            '<span class="atelier-roast-popover-level">' + escapeHtml(gbo.supplier) + (gbo.supplierOrderId ? ' · #' + escapeHtml(gbo.supplierOrderId) : '') + '</span>' +
+            '<div class="atelier-roast-popover-stats">' +
+              '<div><span class="atelier-roast-popover-stat-label">Purchased</span><span class="atelier-roast-popover-stat-val">' + (Number(gbo.weightLbs) || 0) + ' lbs</span></div>' +
+              '<div><span class="atelier-roast-popover-stat-label">Remaining</span><span class="atelier-roast-popover-stat-val" style="color:' + (availG > 0 ? '#166534' : '#7d6b5e') + ';">' + availG + 'g</span></div>' +
+              '<div><span class="atelier-roast-popover-stat-label">Cost</span><span class="atelier-roast-popover-stat-val">$' + costNum.toFixed(2) + '</span></div>' +
+            '</div>';
+        }
+
+        wrap.querySelectorAll('.atelier-roast-gbo-link').forEach(function (btn) {
+          wireHoverPopover(btn, function () {
+            return buildGreenBeanOrderPopoverHtml(btn.getAttribute('data-order-id'));
+          });
+          btn.addEventListener('click', function () {
+            hideHoverPopover();
+            var oId = btn.getAttribute('data-order-id');
+            var gbo = gboById[String(oId)];
+            if (!gbo) {
+              console.error('[roasts] Green bean order ' + oId + ' not found');
+              return;
+            }
+            jumpToRecord('bean_orders', gbo);
+          });
+        });
 
         var newRoastBtn = document.getElementById('atelier-new-roast-btn');
         if (newRoastBtn) {
@@ -2132,11 +2217,19 @@
 
       } else if (currentDomain === 'packaging') {
         var pkgList = (roastsData && roastsData.blendPackagingLogs) || [];
+        var roastById = {};
+        ((roastsData && roastsData.roastLogs) || []).forEach(function (r) {
+          roastById[r.roastId] = r;
+        });
         var filteredPkg = pkgList.filter(function (p) {
           if (activeStatusFilter !== 'all' && String(p.purpose || '').toLowerCase() !== activeStatusFilter.toLowerCase()) return false;
           if (searchQuery.trim()) {
-            var q = searchQuery.toLowerCase();
-            var hay = ((p.logId || '') + ' ' + formatSemanticIdDate(p.logId) + ' ' + (p.date || '') + ' ' + (p.product || '') + ' ' + (p.notes || '') + ' ' + (p.orderId || '')).toLowerCase();
+            var q = searchQuery.trim().toLowerCase();
+            var compText = (p.roastComponents || []).map(function (c) {
+              var rObj = roastById[c.roastId];
+              return rObj ? (c.roastId + ' ' + rObj.beanName) : c.roastId;
+            }).join(' ');
+            var hay = ((p.logId || '') + ' ' + formatSemanticIdDate(p.logId) + ' ' + (p.date || '') + ' ' + (p.product || '') + ' ' + compText + ' ' + (p.notes || '') + ' ' + (p.orderId || '')).toLowerCase();
             if (hay.indexOf(q) === -1) return false;
           }
           return true;
@@ -2253,14 +2346,14 @@
 
         filteredPkg.forEach(function (p) {
           var comps = (p.roastComponents || []).map(function (c) {
-            return '<span class="atelier-item-meta"><button type="button" class="atelier-link-btn atelier-pkg-roast-link" data-roast-id="' + escapeHtml(c.roastId) + '" title="Open roast batch">' + escapeHtml(c.roastId) + '</button> (' + c.weightGrams + 'g)</span>';
+            return '<span class="atelier-item-meta"><button type="button" class="atelier-link-btn atelier-pkg-roast-link" data-roast-id="' + escapeHtml(c.roastId) + '" data-used-grams="' + escapeHtml(c.weightGrams) + '">' + escapeHtml(c.roastId) + '</button> (' + c.weightGrams + 'g)</span>';
           }).join(' ');
           var isSelected = selectedItem && selectedItem.logId === p.logId && !selectedItem.__isNew;
           pHtml += '<tr style="' + (isSelected ? 'background: #fcf6e9;' : '') + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e;">' + escapeHtml(p.date) + '</td>' +
             '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(p.logId) + '</strong></td>' +
             '<td><strong style="color: #2c1e14;">' + escapeHtml(p.product) + '</strong></td>' +
-            '<td>' + escapeHtml(p.purpose) + (p.orderId ? ' (<button type="button" class="atelier-link-btn atelier-pkg-order-link" data-order-id="' + escapeHtml(p.orderId) + '" title="Open customer order">#' + escapeHtml(p.orderId) + '</button>)' : '') + '</td>' +
+            '<td>' + escapeHtml(p.purpose) + (p.orderId ? ' (<button type="button" class="atelier-link-btn atelier-pkg-order-link" data-order-id="' + escapeHtml(p.orderId) + '">#' + escapeHtml(p.orderId) + '</button>)' : '') + '</td>' +
             '<td><span class="atelier-item-meta" style="font-weight: 700; color: #92400e; background: #fef3c7;">' + escapeHtml(p.bagSize || 'Custom') + '</span></td>' +
             '<td style="text-align: right; font-family: monospace; font-weight: 700;">' + (p.weightGrams || 0) + 'g</td>' +
             '<td>' + comps + (p.notes ? '<div style="font-size: 0.74rem; color: #7d6b5e; margin-top: 0.2rem;">' + escapeHtml(p.notes) + '</div>' : '') + '</td>' +
@@ -2282,8 +2375,49 @@
             renderInspector();
           });
         }
+        function buildRoastPopoverHtml(roastId) {
+          var roast = roastById[roastId];
+          if (!roast) return '';
+          var lvlLabel = formatRoastLevel(roast.roastLevel, roastLevels);
+          var greenG = Number(roast.greenWeightGrams) || 0;
+          var endG = Number(roast.endWeightGrams) || 0;
+          var loss = roast.weightLossPct || (greenG > 0 ? (((greenG - endG) / greenG) * 100).toFixed(1) : '0.0');
+          return '<div class="atelier-roast-popover-head">' +
+              '<span class="atelier-roast-popover-id">' + escapeHtml(roast.roastId) + '</span>' +
+              '<span class="atelier-roast-popover-date">' + escapeHtml(roast.date) + '</span>' +
+            '</div>' +
+            '<div class="atelier-roast-popover-bean">' + escapeHtml(roast.beanName) + '</div>' +
+            '<span class="atelier-roast-popover-level">' + escapeHtml(lvlLabel) + '</span>' +
+            '<div class="atelier-roast-popover-stats">' +
+              '<div><span class="atelier-roast-popover-stat-label">Green</span><span class="atelier-roast-popover-stat-val">' + greenG + 'g</span></div>' +
+              '<div><span class="atelier-roast-popover-stat-label">Roasted</span><span class="atelier-roast-popover-stat-val">' + endG + 'g</span></div>' +
+              '<div><span class="atelier-roast-popover-stat-label">Loss</span><span class="atelier-roast-popover-stat-val">' + escapeHtml(loss) + '%</span></div>' +
+            '</div>' +
+            (roast.notes ? '<div class="atelier-roast-popover-notes">' + escapeHtml(roast.notes) + '</div>' : '');
+        }
+
+        function buildOrderPopoverHtml(orderId) {
+          var ord = ordersData.find(function (o) { return String(o.orderId) === String(orderId); });
+          if (!ord) return '';
+          var dateStr = String(ord.timestamp || '').split(',')[0];
+          var itemsHtml = parseOrderItems(ord.items, ord.total).map(formatItemPill).join('');
+          return '<div class="atelier-roast-popover-head">' +
+              '<span class="atelier-roast-popover-id">#' + escapeHtml(ord.orderId) + '</span>' +
+              '<span class="atelier-roast-popover-date">' + escapeHtml(dateStr) + '</span>' +
+            '</div>' +
+            '<div class="atelier-roast-popover-bean">' + escapeHtml(ord.name) + '</div>' +
+            '<span class="atelier-roast-popover-level">' + escapeHtml(ord.status) + (ord.total ? ' · ' + escapeHtml(ord.total) : '') + '</span>' +
+            (itemsHtml ? '<div class="atelier-roast-popover-notes"><div class="atelier-item-flow">' + itemsHtml + '</div></div>' : '');
+        }
+
+        hideHoverPopover();
+
         wrap.querySelectorAll('.atelier-pkg-order-link').forEach(function (btn) {
+          wireHoverPopover(btn, function () {
+            return buildOrderPopoverHtml(btn.getAttribute('data-order-id'));
+          });
           btn.addEventListener('click', function () {
+            hideHoverPopover();
             var oId = btn.getAttribute('data-order-id');
             var ord = ordersData.find(function (o) { return String(o.orderId) === oId; });
             if (!ord) {
@@ -2294,7 +2428,11 @@
           });
         });
         wrap.querySelectorAll('.atelier-pkg-roast-link').forEach(function (btn) {
+          wireHoverPopover(btn, function () {
+            return buildRoastPopoverHtml(btn.getAttribute('data-roast-id'));
+          });
           btn.addEventListener('click', function () {
+            hideHoverPopover();
             var rId = btn.getAttribute('data-roast-id');
             var roast = roastsData.roastLogs.find(function (r) { return String(r.roastId) === rId; });
             if (!roast) {

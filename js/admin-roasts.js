@@ -1906,7 +1906,10 @@
           if (!hasBean) return false;
         }
 
-        var compText = comps.map(function (c) { return c.roastId; }).join(' ');
+        var compText = comps.map(function (c) {
+          var rObj = roastById[c.roastId];
+          return rObj ? (c.roastId + ' ' + rObj.beanName) : c.roastId;
+        }).join(' ');
         return matchesSearch([p.logId, p.date, p.purpose, p.orderId, p.product, compText, p.bagSize, p.notes]);
       });
 
