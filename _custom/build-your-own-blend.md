@@ -15,7 +15,7 @@ mascot_alt: "Build Your Own Blend mascot"
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
-{% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+{% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" | where_exp: "item", "item.status != 'archived'" %}
 {% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
 
 <form class="hst-form" id="byob-blend-form" onsubmit="return false;">

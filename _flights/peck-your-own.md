@@ -17,7 +17,7 @@ shop_notes: "Build a custom tasting flight with four or more 8oz bags from our a
 ---
 
 {% assign all_roasts = site.roasts | sort: "order" %}
-{% assign active_roasts = all_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+{% assign active_roasts = all_roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" | where_exp: "item", "item.status != 'archived'" %}
 
 <form class="hst-form" id="pyo-form" onsubmit="return false;">
   <!-- Roast Selector Dropdown -->

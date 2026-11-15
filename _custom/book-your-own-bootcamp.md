@@ -22,7 +22,7 @@ shop_meta: "Bootcamp Session"
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
-{% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+{% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" | where_exp: "item", "item.status != 'archived'" %}
 {% assign first_so = active_so.first %}
 {% assign initial_total = page.base_price | plus: page.session_fees[1] %}
 
