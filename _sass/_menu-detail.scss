@@ -413,19 +413,6 @@
   display: block;
 }
 
-.hst-component-list {
-  margin: 0.5rem 0 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.35rem 0;
-    border-bottom: 1px solid rgba(222, 218, 208, 0.5);
-  }
-}
-
 /* Back Link */
 .hst-back-link {
   display: inline-flex;

@@ -17,7 +17,7 @@ origins:
 history:
   - date: "2026-10"
     components:
-      - name: Brazil Brazil Legender Especial Peaberry Natural
+      - name: Brazil Legender Especial Peaberry Natural
         ratio: 25%
       - name: Brazil Estavam Mario Natural
         slug: brazil-estavam-mario
