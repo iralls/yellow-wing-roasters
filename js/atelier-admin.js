@@ -563,6 +563,148 @@
     return y + '-' + m + '-' + day;
   }
 
+  function formatSemanticIdDate(idStr) {
+    var str = String(idStr || '').trim();
+    var match = str.match(/^([A-Z]+)-(\d{4})(\d{2})(\d{2})-(.+)$/);
+    if (!match) return str;
+    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var mNum = parseInt(match[3], 10);
+    var day = parseInt(match[4], 10);
+    if (mNum < 1 || mNum > 12 || day < 1 || day > 31) return str;
+    return match[1] + ' · ' + monthNames[mNum - 1] + ' ' + day + ', ' + match[2] + ' · ' + match[5];
+  }
+
+  function buildSearchableSelectHtml(hiddenClass, selectedValue, items, placeholder, options) {
+    var opts = options || {};
+    var selItem = items.find(function (it) { return String(it.value) === String(selectedValue); });
+    var displayVal = selItem ? selItem.label : (opts.allowCustom && selectedValue ? selectedValue : '');
+    var idAttr = opts.hiddenId ? ' id="' + escapeHtml(opts.hiddenId) + '"' : '';
+    return '<div class="atelier-searchable-select">' +
+      '<input type="hidden"' + idAttr + ' class="' + escapeHtml(hiddenClass) + '" value="' + escapeHtml(selectedValue || '') + '">' +
+      '<div class="atelier-searchable-input-wrap">' +
+        '<input type="text" class="atelier-input atelier-searchable-input" value="' + escapeHtml(displayVal) + '" placeholder="' + escapeHtml(placeholder) + '" autocomplete="off">' +
+        '<span class="atelier-searchable-caret" aria-hidden="true">&#9662;</span>' +
+      '</div>' +
+      '<div class="atelier-searchable-menu" style="display: none;"></div>' +
+    '</div>';
+  }
+
+  function wireSearchableSelects(containerEl, items, options) {
+    var allowCustom = !!(options && options.allowCustom);
+    containerEl.querySelectorAll('.atelier-searchable-select').forEach(function (root) {
+      if (root.dataset.wired) return;
+      root.dataset.wired = '1';
+
+      var hiddenInput = root.querySelector('input[type="hidden"]');
+      var textInput = root.querySelector('.atelier-searchable-input');
+      var menu = root.querySelector('.atelier-searchable-menu');
+      var activeIdx = -1;
+      var visibleItems = items;
+
+      function renderMenu(query) {
+        var tokens = String(query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+        visibleItems = tokens.length === 0 ? items : items.filter(function (it) {
+          return tokens.every(function (tok) { return it.searchText.indexOf(tok) !== -1; });
+        });
+
+        if (visibleItems.length === 0) {
+          menu.innerHTML = '<div class="atelier-searchable-empty">No matching items</div>';
+          activeIdx = -1;
+        } else {
+          if (activeIdx >= visibleItems.length) activeIdx = 0;
+          menu.innerHTML = visibleItems.map(function (it, idx) {
+            var isSel = String(it.value) === String(hiddenInput.value);
+            var cls = 'atelier-searchable-option' +
+              (idx === activeIdx ? ' is-active' : '') +
+              (isSel ? ' is-selected' : '');
+            return '<button type="button" class="' + cls + '" data-idx="' + idx + '">' +
+              '<span class="atelier-searchable-opt-main">' +
+                '<span class="atelier-searchable-opt-title">' + escapeHtml(it.title) + '</span>' +
+                '<span class="atelier-searchable-opt-meta">' + escapeHtml(it.meta) + '</span>' +
+              '</span>' +
+              '<span class="atelier-searchable-opt-badge">' + escapeHtml(it.badge) + '</span>' +
+            '</button>';
+          }).join('');
+        }
+        menu.style.display = 'block';
+      }
+
+      function selectItem(item) {
+        hiddenInput.value = item.value;
+        textInput.value = item.label;
+        menu.style.display = 'none';
+        activeIdx = -1;
+      }
+
+      function closeMenu() {
+        menu.style.display = 'none';
+        activeIdx = -1;
+      }
+
+      textInput.addEventListener('focus', function () {
+        activeIdx = -1;
+        renderMenu('');
+        if (textInput.value) textInput.select();
+      });
+
+      textInput.addEventListener('input', function () {
+        if (allowCustom) {
+          hiddenInput.value = textInput.value.trim();
+        } else if (!textInput.value.trim()) {
+          hiddenInput.value = '';
+        }
+        activeIdx = 0;
+        renderMenu(textInput.value);
+      });
+
+      textInput.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (menu.style.display === 'none') renderMenu('');
+          if (visibleItems.length > 0) {
+            activeIdx = (activeIdx + 1) % visibleItems.length;
+            renderMenu(textInput.value === getSelectedLabel() ? '' : textInput.value);
+            var activeEl = menu.querySelector('.atelier-searchable-option.is-active');
+            if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (visibleItems.length > 0) {
+            activeIdx = activeIdx <= 0 ? visibleItems.length - 1 : activeIdx - 1;
+            renderMenu(textInput.value === getSelectedLabel() ? '' : textInput.value);
+            var upEl = menu.querySelector('.atelier-searchable-option.is-active');
+            if (upEl) upEl.scrollIntoView({ block: 'nearest' });
+          }
+        } else if (e.key === 'Enter') {
+          if (menu.style.display !== 'none' && activeIdx >= 0 && visibleItems[activeIdx]) {
+            e.preventDefault();
+            selectItem(visibleItems[activeIdx]);
+          }
+        } else if (e.key === 'Escape') {
+          closeMenu();
+        }
+      });
+
+      function getSelectedLabel() {
+        var found = items.find(function (it) { return String(it.value) === String(hiddenInput.value); });
+        return found ? found.label : (allowCustom ? hiddenInput.value : '');
+      }
+
+      menu.addEventListener('mousedown', function (e) {
+        var btn = e.target.closest('.atelier-searchable-option');
+        if (!btn) return;
+        e.preventDefault();
+        var item = visibleItems[Number(btn.dataset.idx)];
+        if (item) selectItem(item);
+      });
+
+      textInput.addEventListener('blur', function () {
+        closeMenu();
+        textInput.value = getSelectedLabel();
+      });
+    });
+  }
+
   function parseYearMonth(rawDate) {
     if (!rawDate) return { year: 'Unknown', month: 'Unknown', yearMonth: 'Unknown' };
     var str = String(rawDate).trim();
@@ -2475,12 +2617,14 @@
       if (!ws || !insp) return;
 
       if (!selectedItem || currentDomain === 'beans') {
-        ws.classList.remove('has-inspector');
+        ws.classList.remove('has-inspector', 'has-top-inspector');
         insp.style.display = 'none';
         return;
       }
 
-      ws.classList.add('has-inspector');
+      var isTopInspector = currentDomain === 'roasts' || currentDomain === 'bean_orders' || currentDomain === 'packaging';
+      ws.classList.toggle('has-inspector', !isTopInspector);
+      ws.classList.toggle('has-top-inspector', isTopInspector);
       insp.style.display = 'block';
 
       if (currentDomain === 'orders') {
@@ -2801,21 +2945,26 @@
           return '<option value="' + escapeHtml(lvlKey) + '"' + (isSel ? ' selected' : '') + '>' + escapeHtml(lvlObj.specialty || lvlObj.name) + '</option>';
         }).join('');
 
-        function buildGboOptions(selectedOrdId) {
-          var opts = '<option value="">Select Green Bean Lot...</option>';
-          gboAll.forEach(function (ord) {
-            var avail = Number(ord.availableGrams) || 0;
-            var isSel = String(ord.orderId) === String(selectedOrdId);
-            if (avail <= 0 && !isSel) return;
-            opts += '<option value="' + escapeHtml(ord.orderId) + '"' + (isSel ? ' selected' : '') + '>' +
-              escapeHtml(ord.orderId) + ' — ' + escapeHtml(ord.name) + ' (' + avail + 'g avail)</option>';
-          });
-          return opts;
-        }
+        var gboItems = gboAll.filter(function (ord) {
+          var avail = Number(ord.availableGrams) || 0;
+          var isExisting = existingComps.some(function (c) { return String(c.orderId) === String(ord.orderId); });
+          return avail > 0 || isExisting;
+        }).map(function (ord) {
+          var avail = Number(ord.availableGrams) || 0;
+          var formattedId = formatSemanticIdDate(ord.orderId);
+          return {
+            value: ord.orderId,
+            title: ord.name,
+            meta: formattedId,
+            badge: avail + 'g avail',
+            label: formattedId + ' — ' + ord.name + ' (' + avail + 'g avail)',
+            searchText: [ord.orderId, formattedId, ord.date, ord.name, ord.supplier, avail + 'g'].join(' ').toLowerCase()
+          };
+        });
 
         var compRowsHtml = existingComps.map(function (c) {
           return '<div class="atelier-roast-comp-row" style="display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;">' +
-            '<select class="atelier-select atelier-roast-comp-order">' + buildGboOptions(c.orderId) + '</select>' +
+            buildSearchableSelectHtml('atelier-roast-comp-order', c.orderId, gboItems, 'Search green bean lot...') +
             '<input type="number" class="atelier-input atelier-roast-comp-grams" placeholder="Grams" value="' + escapeHtml(c.weightGrams || '') + '">' +
           '</div>';
         }).join('');
@@ -2868,14 +3017,16 @@
           '</div>';
 
         wireCloseInspectorBtn();
+        wireSearchableSelects(document.getElementById('atelier-roast-comps-wrap'), gboItems);
         document.getElementById('atelier-add-roast-comp-btn').addEventListener('click', function () {
           var wrapEl = document.getElementById('atelier-roast-comps-wrap');
           var div = document.createElement('div');
           div.className = 'atelier-roast-comp-row';
           div.style.cssText = 'display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;';
-          div.innerHTML = '<select class="atelier-select atelier-roast-comp-order">' + buildGboOptions('') + '</select>' +
+          div.innerHTML = buildSearchableSelectHtml('atelier-roast-comp-order', '', gboItems, 'Search green bean lot...') +
             '<input type="number" class="atelier-input atelier-roast-comp-grams" placeholder="Grams">';
           wrapEl.appendChild(div);
+          wireSearchableSelects(div, gboItems);
         });
 
         var roastSaveBtn = document.getElementById('atelier-roast-save-btn');
@@ -2953,17 +3104,22 @@
           ? selectedItem.roastComponents
           : [{ roastId: '', weightGrams: '' }];
 
-        function buildRoastBatchOptions(selectedRid) {
-          var opts = '<option value="">Select Roast Batch...</option>';
-          allRoasts.forEach(function (r) {
-            var avail = Number(r.availableGrams) || 0;
-            var isSel = String(r.roastId) === String(selectedRid);
-            if (avail <= 0 && !isSel) return;
-            opts += '<option value="' + escapeHtml(r.roastId) + '"' + (isSel ? ' selected' : '') + '>' +
-              escapeHtml(r.roastId) + ' — ' + escapeHtml(r.beanName) + ' (' + avail + 'g avail)</option>';
-          });
-          return opts;
-        }
+        var roastItems = allRoasts.filter(function (r) {
+          var avail = Number(r.availableGrams) || 0;
+          var isExisting = pkgComps.some(function (c) { return String(c.roastId) === String(r.roastId); });
+          return avail > 0 || isExisting;
+        }).map(function (r) {
+          var avail = Number(r.availableGrams) || 0;
+          var formattedId = formatSemanticIdDate(r.roastId);
+          return {
+            value: r.roastId,
+            title: r.beanName,
+            meta: formattedId,
+            badge: avail + 'g avail',
+            label: formattedId + ' — ' + r.beanName + ' (' + avail + 'g avail)',
+            searchText: [r.roastId, formattedId, r.date, r.beanName, avail + 'g'].join(' ').toLowerCase()
+          };
+        });
 
         var bagSizeOpts = '<option value="Custom">Custom / Loose</option>' +
           bagSizes.map(function (b) {
@@ -2974,10 +3130,34 @@
 
         var pkgRowsHtml = pkgComps.map(function (c) {
           return '<div class="atelier-pkg-comp-row" style="display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;">' +
-            '<select class="atelier-select atelier-pkg-comp-roast">' + buildRoastBatchOptions(c.roastId) + '</select>' +
+            buildSearchableSelectHtml('atelier-pkg-comp-roast', c.roastId, roastItems, 'Search roast batch...') +
             '<input type="number" class="atelier-input atelier-pkg-comp-grams" placeholder="Grams" value="' + escapeHtml(c.weightGrams || '') + '">' +
           '</div>';
         }).join('');
+
+        var orderItems = ordersData.slice().sort(function (a, b) {
+          return new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime();
+        }).map(function (ord) {
+          var dateStr = String(ord.timestamp || '').split(',')[0].trim();
+          return {
+            value: ord.orderId,
+            title: '#' + ord.orderId + ' — ' + ord.name,
+            meta: (dateStr ? dateStr + ' · ' : '') + (ord.items || ''),
+            badge: ord.status || 'Order',
+            label: '#' + ord.orderId + ' — ' + ord.name + (ord.status ? ' (' + ord.status + ')' : ''),
+            searchText: [ord.orderId, ord.name, ord.email, dateStr, ord.items, ord.status].join(' ').toLowerCase()
+          };
+        }).concat(subsData.map(function (s) {
+          var dateStr = String(s.timestamp || '').split(',')[0].trim();
+          return {
+            value: s.orderId,
+            title: '#' + s.orderId + ' — ' + s.name + ' (Sub)',
+            meta: (dateStr ? dateStr + ' · ' : '') + [s.roast, s.size].filter(Boolean).join(' • '),
+            badge: s.status || 'Sub',
+            label: '#' + s.orderId + ' — ' + s.name + ' (Sub' + (s.status ? ', ' + s.status : '') + ')',
+            searchText: ['sub', s.orderId, s.name, s.email, dateStr, s.roast, s.size, s.status].join(' ').toLowerCase()
+          };
+        }));
 
         var purposes = ['Order', 'Subscription', 'Sample', 'Gift', 'Personal / Cupping'];
         var purposeOpts = purposes.map(function (p) {
@@ -3004,9 +3184,9 @@
               '</div>' +
             '</div>' +
             '<div class="atelier-field-grid">' +
-              '<div class="atelier-inspector-field">' +
+              '<div class="atelier-inspector-field" id="atelier-pkg-order-field">' +
                 '<label>Order / Sub # (Optional)</label>' +
-                '<input type="text" id="atelier-pkg-order-id" class="atelier-input" value="' + escapeHtml(selectedItem.orderId || '') + '" placeholder="e.g. YWR-1024">' +
+                buildSearchableSelectHtml('atelier-pkg-order-input', selectedItem.orderId || '', orderItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true }) +
               '</div>' +
               '<div class="atelier-inspector-field">' +
                 '<label>Bag Size</label>' +
@@ -3036,14 +3216,17 @@
           '</div>';
 
         wireCloseInspectorBtn();
+        wireSearchableSelects(document.getElementById('atelier-pkg-order-field'), orderItems, { allowCustom: true });
+        wireSearchableSelects(document.getElementById('atelier-pkg-comps-wrap'), roastItems);
         document.getElementById('atelier-add-pkg-comp-btn').addEventListener('click', function () {
           var wrapEl = document.getElementById('atelier-pkg-comps-wrap');
           var div = document.createElement('div');
           div.className = 'atelier-pkg-comp-row';
           div.style.cssText = 'display: grid; grid-template-columns: 1fr 90px; gap: 0.4rem; margin-bottom: 0.4rem;';
-          div.innerHTML = '<select class="atelier-select atelier-pkg-comp-roast">' + buildRoastBatchOptions('') + '</select>' +
+          div.innerHTML = buildSearchableSelectHtml('atelier-pkg-comp-roast', '', roastItems, 'Search roast batch...') +
             '<input type="number" class="atelier-input atelier-pkg-comp-grams" placeholder="Grams">';
           wrapEl.appendChild(div);
+          wireSearchableSelects(div, roastItems);
         });
 
         var pkgSaveBtn = document.getElementById('atelier-pkg-save-btn');
