@@ -18,6 +18,8 @@ layout: default
     <a href="{{ page.back_url | relative_url }}" class="hst-back-link">&larr; {{ page.back_label | default: 'Back' }}</a>
   {% elsif is_sub %}
     <a href="{{ '/subscriptions/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
+  {% elsif page.status == 'flown_south' or page.status == 'archived' %}
+    <a href="{{ '/archive/' | relative_url }}" class="hst-back-link">&larr; Back to Archive</a>
   {% else %}
     <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
   {% endif %}
@@ -49,7 +51,11 @@ layout: default
       </div>
 
       <!-- Price Display -->
-      {% if page.price and page.price != "" %}
+      {% assign is_orderable = true %}
+      {% if p_status_info and p_status_info.orderable == false %}
+        {% assign is_orderable = false %}
+      {% endif %}
+      {% if is_orderable and page.price and page.price != "" %}
       <div class="hst-price-row" id="product-price-display">
         {% if page.temporary_price and page.temporary_price["12oz"] %}
           <s>${{ page.price["12oz"] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price["12oz"] }}.00</span>{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
@@ -83,7 +89,7 @@ layout: default
       {% endif %}
 
       <!-- Order / Subscribe Form (for standard roasts, subscriptions, flights) -->
-      {% unless page.category == 'custom' or page.category == 'gift' or page.no_order %}
+      {% unless page.category == 'custom' or page.category == 'gift' or page.no_order or is_orderable == false %}
       <form class="hst-form" id="product-order-form" onsubmit="return false;">
         <!-- Purchase Option Toggle (for roasts with subscription option) -->
         {% if page.subscription and is_sub == false %}

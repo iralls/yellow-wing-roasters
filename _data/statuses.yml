@@ -7,6 +7,15 @@ flown_south:
   overlay_text: "No longer available to order"
   footnote: "Ordering unavailable while this roast has flown south for the season."
 
+archived:
+  badge: "Archived"
+  orderable: false
+  subscribable: false
+  dim_card: true
+  banner_text: "This single-origin roast has been archived and is no longer available to order."
+  overlay_text: "No longer available to order"
+  footnote: "Ordering unavailable while this roast is archived."
+
 incubating:
   badge: "Incubating"
   orderable: false

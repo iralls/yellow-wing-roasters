@@ -148,7 +148,8 @@
   .hst-status-dot { background: #64748b; }
 }
 
-.hst-status-pill--flown_south {
+.hst-status-pill--flown_south,
+.hst-status-pill--archived {
   background: #f1f5f9;
   color: #475569;
   border-color: #cbd5e1;

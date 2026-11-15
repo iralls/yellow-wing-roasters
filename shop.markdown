@@ -16,7 +16,8 @@ subtitle: >-
   </header>
 
   <!-- ── 1. Coffee: Signature Blends ── -->
-  {% assign blends = site.roasts | where: "category", "blend" | sort: "order" %}
+  {% assign active_roasts = site.roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'archived'" %}
+  {% assign blends = active_roasts | where: "category", "blend" | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">Coffee &mdash; Signature Blends</h2>
 
@@ -49,7 +50,7 @@ subtitle: >-
   </section>
 
   <!-- ── 2. Coffee: Single Origins ── -->
-  {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
+  {% assign single_origins = active_roasts | where: "category", "single origin" | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">Coffee &mdash; Single Origins</h2>
 
@@ -82,7 +83,7 @@ subtitle: >-
   </section>
 
   <!-- ── 3. Coffee: Seasonal Roasts ── -->
-  {% assign seasonals = site.roasts | where: "category", "seasonal" | sort: "order" %}
+  {% assign seasonals = active_roasts | where: "category", "seasonal" | sort: "order" %}
   {% if seasonals.size > 0 %}
   <section class="menu-section">
     <h2 class="menu-section-title">Coffee &mdash; Seasonal Roasts</h2>
@@ -214,4 +215,11 @@ subtitle: >-
       </div>
     </a>
   </section>
+
+  <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--menu-line);">
+    <p style="font-size: 0.95rem; color: var(--menu-muted); margin: 0;">
+      Looking for a past seasonal or single origin?
+      <a href="{{ '/archive/' | relative_url }}" style="color: var(--menu-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-left: 0.25rem;">View the Coffee Archive &rarr;</a>
+    </p>
+  </div>
 </div>

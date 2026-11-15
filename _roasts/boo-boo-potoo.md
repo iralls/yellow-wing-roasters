@@ -1,9 +1,9 @@
 ---
-published: false
 title: Boo Boo Potoo
 subtitle: Halloween Blend
 slug: boo-boo-patoo
 category: seasonal
+status: flown_south
 order: 12
 roast_level: 4
 descriptor: sweet and indulgent

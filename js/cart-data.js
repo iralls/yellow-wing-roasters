@@ -5,7 +5,8 @@ permalink: /js/cart-data.js
  * Yellow Wing Roasters - Shared Catalog Data for Cart & Orders
  * Generated at build time and cached across pages.
  */
-{% assign all_products = site.roasts | concat: site.custom | concat: site.flights %}
+{% assign active_roasts = site.roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'archived'" %}
+{% assign all_products = active_roasts | concat: site.custom | concat: site.flights %}
 window.YWR_ROASTS_DATA = {
   {% for r in all_products %}
     {% assign level_info = site.data.roast_levels[r.roast_level] %}
