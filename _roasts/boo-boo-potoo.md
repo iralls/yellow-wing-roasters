@@ -20,8 +20,17 @@ price:
   5lb: 70
 
 origins:
-  - Brazil Natural
   - Bolivia Washed
+  - Brazil Natural
+history:
+  - date: "2025-10"
+    components:
+      - name: Bolivia Organic de Apolo
+        slug: bolivia-organic-de-apolo
+        ratio: 50%
+      - name: Brazil Cerrado
+        slug: brazil-natural
+        ratio: 50%
 description: >-
   A seasonal blend crafted from two distinct beans roasted to different levels, creating a delicious Reese's effect—layering rich chocolate with warm, toasted nuts.
 fun_fact: >-

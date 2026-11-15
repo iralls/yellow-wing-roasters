@@ -156,9 +156,9 @@ layout: default
       {% endunless %}
 
       {% assign has_drawers = false %}
-      {% if page.category == "blend" and latest_history.components %}
+      {% if latest_history.components %}
         {% assign has_drawers = true %}
-      {% elsif page.category == "single origin" and page.origins %}
+      {% elsif page.origins or page.region %}
         {% assign has_drawers = true %}
       {% elsif page.tasting_notes or page.fun_fact %}
         {% assign has_drawers = true %}
@@ -169,8 +169,8 @@ layout: default
       {% if has_drawers %}
       <!-- Dynamic Drawers based on Item Type -->
       <div class="hst-drawers">
-        <!-- 1. Origins & Components: for Blends only -->
-        {% if page.category == "blend" and latest_history.components %}
+        <!-- 1. Origins & Components: for Blends and Seasonals with history -->
+        {% if latest_history.components %}
           <div class="hst-drawer open">
             <button type="button" class="hst-drawer-head">Origins &amp; Components</button>
             <div class="hst-drawer-body">
@@ -184,9 +184,8 @@ layout: default
               </ul>
             </div>
           </div>
-        <!-- 2. Origin & Terroir: for Single Origins -->
-        {% elsif page.category == "single origin" %}
-          {% if page.origins or page.region %}
+        <!-- 2. Origin & Terroir: for Single Origins or Seasonals with origins -->
+        {% elsif page.origins or page.region %}
           <div class="hst-drawer open">
             <button type="button" class="hst-drawer-head">Origin &amp; Terroir</button>
             <div class="hst-drawer-body">
@@ -204,7 +203,6 @@ layout: default
               {% endif %}
             </div>
           </div>
-          {% endif %}
         {% endif %}
 
         <!-- 3. Sensory Profile & Tasting Notes -->
