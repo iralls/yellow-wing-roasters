@@ -1,19 +1,18 @@
 ---
 layout: menu-item
 title: "BYOB — Bring Your Own Beans"
-card_title: "BYOB"
 subtitle: "Bring your own beans"
 intro: "Have a specific green coffee you've been eyeing? Pick any green (unroasted) bean from one of these suppliers, tell us how you'd like it roasted, and we'll handle the rest."
 slug: bring-your-own-beans
 category: custom
 price: "Custom Quote"
-data_roast: byob
 order: 2
 permalink: /roasts/bring-your-own-beans/
 mascot_file: binocular-birds-transparent.png
 mascot_alt: "Bring your own beans mascot"
-descriptor: Bring Your Own Beans
-overlay_notes: "send us your green beans and we'll roast them to perfection"
+overlay_notes: "Send us your raw unroasted coffee beans for custom profiling"
+shop_price: "Quote"
+shop_meta: "Custom Sourced"
 ---
 
 <form class="hst-form" id="byob-beans-form" onsubmit="return false;">

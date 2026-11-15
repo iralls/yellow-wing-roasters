@@ -1,23 +1,22 @@
 ---
 layout: menu-item
 title: "BYOB — Build Your Own Blend"
-card_title: "BYOB"
 subtitle: "Build Your Own Blend"
 intro: "Combine up to three varieties of green beans, select individual roast levels and percentage ratios, and design a custom coffee profile exactly to your taste."
 slug: build-your-own-blend
 category: custom
-data_roast: byob-blend
 order: 1
 permalink: /roasts/build-your-own-blend/
 price: 32
-descriptor: Build Your Own Blend
-overlay_notes: "craft your own custom blend from our single origin roasts"
+overlay_notes: "Formulate up to three varieties with individual roast degrees"
+shop_meta: "Custom Batch"
 mascot_file: build-a-bird-transparent.png
 mascot_alt: "Build Your Own Blend mascot"
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
 {% assign active_so = single_origins | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'incubating'" %}
+{% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
 
 <form class="hst-form" id="byob-blend-form" onsubmit="return false;">
   <!-- Component 1 -->
@@ -232,9 +231,9 @@ mascot_alt: "Build Your Own Blend mascot"
         slug: "build-your-own-blend",
         title: "Build Your Own Blend",
         subtitle: subtitle,
-        size: "12oz",
+        size: {{ default_bag_size | jsonify }},
         grind: grindSelect.value,
-        price: 32,
+        price: {{ page.price }},
         mascot: {{ page.mascot_file | jsonify }},
         notes: notesInput.value.trim()
       };

@@ -3,6 +3,7 @@ layout: default
 ---
 
 {% assign r_level = site.data.roast_levels[page.roast_level] %}
+{% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
 {% assign p_status_info = nil %}
 {% if page.status %}
   {% assign p_status_info = site.data.statuses[page.status] %}
@@ -56,10 +57,10 @@ layout: default
       {% endif %}
       {% if is_orderable and page.price and page.price != "" %}
       <div class="hst-price-row" id="product-price-display">
-        {% if page.temporary_price and page.temporary_price["12oz"] %}
-          <s>${{ page.price["12oz"] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price["12oz"] }}.00</span>{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
-        {% elsif page.price["12oz"] %}
-          ${{ page.price["12oz"] }}.00{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+        {% if page.temporary_price and page.temporary_price[default_bag_size] %}
+          <s>${{ page.price[default_bag_size] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price[default_bag_size] }}.00</span>{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+        {% elsif page.price[default_bag_size] %}
+          ${{ page.price[default_bag_size] }}.00{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
         {% elsif page.price %}
           {% if page.price contains "$" or page.price contains "Quote" or page.price contains "Cost" %}{{ page.price }}{% else %}${{ page.price }}.00{% endif %}{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
         {% endif %}
@@ -102,7 +103,7 @@ layout: default
         {% endif %}
 
         <!-- Bag Size (if multi-size pricing or sizes array exists) -->
-        {% if page.price["12oz"] and is_sub == false %}
+        {% if page.price[default_bag_size] and is_sub == false %}
           <div>
             <label class="hst-label" for="product-size-select">Bag Size</label>
             <select class="hst-select" id="product-size-select">
@@ -111,7 +112,7 @@ layout: default
                   <option value="{{ sz.id }}"
                           data-reg="{{ page.price[sz.id] }}"
                           {% if page.temporary_price and page.temporary_price[sz.id] %}data-sale="{{ page.temporary_price[sz.id] }}"{% endif %}
-                          {% if sz.id == "12oz" %} selected{% endif %}>
+                          {% if sz.default %} selected{% endif %}>
                     {{ sz.label }} &mdash; {% if page.temporary_price and page.temporary_price[sz.id] %}${{ page.temporary_price[sz.id] }}.00{% else %}${{ page.price[sz.id] }}.00{% endif %}
                   </option>
                 {% endif %}
@@ -327,7 +328,7 @@ layout: default
         const mascot = {{ page.mascot_file | jsonify }};
 
         let price = 0;
-        let size = "12oz";
+        let size = {{ default_bag_size | jsonify }};
         const sizeEl = document.getElementById("product-size-select");
         if (sizeEl) {
           size = sizeEl.value;
@@ -338,8 +339,8 @@ layout: default
             ? parseFloat(reg)
             : parseFloat(sale || reg);
         } else {
-          {% if page.price["12oz"] %}
-            price = {{ page.price["12oz"] }};
+          {% if page.price[default_bag_size] %}
+            price = {{ page.price[default_bag_size] }};
           {% elsif page.price %}
             price = {{ page.price | jsonify }};
             if (typeof price === "string") {

@@ -325,7 +325,7 @@
             '<!-- Primary Pill CTA -->' +
             '<div style="margin-bottom: 40px;">' +
               '<a href="' + escapeHtml(customItem.customUrl) + '" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 13px 30px; border-radius: 999px;">' +
-                'Explore ' + escapeHtml(customItem.descriptor) + ' &rarr;' +
+                'Explore ' + escapeHtml(customItem.subtitle) + ' &rarr;' +
               '</a>' +
             '</div>' +
 
@@ -492,7 +492,7 @@
       lines.push(
         customItem.intro,
         '',
-        'Explore ' + customItem.descriptor + ': ' + customItem.customUrl,
+        'Explore ' + customItem.subtitle + ': ' + customItem.customUrl,
         '',
         'Chirp,',
         siteTitle

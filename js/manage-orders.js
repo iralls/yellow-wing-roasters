@@ -262,7 +262,7 @@
       var size = sizeMatch ? sizeMatch[1] : '';
       var namePart = sizeMatch ? mainPart.replace(/(\d+\s*[×x]\s*8oz bags|\d+\s*lbs?|12oz|1lb|2lb|5lb)$/, '').trim() : mainPart;
 
-      var grind = defaultGrind || 'Whole Bean';
+      var grind = defaultGrind || window.YWR_DEFAULT_GRIND;
       var roastLevel = '';
       var picks = '';
       var recipe = '';
@@ -346,7 +346,7 @@
   function renderOrderCard(order, targetContainer, options) {
     options = options || {};
     var roastsData = options.roastsData || (typeof window !== 'undefined' ? window.YWR_ROASTS_DATA : {}) || {};
-    var defaultGrind = options.defaultGrind || (typeof window !== 'undefined' ? window.YWR_DEFAULT_GRIND : 'Whole Bean') || 'Whole Bean';
+    var defaultGrind = options.defaultGrind || window.YWR_DEFAULT_GRIND;
     var isMockMode = !!options.isMockMode;
     var apiUrl = options.apiUrl || '';
     var onMutate = options.onMutate || function () {};
@@ -536,7 +536,7 @@
     options = options || {};
     var API_URL = options.apiUrl || '';
     var roastsData = options.roastsData || (typeof window !== 'undefined' ? window.YWR_ROASTS_DATA : {}) || {};
-    var defaultGrind = options.defaultGrind || (typeof window !== 'undefined' ? window.YWR_DEFAULT_GRIND : 'Whole Bean') || 'Whole Bean';
+    var defaultGrind = options.defaultGrind || window.YWR_DEFAULT_GRIND;
 
     var isMockMode = (!API_URL || API_URL.indexOf("YOUR_ORDER_API_DEPLOYMENT_ID") >= 0 || API_URL.trim() === "");
 
@@ -680,7 +680,7 @@
     options = options || {};
     var rootEl = document.getElementById(options.containerId || 'order-preview-root');
     var roastsData = options.roastsData || (typeof window !== 'undefined' ? window.YWR_ROASTS_DATA : {}) || {};
-    var defaultGrind = options.defaultGrind || (typeof window !== 'undefined' ? window.YWR_DEFAULT_GRIND : 'Whole Bean') || 'Whole Bean';
+    var defaultGrind = options.defaultGrind || window.YWR_DEFAULT_GRIND;
 
     var activeTab = '1001';
 

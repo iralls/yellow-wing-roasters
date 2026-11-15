@@ -1,7 +1,6 @@
 ---
 layout: menu-item
 title: "BYOB — Book Your Own Bootcamp"
-card_title: "BYOB"
 subtitle: "Book your own bootcamp"
 intro: "Want to step behind the roaster yourself? Pick any 12oz single-origin coffee, bring up to three people total, and join us for a personalized, hands-on roasting session."
 slug: book-your-own-bootcamp
@@ -14,13 +13,12 @@ session_fees:
   1: 0
   2: 15
   3: 30
-data_roast: byob-bootcamp
 order: 4
 permalink: /roasts/book-your-own-bootcamp/
 mascot_file: teacher-transparent.png
 mascot_alt: "Book Your Own Bootcamp mascot"
-descriptor: Book Your Own Bootcamp
-overlay_notes: "pick any 12oz single origin and book a personalized roasting session"
+overlay_notes: "Hands-on personalized roasting session for up to 3 guests"
+shop_meta: "Bootcamp Session"
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}

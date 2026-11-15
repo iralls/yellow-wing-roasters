@@ -11,6 +11,8 @@ mascot_alt: "The Aviary cage"
 intro: 'Our four "nest" blends, ranging from bright and floral to dark and smoky'
 notes: "Four blends, one box"
 descriptor: "a sample pack of our most popular blends"
+shop_notes: "Four 8oz signature blend bags: Early Bird, Feather Soot, Chimney Sweep, Lil' Sipper"
+shop_meta: "4 x 8oz"
 ---
 
 <p class="hst-intro" style="margin-top: 1rem;">Four blends, each individually packaged in its own 8oz bag &mdash; a great way to explore the full range before committing to a full bag.</p>

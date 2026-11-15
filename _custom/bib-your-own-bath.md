@@ -2,12 +2,10 @@
 layout: default
 published: false
 title: "BYOB — Bib Your Own Bath"
-card_title: "BYOB"
 subtitle: "Bib your own bath"
 intro: "Ready to slurp like a pro? Tie on a bib, step up to the cupping table with up to five people, and join us for a guided sensory tasting flight across our favorite origins, processing methods, and roast profiles."
 slug: bib-your-own-bath
 category: custom
-data_roast: byob-bath
 order: 5
 permalink: /roasts/bib-your-own-bath/
 price: 40
@@ -15,7 +13,6 @@ price_per_person: 40
 max_guests: 5
 mascot_file: bird-bath-transparent.png
 mascot_alt: "Bib Your Own Bath mascot"
-descriptor: Bib Your Own Bath
 overlay_notes: "book a guided coffee cupping session for up to five guests"
 ---
 

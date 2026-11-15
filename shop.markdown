@@ -16,6 +16,7 @@ subtitle: >-
   </header>
 
   <!-- ── 1. Coffee: Signature Blends ── -->
+  {% assign default_bag_size = site.data.bag_sizes | where: "default", true | map: "id" | first %}
   {% assign active_roasts = site.roasts | where_exp: "item", "item.status != 'flown_south'" | where_exp: "item", "item.status != 'archived'" %}
   {% assign blends = active_roasts | where: "category", "blend" | sort: "order" %}
   <section class="menu-section">
@@ -28,10 +29,10 @@ subtitle: >-
           <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
           <div class="menu-item-leader" aria-hidden="true"></div>
           <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price["12oz"] %}
-              <s>${{ r.price["12oz"] }}</s><span class="sale-val">${{ r.temporary_price["12oz"] }}</span>
+            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
+              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
             {% else %}
-              ${{ r.price["12oz"] }}
+              ${{ r.price[default_bag_size] }}
             {% endif %}
           </div>
         </div>
@@ -61,10 +62,10 @@ subtitle: >-
           <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
           <div class="menu-item-leader" aria-hidden="true"></div>
           <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price["12oz"] %}
-              <s>${{ r.price["12oz"] }}</s><span class="sale-val">${{ r.temporary_price["12oz"] }}</span>
+            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
+              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
             {% else %}
-              ${{ r.price["12oz"] }}
+              ${{ r.price[default_bag_size] }}
             {% endif %}
           </div>
         </div>
@@ -95,10 +96,10 @@ subtitle: >-
           <h3 class="menu-item-name">{{ r.card_title | default: r.title }}</h3>
           <div class="menu-item-leader" aria-hidden="true"></div>
           <div class="menu-item-price">
-            {% if r.temporary_price and r.temporary_price["12oz"] %}
-              <s>${{ r.price["12oz"] }}</s><span class="sale-val">${{ r.temporary_price["12oz"] }}</span>
+            {% if r.temporary_price and r.temporary_price[default_bag_size] %}
+              <s>${{ r.price[default_bag_size] }}</s><span class="sale-val">${{ r.temporary_price[default_bag_size] }}</span>
             {% else %}
-              ${{ r.price["12oz"] }}
+              ${{ r.price[default_bag_size] }}
             {% endif %}
           </div>
         </div>
@@ -118,100 +119,63 @@ subtitle: >-
   {% endif %}
 
   <!-- ── 4. Flights ── -->
+  {% assign flights_list = site.flights | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">Tasting Flights</h2>
 
-    <a href="{{ '/flights/the-aviary/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">The Aviary</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">$38.00</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Four 8oz signature blend bags: Early Bird, Feather Soot, Chimney Sweep, Lil' Sipper</span>
-        <span class="menu-item-meta">4 x 8oz</span>
-      </div>
-    </a>
-
-    <a href="{{ '/flights/peck-your-own/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">Peck Your Own</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">$10.00 / bag</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Build a custom tasting flight with four or more 8oz bags from our active roster</span>
-        <span class="menu-item-meta">Min. 4 Bags</span>
-      </div>
-    </a>
+    {% for f in flights_list %}
+      <a href="{{ f.url | relative_url }}" class="menu-item">
+        <div class="menu-item-row">
+          <h3 class="menu-item-name">{{ f.title }}</h3>
+          <div class="menu-item-leader" aria-hidden="true"></div>
+          <div class="menu-item-price">
+            {% if f.price_per_bag %}${{ f.price_per_bag }}.00 / bag{% else %}${{ f.price }}.00{% endif %}
+          </div>
+        </div>
+        <div class="menu-item-desc">
+          <span class="menu-item-notes">{{ f.shop_notes }}</span>
+          <span class="menu-item-meta">{% if f.min_bags %}Min. {{ f.min_bags }} Bags{% else %}{{ f.shop_meta }}{% endif %}</span>
+        </div>
+      </a>
+    {% endfor %}
   </section>
 
   <!-- ── 5. Custom Roastery ── -->
+  {% assign custom_list = site.custom | sort: "order" %}
   <section class="menu-section">
     <h2 class="menu-section-title">BYOB &bull; Custom Roastery</h2>
 
-    <a href="{{ '/roasts/build-your-own-blend/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">BYOB &mdash; Build Your Own Blend</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">$32.00</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Formulate up to three varieties with individual roast degrees</span>
-        <span class="menu-item-meta">Custom Batch</span>
-      </div>
-    </a>
-
-    <a href="{{ '/roasts/bring-your-own-beans/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">BYOB &mdash; Bring Your Own Beans</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">Quote</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Send us your raw unroasted coffee beans for custom profiling</span>
-        <span class="menu-item-meta">Custom Sourced</span>
-      </div>
-    </a>
-
-    <a href="{{ '/roasts/bank-your-own-burner/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">BYOB &mdash; Bank Your Own Burner</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">Bean Cost</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Designate your target roast level on any single-origin bean in our catalog</span>
-        <span class="menu-item-meta">Profile Spec</span>
-      </div>
-    </a>
-
-    <a href="{{ '/roasts/book-your-own-bootcamp/' | relative_url }}" class="menu-item">
-      <div class="menu-item-row">
-        <h3 class="menu-item-name">BYOB &mdash; Book Your Own Bootcamp</h3>
-        <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">$30 + $15/guest</div>
-      </div>
-      <div class="menu-item-desc">
-        <span class="menu-item-notes">Hands-on personalized roasting session for up to 3 guests</span>
-        <span class="menu-item-meta">Bootcamp Session</span>
-      </div>
-    </a>
+    {% for c in custom_list %}
+      <a href="{{ c.url | relative_url }}" class="menu-item">
+        <div class="menu-item-row">
+          <h3 class="menu-item-name">{{ c.title }}</h3>
+          <div class="menu-item-leader" aria-hidden="true"></div>
+          <div class="menu-item-price">
+            {% if c.shop_price %}{{ c.shop_price }}{% elsif c.price contains "$" %}{{ c.price }}{% else %}${{ c.price }}.00{% endif %}
+          </div>
+        </div>
+        <div class="menu-item-desc">
+          <span class="menu-item-notes">{{ c.overlay_notes }}</span>
+          <span class="menu-item-meta">{{ c.shop_meta }}</span>
+        </div>
+      </a>
+    {% endfor %}
   </section>
 
   <!-- ── 6. Gift Cards ── -->
+  {% assign gift_page = site.pages | where: "slug", "digital-gift-card" | first %}
   <section class="menu-section">
     <h2 class="menu-section-title">Gift Cards</h2>
 
-    <a href="{{ '/gift/' | relative_url }}" class="menu-item">
+    <a href="{{ gift_page.url | relative_url }}" class="menu-item">
       <div class="menu-item-row">
-        <h3 class="menu-item-name">Digital Gift Card</h3>
+        <h3 class="menu-item-name">{{ gift_page.title }}</h3>
         <div class="menu-item-leader" aria-hidden="true"></div>
-        <div class="menu-item-price">$15 &ndash; $90</div>
+        <div class="menu-item-price">{{ gift_page.price }}</div>
       </div>
       <div class="menu-item-desc">
-        <span class="menu-item-notes">Prepaid instant digital code delivered via email</span>
-        <span class="menu-item-meta">Voucher</span>
+        <span class="menu-item-notes">{{ gift_page.descriptor | capitalize }}</span>
+        <span class="menu-item-meta">{{ gift_page.shop_meta }}</span>
       </div>
     </a>
   </section>

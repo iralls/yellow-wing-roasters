@@ -134,7 +134,6 @@ sitemap: false
           title: {{ c.title | jsonify }},
           subtitle: {{ c.subtitle | jsonify }},
           category: {{ c.category | jsonify }},
-          descriptor: {{ c.descriptor | jsonify }},
           overlayNotes: {{ c.overlay_notes | capitalize | jsonify }},
           intro: {{ c.intro | strip | jsonify }},
           mascotUrl: {{ site.url | append: '/images/' | append: c.mascot_file | jsonify }},

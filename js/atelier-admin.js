@@ -503,7 +503,7 @@
   function injectMissingGrindIntoItemsString(itemsStr, defaultGrind) {
     var rawLines = splitOrderItemStrings(itemsStr);
     if (!rawLines.length) return String(itemsStr || '');
-    var grindToApply = String(defaultGrind || 'Whole Bean').trim();
+    var grindToApply = String(defaultGrind || window.YWR_DEFAULT_GRIND).trim();
     var parsed = parseOrderItems(itemsStr);
     var sep = String(itemsStr || '').indexOf('\n') !== -1 ? '\n' : ', ';
 
@@ -2866,7 +2866,7 @@
 
         if (fillGrindBtn && itemsInput) {
           fillGrindBtn.addEventListener('click', function () {
-            var dGrind = (typeof window !== 'undefined' && window.YWR_DEFAULT_GRIND) || 'Whole Bean';
+            var dGrind = window.YWR_DEFAULT_GRIND;
             itemsInput.value = injectMissingGrindIntoItemsString(itemsInput.value, dGrind);
             var updatedParsed = parseOrderItems(itemsInput.value, selectedItem.total);
             if (itemsPreview) {

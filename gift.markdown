@@ -6,6 +6,7 @@ descriptor: prepaid instant digital code delivered via email
 slug: digital-gift-card
 category: gift
 price: "$15 – $90"
+shop_meta: "Voucher"
 mascot_file: qr-code2-full-transparent.png
 mascot_alt: "Digital Gift Card"
 permalink: /gift/

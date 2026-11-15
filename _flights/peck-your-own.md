@@ -13,6 +13,7 @@ mascot_file: peck-your-own-transparent.png
 mascot_alt: "Peck Your Own"
 intro: "Build your own custom sampler flight: pick any 4 or more of our fresh coffees in 8oz bags ($10/bag)."
 descriptor: "Sample Flight"
+shop_notes: "Build a custom tasting flight with four or more 8oz bags from our active roster"
 ---
 
 {% assign all_roasts = site.roasts | sort: "order" %}

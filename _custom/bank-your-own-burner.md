@@ -1,19 +1,18 @@
 ---
 layout: menu-item
 title: "BYOB — Bank Your Own Burner"
-card_title: "BYOB"
 subtitle: "Bank your own burner"
 intro: "Love one of our single-origin coffees, but want to explore it at a different roast level? Pick any of our available single-origin beans, choose your desired roast level from City to Vienna, and we'll custom-fire it fresh to order."
 slug: bank-your-own-burner
 category: custom
 price: "Cost of Selected Bean"
-data_roast: byob-burner
 order: 3
 permalink: /roasts/bank-your-own-burner/
 mascot_file: bird-on-spit-transparent.png
 mascot_alt: "BYOB mascot"
-descriptor: Bank Your Own Burner
-overlay_notes: "pick any single origin and customize your roast level"
+overlay_notes: "Designate your target roast level on any single-origin bean in our catalog"
+shop_price: "Bean Cost"
+shop_meta: "Profile Spec"
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}

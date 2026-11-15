@@ -180,7 +180,7 @@
           var isDedicatedSub = !!sEntry;
           var isSubProduct = isDedicatedSub || (qpFreq !== null);
 
-          var defaultGrind = (typeof window !== 'undefined' && window.YWR_DEFAULT_GRIND) || 'Whole Bean';
+          var defaultGrind = window.YWR_DEFAULT_GRIND;
           var grindVal = qpGrind || defaultGrind;
           var sizeVal = qpSize || (sEntry ? sEntry.sizes[0] : Object.keys(rEntry.prices)[0]);
 
