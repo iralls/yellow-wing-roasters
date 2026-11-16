@@ -2028,11 +2028,17 @@
             });
             var gk = keyParts.join(' • ');
             if (!rGroups[gk]) {
-              rGroups[gk] = { dimValues: dimVals, count: 0, greenGrams: 0, endGrams: 0 };
+              rGroups[gk] = { dimValues: dimVals, count: 0, greenGrams: 0, endGrams: 0, endLbs: 0, loss: 0 };
             }
+            var rGreenG = Number(r.greenWeightGrams) || 0;
+            var rEndG = Number(r.endWeightGrams) || 0;
             rGroups[gk].count++;
-            rGroups[gk].greenGrams += (Number(r.greenWeightGrams) || 0);
-            rGroups[gk].endGrams += (Number(r.endWeightGrams) || 0);
+            rGroups[gk].greenGrams += rGreenG;
+            rGroups[gk].endGrams += rEndG;
+            rGroups[gk].endLbs += rEndG / GRAMS_PER_LB;
+            rGroups[gk].loss = rGroups[gk].greenGrams > 0
+              ? ((rGroups[gk].greenGrams - rGroups[gk].endGrams) / rGroups[gk].greenGrams) * 100
+              : 0;
           });
           var rgRows = Object.keys(rGroups).map(function (k) { return rGroups[k]; });
           var gSortR = sortState.groups;
@@ -2053,21 +2059,25 @@
           });
           rgHtml += renderSortTh('BATCHES', 'count', 'groups', true) +
             renderSortTh('TOTAL GREEN (G)', 'greenGrams', 'groups', true) +
+            renderSortTh('TOTAL ROASTED (LBS)', 'endLbs', 'groups', true) +
             renderSortTh('TOTAL ROASTED (G)', 'endGrams', 'groups', true) +
             renderSortTh('AVG LOSS %', 'loss', 'groups', true) +
             '</tr></thead><tbody>';
           var sumRBatches = 0;
           var sumRGreenGrams = 0;
           var sumREndGrams = 0;
+          var sumREndLbs = 0;
           rgRows.forEach(function (g) {
             sumRBatches += g.count;
             sumRGreenGrams += g.greenGrams;
             sumREndGrams += g.endGrams;
+            sumREndLbs += g.endLbs;
             var avgLoss = g.greenGrams > 0 ? (((g.greenGrams - g.endGrams) / g.greenGrams) * 100).toFixed(1) : '0.0';
             rgHtml += '<tr>';
             activeGroupBys.forEach(function (dim) { rgHtml += '<td><strong>' + escapeHtml(g.dimValues[dim]) + '</strong></td>'; });
             rgHtml += '<td style="text-align: right; font-family: monospace;">' + g.count + '</td>' +
               '<td style="text-align: right; font-family: monospace;">' + g.greenGrams + 'g</td>' +
+              '<td style="text-align: right; font-family: monospace; font-weight: 700; color: #92400e;">' + g.endLbs.toFixed(2) + ' lbs</td>' +
               '<td style="text-align: right; font-family: monospace; font-weight: 700; color: #92400e;">' + g.endGrams + 'g</td>' +
               '<td style="text-align: right; font-family: monospace;">' + avgLoss + '%</td></tr>';
           });
@@ -2076,6 +2086,7 @@
             '<td colspan="' + activeGroupBys.length + '">Total (' + rgRows.length + ' groups)</td>' +
             '<td style="text-align: right; font-family: monospace;">' + sumRBatches + '</td>' +
             '<td style="text-align: right; font-family: monospace;">' + sumRGreenGrams + 'g</td>' +
+            '<td style="text-align: right; font-family: monospace; color: #92400e;">' + sumREndLbs.toFixed(2) + ' lbs</td>' +
             '<td style="text-align: right; font-family: monospace; color: #92400e;">' + sumREndGrams + 'g</td>' +
             '<td style="text-align: right; font-family: monospace;">' + totalAvgLoss + '%</td>' +
             '</tr></tfoot></table></div>';
