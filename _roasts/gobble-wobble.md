@@ -3,7 +3,7 @@ title: Gobble Wobble
 subtitle: Thanksgiving Blend
 slug: gobble-wobble
 category: seasonal
-order: 13
+order: 15
 roast_level: 2
 descriptor: warm and festive
 tasting_notes: bittersweet chocolate, blackberry, dark fruit

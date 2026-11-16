@@ -1,9 +1,9 @@
 ---
-published: false
+status: flown_south
 title: "Morning Meep"
 slug: morning-meep
 category: seasonal
-order: 8
+order: 11
 roast_level: 3
 descriptor: nutty and spiced
 tasting_notes: cinnamon, spiced chocolate, dark fruit

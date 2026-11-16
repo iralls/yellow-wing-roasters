@@ -4,7 +4,7 @@ subtitle: Halloween Blend
 slug: boo-boo-patoo
 category: seasonal
 status: flown_south
-order: 12
+order: 14
 roast_level: 4
 descriptor: sweet and indulgent
 tasting_notes: rich chocolate, toasted nuts

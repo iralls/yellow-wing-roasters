@@ -3,7 +3,7 @@ title: "Homeroom Hoot"
 subtitle: Back to School Blend
 slug: homeroom-hoot
 category: seasonal
-order: 11
+order: 13
 roast_level: 2
 descriptor: cozy and comforting
 tasting_notes: smooth cocoa, toasted nut, caramel sweetness

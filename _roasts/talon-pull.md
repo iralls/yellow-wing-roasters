@@ -1,9 +1,9 @@
 ---
-published: false
+status: flown_south
 title: "Talon Pull"
 slug: talon-pull
 category: seasonal
-order: 9
+order: 12
 roast_level: 3
 descriptor: clean and robust
 tasting_notes: clean, smooth, warm spice, dark chocolate
