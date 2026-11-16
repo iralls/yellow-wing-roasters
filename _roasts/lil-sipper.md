@@ -4,8 +4,8 @@ slug: lil-sipper
 category: blend
 order: 4
 roast_level: 1
-descriptor: vibrant and complex
-tasting_notes: peach, brown sugar, maple, cocoa
+descriptor: bright and sweet
+tasting_notes: peach, brown sugar
 brewing_method: Espresso, Pour-over, Drip
 mascot: hummingbird
 mascot_file: audubon-hummingbird-transparent.png
@@ -37,7 +37,7 @@ temporary_price:
   2lb: 26
   5lb: 66
 description: >-
-  A lively, modern espresso defined by bright floral aromatics and a clean, refreshing sweetness. Vibrant and layered without losing its silky balance, it’s a dynamic cup for anyone looking to explore specialty coffee beyond the traditional profile.
+  Our lightest blend—crisp, refreshing, and easy-drinking. Built for anyone who enjoys a brighter cup with a clean, smooth finish and zero bitter bite. Great brewed as a pour-over, drip, or a lighter espresso.
 fun_fact: >-
   A ruby-throated hummingbird beats its wings over 50 times per second and is the only bird capable of sustained backward and upside-down flight.
 ---
