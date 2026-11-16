@@ -48,6 +48,9 @@ layout: default
           {% endif %}
         </div>
         <h1 class="hst-title">{{ page.title }}</h1>
+        {% if page.subtitle %}
+          <div class="hst-subtitle">{{ page.subtitle }}</div>
+        {% endif %}
       </div>
 
       <!-- Price Display -->
