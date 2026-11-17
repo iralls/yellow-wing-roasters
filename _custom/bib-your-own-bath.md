@@ -19,8 +19,8 @@ overlay_notes: "book a guided coffee cupping session for up to five guests"
 {% assign rate = page.price_per_person %}
 
 <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-  <a href="{{ '/roasts/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-    &larr; Back to All Roasts
+  <a href="{{ '/shop/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+    &larr; Back to Shop
   </a>
 </div>
 

@@ -354,7 +354,7 @@
 
             '<!-- Audubon Pigeon Post Illustration -->' +
             '<div style="margin: 0 auto 22px;">' +
-              '<a href="' + escapeHtml(siteUrl) + '/roasts/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">' +
+              '<a href="' + escapeHtml(siteUrl) + '/shop/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block;">' +
                 '<img src="' + escapeHtml(siteUrl) + '/images/audubon-pigeon-post-transparent.png" alt="Pigeon Post — ' + escapeHtml(siteTitle) + '" height="175" style="height: 175px; max-width: 230px; width: auto; display: block; margin: 0 auto;" />' +
               '</a>' +
             '</div>' +
@@ -411,7 +411,7 @@
 
             '<!-- Primary Pill CTA -->' +
             '<div style="margin-bottom: 24px;">' +
-              '<a href="' + escapeHtml(siteUrl) + '/roasts/" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 13px 30px; border-radius: 999px;">' +
+              '<a href="' + escapeHtml(siteUrl) + '/shop/" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #2c1e14; color: #ffffff !important; font-family: \'Montserrat\', \'Helvetica Neue\', Helvetica, Arial, sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 13px 30px; border-radius: 999px;">' +
                 'Browse All Roasts &rarr;' +
               '</a>' +
             '</div>' +
@@ -517,7 +517,7 @@
         '- Seasonals: Limited-run holiday & seasonal roasts',
         '- Restocks: Fresh harvests & rotating lots',
         '',
-        'Browse All Roasts: ' + siteUrl + '/roasts/',
+        'Browse All Roasts: ' + siteUrl + '/shop/',
         'Coffee Quiz: ' + siteUrl + '/quiz/ · Sample Flights: ' + siteUrl + '/flights/ · Subscriptions: ' + siteUrl + '/subscriptions/',
         '',
         'Chirp,',
