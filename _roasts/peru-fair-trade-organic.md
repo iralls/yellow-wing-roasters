@@ -5,7 +5,7 @@ category: single origin
 order: 11
 roast_level: 3
 region: Cajamarca
-elevation: 1,400 – 1,800m
+elevation: 1,300 – 2,000m
 descriptor: crisp and nuanced
 tasting_notes: dark chocolate, red apple, berry
 brewing_method: Pour-over, Drip, French Press

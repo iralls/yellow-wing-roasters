@@ -5,7 +5,7 @@ category: single origin
 order: 8
 roast_level: 5
 region: Mandheling, North Sumatra
-elevation: 1,100 – 1,600m
+elevation: 1,400 – 1,600m
 descriptor: earthy and smoky
 tasting_notes: earthy, smoky, hazelnut, cedar
 brewing_method: French Press, Moka Pot, Drip, Espresso

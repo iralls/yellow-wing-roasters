@@ -4,7 +4,8 @@ slug: brazil-faz-santa-ines
 category: single origin
 order: 5
 roast_level: 3
-region: Minas Gerais
+region: Carmo de Minas, Minas Gerais
+elevation: 1,050m
 descriptor: rich and mouth-coating
 tasting_notes: dark berry, cocoa, sweet finish
 brewing_method: Espresso, Drip, French Press

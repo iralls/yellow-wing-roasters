@@ -4,8 +4,8 @@ slug: guatemala-antigua
 category: single origin
 order: 6
 roast_level: 3
-region: Antigua Valley
-elevation: 1,500 – 1,700m
+region: Acatenango, Antigua Valley
+elevation: 1,400 – 1,700m
 descriptor: comforting and velvety
 tasting_notes: dark chocolate, toasted nut, caramel
 brewing_method: Espresso, Moka Pot, French Press

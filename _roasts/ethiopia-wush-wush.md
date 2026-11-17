@@ -4,8 +4,8 @@ slug: ethiopia-wush-wush
 category: single origin
 order: 7
 roast_level: 2
-region: Kaffa
-elevation: 1,800 – 2,100m
+region: Chito, Guji
+elevation: 1,900 – 2,300m
 descriptor: bold and fruit-forward
 tasting_notes: blueberry, dark cherry, chocolate, pecan
 brewing_method: Pour-over, Drip
