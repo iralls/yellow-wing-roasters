@@ -41,10 +41,10 @@ subtitle: >-
   </section>
   {% endif %}
 
-  <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--menu-line);">
-    <p style="font-size: 0.95rem; color: var(--menu-muted); margin: 0;">
+  <div class="menu-footer-callout">
+    <p>
       Want a heads-up if a seasonal roast returns?
-      <a href="{{ '/pigeon-post/' | relative_url }}" style="color: var(--menu-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-left: 0.25rem;">Join Pigeon Post &rarr;</a>
+      <a href="{{ '/pigeon-post/' | relative_url }}">Join Pigeon Post &rarr;</a>
     </p>
   </div>
 </div>

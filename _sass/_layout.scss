@@ -151,6 +151,16 @@
   }
 }
 
+.cart-dropdown-item-badge {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.45rem;
+  background: var(--hst-border);
+  border-radius: 999px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-left: 0.3rem;
+}
+
 /* Main Content Area */
 .main-content {
   flex: 1;

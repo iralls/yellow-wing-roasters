@@ -12,6 +12,7 @@ overlay_notes: "Formulate up to three varieties with individual roast degrees"
 shop_meta: "Custom Batch"
 mascot_file: build-a-bird-transparent.png
 mascot_alt: "Build Your Own Blend mascot"
+custom_css: custom-roasts.css
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
@@ -130,7 +131,7 @@ mascot_alt: "Build Your Own Blend mascot"
   </button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Blending Philosophy</button>
     <div class="hst-drawer-body">

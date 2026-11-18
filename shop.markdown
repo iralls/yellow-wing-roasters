@@ -80,10 +80,10 @@ subtitle: >-
     {% include menu-listing-item.html url=gift_page.url title=gift_page.title price=gift_page.price notes=gift_notes meta=gift_page.shop_meta %}
   </section>
 
-  <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--menu-line);">
-    <p style="font-size: 0.95rem; color: var(--menu-muted); margin: 0;">
+  <div class="menu-footer-callout">
+    <p>
       Looking for a past seasonal or single origin?
-      <a href="{{ '/archive/' | relative_url }}" style="color: var(--menu-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-left: 0.25rem;">View the Coffee Archive &rarr;</a>
+      <a href="{{ '/archive/' | relative_url }}">View the Coffee Archive &rarr;</a>
     </p>
   </div>
 </div>

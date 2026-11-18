@@ -2,6 +2,7 @@
 layout: default
 title: "Coffee Quiz — Find Your Roast"
 permalink: /quiz/
+custom_css: quiz.css
 ---
 
 <div class="roast-mv-center roast-mv-bird-wrap">
@@ -12,7 +13,7 @@ permalink: /quiz/
   <h1 class="roast-mv-title">Find Your Perfect Roast</h1>
 </div>
 
-<p class="category-intro" style="text-align: center; margin-top: -0.25rem; margin-bottom: 2.25rem;">
+<p class="category-intro quiz-intro">
   Answer 4 quick questions to discover your ideal coffees across our entire roost — from seasonal favorites to upcoming batches.
 </p>
 
@@ -232,9 +233,9 @@ permalink: /quiz/
       </div>
     </div>
 
-    <div class="roasts-catalog-wrap" style="max-width: 74rem; margin: 0 auto;">
+    <div class="roasts-catalog-wrap quiz-results-wrap">
       <h2 class="roasts-category">Top Coffee Matches</h2>
-      <div class="roast-trans-grid sleek-comparison-grid" id="quiz-top-matches-grid" style="margin-bottom: 3rem;"></div>
+      <div class="roast-trans-grid sleek-comparison-grid quiz-top-matches-grid" id="quiz-top-matches-grid"></div>
       <div id="quiz-empty-message" class="quiz-empty-results" style="display: none;">
         <p>No exact coffee matches found for this combination.</p>
         <button type="button" class="quiz-btn quiz-btn-primary" onclick="document.getElementById('quiz-retake-btn').click();">Adjust Preferences</button>

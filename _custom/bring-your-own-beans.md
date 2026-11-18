@@ -13,6 +13,7 @@ mascot_alt: "Bring your own beans mascot"
 overlay_notes: "Send us your raw unroasted coffee beans for custom profiling"
 shop_price: "Quote"
 shop_meta: "Custom Sourced"
+custom_css: custom-roasts.css
 ---
 
 <form class="hst-form" id="byob-beans-form" onsubmit="return false;">
@@ -43,7 +44,7 @@ shop_meta: "Custom Sourced"
   <div>
     <label class="hst-label" for="byob-qty">Quantity (lbs)</label>
     <input id="byob-qty" type="number" class="hst-input" min="1" max="10" value="1" required>
-    <span style="display: block; font-size: 0.76rem; color: var(--hst-muted); margin-top: 0.35rem;">Roasting loses ~15% of the bean weight on average.</span>
+    <span class="hst-field-hint">Roasting loses ~15% of the bean weight on average.</span>
   </div>
 
   <div>
@@ -56,14 +57,14 @@ shop_meta: "Custom Sourced"
   </button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Approved Suppliers</button>
     <div class="hst-drawer-body">
-      <ul style="margin: 0; padding-left: 1.2rem; line-height: 1.8;">
-        <li><a href="https://www.roastmasters.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Roastmasters</a></li>
-        <li><a href="https://burmancoffee.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Burman Coffee</a></li>
-        <li><a href="https://www.sweetmarias.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Sweet Maria's</a></li>
+      <ul>
+        <li><a href="https://www.roastmasters.com/" target="_blank" rel="noopener">Roastmasters</a></li>
+        <li><a href="https://burmancoffee.com/" target="_blank" rel="noopener">Burman Coffee</a></li>
+        <li><a href="https://www.sweetmarias.com/" target="_blank" rel="noopener">Sweet Maria's</a></li>
       </ul>
     </div>
   </div>
@@ -71,9 +72,9 @@ shop_meta: "Custom Sourced"
   <div class="hst-drawer">
     <button type="button" class="hst-drawer-head">How It Works</button>
     <div class="hst-drawer-body">
-      <ol style="margin: 0; padding-left: 1.2rem; line-height: 1.7;">
-        <li style="margin-bottom: 0.4rem;">Browse green coffee beans from any of our approved suppliers above.</li>
-        <li style="margin-bottom: 0.4rem;">Paste the direct link, specify your target roast profile, and choose quantity.</li>
+      <ol>
+        <li>Browse green coffee beans from any of our approved suppliers above.</li>
+        <li>Paste the direct link, specify your target roast profile, and choose quantity.</li>
         <li>We procure the lot, custom-fire the batch, and prepare it freshly rested.</li>
       </ol>
     </div>

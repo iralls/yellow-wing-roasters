@@ -424,7 +424,7 @@
         var totalEl = document.createElement('div');
         totalEl.className = 'order-cart-card-total';
         if (item.data.price === 0) {
-          totalEl.innerHTML = '$0 <span style="font-size:0.7rem; font-weight:normal; color:#887465; display:block;">(Invoiced later)</span>';
+          totalEl.innerHTML = '$0 <span class="order-invoiced-note">(Invoiced later)</span>';
         } else {
           totalEl.textContent = '$' + lineTotal;
         }

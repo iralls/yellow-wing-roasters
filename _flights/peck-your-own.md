@@ -14,6 +14,7 @@ mascot_alt: "Peck Your Own"
 intro: "Build your own custom sampler flight: pick any 4 or more of our fresh coffees in 8oz bags ($10/bag)."
 descriptor: "Sample Flight"
 shop_notes: "Build a custom tasting flight with four or more 8oz bags from our active roster"
+custom_css: flights.css
 ---
 
 {% assign all_roasts = site.roasts | sort: "order" %}
@@ -35,9 +36,9 @@ shop_notes: "Build a custom tasting flight with four or more 8oz bags from our a
   </div>
 
   <!-- Appended Chosen Roasts List -->
-  <div style="margin-top: 0.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
-      <label class="hst-label" style="margin: 0;">Selected Roasts in Flight</label>
+  <div class="pyo-chosen-group">
+    <div class="pyo-chosen-header">
+      <label class="hst-label">Selected Roasts in Flight</label>
       <span id="pyo-count-indicator" class="pyo-status-badge">0 of 4 minimum selected</span>
     </div>
     <ul id="pyo-chosen-list" class="pyo-chosen-list">
@@ -56,7 +57,7 @@ shop_notes: "Build a custom tasting flight with four or more 8oz bags from our a
   <button type="submit" class="hst-btn" id="pyo-add-btn" disabled>Add to Cart</button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Flight Details &amp; Pricing</button>
     <div class="hst-drawer-body">

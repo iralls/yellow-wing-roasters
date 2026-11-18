@@ -7,12 +7,13 @@ mascot_file: mailbox-transparent.png
 mascot_alt: "Yellow Wing Roasters Mailbox"
 permalink: /feedback/
 no_order: true
+custom_css: feedback.css
 intro: "We'd love to hear from you — what you're enjoying, what you'd change, or what you'd like to see next from our roastery."
 ---
 
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfKtin2Wmh-9w7w2ILK7zKMuGu7CzqZbuEvYz9hblkOce9jkQ/viewform?embedded=true" title="Customer Feedback Form" width="100%" height="750" frameborder="0" marginheight="0" marginwidth="0" style="display: block; width: 100%; border: 0; min-height: 720px; border-radius: 2px;">Loading…</iframe>
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfKtin2Wmh-9w7w2ILK7zKMuGu7CzqZbuEvYz9hblkOce9jkQ/viewform?embedded=true" title="Customer Feedback Form" width="100%" height="750" frameborder="0" marginheight="0" marginwidth="0" class="hst-embed-frame">Loading…</iframe>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer">
     <button type="button" class="hst-drawer-head">Direct Email &amp; Inquiries</button>
     <div class="hst-drawer-body">

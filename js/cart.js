@@ -262,7 +262,7 @@
               '<div class="cart-dropdown-item-info">' +
                 '<div class="cart-dropdown-item-title" title="' + escapeHtml(it.title) + '">' +
                   escapeHtml(it.title) +
-                  (it.isSubscription ? ' <span class="cart-dropdown-item-badge" style="font-size:0.65rem; padding:0.15rem 0.45rem; background:#ebe7df; border-radius:999px; text-transform:uppercase; font-weight:700; margin-left:0.3rem;">Sub</span>' : '') +
+                  (it.isSubscription ? ' <span class="cart-dropdown-item-badge">Sub</span>' : '') +
                 '</div>' +
                 '<div class="cart-dropdown-item-meta">' + escapeHtml(it.meta) + '</div>' +
                 '<div class="cart-dropdown-item-qty-price">' + it.qty + ' &times; $' + it.unitPrice + '</div>' +

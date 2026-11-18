@@ -186,3 +186,24 @@
     text-align: left;
   }
 }
+
+.menu-footer-callout {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--menu-line);
+
+  p {
+    font-size: 0.95rem;
+    color: var(--menu-muted);
+    margin: 0;
+  }
+
+  a {
+    color: var(--menu-text);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-left: 0.25rem;
+  }
+}

@@ -3,6 +3,7 @@ layout: default
 title: "Pigeon Post Email Composer"
 permalink: /pigeon-post/email-composer/
 sitemap: false
+custom_css: email-composer.css
 ---
 
 <link rel="stylesheet" href="{{ '/css/admin-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
@@ -10,15 +11,15 @@ sitemap: false
 <div class="hst-wrap pp-composer-wrap">
   <a href="{{ '/admin/' | relative_url }}" class="hst-back-link">&larr; Back to Admin Portal</a>
 
-  <div style="text-align: center; margin-bottom: 2rem;">
+  <div class="pp-header">
     <div class="hst-cat">Pigeon Post Dispatch</div>
-    <h1 class="hst-title" style="margin-bottom: 0.5rem;">Email Composer</h1>
-    <p style="color: var(--hst-muted); font-size: 0.95rem; margin: 0 auto; max-width: 28rem;">Generate beautiful, responsive email newsletters for new roasts, custom drops, and subscriber welcomes.</p>
+    <h1 class="hst-title">Email Composer</h1>
+    <p class="pp-subtitle">Generate beautiful, responsive email newsletters for new roasts, custom drops, and subscriber welcomes.</p>
   </div>
 
   <!-- Minimal Unboxed Composer Controls -->
-  <div style="max-width: 36rem; margin: 0 auto 2.5rem; text-align: center;">
-    <div style="margin-bottom: 1.5rem;">
+  <div class="pp-controls">
+    <div class="pp-mode-wrap">
       <div class="pp-mode-group" role="radiogroup" aria-label="Email Template Type">
         <button type="button" role="radio" aria-checked="true" class="pp-mode-btn is-active" data-mode="new_roast">
           New Roast
@@ -32,7 +33,7 @@ sitemap: false
       </div>
     </div>
 
-    <div id="pp-roast-field-wrap" style="margin-bottom: 1.25rem; text-align: left;">
+    <div id="pp-roast-field-wrap" class="pp-field">
       <label for="pp-roast-select" class="hst-label">Roast</label>
       <select id="pp-roast-select" class="hst-select" data-label="Roast">
         {% assign published_roasts = site.roasts | where_exp: "r", "r.published != false" | sort: "order" %}
@@ -42,7 +43,7 @@ sitemap: false
       </select>
     </div>
 
-    <div id="pp-custom-field-wrap" style="margin-bottom: 1.25rem; text-align: left; display: none;">
+    <div id="pp-custom-field-wrap" class="pp-field" style="display: none;">
       <label for="pp-custom-select" class="hst-label">Custom Offering</label>
       <select id="pp-custom-select" class="hst-select" data-label="Custom Offering">
         {% assign sorted_custom = site.custom | sort: "order" %}
@@ -52,17 +53,17 @@ sitemap: false
       </select>
     </div>
 
-    <div style="margin-bottom: 1.25rem; text-align: left;">
+    <div class="pp-field">
       <label for="pp-subject-input" class="hst-label">Subject Line</label>
       <input id="pp-subject-input" type="text" class="hst-input" />
     </div>
 
-    <div style="margin-bottom: 1.5rem; text-align: left;">
+    <div class="pp-field pp-field--spaced">
       <label for="pp-intro-input" class="hst-label">Optional Personal Note</label>
       <textarea id="pp-intro-input" rows="2" placeholder="Optional note above the main copy..." class="hst-textarea"></textarea>
     </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; align-items: center;">
+    <div class="pp-actions">
       <button type="button" id="pp-copy-gmail-btn" class="action-pill-btn btn-primary-pill">
         Copy Email for Gmail
       </button>
@@ -74,18 +75,18 @@ sitemap: false
       </button>
     </div>
 
-    <p id="pp-copy-status" role="status" aria-live="polite" style="margin: 0.75rem 0 0; min-height: 1.25rem; font-size: 0.82rem; font-weight: 600; color: #166534;"></p>
+    <p id="pp-copy-status" role="status" aria-live="polite" class="pp-copy-status"></p>
   </div>
 
   <!-- Live Email Preview (Unboxed, Direct Canvas) -->
-  <div id="pp-email-preview-container" style="max-width: 640px; margin: 0 auto 3rem;"></div>
+  <div id="pp-email-preview-container" class="pp-preview"></div>
 
   <!-- Collapsible Raw HTML Source -->
-  <details style="max-width: 38rem; margin: 0 auto 4rem; padding: 0 1rem; text-align: center;">
-    <summary style="font-family: Montserrat, sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7f6e; cursor: pointer;">
+  <details class="pp-raw-details">
+    <summary class="pp-raw-summary">
       Raw HTML Source
     </summary>
-    <textarea id="pp-raw-html-output" readonly rows="12" style="width: 100%; box-sizing: border-box; margin-top: 0.85rem; padding: 0.75rem; font-family: monospace; font-size: 0.76rem; color: #2c1e14; background: #ffffff; border: 1px solid rgba(44, 30, 20, 0.15); border-radius: 6px; text-align: left;"></textarea>
+    <textarea id="pp-raw-html-output" readonly rows="12" class="pp-raw-textarea"></textarea>
   </details>
 </div>
 

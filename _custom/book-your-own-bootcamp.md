@@ -19,6 +19,7 @@ mascot_file: teacher-transparent.png
 mascot_alt: "Book Your Own Bootcamp mascot"
 overlay_notes: "Hands-on personalized roasting session for up to 3 guests"
 shop_meta: "Bootcamp Session"
+custom_css: custom-roasts.css
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
@@ -47,7 +48,7 @@ shop_meta: "Bootcamp Session"
         </option>
       {% endfor %}
     </select>
-    <span style="display: block; font-size: 0.76rem; color: var(--hst-muted); margin-top: 0.35rem;">
+    <span class="hst-field-hint">
       Accommodates up to {{ page.max_guests }} guests maximum ($30 for 1 guest, +$15 each additional guest).
     </span>
   </div>
@@ -62,13 +63,13 @@ shop_meta: "Bootcamp Session"
   </button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">How It Works</button>
     <div class="hst-drawer-body">
-      <ol style="margin: 0; padding-left: 1.2rem; line-height: 1.7;">
-        <li style="margin-bottom: 0.4rem;">Choose any active 12oz single-origin lot and select your group size (up to {{ page.max_guests }} guests).</li>
-        <li style="margin-bottom: 0.4rem;">Place your order through the cart &mdash; we'll reach out via email or phone after checkout to schedule a date and time that works for you.</li>
+      <ol>
+        <li>Choose any active 12oz single-origin lot and select your group size (up to {{ page.max_guests }} guests).</li>
+        <li>Place your order through the cart &mdash; we'll reach out via email or phone after checkout to schedule a date and time that works for you.</li>
         <li>Step up to the roaster to guide your batch through drying, Maillard browning, and first crack, then take home your freshly roasted 12oz bag.</li>
       </ol>
     </div>

@@ -10,21 +10,22 @@ sitemap: false
 no_order: true
 back_url: /shop/
 back_label: Back to Shop
+custom_css: thanks.css
 intro: "Thanks for your order! We'll email you back shortly to confirm your batch, payment details, and pickup or delivery schedule."
 ---
 
 <!-- Gift Card Ready Card (Displayed dynamically if ?code= is present in URL) -->
-<div id="gift-card-container" style="display: none; padding: 1.5rem; background: var(--hst-card-bg); border: 1px solid var(--hst-border); border-radius: 4px; margin-bottom: 2rem;">
-  <div style="font-family: 'Figtree', var(--font-sans, sans-serif); font-size: 1.25rem; font-weight: 600; color: var(--hst-text); margin-bottom: 0.5rem;">Your Gift Card is Ready!</div>
-  <p style="color: var(--hst-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.25rem;">This code has been emailed to you and your recipient. It can be redeemed directly at checkout for any coffee or subscription.</p>
-  <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-    <div id="gift-card-code" style="font-family: monospace; font-size: 1.35rem; font-weight: 700; letter-spacing: 0.08em; color: var(--menu-sale); padding: 0.65rem 1.25rem; border: 1px solid var(--hst-border); border-radius: 2px; background-color: #ffffff; word-break: break-all;">GIFT-XXXXXX</div>
-    <button id="copy-btn" type="button" class="action-pill-btn btn-primary-pill" style="cursor: pointer;">Copy Code</button>
+<div id="gift-card-container" class="gift-ready-card">
+  <div class="gift-ready-title">Your Gift Card is Ready!</div>
+  <p class="gift-ready-desc">This code has been emailed to you and your recipient. It can be redeemed directly at checkout for any coffee or subscription.</p>
+  <div class="gift-ready-code-row">
+    <div id="gift-card-code" class="gift-ready-code">GIFT-XXXXXX</div>
+    <button id="copy-btn" type="button" class="action-pill-btn btn-primary-pill gift-ready-copy-btn">Copy Code</button>
   </div>
-  <span id="copy-status" style="font-size: 0.85rem; color: #1e824c; display: block; min-height: 1.25rem; font-weight: 500; margin-top: 0.5rem;"></span>
+  <span id="copy-status" class="gift-ready-status"></span>
 </div>
 
-<div style="display: flex; gap: 0.85rem; flex-wrap: wrap; margin-bottom: 2rem;">
+<div class="hst-actions-row hst-actions-row--mb">
   <a href="{{ '/shop/' | relative_url }}" class="action-pill-btn btn-primary-pill">Browse Coffees</a>
   <a href="{{ '/order/manage/' | relative_url }}" class="action-pill-btn btn-secondary-pill">Manage Order</a>
 </div>

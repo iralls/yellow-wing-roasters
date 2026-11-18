@@ -16,6 +16,9 @@
   <link rel="preload" href="{{ '/fonts/figtree-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+  {% if page.custom_css %}
+    <link rel="stylesheet" href="{{ '/css/pages/' | append: page.custom_css | relative_url }}?v={{ site.time | date: '%s' }}">
+  {% endif %}
 </head>
 <body{% if page.layout == 'index' or page.hide_header %} class="home-layout"{% endif %}>
   <div class="site-wrap">

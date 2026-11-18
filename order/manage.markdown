@@ -7,6 +7,7 @@ no_order: true
 mascot_file: delivery-box-transparent.png
 mascot_alt: "Delivery Box"
 permalink: /order/manage/
+custom_css: manage.css
 intro: "Look up your order, track roasting and delivery progress, or cancel prior to roasting using your secure magic link."
 ---
 
@@ -17,7 +18,7 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
 </div>
 
 <div id="order-lookup-section">
-  <form id="order-lookup-form" class="hst-form" style="padding-top: 0; border-top: none;">
+  <form id="order-lookup-form" class="hst-form hst-form--flush">
     <div>
       <label for="order-lookup-email" class="hst-label">Email Address</label>
       <input id="order-lookup-email" type="email" class="hst-input" required placeholder="Enter the email address used for your order..." autocomplete="email">
@@ -32,20 +33,20 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
 </div>
 
 <!-- Phase 2: Authenticated Order Display & Actions -->
-<div id="order-results-section" style="display: none; margin-top: 1rem;">
-  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem; border-bottom: 1px solid var(--hst-border); padding-bottom: 0.5rem;">
-    <h2 style="font-family: 'Figtree', var(--font-sans, sans-serif); font-size: 1.15rem; font-weight: 600; margin: 0; color: var(--hst-text);">Order Details <span id="order-mock-indicator" class="mock-badge" style="display: none;">MOCK MODE</span></h2>
-    <span id="order-results-id-display" style="font-size: 0.85rem; color: var(--hst-muted); font-weight: 600;"></span>
+<div id="order-results-section" class="manage-results-section">
+  <div class="manage-results-header">
+    <h2 class="manage-results-title">Order Details <span id="order-mock-indicator" class="mock-badge" style="display: none;">MOCK MODE</span></h2>
+    <span id="order-results-id-display" class="manage-results-id"></span>
   </div>
   
   <div id="order-content"></div>
 
-  <div style="margin-top: 1.5rem; border-top: 1px solid var(--hst-border); padding-top: 1.25rem; text-align: center;">
-    <a href="{{ '/order/manage/' | relative_url }}" id="order-back-search-btn" class="action-pill-btn btn-secondary-pill" style="display: inline-block; text-decoration: none;">Look Up Different Order</a>
+  <div class="manage-results-footer">
+    <a href="{{ '/order/manage/' | relative_url }}" id="order-back-search-btn" class="action-pill-btn btn-secondary-pill">Look Up Different Order</a>
   </div>
 </div>
 
-<div class="hst-drawers" style="margin-top: 2rem;">
+<div class="hst-drawers hst-drawers--spacious">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Order Lifecycle &amp; Roasting</button>
     <div class="hst-drawer-body">

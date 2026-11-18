@@ -14,12 +14,13 @@ max_guests: 5
 mascot_file: bird-bath-transparent.png
 mascot_alt: "Bib Your Own Bath mascot"
 overlay_notes: "book a guided coffee cupping session for up to five guests"
+custom_css: custom-roasts.css
 ---
 
 {% assign rate = page.price_per_person %}
 
-<div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-  <a href="{{ '/shop/' | relative_url }}" style="font-family: Montserrat, sans-serif; font-size: 0.8rem; font-weight: 500; color: #887060; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+<div class="byob-bath-back">
+  <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">
     &larr; Back to Shop
   </a>
 </div>
@@ -30,14 +31,14 @@ overlay_notes: "book a guided coffee cupping session for up to five guests"
     <img src="{{ '/images/' | append: page.mascot_file | relative_url }}" id="byob-bath-mascot-img" alt="{{ page.mascot_alt | escape }}" class="sleek-detail-big-bird" fetchpriority="high" decoding="async">
     <div class="sleek-detail-bird-label">Cupping Session</div>
 
-    <div style="font-family: Lora, serif; font-size: 0.95rem; font-weight: 400; color: #5e5248; line-height: 1.7; margin-top: 2rem; border-top: 1px solid rgba(44,30,20,0.12); padding-top: 1.5rem; text-align: left; width: 100%;">
+    <div class="byob-bath-intro-box">
       <p>{{ page.intro }}</p>
 
-      <div style="margin-top: 1.75rem; border-top: 1px solid rgba(44,30,20,0.08); padding-top: 1.25rem;">
-        <h3 style="font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #8a7f6e; margin: 0 0 0.75rem;">How It Works</h3>
-        <ol style="margin: 0; padding-left: 1.2rem; font-family: Lora, serif; font-size: 0.9rem; line-height: 1.7; color: #5e5248;">
-          <li style="margin-bottom: 0.4rem;">Select your group size (1 to {{ page.max_guests }} guests at ${{ rate }} per person) and add any availability or tasting notes.</li>
-          <li style="margin-bottom: 0.4rem;">Place your order through the cart—we'll reach out via email or phone after checkout to schedule a date and time that works for your group.</li>
+      <div class="byob-bath-how">
+        <h3>How It Works</h3>
+        <ol>
+          <li>Select your group size (1 to {{ page.max_guests }} guests at ${{ rate }} per person) and add any availability or tasting notes.</li>
+          <li>Place your order through the cart—we'll reach out via email or phone after checkout to schedule a date and time that works for your group.</li>
           <li>Grab a cupping spoon (and a bib) as we break the crust, evaluate dry and wet aromatics, and taste side-by-side through a curated flight of origins, processes, and roast levels.</li>
         </ol>
       </div>
@@ -64,7 +65,7 @@ overlay_notes: "book a guided coffee cupping session for up to five guests"
     <div class="sleek-detail-buy-box">
       <div class="sleek-buy-price-row">
         <div>
-          <span style="font-family: Montserrat, sans-serif; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #8a7f6e; display: block; margin-bottom: 0.2rem;">Price</span>
+          <span class="byob-bath-price-label">Price</span>
           <span class="sleek-buy-price-val" id="byob-bath-price-display">${{ rate }}</span>
         </div>
         <span class="sleek-buy-price-note" id="byob-bath-price-breakdown">1 guest &times; ${{ rate }}/person &middot; Scheduled after checkout</span>
@@ -82,13 +83,13 @@ overlay_notes: "book a guided coffee cupping session for up to five guests"
               </option>
             {% endfor %}
           </select>
-          <span style="display: block; font-family: Montserrat, sans-serif; font-size: 0.7rem; font-weight: 400; color: #8a7f6e; margin-top: 0.35rem;">Cupping sessions are ${{ rate }} per person and accommodate up to {{ page.max_guests }} guests maximum.</span>
+          <span class="hst-field-hint">Cupping sessions are ${{ rate }} per person and accommodate up to {{ page.max_guests }} guests maximum.</span>
         </div>
 
         <!-- Step 2: Optional Notes -->
         <div class="sleek-buy-field">
           <label for="byob-bath-notes">2. Session / availability notes (optional)</label>
-          <textarea id="byob-bath-notes" rows="2" placeholder="Preferred days/times, origins or flavor profiles you're curious to compare, or anything else we should know..." style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.85rem; font-family: Montserrat, sans-serif; font-size: 0.82rem; font-weight: 500; border: 1px solid rgba(44, 30, 20, 0.2); border-radius: 4px; background: transparent; color: #2c1e14; resize: vertical;"></textarea>
+          <textarea id="byob-bath-notes" rows="2" placeholder="Preferred days/times, origins or flavor profiles you're curious to compare, or anything else we should know..." class="byob-bath-textarea"></textarea>
         </div>
 
         <!-- Add to Cart Button -->

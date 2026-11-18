@@ -307,25 +307,112 @@
   flex-wrap: wrap;
 }
 
-.order-status {
-  font-size: 0.88rem;
-  margin-top: 0.75rem;
-  line-height: 1.4;
+.manage-results-section {
+  display: none;
+  margin-top: 1rem;
 }
 
-.order-status-pending {
+.manage-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--hst-border);
+  padding-bottom: 0.5rem;
+}
+
+.manage-results-title {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--hst-text);
+}
+
+.manage-results-id {
+  font-size: 0.85rem;
+  color: var(--hst-muted);
+  font-weight: 600;
+}
+
+.manage-results-footer {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--hst-border);
+  padding-top: 1.25rem;
+  text-align: center;
+}
+
+.manage-lookup-status {
+  font-size: 0.88rem;
+  margin: 0.5rem 0 0;
+  color: var(--hst-muted);
+}
+
+.order-item-picks a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.sub-detail-box {
+  background-color: var(--hst-card-bg);
+  border: 1px solid var(--hst-border);
+  border-radius: 4px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.5rem;
+}
+
+.sub-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.sub-detail-label {
+  padding: 4px 8px;
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--hst-muted);
+  width: 32%;
+}
+
+.sub-detail-val {
+  padding: 4px 8px;
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.95rem;
+  color: var(--hst-text);
+}
+
+.sub-detail-val--strong {
+  font-weight: 600;
+}
+
+.sub-resubscribe-note {
+  margin: 1.5rem 0 0;
+  font-size: 0.92rem;
   color: var(--hst-muted);
   font-style: italic;
+  text-align: center;
+
+  a {
+    font-weight: 700;
+    text-decoration: underline;
+    color: var(--hst-text);
+  }
 }
 
-.order-status-success {
-  color: #1e824c;
-  font-weight: 500;
+.manage-loading-msg {
+  text-align: center;
+  color: var(--hst-muted);
+  font-style: italic;
+  margin: 2rem 0;
 }
 
-.order-status-error {
-  color: #c0392b;
-  font-weight: 500;
+.manage-error-msg {
+  text-align: center;
+  margin: 2rem 0;
 }
 
 .order-preview-helper {

@@ -13,6 +13,7 @@ mascot_alt: "BYOB mascot"
 overlay_notes: "Designate your target roast level on any single-origin bean in our catalog"
 shop_price: "Bean Cost"
 shop_meta: "Profile Spec"
+custom_css: custom-roasts.css
 ---
 
 {% assign single_origins = site.roasts | where: "category", "single origin" | sort: "order" %}
@@ -59,7 +60,7 @@ shop_meta: "Profile Spec"
   </button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Roaster's Note</button>
     <div class="hst-drawer-body">

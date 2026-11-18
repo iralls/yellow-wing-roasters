@@ -75,48 +75,48 @@
         '</div>';
 
       if (sub.timestamp) {
-        html += '<div class="order-date" style="font-size: 0.85rem; color: #8a7060; margin-bottom: 1rem;">Started: ' + escapeHtml(sub.timestamp) + '</div>';
+        html += '<div class="order-date">Started: ' + escapeHtml(sub.timestamp) + '</div>';
       }
 
       // Contextual status banners
       if (lowerStatus === 'paused') {
-        html += '<div style="background-color: #fef9e7; border-left: 4px solid #f39c12; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #7d5a00;">' +
+        html += '<div class="order-delay-box">' +
           '<strong>Deliveries Temporarily Paused:</strong> Your recurring orders are currently on hold.' +
-          (sub.statusDetails ? ' <br><span style="font-style: italic;">Reason: ' + escapeHtml(sub.statusDetails) + '</span>' : '') +
+          (sub.statusDetails ? ' <br><em>Reason: ' + escapeHtml(sub.statusDetails) + '</em>' : '') +
           '</div>';
       } else if (lowerStatus === 'cancelled') {
-        html += '<div style="background-color: #fdf2f2; border-left: 4px solid #c0392b; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #78281f;">' +
+        html += '<div class="order-cancelled-box">' +
           '<strong>Subscription Cancelled:</strong> This subscription is no longer active.' +
-          (sub.statusDetails ? ' <br><span style="font-style: italic;">Reason: ' + escapeHtml(sub.statusDetails) + '</span>' : '') +
+          (sub.statusDetails ? ' <br><em>Reason: ' + escapeHtml(sub.statusDetails) + '</em>' : '') +
           '</div>';
       } else {
-        html += '<div style="background-color: #f4fbf7; border-left: 4px solid #1e824c; border-radius: 4px; padding: 12px 14px; margin-bottom: 1.25rem; font-size: 0.9rem; line-height: 1.5; color: #1e824c;">' +
+        html += '<div class="order-ready-box">' +
           '<strong>Subscription Active:</strong> Your coffee is scheduled for fulfillment according to our regular roast cycles.' +
           '</div>';
       }
 
       // Delivery Method
-      html += '<div style="font-size: 0.88rem; color: #554338; margin-bottom: 1.25rem;">' +
+      html += '<div class="order-delivery-meta">' +
         '<strong>Delivery Method:</strong> ' + escapeHtml(sub.deliveryMethod);
       if (sub.deliveryMethod === 'Hand delivery' && sub.address) {
         html += ' &bull; ' + escapeHtml(sub.address) + ', ' + escapeHtml(sub.city) + ' ' + escapeHtml(sub.state) + ' ' + escapeHtml(sub.zip);
       }
       html += '</div>';
 
-      // Linen Detail Table
-      html += '<div style="background-color: #f5efe6; border-radius: 8px; padding: 16px 18px; margin-bottom: 1.5rem;">' +
-        '<table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: left;">' +
+      // Detail Table
+      html += '<div class="sub-detail-box">' +
+        '<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="sub-detail-table">' +
         '<tr>' +
-        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060; width: 32%;">Roast</td>' +
-        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.95rem; font-weight: 600; color: #2c1e14;">' + escapeHtml(sub.roast) + '</td>' +
+        '<td class="sub-detail-label">Roast</td>' +
+        '<td class="sub-detail-val sub-detail-val--strong">' + escapeHtml(sub.roast) + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Bag Size</td>' +
-        '<td style="padding: 4px 8px; font-family: Georgia, serif; font-size: 0.95rem; color: #2c1e14;">' + escapeHtml(sub.size) + '</td>' +
+        '<td class="sub-detail-label">Bag Size</td>' +
+        '<td class="sub-detail-val">' + escapeHtml(sub.size) + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td style="padding: 4px 8px; font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #8a7060;">Frequency</td>' +
-        '<td style="padding: 4px 8px; font-family: Georgia, serif; font-size: 0.95rem; color: #2c1e14;">' + escapeHtml(sub.frequency) + '</td>' +
+        '<td class="sub-detail-label">Frequency</td>' +
+        '<td class="sub-detail-val">' + escapeHtml(sub.frequency) + '</td>' +
         '</tr>' +
         '</table>' +
         '</div>';
@@ -130,9 +130,9 @@
 
         // Hidden Pause Prompt
         html += '<div id="pause-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="pause-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Optional note for pausing:</label>' +
+          '<label for="pause-reason-input" class="cancel-confirm-prompt">Optional note for pausing:</label>' +
           '<textarea id="pause-reason-input" class="cancel-textarea" rows="2" placeholder="e.g. Taking a vacation, resuming next month..."></textarea>' +
-          '<div style="display: flex; gap: 0.5rem;">' +
+          '<div class="cancel-reason-actions">' +
           '<button type="button" id="confirm-pause-btn" class="action-pill-btn btn-primary-pill">Confirm Pause</button>' +
           '<button type="button" id="abort-pause-btn" class="action-pill-btn btn-secondary-pill">Keep Active</button>' +
           '</div>' +
@@ -140,9 +140,9 @@
 
         // Hidden Cancel Prompt
         html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="cancel-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Reason for cancelling (optional):</label>' +
+          '<label for="cancel-reason-input" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
           '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
-          '<div style="display: flex; gap: 0.5rem;">' +
+          '<div class="cancel-reason-actions">' +
           '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
           '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Subscription</button>' +
           '</div>' +
@@ -155,16 +155,16 @@
 
         // Hidden Cancel Prompt
         html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="cancel-reason-input" style="display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: #2c1e14;">Reason for cancelling (optional):</label>' +
+          '<label for="cancel-reason-input" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
           '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
-          '<div style="display: flex; gap: 0.5rem;">' +
+          '<div class="cancel-reason-actions">' +
           '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
           '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Paused</button>' +
           '</div>' +
           '</div>';
       } else if (lowerStatus === 'cancelled') {
-        html += '<p style="margin: 1.5rem 0 0; font-size: 0.92rem; color: #8a7060; font-style: italic; text-align: center;">' +
-          'Ready to receive fresh roasts again? <a href="' + escapeHtml(resubscribeUrl) + '" style="font-weight: 700; text-decoration: underline; color: #2c1e14;">Browse Subscription Plans &rarr;</a>' +
+        html += '<p class="sub-resubscribe-note">' +
+          'Ready to receive fresh roasts again? <a href="' + escapeHtml(resubscribeUrl) + '">Browse Subscription Plans &rarr;</a>' +
           '</p>';
       }
 
@@ -329,12 +329,12 @@
       resultsSection.style.display = 'block';
       if (resultsIdDisplay) resultsIdDisplay.textContent = '#' + paramOrderId;
 
-      subscriptionContent.innerHTML = '<p style="text-align: center; color: #8a7060; font-style: italic; margin: 2rem 0;">Loading subscription details...</p>';
+      subscriptionContent.innerHTML = '<p class="manage-loading-msg">Loading subscription details...</p>';
       fetch(API_URL + '?orderId=' + encodeURIComponent(paramOrderId) + '&token=' + encodeURIComponent(paramToken))
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (data.error || !data.subscription) {
-            subscriptionContent.innerHTML = '<p class="order-status order-status-error" style="text-align: center; margin: 2rem 0;">' +
+            subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">' +
               (data.error || 'Subscription not found or link has expired.') +
               '</p>';
           } else {
@@ -343,7 +343,7 @@
         })
         .catch(function (err) {
           console.error('manage-subscriptions: Error loading subscription:', err);
-          subscriptionContent.innerHTML = '<p class="order-status order-status-error" style="text-align: center; margin: 2rem 0;">Technical glitch loading subscription. Please try again or contact orders@yellowwingroasters.com</p>';
+          subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">Technical glitch loading subscription. Please try again or contact orders@yellowwingroasters.com</p>';
         });
     }
   };

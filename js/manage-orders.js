@@ -430,7 +430,7 @@
         '<div class="order-item-name">' + it.qty + 'x ' + escapeHtml(it.label) + '</div>' +
         '<div class="order-item-meta">' + metaParts.join(' &bull; ') + '</div>' +
         (it.recipe ? '<div class="order-item-picks"><strong>Recipe:</strong> ' + escapeHtml(it.recipe) + '</div>' : '') +
-        (it.link ? '<div class="order-item-picks"><strong>Link:</strong> <a href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">' + escapeHtml(it.link) + '</a></div>' : '') +
+        (it.link ? '<div class="order-item-picks"><strong>Link:</strong> <a href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener">' + escapeHtml(it.link) + '</a></div>' : '') +
         (it.picks ? '<div class="order-item-picks"><strong>Picks:</strong> ' + escapeHtml(it.picks) + '</div>' : '') +
         (it.notes ? '<div class="order-item-picks"><em>Notes: ' + escapeHtml(it.notes) + '</em></div>' : '') +
         '</div>' +

@@ -65,11 +65,11 @@ layout: default
       {% if is_orderable and page.price and page.price != "" %}
       <div class="hst-price-row" id="product-price-display">
         {% if page.temporary_price and page.temporary_price[default_bag_size] %}
-          <s>${{ page.price[default_bag_size] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price[default_bag_size] }}.00</span>{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+          <s>${{ page.price[default_bag_size] }}.00</s> <span class="hst-sale-price">${{ page.temporary_price[default_bag_size] }}.00</span>{% if is_sub %} <span class="hst-price-unit">/ month</span>{% endif %}
         {% elsif page.price[default_bag_size] %}
-          ${{ page.price[default_bag_size] }}.00{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+          ${{ page.price[default_bag_size] }}.00{% if is_sub %} <span class="hst-price-unit">/ month</span>{% endif %}
         {% elsif page.price %}
-          {% if page.price contains "$" or page.price contains "Quote" or page.price contains "Cost" %}{{ page.price }}{% else %}${{ page.price }}.00{% endif %}{% if is_sub %} <span style="font-size: 1rem; font-weight: 400; color: var(--hst-muted);">/ month</span>{% endif %}
+          {% if page.price contains "$" or page.price contains "Quote" or page.price contains "Cost" %}{{ page.price }}{% else %}${{ page.price }}.00{% endif %}{% if is_sub %} <span class="hst-price-unit">/ month</span>{% endif %}
         {% endif %}
       </div>
       {% endif %}
@@ -149,7 +149,7 @@ layout: default
 
         <!-- Action Button -->
         {% if p_status_info and p_status_info.orderable == false %}
-          <button type="button" class="hst-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+          <button type="button" class="hst-btn" disabled>
             {{ p_status_info.badge }} &mdash; Unavailable
           </button>
         {% else %}

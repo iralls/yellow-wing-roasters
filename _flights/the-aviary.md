@@ -13,9 +13,10 @@ notes: "Four blends, one box"
 descriptor: "a sample pack of our most popular blends"
 shop_notes: "Four 8oz signature blend bags: Early Bird, Feather Soot, Chimney Sweep, Lil' Sipper"
 shop_meta: "4 x 8oz"
+custom_css: flights.css
 ---
 
-<p class="hst-intro" style="margin-top: 1rem;">Four blends, each individually packaged in its own 8oz bag &mdash; a great way to explore the full range before committing to a full bag.</p>
+<p class="hst-intro aviary-intro">Four blends, each individually packaged in its own 8oz bag &mdash; a great way to explore the full range before committing to a full bag.</p>
 
 {% assign aviary_slugs = "early-bird,feather-soot,chimney-sweep,lil-sipper" | split: "," %}
 
@@ -32,7 +33,7 @@ shop_meta: "4 x 8oz"
   {% endfor %}
 </ul>
 
-<p style="font-size: 0.88rem; color: var(--hst-muted); font-style: italic; margin-top: 0.5rem; margin-bottom: 1.5rem;">Brewing method varies by blend &mdash; click any roast for full profile and brew details.</p>
+<p class="aviary-footnote">Brewing method varies by blend &mdash; click any roast for full profile and brew details.</p>
 
 <script type="application/ld+json">
 {

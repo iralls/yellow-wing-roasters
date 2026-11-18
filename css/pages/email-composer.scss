@@ -1,0 +1,90 @@
+---
+# Pigeon Post Email Composer Page Stylesheet
+---
+
+.pp-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .hst-title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.pp-subtitle {
+  color: var(--hst-muted);
+  font-size: 0.95rem;
+  margin: 0 auto;
+  max-width: 28rem;
+}
+
+.pp-controls {
+  max-width: 36rem;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.pp-mode-wrap {
+  margin-bottom: 1.5rem;
+}
+
+.pp-field {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.pp-field--spaced {
+  margin-bottom: 1.5rem;
+}
+
+.pp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.pp-copy-status {
+  margin: 0.75rem 0 0;
+  min-height: 1.25rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+.pp-preview {
+  max-width: 640px;
+  margin: 0 auto 3rem;
+}
+
+.pp-raw-details {
+  max-width: 38rem;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.pp-raw-summary {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hst-muted);
+  cursor: pointer;
+}
+
+.pp-raw-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.85rem;
+  padding: 0.75rem;
+  font-family: monospace;
+  font-size: 0.76rem;
+  color: var(--hst-text);
+  background: var(--color-card-bg);
+  border: 1px solid var(--hst-border);
+  border-radius: 6px;
+  text-align: left;
+}

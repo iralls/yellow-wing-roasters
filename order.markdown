@@ -2,6 +2,7 @@
 layout: default
 title: Redirecting to Cart...
 permalink: /order/
+custom_css: order-redirect.css
 ---
 
 <meta http-equiv="refresh" content="0; url={{ '/cart/' | relative_url }}">
@@ -9,8 +10,8 @@ permalink: /order/
   window.location.replace("{{ '/cart/' | relative_url }}" + (window.location.search || ''));
 </script>
 
-<div class="hst-wrap" style="text-align: center; padding: 4rem 1rem;">
-  <p style="font-family: 'Figtree', var(--font-sans, sans-serif); color: var(--hst-muted); font-size: 1.1rem;">
-    Redirecting to your <a href="{{ '/cart/' | relative_url }}" style="color: var(--hst-text); text-decoration: underline;">cart</a>...
+<div class="hst-wrap order-redirect-box">
+  <p>
+    Redirecting to your <a href="{{ '/cart/' | relative_url }}">cart</a>...
   </p>
 </div>

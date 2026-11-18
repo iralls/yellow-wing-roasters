@@ -243,61 +243,6 @@
   flex-wrap: wrap;
 }
 
-.action-pill-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Figtree', var(--font-sans, sans-serif);
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.75rem 1.6rem;
-  border-radius: 2px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  transition: all 0.16s ease;
-  line-height: 1.2;
-  box-sizing: border-box;
-}
-
-.btn-primary-pill {
-  background-color: var(--hst-text);
-  color: #ffffff !important;
-  border-color: var(--hst-text);
-
-  &:hover {
-    background-color: transparent;
-    color: var(--hst-text) !important;
-    border-color: var(--hst-text);
-    text-decoration: none;
-  }
-}
-
-.btn-danger-pill {
-  background-color: transparent;
-  color: #c0392b !important;
-  border-color: rgba(192, 57, 43, 0.4);
-
-  &:hover {
-    background-color: #c0392b;
-    color: #ffffff !important;
-    text-decoration: none;
-  }
-}
-
-.btn-secondary-pill {
-  background-color: transparent;
-  color: var(--hst-text) !important;
-  border-color: var(--hst-border);
-
-  &:hover {
-    border-color: var(--hst-text);
-    text-decoration: none;
-  }
-}
-
 .cancel-reason-container {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -321,4 +266,129 @@
     outline: none;
     border-color: var(--hst-text);
   }
+}
+
+/* ── Cart Page Layout & Checkout Form ── */
+.cart-header-section {
+  margin-bottom: 2.5rem;
+}
+
+.order-empty {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.order-empty-media {
+  max-width: 14rem;
+  margin: 0 auto 1.5rem;
+
+  .hst-mascot-img {
+    max-height: 12rem;
+  }
+}
+
+.order-empty-title {
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--hst-text);
+  margin: 0 0 0.5rem;
+}
+
+.order-empty-desc {
+  color: var(--hst-muted);
+  font-size: 1rem;
+  margin: 0 0 2rem;
+}
+
+.order-empty-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.order-form--checkout {
+  display: none;
+}
+
+.order-delivery {
+  border: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+
+  > .hst-label {
+    margin-bottom: 0.65rem;
+  }
+}
+
+.pill-radios {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.order-delivery-note {
+  font-size: 0.88rem;
+  color: var(--hst-muted);
+  margin-top: 0.65rem;
+}
+
+.order-shipping {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.order-actions {
+  margin-top: 1rem;
+
+  .hst-btn {
+    width: 100%;
+  }
+}
+
+.order-form--checkout .order-status {
+  text-align: center;
+}
+
+.order-summary-discount {
+  display: none;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hst-border);
+
+  > .hst-label {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.discount-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.discount-code-input {
+  text-transform: uppercase;
+}
+
+.discount-apply-btn {
+  white-space: nowrap;
+}
+
+.discount-status {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.order-invoiced-note {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: var(--hst-muted);
+  display: block;
 }

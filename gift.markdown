@@ -25,7 +25,7 @@ intro: "Send a fresh coffee experience directly to their inbox. Digital gift car
     </select>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+  <div class="hst-grid-2col">
     <div>
       <label class="hst-label" for="gift-recipient-name">Recipient Name</label>
       <input type="text" id="gift-recipient-name" class="hst-input" required placeholder="Recipient's Name">
@@ -36,7 +36,7 @@ intro: "Send a fresh coffee experience directly to their inbox. Digital gift car
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+  <div class="hst-grid-2col">
     <div>
       <label class="hst-label" for="gift-sender-name">Your Name</label>
       <input type="text" id="gift-sender-name" class="hst-input" required placeholder="Your Name">
@@ -57,7 +57,7 @@ intro: "Send a fresh coffee experience directly to their inbox. Digital gift car
   </button>
 </form>
 
-<div class="hst-drawers" style="margin-top: 1.5rem;">
+<div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">How Redemption Works</button>
     <div class="hst-drawer-body">

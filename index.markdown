@@ -3,6 +3,7 @@ layout: index
 title: Home
 hide_header: true
 hide_footer: true
+custom_css: home.css
 ---
 
 <div class="home-hero">

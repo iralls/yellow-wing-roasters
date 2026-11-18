@@ -1,0 +1,32 @@
+---
+# Flights Page Stylesheet
+---
+
+@import "byob-flights";
+
+.pyo-chosen-group {
+  margin-top: 0.5rem;
+}
+
+.pyo-chosen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.35rem;
+
+  .hst-label {
+    margin: 0;
+  }
+}
+
+.aviary-intro {
+  margin-top: 1rem;
+}
+
+.aviary-footnote {
+  font-size: 0.88rem;
+  color: var(--hst-muted);
+  font-style: italic;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}

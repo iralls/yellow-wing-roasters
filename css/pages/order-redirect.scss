@@ -1,0 +1,19 @@
+---
+# Order Redirect Page Stylesheet
+---
+
+.order-redirect-box {
+  text-align: center;
+  padding: 4rem 1rem;
+
+  p {
+    font-family: 'Figtree', var(--font-sans, sans-serif);
+    color: var(--hst-muted);
+    font-size: 1.1rem;
+  }
+
+  a {
+    color: var(--hst-text);
+    text-decoration: underline;
+  }
+}
