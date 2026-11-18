@@ -284,11 +284,11 @@
 
       if (items.length === 0) {
         form.style.display = 'none';
-        emptyEl.style.display = '';
+        emptyEl.style.display = 'block';
         return;
       }
 
-      form.style.display = '';
+      form.style.display = 'block';
       emptyEl.style.display = 'none';
       itemsEl.innerHTML = '';
 
@@ -307,7 +307,7 @@
       deliveryFieldset.style.display = needsDelivery ? '' : 'none';
       var checkedDelivery = form.querySelector('.order-delivery input[type="radio"]:checked');
       var isPickup = !needsDelivery || (!checkedDelivery || checkedDelivery.value === 'Pickup');
-      addressFields.style.display = (needsDelivery && !isPickup) ? '' : 'none';
+      addressFields.style.display = (needsDelivery && !isPickup) ? 'flex' : 'none';
       setAddressFieldsState(isPickup);
 
       if (submitBtn) {
@@ -331,7 +331,7 @@
 
       // Discount codes apply only when there is at least one physical roast item
       if (discountSection) {
-        discountSection.style.display = hasRoasts ? '' : 'none';
+        discountSection.style.display = hasRoasts ? 'block' : 'none';
       }
       if (!hasRoasts) {
         appliedDiscount = null;
@@ -595,7 +595,7 @@
       deliveryRadios[di].addEventListener('change', function () {
         var v = this.value;
         var isPickup = (v === 'Pickup');
-        addressFields.style.display = isPickup ? 'none' : '';
+        addressFields.style.display = isPickup ? 'none' : 'flex';
         updateDeliveryNote(isPickup);
         setAddressFieldsState(isPickup);
         render();
