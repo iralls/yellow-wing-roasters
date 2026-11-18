@@ -11,8 +11,7 @@ back_label: Back to About Us
 no_order: true
 intro: "We're eager to work directly with local businesses, gyms, clubs, non-profits, and community organizations to develop exclusive custom blends and single-origin offerings tailored specifically for their community."
 ---
-
-<p>Whether you're looking for a dark espresso roast engineered for morning workouts, a bright single-origin to complement fresh bakery pairings, or a dedicated charity roast to raise funds, we collaborate on every detail:</p>
+<p>What we offer:</p>
 
 <ul style="margin: 0 0 2rem 1.5rem; line-height: 1.8;">
   <li><strong>Curated Bean Origins &amp; Processing</strong> &mdash; Select single-origin lots from specific regions and micro-climates across Central &amp; South America, East Africa, and the Pacific.</li>
