@@ -206,6 +206,7 @@ exclude:
   - "preview-*"
   - roastmasters_beans.csv
   - assets/source-plates
+  - "images/social/instagram-*.png"
   - .agents
   - "shop-*.markdown"
   - "roast-*.markdown"
