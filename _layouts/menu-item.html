@@ -29,7 +29,7 @@ layout: default
     <div class="hst-frame">
       {% if page.mascot_file %}
         {% assign r_img = "/images/" | append: page.mascot_file %}
-        <img src="{{ r_img | relative_url }}" alt="{{ page.mascot_alt | default: page.title }}" class="hst-mascot-img"{% if page.mascot_style %} style="{{ page.mascot_style }}"{% endif %}>
+        <img src="{{ r_img | relative_url }}" alt="{{ page.mascot_alt | default: page.title }}" class="hst-mascot-img" fetchpriority="high" decoding="async"{% if page.mascot_style %} style="{{ page.mascot_style }}"{% endif %}>
       {% endif %}
     </div>
 
