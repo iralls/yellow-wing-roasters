@@ -38,12 +38,8 @@ function sendSubscriptionConfirmationEmail(orderData) {
  */
 function sendSubscriptionMagicLinkEmail(subData) {
   var magicTpl = HtmlService.createTemplateFromFile('subscription-magic-link-template');
-  magicTpl.orderId = subData.orderId;
+  magicTpl.customerEmail = subData.customerEmail;
   magicTpl.manageToken = subData.manageToken;
-  magicTpl.roast = subData.roast;
-  magicTpl.size = subData.size;
-  magicTpl.frequency = subData.frequency;
-  magicTpl.status = subData.status || "Active";
 
   var magicMailOptions = {
     name: "Yellow Wing Roasters",
@@ -52,13 +48,14 @@ function sendSubscriptionMagicLinkEmail(subData) {
     htmlBody: magicTpl.evaluate().getContent()
   };
 
+  var manageUrl = "https://yellowwingroasters.com/subscriptions/manage/?email=" + encodeURIComponent(subData.customerEmail) + "&token=" + encodeURIComponent(subData.manageToken);
   GmailApp.sendEmail(
     subData.customerEmail,
-    "Your Link to Manage Yellow Wing Roasters Subscription #" + subData.orderId,
-    "Access your subscription using this secure link: https://yellowwingroasters.com/subscriptions/manage/?orderId=" + subData.orderId + "&token=" + subData.manageToken,
+    "Your Link to Manage Yellow Wing Roasters Subscriptions",
+    "Access your subscriptions using this secure link: " + manageUrl,
     magicMailOptions
   );
-  console.log("Magic link email dispatched to subscriber " + subData.customerEmail + " (#" + subData.orderId + ")");
+  console.log("Magic link email dispatched to subscriber " + subData.customerEmail);
 }
 
 /**
@@ -111,7 +108,7 @@ function sendSubscriptionStatusEmail(subData) {
  * Sends internal alert email to roaster when a subscriber pauses, resumes, or cancels.
  */
 function sendRoasterSubscriptionAlertEmail(subData) {
-  var manageUrl = "https://yellowwingroasters.com/subscriptions/manage/?orderId=" + subData.orderId + "&token=" + (subData.manageToken || "");
+  var manageUrl = "https://yellowwingroasters.com/subscriptions/manage/?email=" + encodeURIComponent(subData.customerEmail) + "&token=" + encodeURIComponent(subData.manageToken || "");
   var rawStatus = subData.status || "Updated";
   var actionVerb = rawStatus.toLowerCase() === 'active' ? 'Resumed' : rawStatus;
 

@@ -28,43 +28,18 @@
         </div>
 
         <!-- Main Heading -->
-        <h1 style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 700; color: #1a1612; letter-spacing: -0.02em; margin: 0 0 6px; line-height: 1.2;">
-          Manage Your Subscription
+        <h1 style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 26px; font-weight: 700; color: #1a1612; letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1.2;">
+          Manage Your Subscriptions
         </h1>
 
-        <!-- Subtitle -->
-        <div style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; color: #6f655a; margin-bottom: 22px;">
-          Subscription #<?= orderId ?>
-        </div>
-
         <!-- Serif Body -->
-        <p style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #2c1e14; margin: 0 auto 24px; max-width: 440px;">
-          Here is your secure link to manage your coffee subscription. You can check upcoming roast cycles, temporarily pause or resume deliveries, or cancel anytime.
+        <p style="font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #2c1e14; margin: 0 auto 26px; max-width: 440px;">
+          Here is your secure link to view and manage your coffee subscriptions. You can check upcoming roast cycles, temporarily pause or resume deliveries, or cancel anytime.
         </p>
-
-        <!-- Unboxed Toasted Linen Details -->
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 440px; margin: 0 auto 26px; background-color: #f6f3ef; border: 1px solid #e8e4db; border-radius: 12px; padding: 20px; text-align: left; box-sizing: border-box;">
-          <tr>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top; width: 32%;">Roast</td>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #2c1e14; vertical-align: top;"><?= roast ?></td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Size</td>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= size ?></td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Frequency</td>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #2c1e14; vertical-align: top;"><?= frequency ?></td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #6f655a; vertical-align: top;">Status</td>
-            <td style="padding: 6px 12px; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; color: #2c1e14; vertical-align: top;"><?= status ?></td>
-          </tr>
-        </table>
 
         <!-- Signature Pill Button -->
         <div style="margin: 0 auto 28px; text-align: center;">
-          <a href="https://yellowwingroasters.com/subscriptions/manage/?orderId=<?= orderId ?>&token=<?= manageToken ?>"
+          <a href="https://yellowwingroasters.com/subscriptions/manage/?email=<?= encodeURIComponent(customerEmail) ?>&token=<?= encodeURIComponent(manageToken) ?>"
              target="_blank"
              rel="noopener noreferrer"
              style="display: inline-block; background-color: #302010; color: #ffffff !important; padding: 13px 32px; border-radius: 999px; text-decoration: none; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.01em;">

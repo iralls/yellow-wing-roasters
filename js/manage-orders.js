@@ -543,7 +543,6 @@
     var lookupSection = document.getElementById('order-lookup-section');
     var lookupForm = document.getElementById('order-lookup-form');
     var lookupEmail = document.getElementById('order-lookup-email');
-    var lookupId = document.getElementById('order-lookup-id');
     var lookupBtn = document.getElementById('order-lookup-btn');
     var lookupStatus = document.getElementById('order-lookup-status');
 
@@ -570,9 +569,8 @@
       lookupForm.addEventListener('submit', function (e) {
         e.preventDefault();
         var email = lookupEmail.value.trim().toLowerCase();
-        var orderId = lookupId.value.trim();
 
-        if (!email || !orderId) return;
+        if (!email) return;
 
         lookupStatus.textContent = 'Sending secure link…';
         lookupStatus.className = 'order-status order-status-pending';
@@ -582,16 +580,18 @@
           setTimeout(function () {
             lookupBtn.disabled = false;
             var currentDb = getMockDb();
-            var matched = currentDb[orderId];
-            if (matched && matched.email.toLowerCase() === email) {
+            var matched = Object.keys(currentDb)
+              .map(function (k) { return currentDb[k]; })
+              .find(function (ord) { return ord.email && ord.email.toLowerCase() === email; });
+            if (matched) {
               lookupStatus.textContent = 'Secure link sent to ' + email + '! (In Mock Mode, access token is: ' + matched.token + ')';
               lookupStatus.className = 'order-status order-status-success';
               var testLink = document.createElement('div');
               testLink.className = 'order-mock-link-wrap';
-              testLink.innerHTML = '<a href="/order/manage/?orderId=' + orderId + '&token=' + matched.token + '" class="order-mock-link">&rarr; Open Order #' + orderId + '</a>';
+              testLink.innerHTML = '<a href="/order/manage/?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(matched.token) + '" class="order-mock-link">&rarr; Open Orders for ' + escapeHtml(email) + '</a>';
               lookupStatus.appendChild(testLink);
             } else {
-              lookupStatus.textContent = "If an order matches that information, we've emailed a secure link to manage it.";
+              lookupStatus.textContent = "If an order matches that email, we've emailed a secure link to manage it.";
               lookupStatus.className = 'order-status order-status-success';
             }
           }, 400);
@@ -602,14 +602,13 @@
             credentials: 'omit',
             body: JSON.stringify({
               action: 'request_link',
-              email: email,
-              orderId: orderId
+              email: email
             })
           })
           .then(function (res) { return res.json(); })
           .then(function (data) {
             lookupBtn.disabled = false;
-            lookupStatus.textContent = data.message || "If an order matches that information, we've emailed a secure link to manage it.";
+            lookupStatus.textContent = data.message || "If an order matches that email, we've emailed a secure link to manage it.";
             lookupStatus.className = 'order-status order-status-success';
           })
           .catch(function (err) {
@@ -624,25 +623,49 @@
 
     // URL Parameter Parsing & Direct Authenticated Loading
     var urlParams = new URLSearchParams(window.location.search);
-    var urlOrderId = urlParams.get('orderId');
+    var urlEmail = urlParams.get('email');
     var urlToken = urlParams.get('token');
+    if (urlEmail && urlEmail.indexOf('%') !== -1) {
+      try { urlEmail = decodeURIComponent(urlEmail); } catch (e) {}
+    }
 
-    if (urlOrderId && urlToken) {
+    function renderOrdersList(orders) {
+      orderContent.innerHTML = '';
+      if (!orders || orders.length === 0) {
+        orderContent.innerHTML = '<p class="order-msg-error">No orders found for this email.</p>';
+        return;
+      }
+      if (resultsIdDisplay) {
+        resultsIdDisplay.textContent = orders.length + (orders.length === 1 ? ' order' : ' orders');
+      }
+      orders.forEach(function (ord) {
+        var slot = document.createElement('div');
+        slot.className = 'order-card-slot';
+        orderContent.appendChild(slot);
+        renderOrderCard(ord, slot, cardOptions);
+      });
+    }
+
+    if (urlEmail && urlToken) {
       if (lookupSection) lookupSection.style.display = 'none';
       if (resultsSection) resultsSection.style.display = 'block';
-      if (resultsIdDisplay) resultsIdDisplay.textContent = 'Order #' + urlOrderId;
+      if (resultsIdDisplay) resultsIdDisplay.textContent = urlEmail;
 
       if (isMockMode) {
         var currentDb = getMockDb();
-        var mockOrder = currentDb[urlOrderId];
-        if (mockOrder && mockOrder.token === urlToken) {
-          renderOrderCard(mockOrder, orderContent, cardOptions);
+        var lowerEmail = urlEmail.trim().toLowerCase();
+        var emailOrders = Object.keys(currentDb)
+          .map(function (k) { return currentDb[k]; })
+          .filter(function (ord) { return ord.email && ord.email.toLowerCase() === lowerEmail; });
+        var hasValidToken = emailOrders.some(function (ord) { return ord.token === urlToken; });
+        if (hasValidToken && emailOrders.length > 0) {
+          renderOrdersList(emailOrders);
         } else {
-          orderContent.innerHTML = '<p class="order-msg-error">Unauthorized: Invalid or expired access token for Order #' + escapeHtml(urlOrderId) + '.</p>';
+          orderContent.innerHTML = '<p class="order-msg-error">Unauthorized: Invalid or expired access token for ' + escapeHtml(urlEmail) + '.</p>';
         }
       } else {
         orderContent.innerHTML = '<p class="order-msg-loading">Loading order details…</p>';
-        var fetchUrl = API_URL + '?orderId=' + encodeURIComponent(urlOrderId) + '&token=' + encodeURIComponent(urlToken);
+        var fetchUrl = API_URL + '?email=' + encodeURIComponent(urlEmail) + '&token=' + encodeURIComponent(urlToken);
 
         fetch(fetchUrl, {
           credentials: 'omit'
@@ -651,12 +674,12 @@
           .then(function (data) {
             if (data.error) {
               orderContent.innerHTML = '<p class="order-msg-error">' + escapeHtml(data.error) + '</p>';
-            } else if (data.order) {
-              renderOrderCard(data.order, orderContent, cardOptions);
+            } else {
+              renderOrdersList(data.orders || []);
             }
           })
           .catch(function (err) {
-            console.error('loadOrder: Error loading order:', err);
+            console.error('loadOrder: Error loading orders:', err);
             orderContent.innerHTML = '<p class="order-msg-error">Could not load order details. Please reach out to orders@yellowwingroasters.com</p>';
           });
       }

@@ -20,7 +20,6 @@
 
     var lookupForm = document.getElementById('sub-lookup-form');
     var lookupEmail = document.getElementById('sub-lookup-email');
-    var lookupId = document.getElementById('sub-lookup-id');
     var lookupBtn = document.getElementById('sub-lookup-btn');
     var lookupStatus = document.getElementById('sub-lookup-status');
 
@@ -60,8 +59,8 @@
       return 'status-active';
     }
 
-    function renderSubscriptionCard(sub) {
-      subscriptionContent.innerHTML = '';
+    function renderSubscriptionCard(sub, targetSlot) {
+      targetSlot.innerHTML = '';
 
       var card = document.createElement('div');
       card.className = 'sub-card';
@@ -121,45 +120,48 @@
         '</table>' +
         '</div>';
 
+      var pauseInputId = 'pause-reason-' + escapeHtml(sub.orderId);
+      var cancelInputId = 'cancel-reason-' + escapeHtml(sub.orderId);
+
       // Customer Actions
       if (lowerStatus === 'active') {
-        html += '<div class="sub-actions" id="sub-actions-active">' +
-          '<button type="button" id="trigger-pause-btn" class="action-pill-btn btn-secondary-pill">Pause Deliveries</button>' +
-          '<button type="button" id="trigger-cancel-btn" class="action-pill-btn btn-danger-pill">Cancel Subscription</button>' +
+        html += '<div class="sub-actions js-actions-active">' +
+          '<button type="button" class="action-pill-btn btn-secondary-pill js-trigger-pause">Pause Deliveries</button>' +
+          '<button type="button" class="action-pill-btn btn-danger-pill js-trigger-cancel">Cancel Subscription</button>' +
           '</div>';
 
         // Hidden Pause Prompt
-        html += '<div id="pause-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="pause-reason-input" class="cancel-confirm-prompt">Optional note for pausing:</label>' +
-          '<textarea id="pause-reason-input" class="cancel-textarea" rows="2" placeholder="e.g. Taking a vacation, resuming next month..."></textarea>' +
+        html += '<div class="cancel-reason-container js-pause-container" style="display: none;">' +
+          '<label for="' + pauseInputId + '" class="cancel-confirm-prompt">Optional note for pausing:</label>' +
+          '<textarea id="' + pauseInputId + '" class="cancel-textarea js-pause-reason" rows="2" placeholder="e.g. Taking a vacation, resuming next month..."></textarea>' +
           '<div class="cancel-reason-actions">' +
-          '<button type="button" id="confirm-pause-btn" class="action-pill-btn btn-primary-pill">Confirm Pause</button>' +
-          '<button type="button" id="abort-pause-btn" class="action-pill-btn btn-secondary-pill">Keep Active</button>' +
+          '<button type="button" class="action-pill-btn btn-primary-pill js-confirm-pause">Confirm Pause</button>' +
+          '<button type="button" class="action-pill-btn btn-secondary-pill js-abort-pause">Keep Active</button>' +
           '</div>' +
           '</div>';
 
         // Hidden Cancel Prompt
-        html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="cancel-reason-input" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
-          '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
+        html += '<div class="cancel-reason-container js-cancel-container" style="display: none;">' +
+          '<label for="' + cancelInputId + '" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
+          '<textarea id="' + cancelInputId + '" class="cancel-textarea js-cancel-reason" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
           '<div class="cancel-reason-actions">' +
-          '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
-          '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Subscription</button>' +
+          '<button type="button" class="action-pill-btn btn-danger-pill js-confirm-cancel">Confirm Cancellation</button>' +
+          '<button type="button" class="action-pill-btn btn-secondary-pill js-abort-cancel">Keep Subscription</button>' +
           '</div>' +
           '</div>';
       } else if (lowerStatus === 'paused') {
-        html += '<div class="sub-actions" id="sub-actions-paused">' +
-          '<button type="button" id="confirm-resume-btn" class="action-pill-btn btn-primary-pill">Resume Deliveries</button>' +
-          '<button type="button" id="trigger-cancel-btn" class="action-pill-btn btn-danger-pill">Cancel Subscription</button>' +
+        html += '<div class="sub-actions js-actions-paused">' +
+          '<button type="button" class="action-pill-btn btn-primary-pill js-confirm-resume">Resume Deliveries</button>' +
+          '<button type="button" class="action-pill-btn btn-danger-pill js-trigger-cancel">Cancel Subscription</button>' +
           '</div>';
 
         // Hidden Cancel Prompt
-        html += '<div id="cancel-container" class="cancel-reason-container" style="display: none;">' +
-          '<label for="cancel-reason-input" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
-          '<textarea id="cancel-reason-input" class="cancel-textarea" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
+        html += '<div class="cancel-reason-container js-cancel-container" style="display: none;">' +
+          '<label for="' + cancelInputId + '" class="cancel-confirm-prompt">Reason for cancelling (optional):</label>' +
+          '<textarea id="' + cancelInputId + '" class="cancel-textarea js-cancel-reason" rows="2" placeholder="Tell us if there\'s anything we can do better..."></textarea>' +
           '<div class="cancel-reason-actions">' +
-          '<button type="button" id="confirm-cancel-btn" class="action-pill-btn btn-danger-pill">Confirm Cancellation</button>' +
-          '<button type="button" id="abort-cancel-btn" class="action-pill-btn btn-secondary-pill">Keep Paused</button>' +
+          '<button type="button" class="action-pill-btn btn-danger-pill js-confirm-cancel">Confirm Cancellation</button>' +
+          '<button type="button" class="action-pill-btn btn-secondary-pill js-abort-cancel">Keep Paused</button>' +
           '</div>' +
           '</div>';
       } else if (lowerStatus === 'cancelled') {
@@ -169,24 +171,24 @@
       }
 
       card.innerHTML = html;
-      subscriptionContent.appendChild(card);
+      targetSlot.appendChild(card);
 
       // Wire action listeners
-      var triggerPauseBtn = card.querySelector('#trigger-pause-btn');
-      var pauseContainer = card.querySelector('#pause-container');
-      var confirmPauseBtn = card.querySelector('#confirm-pause-btn');
-      var abortPauseBtn = card.querySelector('#abort-pause-btn');
-      var pauseReasonInput = card.querySelector('#pause-reason-input');
+      var triggerPauseBtn = card.querySelector('.js-trigger-pause');
+      var pauseContainer = card.querySelector('.js-pause-container');
+      var confirmPauseBtn = card.querySelector('.js-confirm-pause');
+      var abortPauseBtn = card.querySelector('.js-abort-pause');
+      var pauseReasonInput = card.querySelector('.js-pause-reason');
 
-      var triggerCancelBtn = card.querySelector('#trigger-cancel-btn');
-      var cancelContainer = card.querySelector('#cancel-container');
-      var confirmCancelBtn = card.querySelector('#confirm-cancel-btn');
-      var abortCancelBtn = card.querySelector('#abort-cancel-btn');
-      var cancelReasonInput = card.querySelector('#cancel-reason-input');
+      var triggerCancelBtn = card.querySelector('.js-trigger-cancel');
+      var cancelContainer = card.querySelector('.js-cancel-container');
+      var confirmCancelBtn = card.querySelector('.js-confirm-cancel');
+      var abortCancelBtn = card.querySelector('.js-abort-cancel');
+      var cancelReasonInput = card.querySelector('.js-cancel-reason');
 
-      var confirmResumeBtn = card.querySelector('#confirm-resume-btn');
-      var actionsActive = card.querySelector('#sub-actions-active');
-      var actionsPaused = card.querySelector('#sub-actions-paused');
+      var confirmResumeBtn = card.querySelector('.js-confirm-resume');
+      var actionsActive = card.querySelector('.js-actions-active');
+      var actionsPaused = card.querySelector('.js-actions-paused');
 
       if (triggerPauseBtn) {
         triggerPauseBtn.addEventListener('click', function () {
@@ -208,13 +210,13 @@
       if (confirmPauseBtn) {
         confirmPauseBtn.addEventListener('click', function () {
           var reason = pauseReasonInput ? pauseReasonInput.value.trim() : '';
-          performStatusUpdate(sub, 'Paused', reason, confirmPauseBtn);
+          performStatusUpdate(sub, 'Paused', reason, confirmPauseBtn, targetSlot);
         });
       }
 
       if (confirmResumeBtn) {
         confirmResumeBtn.addEventListener('click', function () {
-          performStatusUpdate(sub, 'Active', '', confirmResumeBtn);
+          performStatusUpdate(sub, 'Active', '', confirmResumeBtn, targetSlot);
         });
       }
 
@@ -240,12 +242,12 @@
       if (confirmCancelBtn) {
         confirmCancelBtn.addEventListener('click', function () {
           var reason = cancelReasonInput ? cancelReasonInput.value.trim() : '';
-          performStatusUpdate(sub, 'Cancelled', reason, confirmCancelBtn);
+          performStatusUpdate(sub, 'Cancelled', reason, confirmCancelBtn, targetSlot);
         });
       }
     }
 
-    function performStatusUpdate(sub, newStatus, reason, buttonEl) {
+    function performStatusUpdate(sub, newStatus, reason, buttonEl, targetSlot) {
       var origText = buttonEl.textContent;
       buttonEl.textContent = 'Updating...';
       buttonEl.disabled = true;
@@ -271,7 +273,7 @@
         } else {
           sub.status = newStatus;
           sub.statusDetails = reason;
-          renderSubscriptionCard(sub);
+          renderSubscriptionCard(sub, targetSlot);
         }
       })
       .catch(function (err) {
@@ -287,7 +289,6 @@
       lookupForm.addEventListener('submit', function (e) {
         e.preventDefault();
         var email = lookupEmail.value.trim();
-        var orderId = lookupId ? lookupId.value.trim() : '';
         if (!email) return;
 
         lookupStatus.textContent = 'Sending secure link...';
@@ -300,13 +301,12 @@
           credentials: 'omit',
           body: JSON.stringify({
             action: 'request_link',
-            email: email,
-            orderId: orderId
+            email: email
           })
         })
         .then(function (res) { return res.json(); })
         .then(function (data) {
-          lookupStatus.textContent = data.message || "If a subscription matches that information, we've emailed a secure link to manage it.";
+          lookupStatus.textContent = data.message || "If a subscription matches that email, we've emailed a secure link to manage it.";
           lookupStatus.className = 'order-status order-status-success';
           lookupBtn.disabled = false;
         })
@@ -319,31 +319,60 @@
       });
     }
 
-    // Phase 2 Direct URL Authenticated Load (?orderId=1001&token=xyz)
-    var urlParams = new URLSearchParams(window.location.search);
-    var paramOrderId = urlParams.get('orderId');
-    var paramToken = urlParams.get('token');
+    function renderSubscriptionsList(subs) {
+      subscriptionContent.innerHTML = '';
+      if (!subs || subs.length === 0) {
+        subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">No subscriptions found for this email.</p>';
+        return;
+      }
 
-    if (paramOrderId && paramToken) {
+      var statusRank = { active: 0, paused: 1, cancelled: 2 };
+      var sorted = subs.slice().sort(function (a, b) {
+        var ra = statusRank[(a.status || '').toLowerCase()];
+        var rb = statusRank[(b.status || '').toLowerCase()];
+        return (ra !== undefined ? ra : 3) - (rb !== undefined ? rb : 3);
+      });
+
+      if (resultsIdDisplay) {
+        resultsIdDisplay.textContent = sorted.length + (sorted.length === 1 ? ' subscription' : ' subscriptions');
+      }
+
+      sorted.forEach(function (sub) {
+        var slot = document.createElement('div');
+        slot.className = 'sub-card-slot';
+        subscriptionContent.appendChild(slot);
+        renderSubscriptionCard(sub, slot);
+      });
+    }
+
+    // Phase 2 Direct URL Authenticated Load (?email=...&token=xyz)
+    var urlParams = new URLSearchParams(window.location.search);
+    var paramEmail = urlParams.get('email');
+    var paramToken = urlParams.get('token');
+    if (paramEmail && paramEmail.indexOf('%') !== -1) {
+      try { paramEmail = decodeURIComponent(paramEmail); } catch (e) {}
+    }
+
+    if (paramEmail && paramToken) {
       lookupSection.style.display = 'none';
       resultsSection.style.display = 'block';
-      if (resultsIdDisplay) resultsIdDisplay.textContent = '#' + paramOrderId;
+      if (resultsIdDisplay) resultsIdDisplay.textContent = paramEmail;
 
       subscriptionContent.innerHTML = '<p class="manage-loading-msg">Loading subscription details...</p>';
-      fetch(API_URL + '?orderId=' + encodeURIComponent(paramOrderId) + '&token=' + encodeURIComponent(paramToken))
+      fetch(API_URL + '?email=' + encodeURIComponent(paramEmail) + '&token=' + encodeURIComponent(paramToken))
         .then(function (res) { return res.json(); })
         .then(function (data) {
-          if (data.error || !data.subscription) {
+          if (data.error) {
             subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">' +
-              (data.error || 'Subscription not found or link has expired.') +
+              escapeHtml(data.error) +
               '</p>';
           } else {
-            renderSubscriptionCard(data.subscription);
+            renderSubscriptionsList(data.subscriptions || []);
           }
         })
         .catch(function (err) {
-          console.error('manage-subscriptions: Error loading subscription:', err);
-          subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">Technical glitch loading subscription. Please try again or contact orders@yellowwingroasters.com</p>';
+          console.error('manage-subscriptions: Error loading subscriptions:', err);
+          subscriptionContent.innerHTML = '<p class="order-status order-status-error manage-error-msg">Technical glitch loading subscriptions. Please try again or contact orders@yellowwingroasters.com</p>';
         });
     }
   };

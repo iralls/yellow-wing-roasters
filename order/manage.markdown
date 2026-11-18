@@ -23,10 +23,6 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
       <label for="order-lookup-email" class="hst-label">Email Address</label>
       <input id="order-lookup-email" type="email" class="hst-input" required placeholder="Enter the email address used for your order..." autocomplete="email">
     </div>
-    <div>
-      <label for="order-lookup-id" class="hst-label">Order ID</label>
-      <input id="order-lookup-id" type="text" class="hst-input" required placeholder="e.g. 1001" autocomplete="off">
-    </div>
     <button type="submit" id="order-lookup-btn" class="hst-btn">Email Me My Secure Link</button>
     <p id="order-lookup-status" role="status" aria-live="polite" class="order-status"></p>
   </form>
@@ -35,14 +31,14 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
 <!-- Phase 2: Authenticated Order Display & Actions -->
 <div id="order-results-section" class="manage-results-section">
   <div class="manage-results-header">
-    <h2 class="manage-results-title">Order Details <span id="order-mock-indicator" class="mock-badge" style="display: none;">MOCK MODE</span></h2>
+    <h2 class="manage-results-title">Your Orders <span id="order-mock-indicator" class="mock-badge" style="display: none;">MOCK MODE</span></h2>
     <span id="order-results-id-display" class="manage-results-id"></span>
   </div>
   
   <div id="order-content"></div>
 
   <div class="manage-results-footer">
-    <a href="{{ '/order/manage/' | relative_url }}" id="order-back-search-btn" class="action-pill-btn btn-secondary-pill">Look Up Different Order</a>
+    <a href="{{ '/order/manage/' | relative_url }}" id="order-back-search-btn" class="action-pill-btn btn-secondary-pill">Look Up Different Email</a>
   </div>
 </div>
 

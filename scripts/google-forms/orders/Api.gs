@@ -93,12 +93,12 @@ function doGet(e) {
       return createJsonResponse({ orders: allOrders });
     }
 
-    // 3. Customer Single Order Lookup (Requires orderId + manageToken)
-    var orderIdParam = e && e.parameter && e.parameter.orderId ? e.parameter.orderId.toString().trim() : null;
+    // 3. Customer Orders Lookup (Requires email + manageToken)
+    var emailParam = e && e.parameter && e.parameter.email ? e.parameter.email.toString().trim().toLowerCase() : null;
     var tokenParam = e && e.parameter && e.parameter.token ? e.parameter.token.toString().trim() : null;
 
-    if (!orderIdParam || !tokenParam) {
-      return createJsonResponse({ error: "Unauthorized: Missing orderId or token parameter" });
+    if (!emailParam || !tokenParam) {
+      return createJsonResponse({ error: "Unauthorized: Missing email or token parameter" });
     }
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -124,12 +124,23 @@ function doGet(e) {
     var statusIdx = requireColumnIndex(headers, ["Status", "Order Status"], "doGetLookup");
     var statusDetailsIdx = findColumnIndex(headers, ["Status Details", "Notes / Details", "Status Note", "Status Message"]);
 
+    var matchedOrders = [];
+    var tokenValid = false;
+
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
       var rowOrderId = row[orderIdIdx] ? row[orderIdIdx].toString().trim() : "";
+      var rowEmail = row[emailIdx] ? row[emailIdx].toString().trim().toLowerCase() : "";
       var rowToken = row[manageTokenIdx] ? row[manageTokenIdx].toString().trim() : "";
 
-      if (rowOrderId === orderIdParam && rowToken === tokenParam) {
+      if (rowEmail === emailParam) {
+        if (!rowToken) {
+          throw new Error("Missing Manage Token for order #" + rowOrderId);
+        }
+        if (rowToken === tokenParam) {
+          tokenValid = true;
+        }
+
         var statusVal = (row[statusIdx] && row[statusIdx].toString().trim() !== "")
           ? row[statusIdx].toString().trim()
           : "Received";
@@ -140,30 +151,33 @@ function doGet(e) {
         var lowerStatus = statusVal.toLowerCase();
         var canCancel = (lowerStatus === 'received' || lowerStatus === 'delayed');
 
-        return createJsonResponse({
-          order: {
-            orderId: rowOrderId,
-            token: rowToken,
-            name: nameIdx !== -1 ? row[nameIdx] : "",
-            email: row[emailIdx] || "",
-            items: itemsIdx !== -1 ? row[itemsIdx] : "",
-            total: totalIdx !== -1 ? row[totalIdx] : "",
-            deliveryMethod: deliveryIdx !== -1 && row[deliveryIdx] ? row[deliveryIdx] : "Pickup",
-            address: addressIdx !== -1 ? row[addressIdx] : "",
-            city: cityIdx !== -1 ? row[cityIdx] : "",
-            state: stateIdx !== -1 ? row[stateIdx] : "",
-            zip: zipIdx !== -1 ? row[zipIdx] : "",
-            notes: notesIdx !== -1 ? row[notesIdx] : "",
-            status: statusVal,
-            statusDetails: statusDetailsVal,
-            timestamp: timestampIdx !== -1 ? row[timestampIdx] : "",
-            canCancel: canCancel
-          }
+        matchedOrders.push({
+          orderId: rowOrderId,
+          token: rowToken,
+          name: nameIdx !== -1 ? row[nameIdx] : "",
+          email: row[emailIdx] || "",
+          items: itemsIdx !== -1 ? row[itemsIdx] : "",
+          total: totalIdx !== -1 ? row[totalIdx] : "",
+          deliveryMethod: deliveryIdx !== -1 && row[deliveryIdx] ? row[deliveryIdx] : "Pickup",
+          address: addressIdx !== -1 ? row[addressIdx] : "",
+          city: cityIdx !== -1 ? row[cityIdx] : "",
+          state: stateIdx !== -1 ? row[stateIdx] : "",
+          zip: zipIdx !== -1 ? row[zipIdx] : "",
+          notes: notesIdx !== -1 ? row[notesIdx] : "",
+          status: statusVal,
+          statusDetails: statusDetailsVal,
+          timestamp: timestampIdx !== -1 ? row[timestampIdx] : "",
+          canCancel: canCancel
         });
       }
     }
 
-    return createJsonResponse({ error: "Unauthorized: Invalid Order ID or Token" });
+    if (!tokenValid || matchedOrders.length === 0) {
+      return createJsonResponse({ error: "Unauthorized: Invalid Email or Token" });
+    }
+
+    matchedOrders.reverse();
+    return createJsonResponse({ orders: matchedOrders });
   } catch (err) {
     console.error("Order doGet Error: " + err.message + "\n" + err.stack);
     return createJsonResponse({ error: err.message });
@@ -204,27 +218,22 @@ function doPost(e) {
     // ACTION: REQUEST MAGIC LINK
     if (action === 'request_link') {
       var reqEmail = postData.email ? postData.email.toString().trim().toLowerCase() : "";
-      var reqOrderId = postData.orderId ? postData.orderId.toString().trim() : "";
 
-      if (reqEmail && reqOrderId) {
+      if (reqEmail) {
         for (var i = 1; i < data.length; i++) {
           var row = data[i];
           var rowOrderId = row[orderIdIdx] ? row[orderIdIdx].toString().trim() : "";
           var rowEmail = row[emailIdx] ? row[emailIdx].toString().trim().toLowerCase() : "";
 
-          if (rowOrderId === reqOrderId && rowEmail === reqEmail) {
+          if (rowEmail === reqEmail) {
             var token = row[manageTokenIdx] ? row[manageTokenIdx].toString().trim() : "";
             if (!token) {
-              token = generateSecureToken();
-              sheet.getRange(i + 1, manageTokenIdx + 1).setValue(token);
+              throw new Error("Missing Manage Token for order #" + rowOrderId);
             }
 
             sendMagicLinkEmail({
-              orderId: rowOrderId,
               manageToken: token,
-              email: row[emailIdx],
-              items: itemsIdx !== -1 ? row[itemsIdx] : "",
-              cost: totalIdx !== -1 ? row[totalIdx] : ""
+              email: row[emailIdx]
             });
             break;
           }
@@ -234,7 +243,7 @@ function doPost(e) {
       // Always return identical message to prevent user enumeration
       return createJsonResponse({
         success: true,
-        message: "If an order matches that information, we've emailed a secure link to manage it."
+        message: "If an order matches that email, we've emailed a secure link to manage it."
       });
     }
 

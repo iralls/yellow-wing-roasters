@@ -36,10 +36,8 @@ function sendOrderConfirmationEmail(orderData) {
  */
 function sendMagicLinkEmail(orderData) {
   var magicTpl = HtmlService.createTemplateFromFile('order-magic-link-template');
-  magicTpl.orderId = orderData.orderId;
+  magicTpl.customerEmail = orderData.email;
   magicTpl.manageToken = orderData.manageToken;
-  magicTpl.items = orderData.items;
-  magicTpl.cost = orderData.cost;
 
   var magicMailOptions = {
     name: "Yellow Wing Roasters",
@@ -47,13 +45,14 @@ function sendMagicLinkEmail(orderData) {
     htmlBody: magicTpl.evaluate().getContent()
   };
 
+  var manageUrl = "https://yellowwingroasters.com/order/manage/?email=" + encodeURIComponent(orderData.email) + "&token=" + encodeURIComponent(orderData.manageToken);
   GmailApp.sendEmail(
     orderData.email,
-    "Your Link to Manage Yellow Wing Roasters Order #" + orderData.orderId,
-    "Access your order using this secure link: https://yellowwingroasters.com/order/manage/?orderId=" + orderData.orderId + "&token=" + orderData.manageToken,
+    "Your Link to Manage Yellow Wing Roasters Orders",
+    "Access your orders using this secure link: " + manageUrl,
     magicMailOptions
   );
-  console.log("Magic link email dispatched to " + orderData.email + " (#" + orderData.orderId + ")");
+  console.log("Magic link email dispatched to " + orderData.email);
 }
 
 /**
@@ -84,7 +83,7 @@ function sendCustomerCancellationEmail(orderData) {
  * Sends cancellation alert email to the roaster.
  */
 function sendRoasterCancellationEmail(orderData) {
-  var manageUrl = "https://yellowwingroasters.com/order/manage/?orderId=" + orderData.orderId + "&token=" + orderData.manageToken;
+  var manageUrl = "https://yellowwingroasters.com/order/manage/?email=" + encodeURIComponent(orderData.customerEmail) + "&token=" + encodeURIComponent(orderData.manageToken);
   GmailApp.sendEmail(
     ROASTER_EMAIL,
     "Order Cancelled: #" + orderData.orderId + " (" + orderData.customerName + ")",

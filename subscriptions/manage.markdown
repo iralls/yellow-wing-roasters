@@ -18,10 +18,6 @@ intro: "Check your recurring delivery schedule, or pause, resume, or cancel your
       <label for="sub-lookup-email" class="hst-label">Email Address</label>
       <input id="sub-lookup-email" type="email" class="hst-input" required placeholder="Enter the email address you subscribed with..." autocomplete="email">
     </div>
-    <div>
-      <label for="sub-lookup-id" class="hst-label">Subscription / Order ID (Optional)</label>
-      <input id="sub-lookup-id" type="text" class="hst-input" placeholder="e.g. 1001" autocomplete="off">
-    </div>
     <button type="submit" id="sub-lookup-btn" class="hst-btn">Email Me My Secure Link</button>
     <p id="sub-lookup-status" role="status" aria-live="polite" class="manage-lookup-status"></p>
   </form>
@@ -30,14 +26,14 @@ intro: "Check your recurring delivery schedule, or pause, resume, or cancel your
 <!-- Phase 2: Authenticated Subscription Display & Actions -->
 <div id="sub-results-section" class="manage-results-section">
   <div class="manage-results-header">
-    <h2 class="manage-results-title">Subscription Details</h2>
+    <h2 class="manage-results-title">Your Subscriptions</h2>
     <span id="sub-results-id-display" class="manage-results-id"></span>
   </div>
   
   <div id="subscription-content"></div>
 
   <div class="manage-results-footer">
-    <a href="{{ '/subscriptions/manage/' | relative_url }}" id="sub-back-search-btn" class="action-pill-btn btn-secondary-pill">Look Up Different Subscription</a>
+    <a href="{{ '/subscriptions/manage/' | relative_url }}" id="sub-back-search-btn" class="action-pill-btn btn-secondary-pill">Look Up Different Email</a>
   </div>
 </div>
 

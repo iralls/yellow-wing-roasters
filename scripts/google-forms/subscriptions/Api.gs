@@ -117,12 +117,12 @@ function doGet(e) {
       return createJsonResponse({ subscriptions: allSubs });
     }
 
-    // 4. Customer Single Subscription Lookup (Requires orderId + manageToken)
-    var orderIdParam = e && e.parameter && e.parameter.orderId ? e.parameter.orderId.toString().trim() : null;
+    // 4. Customer Subscriptions Lookup (Requires email + manageToken)
+    var emailParam = e && e.parameter && e.parameter.email ? e.parameter.email.toString().trim().toLowerCase() : null;
     var tokenParam = e && e.parameter && e.parameter.token ? e.parameter.token.toString().trim() : null;
 
-    if (!orderIdParam || !tokenParam) {
-      return createJsonResponse({ error: "Subscription ID and security token are required" });
+    if (!emailParam || !tokenParam) {
+      return createJsonResponse({ error: "Email and security token are required" });
     }
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -151,12 +151,23 @@ function doGet(e) {
     var statusIdx = requireColumnIndex(headers, ["Status", "Subscription Status"], "doGet");
     var statusDetailsIdx = findColumnIndex(headers, ["Status Details", "Notes / Details", "Reason", "Status Note"]);
 
+    var matchedSubs = [];
+    var tokenValid = false;
+
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
       var rowOrderId = row[orderIdIdx] ? row[orderIdIdx].toString().trim() : "";
+      var rowEmail = row[emailIdx] ? row[emailIdx].toString().trim().toLowerCase() : "";
       var rowToken = row[manageTokenIdx] ? row[manageTokenIdx].toString().trim() : "";
 
-      if (rowOrderId === orderIdParam && rowToken === tokenParam) {
+      if (rowEmail === emailParam) {
+        if (!rowToken) {
+          throw new Error("Missing Manage Token for subscription #" + rowOrderId);
+        }
+        if (rowToken === tokenParam) {
+          tokenValid = true;
+        }
+
         var statusVal = (row[statusIdx] && row[statusIdx].toString().trim() !== "")
           ? row[statusIdx].toString().trim()
           : "Active";
@@ -172,32 +183,35 @@ function doGet(e) {
             : row[timestampIdx].toString().trim();
         }
 
-        return createJsonResponse({
-          subscription: {
-            orderId: rowOrderId,
-            token: rowToken,
-            name: nameIdx !== -1 && row[nameIdx] ? row[nameIdx].toString().trim() : "Subscriber",
-            email: row[emailIdx] || "",
-            phone: phoneIdx !== -1 && row[phoneIdx] ? row[phoneIdx].toString().trim() : "",
-            roast: row[roastIdx] ? row[roastIdx].toString().trim() : "",
-            size: sizeIdx !== -1 && row[sizeIdx] ? row[sizeIdx].toString().trim() : "",
-            frequency: freqIdx !== -1 && row[freqIdx] ? row[freqIdx].toString().trim() : "",
-            cost: costIdx !== -1 && row[costIdx] ? row[costIdx].toString().trim() : "",
-            deliveryMethod: deliveryIdx !== -1 && row[deliveryIdx] ? row[deliveryIdx].toString().trim() : "Pickup",
-            address: addressIdx !== -1 && row[addressIdx] ? row[addressIdx].toString().trim() : "",
-            city: cityIdx !== -1 && row[cityIdx] ? row[cityIdx].toString().trim() : "",
-            state: stateIdx !== -1 && row[stateIdx] ? row[stateIdx].toString().trim() : "",
-            zip: zipIdx !== -1 && row[zipIdx] ? row[zipIdx].toString().trim() : "",
-            notes: notesIdx !== -1 && row[notesIdx] ? row[notesIdx].toString().trim() : "",
-            status: statusVal,
-            statusDetails: statusDetailsVal,
-            timestamp: timestampVal
-          }
+        matchedSubs.push({
+          orderId: rowOrderId,
+          token: rowToken,
+          name: nameIdx !== -1 && row[nameIdx] ? row[nameIdx].toString().trim() : "Subscriber",
+          email: row[emailIdx] || "",
+          phone: phoneIdx !== -1 && row[phoneIdx] ? row[phoneIdx].toString().trim() : "",
+          roast: row[roastIdx] ? row[roastIdx].toString().trim() : "",
+          size: sizeIdx !== -1 && row[sizeIdx] ? row[sizeIdx].toString().trim() : "",
+          frequency: freqIdx !== -1 && row[freqIdx] ? row[freqIdx].toString().trim() : "",
+          cost: costIdx !== -1 && row[costIdx] ? row[costIdx].toString().trim() : "",
+          deliveryMethod: deliveryIdx !== -1 && row[deliveryIdx] ? row[deliveryIdx].toString().trim() : "Pickup",
+          address: addressIdx !== -1 && row[addressIdx] ? row[addressIdx].toString().trim() : "",
+          city: cityIdx !== -1 && row[cityIdx] ? row[cityIdx].toString().trim() : "",
+          state: stateIdx !== -1 && row[stateIdx] ? row[stateIdx].toString().trim() : "",
+          zip: zipIdx !== -1 && row[zipIdx] ? row[zipIdx].toString().trim() : "",
+          notes: notesIdx !== -1 && row[notesIdx] ? row[notesIdx].toString().trim() : "",
+          status: statusVal,
+          statusDetails: statusDetailsVal,
+          timestamp: timestampVal
         });
       }
     }
 
-    return createJsonResponse({ error: "Unauthorized: Invalid Subscription ID or Token" });
+    if (!tokenValid || matchedSubs.length === 0) {
+      return createJsonResponse({ error: "Unauthorized: Invalid Email or Token" });
+    }
+
+    matchedSubs.reverse();
+    return createJsonResponse({ subscriptions: matchedSubs });
   } catch (err) {
     console.error("Subscription doGet Error: " + err.message + "\n" + err.stack);
     return createJsonResponse({ error: err.message });
@@ -241,7 +255,6 @@ function doPost(e) {
     // ACTION 1: REQUEST MAGIC LINK
     if (action === 'request_link') {
       var reqEmail = postData.email ? postData.email.toString().trim().toLowerCase() : "";
-      var reqOrderId = postData.orderId ? postData.orderId.toString().trim() : "";
 
       if (reqEmail) {
         for (var i = 1; i < data.length; i++) {
@@ -249,25 +262,15 @@ function doPost(e) {
           var rowOrderId = row[orderIdIdx] ? row[orderIdIdx].toString().trim() : "";
           var rowEmail = row[emailIdx] ? row[emailIdx].toString().trim().toLowerCase() : "";
 
-          if (rowEmail === reqEmail && (!reqOrderId || rowOrderId === reqOrderId)) {
+          if (rowEmail === reqEmail) {
             var token = row[manageTokenIdx] ? row[manageTokenIdx].toString().trim() : "";
             if (!token) {
-              token = generateSecureToken();
-              sheet.getRange(i + 1, manageTokenIdx + 1).setValue(token);
+              throw new Error("Missing Manage Token for subscription #" + rowOrderId);
             }
 
-            var currentStatus = (row[statusIdx] && row[statusIdx].toString().trim() !== "")
-              ? row[statusIdx].toString().trim()
-              : "Active";
-
             sendSubscriptionMagicLinkEmail({
-              orderId: rowOrderId,
               manageToken: token,
-              customerEmail: row[emailIdx],
-              roast: row[roastIdx] ? row[roastIdx].toString().trim() : "",
-              size: sizeIdx !== -1 && row[sizeIdx] ? row[sizeIdx].toString().trim() : "",
-              frequency: freqIdx !== -1 && row[freqIdx] ? row[freqIdx].toString().trim() : "",
-              status: currentStatus
+              customerEmail: row[emailIdx]
             });
             break;
           }
@@ -276,7 +279,7 @@ function doPost(e) {
 
       return createJsonResponse({
         success: true,
-        message: "If a subscription matches that information, we've emailed a secure link to manage it."
+        message: "If a subscription matches that email, we've emailed a secure link to manage it."
       });
     }
 
