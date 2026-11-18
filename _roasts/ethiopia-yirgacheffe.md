@@ -14,6 +14,7 @@ origins:
   - Ethiopia Washed
 mascot: common-grackle
 mascot_file: common-grackle-transparent.png
+status: low_stock
 price:
   12oz: 12
   1lb: 16

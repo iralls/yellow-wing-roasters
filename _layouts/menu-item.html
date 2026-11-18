@@ -58,6 +58,10 @@ layout: default
       {% if p_status_info and p_status_info.orderable == false %}
         {% assign is_orderable = false %}
       {% endif %}
+      {% assign is_subscribable = true %}
+      {% if p_status_info and p_status_info.subscribable == false %}
+        {% assign is_subscribable = false %}
+      {% endif %}
       {% if is_orderable and page.price and page.price != "" %}
       <div class="hst-price-row" id="product-price-display">
         {% if page.temporary_price and page.temporary_price[default_bag_size] %}
@@ -95,7 +99,7 @@ layout: default
       {% unless page.category == 'custom' or page.category == 'gift' or page.no_order or is_orderable == false %}
       <form class="hst-form" id="product-order-form" onsubmit="return false;">
         <!-- Purchase Option Toggle (for roasts with subscription option) -->
-        {% if page.subscription and is_sub == false %}
+        {% if page.subscription and is_sub == false and is_subscribable %}
           <div>
             <label class="hst-label">Purchase Option</label>
             <div class="hst-toggle-group" role="radiogroup" aria-label="Purchase Option">
