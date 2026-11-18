@@ -21,8 +21,10 @@ custom_css: custom-roasts.css
 
 <form class="hst-form" id="byob-blend-form" onsubmit="return false;">
   <!-- Component 1 -->
-  <div class="byob-component-card">
-    <div class="byob-component-head">Component 1 (Primary)</div>
+  <div class="byob-component-card" data-component="1">
+    <div class="byob-component-head">
+      <span>Component 1 (Primary)</span>
+    </div>
     <div class="byob-component-grid">
       <div>
         <label class="hst-label" for="blend-origin-1">Single Origin Bean</label>
@@ -49,13 +51,15 @@ custom_css: custom-roasts.css
   </div>
 
   <!-- Component 2 -->
-  <div class="byob-component-card">
-    <div class="byob-component-head">Component 2 (Secondary)</div>
+  <div class="byob-component-card" data-component="2">
+    <div class="byob-component-head">
+      <span>Component 2 (Secondary)</span>
+      <button type="button" class="byob-component-remove" aria-label="Remove Component 2" title="Remove component">&times;</button>
+    </div>
     <div class="byob-component-grid">
       <div>
         <label class="hst-label" for="blend-origin-2">Single Origin Bean</label>
-        <select id="blend-origin-2" class="hst-select byob-origin-input">
-          <option value="">None (Single component)</option>
+        <select id="blend-origin-2" class="hst-select byob-origin-input" required>
           {% for r in active_so %}
             <option value="{{ r.title }}"{% if forloop.index == 2 %} selected{% endif %}>{{ r.title }}</option>
           {% endfor %}
@@ -63,7 +67,7 @@ custom_css: custom-roasts.css
       </div>
       <div>
         <label class="hst-label" for="blend-roast-2">Roast Level</label>
-        <select id="blend-roast-2" class="hst-select byob-roast-input">
+        <select id="blend-roast-2" class="hst-select byob-roast-input" required>
           {% for lvl_num in (1..5) %}
             {% assign lvl_data = site.data.roast_levels[lvl_num] %}
             <option value="{{ lvl_data.specialty }} ({{ lvl_data.layman }})"{% if lvl_num == 2 %} selected{% endif %}>{{ lvl_data.specialty }} ({{ lvl_data.layman }})</option>
@@ -72,19 +76,21 @@ custom_css: custom-roasts.css
       </div>
       <div>
         <label class="hst-label" for="blend-pct-2">Ratio (%)</label>
-        <input type="number" id="blend-pct-2" class="hst-input byob-pct-input" min="0" max="100" value="30">
+        <input type="number" id="blend-pct-2" class="hst-input byob-pct-input" min="0" max="100" value="30" required>
       </div>
     </div>
   </div>
 
   <!-- Component 3 -->
-  <div class="byob-component-card">
-    <div class="byob-component-head">Component 3 (Accent)</div>
+  <div class="byob-component-card" data-component="3">
+    <div class="byob-component-head">
+      <span>Component 3 (Accent)</span>
+      <button type="button" class="byob-component-remove" aria-label="Remove Component 3" title="Remove component">&times;</button>
+    </div>
     <div class="byob-component-grid">
       <div>
         <label class="hst-label" for="blend-origin-3">Single Origin Bean</label>
-        <select id="blend-origin-3" class="hst-select byob-origin-input">
-          <option value="">None (2 components only)</option>
+        <select id="blend-origin-3" class="hst-select byob-origin-input" required>
           {% for r in active_so %}
             <option value="{{ r.title }}"{% if forloop.index == 3 %} selected{% endif %}>{{ r.title }}</option>
           {% endfor %}
@@ -92,7 +98,7 @@ custom_css: custom-roasts.css
       </div>
       <div>
         <label class="hst-label" for="blend-roast-3">Roast Level</label>
-        <select id="blend-roast-3" class="hst-select byob-roast-input">
+        <select id="blend-roast-3" class="hst-select byob-roast-input" required>
           {% for lvl_num in (1..5) %}
             {% assign lvl_data = site.data.roast_levels[lvl_num] %}
             <option value="{{ lvl_data.specialty }} ({{ lvl_data.layman }})"{% if lvl_num == 4 %} selected{% endif %}>{{ lvl_data.specialty }} ({{ lvl_data.layman }})</option>
@@ -101,10 +107,14 @@ custom_css: custom-roasts.css
       </div>
       <div>
         <label class="hst-label" for="blend-pct-3">Ratio (%)</label>
-        <input type="number" id="blend-pct-3" class="hst-input byob-pct-input" min="0" max="100" value="20">
+        <input type="number" id="blend-pct-3" class="hst-input byob-pct-input" min="0" max="100" value="20" required>
       </div>
     </div>
   </div>
+
+  <button type="button" class="byob-add-component-btn" id="byob-add-component-btn" hidden>
+    + Add Component
+  </button>
 
   <!-- Total Ratio Indicator -->
   <div id="byob-ratio-total-wrap" class="byob-ratio-status">
@@ -131,11 +141,25 @@ custom_css: custom-roasts.css
   </button>
 </form>
 
+{% assign chimney_sweep = site.roasts | where: "slug", "chimney-sweep" | first %}
+{% assign early_bird = site.roasts | where: "slug", "early-bird" | first %}
 <div class="hst-drawers">
   <div class="hst-drawer open">
     <button type="button" class="hst-drawer-head">Blending Philosophy</button>
     <div class="hst-drawer-body">
-      Every custom blend is roasted component-by-component to its optimal development curve before being blended and packed fresh in a dedicated 12oz bag.
+      <p style="margin-top: 0;">Every custom blend is roasted component-by-component to its optimal development curve before being blended and packed fresh in a dedicated 12oz bag.</p>
+      <p>A classic three-part blend works like a good recipe, with each coffee playing a distinct role:</p>
+      <ul>
+        <li><strong>Base bean (~50&ndash;60%):</strong> Anchors the cup with body, sweetness, and core structure.</li>
+        <li><strong>Middle bean (~25&ndash;35%):</strong> Ties the blend together, bridging the base and the accent for balance and smoothness.</li>
+        <li><strong>Accent bean (~10&ndash;20%):</strong> Adds brightness, fruit, or complexity without overpowering the cup.</li>
+      </ul>
+      <p style="margin-bottom: 0;"><strong>Examples:</strong></p>
+      <ul style="margin-top: 0.35rem;">
+        <li><a href="{{ early_bird.url | relative_url }}">{{ early_bird.title }}</a> &mdash; Colombia Supremo (50% base), Peru Fair Trade Organic (35% middle), and Kenya AB Gathaithi (15% accent).</li>
+        <li><a href="{{ chimney_sweep.url | relative_url }}">{{ chimney_sweep.title }}</a> &mdash; Brazil Natural (50% base), Guatemala Antigua Washed (30% middle), and Ethiopia Guji Uraga Natural (20% accent).</li>
+        <li><a href="https://www.willoughbyscoffee.com/product/willoughby-s-espresso-blend/M7AFNF5ZAQEEITVMSYYSHR5D" target="_blank" rel="noopener">Willoughby&rsquo;s Espresso Blend</a> &mdash; A two-component blend using the same origin at two roast levels: Guatemala Antigua French Roast paired with just enough of its Full City Roast counterpart for a zesty, caramelized cup.</li>
+      </ul>
     </div>
   </div>
 
@@ -153,32 +177,34 @@ custom_css: custom-roasts.css
 <script>
   (function() {
     const form = document.getElementById("byob-blend-form");
-    const pcts = [
-      document.getElementById("blend-pct-1"),
-      document.getElementById("blend-pct-2"),
-      document.getElementById("blend-pct-3")
-    ];
-    const origins = [
-      document.getElementById("blend-origin-1"),
-      document.getElementById("blend-origin-2"),
-      document.getElementById("blend-origin-3")
-    ];
-    const roasts = [
-      document.getElementById("blend-roast-1"),
-      document.getElementById("blend-roast-2"),
-      document.getElementById("blend-roast-3")
-    ];
+    const slots = [1, 2, 3].map(n => ({
+      card: form.querySelector(`.byob-component-card[data-component="${n}"]`),
+      origin: document.getElementById(`blend-origin-${n}`),
+      roast: document.getElementById(`blend-roast-${n}`),
+      pct: document.getElementById(`blend-pct-${n}`),
+      removeBtn: form.querySelector(`.byob-component-card[data-component="${n}"] .byob-component-remove`)
+    }));
+    const addCompBtn = document.getElementById("byob-add-component-btn");
     const grindSelect = document.getElementById("byob-blend-grind");
     const notesInput = document.getElementById("byob-blend-notes");
     const sumEl = document.getElementById("byob-ratio-sum");
     const msgEl = document.getElementById("byob-ratio-msg");
     const addBtn = document.getElementById("byob-blend-add-btn");
 
+    function setSlotActive(slot, active) {
+      slot.card.hidden = !active;
+      slot.origin.disabled = !active;
+      slot.roast.disabled = !active;
+      slot.pct.disabled = !active;
+      addCompBtn.hidden = !slots.some(s => s.card.hidden);
+      calcTotal();
+    }
+
     function calcTotal() {
       let total = 0;
-      for (let i = 0; i < 3; i++) {
-        if (origins[i].value) {
-          total += parseInt(pcts[i].value, 10) || 0;
+      for (const slot of slots) {
+        if (!slot.card.hidden) {
+          total += parseInt(slot.pct.value, 10) || 0;
         }
       }
       sumEl.textContent = `${total}%`;
@@ -194,8 +220,21 @@ custom_css: custom-roasts.css
       return total;
     }
 
-    pcts.forEach(p => p.addEventListener("input", calcTotal));
-    origins.forEach(o => o.addEventListener("change", calcTotal));
+    slots.forEach(slot => {
+      slot.pct.addEventListener("input", calcTotal);
+      slot.origin.addEventListener("change", calcTotal);
+      if (slot.removeBtn) {
+        slot.removeBtn.addEventListener("click", () => setSlotActive(slot, false));
+      }
+    });
+
+    addCompBtn.addEventListener("click", () => {
+      const nextHidden = slots.find(s => s.card.hidden);
+      if (nextHidden) {
+        setSlotActive(nextHidden, true);
+      }
+    });
+
     calcTotal();
 
     form.addEventListener("submit", (e) => {
@@ -207,14 +246,13 @@ custom_css: custom-roasts.css
       }
 
       const components = [];
-      for (let i = 0; i < 3; i++) {
-        const origVal = origins[i].value;
-        const pctVal = parseInt(pcts[i].value, 10) || 0;
-        const roastVal = roasts[i].value;
-        if (origVal && pctVal > 0) {
+      for (const slot of slots) {
+        if (slot.card.hidden) continue;
+        const pctVal = parseInt(slot.pct.value, 10) || 0;
+        if (pctVal > 0) {
           components.push({
-            name: origVal,
-            roast: roastVal,
+            name: slot.origin.value,
+            roast: slot.roast.value,
             pct: pctVal
           });
         }

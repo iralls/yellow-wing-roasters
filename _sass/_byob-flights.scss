@@ -7,6 +7,9 @@
 }
 
 .byob-component-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-family: 'Figtree', var(--font-sans, sans-serif);
   font-size: 0.76rem;
   font-weight: 700;
@@ -14,6 +17,42 @@
   letter-spacing: 0.12em;
   color: var(--hst-muted);
   margin-bottom: 0.85rem;
+}
+
+.byob-component-remove {
+  background: transparent;
+  border: none;
+  color: var(--hst-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.35rem;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--hst-sale);
+  }
+}
+
+.byob-add-component-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  border: 1px dashed var(--hst-border);
+  border-radius: 2px;
+  font-family: 'Figtree', var(--font-sans, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--hst-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: var(--hst-text);
+    color: var(--hst-text);
+  }
 }
 
 .byob-component-grid {
