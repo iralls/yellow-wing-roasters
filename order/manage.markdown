@@ -63,14 +63,16 @@ intro: "Look up your order, track roasting and delivery progress, or cancel prio
   </div>
 </div>
 
-<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-<script src="{{ '/js/manage-orders.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/js/manage-orders.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  initManageOrders({
-    apiUrl: {{ site.order_api_url | jsonify }},
-    catalogUrl: {{ '/shop/' | relative_url | jsonify }},
-    roastsData: window.YWR_ROASTS_DATA,
-    bagSizes: window.YWR_BAG_SIZES,
-    defaultGrind: window.YWR_DEFAULT_GRIND
+  document.addEventListener('DOMContentLoaded', function () {
+    initManageOrders({
+      apiUrl: {{ site.order_api_url | jsonify }},
+      catalogUrl: {{ '/shop/' | relative_url | jsonify }},
+      roastsData: window.YWR_ROASTS_DATA,
+      bagSizes: window.YWR_BAG_SIZES,
+      defaultGrind: window.YWR_DEFAULT_GRIND
+    });
   });
 </script>

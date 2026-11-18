@@ -132,13 +132,13 @@ custom_css: custom-roasts.css
   </div>
 </div>
 
-<script src="{{ '/js/byob-bath.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/byob-bath.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   initBYOBBath({
     slug: {{ page.slug | jsonify }},
     pricePerPerson: {{ page.price_per_person }},
     mascot: {{ page.mascot_file | jsonify }}
   });
-})();
+});
 </script>

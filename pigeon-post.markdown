@@ -34,7 +34,9 @@ intro: "Sign up to hear about fresh roast releases, seasonal blend arrivals, and
   </div>
 </div>
 
-<script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/form-submit.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  initPigeonPostForm();
+  document.addEventListener('DOMContentLoaded', function () {
+    initPigeonPostForm();
+  });
 </script>

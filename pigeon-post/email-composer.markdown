@@ -90,9 +90,10 @@ custom_css: email-composer.css
   </details>
 </div>
 
-<script src="{{ '/js/pigeon-post-email.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/pigeon-post-email.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  initPigeonPostEmailComposer({
+  document.addEventListener('DOMContentLoaded', function () {
+    initPigeonPostEmailComposer({
     siteUrl: {{ site.url | jsonify }},
     siteTitle: {{ site.title | jsonify }},
     roasterEmail: {{ site.email | jsonify }},
@@ -142,5 +143,6 @@ custom_css: email-composer.css
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     }
+    });
   });
 </script>

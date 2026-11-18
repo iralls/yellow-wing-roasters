@@ -59,10 +59,12 @@ intro: "Check your recurring delivery schedule, or pause, resume, or cancel your
   </div>
 </div>
 
-<script src="{{ '/js/manage-subscriptions.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/manage-subscriptions.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  initManageSubscriptions({
-    apiUrl: {{ site.subscription_api_url | jsonify }},
-    resubscribeUrl: {{ '/subscriptions/' | relative_url | jsonify }}
+  document.addEventListener('DOMContentLoaded', function () {
+    initManageSubscriptions({
+      apiUrl: {{ site.subscription_api_url | jsonify }},
+      resubscribeUrl: {{ '/subscriptions/' | relative_url | jsonify }}
+    });
   });
 </script>

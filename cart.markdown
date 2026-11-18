@@ -137,10 +137,10 @@ custom_css: cart.css
   </form>
 </div>
 
-<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-<script src="{{ '/js/order-checkout.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ '/js/cart-data.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/js/order-checkout.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     initOrderCheckout({
       discountApiUrl: {{ site.discount_codes_api_url | jsonify }},
       thanksUrl: {{ '/thanks/' | relative_url | jsonify }},
@@ -149,5 +149,5 @@ custom_css: cart.css
       digitalGiftUrl: {{ site.google_forms.digital_gift.url | jsonify }},
       digitalGiftEntries: {{ site.google_forms.digital_gift.entries | jsonify }}
     });
-  })();
+  });
 </script>
