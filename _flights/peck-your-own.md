@@ -90,6 +90,23 @@ custom_css: flights.css
     const form = document.getElementById("pyo-form");
 
     let chosenRoasts = [];
+    const chosenSlugs = new Set();
+
+    function syncRoastOptions() {
+      let availableCount = 0;
+      const placeholderOpt = roastSelect.options[0];
+      for (let i = 1; i < roastSelect.options.length; i++) {
+        const opt = roastSelect.options[i];
+        const isSelected = chosenSlugs.has(opt.getAttribute("data-slug"));
+        opt.disabled = isSelected;
+        opt.hidden = isSelected;
+        if (!isSelected) availableCount++;
+      }
+      roastSelect.disabled = availableCount === 0;
+      placeholderOpt.textContent = availableCount === 0
+        ? "-- All available roasts selected --"
+        : "-- Choose a roast to add to your flight --";
+    }
 
     function updateUI() {
       const count = chosenRoasts.length;
@@ -142,6 +159,7 @@ custom_css: flights.css
           removeBtn.innerHTML = "&times;";
           removeBtn.setAttribute("aria-label", "Remove " + r.title);
           removeBtn.addEventListener("click", () => {
+            chosenSlugs.delete(r.slug);
             chosenRoasts.splice(idx, 1);
             updateUI();
           });
@@ -150,15 +168,19 @@ custom_css: flights.css
           chosenList.appendChild(li);
         });
       }
+
+      syncRoastOptions();
     }
 
     roastSelect.addEventListener("change", () => {
       const opt = roastSelect.options[roastSelect.selectedIndex];
-      if (!opt.value) return;
+      const slug = opt.getAttribute("data-slug");
+      if (!opt.value || chosenSlugs.has(slug)) return;
 
+      chosenSlugs.add(slug);
       chosenRoasts.push({
         title: opt.value,
-        slug: opt.getAttribute("data-slug"),
+        slug: slug,
         level: opt.getAttribute("data-level"),
         cat: opt.getAttribute("data-cat")
       });
