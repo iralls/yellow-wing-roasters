@@ -2346,28 +2346,31 @@
           '</div>' +
           '</div>' + pBanner + '<div class="atelier-table-wrap"><table class="atelier-table"><thead><tr>' +
           renderSortTh('DATE', 'date', 'packaging', false) +
-          renderSortTh('PKG ID', 'logId', 'packaging', false) +
+          renderSortTh('PKG ID', 'logId', 'packaging', false, '1%') +
           renderSortTh('PRODUCT / BLEND', 'product', 'packaging', false) +
           renderSortTh('PURPOSE', 'purpose', 'packaging', false) +
-          renderSortTh('BAG SIZE', 'bagSize', 'packaging', false) +
-          renderSortTh('WEIGHT (G)', 'weightGrams', 'packaging', true) +
-          '<th>ROAST COMPONENTS &amp; NOTES</th>' +
+          renderSortTh('BAG SIZE', 'bagSize', 'packaging', false, '1%') +
+          renderSortTh('WEIGHT (G)', 'weightGrams', 'packaging', true, '1%') +
+          '<th>ROAST COMPONENTS</th>' +
           '<th style="text-align: right;">ACTION</th>' +
           '</tr></thead><tbody>';
 
         filteredPkg.forEach(function (p) {
           var comps = (p.roastComponents || []).map(function (c) {
             return '<span class="atelier-item-meta"><button type="button" class="atelier-link-btn atelier-pkg-roast-link" data-roast-id="' + escapeHtml(c.roastId) + '" data-used-grams="' + escapeHtml(c.weightGrams) + '">' + escapeHtml(c.roastId) + '</button> (' + c.weightGrams + 'g)</span>';
-          }).join(' ');
+          }).join('');
+          var compsCell = comps ? '<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem;">' + comps + '</div>' : '';
+          var fullLogId = String(p.logId || '');
+          var shortLogId = fullLogId.length > 4 ? fullLogId.slice(0, 4) + '…' : fullLogId;
           var isSelected = selectedItem && selectedItem.logId === p.logId && !selectedItem.__isNew;
           pHtml += '<tr style="' + (isSelected ? 'background: #fcf6e9;' : '') + '">' +
             '<td style="font-family: monospace; font-size: 0.76rem; color: #7d6b5e;">' + escapeHtml(p.date) + '</td>' +
-            '<td><strong style="font-family: monospace; font-size: 0.8rem;">' + escapeHtml(p.logId) + '</strong></td>' +
+            '<td style="white-space: nowrap;"><button type="button" class="atelier-link-btn atelier-pkg-id-copy" data-log-id="' + escapeHtml(fullLogId) + '" style="font-family: monospace; font-size: 0.8rem; font-weight: 700;">' + escapeHtml(shortLogId) + '</button></td>' +
             '<td><strong style="color: #2c1e14;">' + escapeHtml(p.product) + '</strong></td>' +
             '<td>' + escapeHtml(p.purpose) + (p.orderId ? ' (<button type="button" class="atelier-link-btn atelier-pkg-order-link" data-order-id="' + escapeHtml(p.orderId) + '">#' + escapeHtml(p.orderId) + '</button>)' : '') + '</td>' +
-            '<td><span class="atelier-item-meta" style="font-weight: 700; color: #92400e; background: #fef3c7;">' + escapeHtml(p.bagSize || 'Custom') + '</span></td>' +
-            '<td style="text-align: right; font-family: monospace; font-weight: 700;">' + (p.weightGrams || 0) + 'g</td>' +
-            '<td>' + comps + (p.notes ? '<div style="font-size: 0.74rem; color: #7d6b5e; margin-top: 0.2rem;">' + escapeHtml(p.notes) + '</div>' : '') + '</td>' +
+            '<td style="white-space: nowrap;"><span class="atelier-item-meta" style="font-weight: 700; color: #92400e; background: #fef3c7;">' + escapeHtml(p.bagSize || 'Custom') + '</span></td>' +
+            '<td style="text-align: right; white-space: nowrap; font-family: monospace; font-weight: 700;">' + (p.weightGrams || 0) + 'g</td>' +
+            '<td>' + compsCell + '</td>' +
             '<td style="text-align: right; white-space: nowrap;">' +
               '<button type="button" class="atelier-btn-action atelier-inspect-pkg-btn" data-id="' + escapeHtml(p.logId) + '">Edit</button> ' +
               '<button type="button" class="atelier-btn-action atelier-copy-pkg-btn" data-id="' + escapeHtml(p.logId) + '">Copy</button>' +
@@ -2422,6 +2425,22 @@
         }
 
         hideHoverPopover();
+
+        wrap.querySelectorAll('.atelier-pkg-id-copy').forEach(function (btn) {
+          var fullId = btn.getAttribute('data-log-id');
+          wireHoverPopover(btn, function () {
+            return '<div class="atelier-roast-popover-head"><span class="atelier-roast-popover-id">' + escapeHtml(fullId) + '</span></div>' +
+              '<div class="atelier-roast-popover-notes" style="margin-top: 0.25rem;">Click to copy</div>';
+          });
+          btn.addEventListener('click', function () {
+            navigator.clipboard.writeText(fullId).then(function () {
+              showHoverPopover(btn, '<div class="atelier-roast-popover-head"><span class="atelier-roast-popover-id">' + escapeHtml(fullId) + '</span></div>' +
+                '<div class="atelier-roast-popover-notes" style="margin-top: 0.25rem; color: #166534; font-weight: 700;">Copied!</div>');
+            }).catch(function (err) {
+              console.error('[packaging] Failed to copy PKG ID:', err);
+            });
+          });
+        });
 
         wrap.querySelectorAll('.atelier-pkg-order-link').forEach(function (btn) {
           wireHoverPopover(btn, function () {
@@ -3291,7 +3310,7 @@
           '</div>';
         }).join('');
 
-        var orderItems = ordersData.slice().sort(function (a, b) {
+        var pkgOrderOnlyItems = ordersData.slice().sort(function (a, b) {
           return new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime();
         }).map(function (ord) {
           var dateStr = String(ord.timestamp || '').split(',')[0].trim();
@@ -3303,7 +3322,8 @@
             label: '#' + ord.orderId + ' — ' + ord.name + (ord.status ? ' (' + ord.status + ')' : ''),
             searchText: [ord.orderId, ord.name, ord.email, dateStr, ord.items, ord.status].join(' ').toLowerCase()
           };
-        }).concat(subsData.map(function (s) {
+        });
+        var pkgSubOnlyItems = subsData.map(function (s) {
           var dateStr = String(s.timestamp || '').split(',')[0].trim();
           return {
             value: s.orderId,
@@ -3313,7 +3333,15 @@
             label: '#' + s.orderId + ' — ' + s.name + ' (Sub' + (s.status ? ', ' + s.status : '') + ')',
             searchText: ['sub', s.orderId, s.name, s.email, dateStr, s.roast, s.size, s.status].join(' ').toLowerCase()
           };
-        }));
+        });
+        function getPkgOrderItemsForPurpose(purposeVal) {
+          var norm = String(purposeVal || '').toLowerCase();
+          if (norm === 'order') return pkgOrderOnlyItems;
+          if (norm === 'subscription') return pkgSubOnlyItems;
+          return [];
+        }
+        var initialPurpose = selectedItem.purpose || 'Order';
+        var initialOrderItems = getPkgOrderItemsForPurpose(initialPurpose);
 
         var purposes = ['Order', 'Subscription', 'Sample', 'Gift', 'Personal / Cupping'];
         var purposeOpts = purposes.map(function (p) {
@@ -3342,7 +3370,7 @@
             '<div class="atelier-field-grid">' +
               '<div class="atelier-inspector-field" id="atelier-pkg-order-field">' +
                 '<label>Order / Sub # (Optional)</label>' +
-                buildSearchableSelectHtml('atelier-pkg-order-input', selectedItem.orderId || '', orderItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true }) +
+                buildSearchableSelectHtml('atelier-pkg-order-input', selectedItem.orderId || '', initialOrderItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true }) +
               '</div>' +
               '<div class="atelier-inspector-field">' +
                 '<label>Bag Size</label>' +
@@ -3372,7 +3400,14 @@
           '</div>';
 
         wireCloseInspectorBtn();
-        wireSearchableSelects(document.getElementById('atelier-pkg-order-field'), orderItems, { allowCustom: true });
+        var pkgOrderField = document.getElementById('atelier-pkg-order-field');
+        wireSearchableSelects(pkgOrderField, initialOrderItems, { allowCustom: true });
+        document.getElementById('atelier-pkg-purpose').addEventListener('change', function () {
+          var nextItems = getPkgOrderItemsForPurpose(this.value);
+          pkgOrderField.innerHTML = '<label>Order / Sub # (Optional)</label>' +
+            buildSearchableSelectHtml('atelier-pkg-order-input', '', nextItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true });
+          wireSearchableSelects(pkgOrderField, nextItems, { allowCustom: true });
+        });
         wireSearchableSelects(document.getElementById('atelier-pkg-comps-wrap'), roastItems);
         document.getElementById('atelier-add-pkg-comp-btn').addEventListener('click', function () {
           var wrapEl = document.getElementById('atelier-pkg-comps-wrap');
