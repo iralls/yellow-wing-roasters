@@ -31,6 +31,10 @@
           <a href="{{ '/shop/' | relative_url }}" class="nav-link">Shop</a>
           <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
           <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
+          <a href="{{ '/cart/' | relative_url }}" class="nav-link nav-link-cart">
+            <span>Cart</span>
+            <span class="cart-count-badge" id="mobile-nav-cart-count">0</span>
+          </a>
         </nav>
         <a href="{{ '/' | relative_url }}" class="brand-wordmark">
           <span class="brand-name">Yellow Wing</span>
@@ -70,25 +74,28 @@
           }
         });
 
-        const el = document.getElementById('header-cart-count');
+        const countEls = [
+          document.getElementById('header-cart-count'),
+          document.getElementById('mobile-nav-cart-count')
+        ];
 
         function updateNavCartCount() {
           const raw = localStorage.getItem('ywr_cart');
-          if (!raw) {
-            el.textContent = '0';
-            el.classList.remove('has-items');
-            return;
+          let total = 0;
+          if (raw) {
+            let items = [];
+            try {
+              const parsed = JSON.parse(raw);
+              items = Array.isArray(parsed) ? parsed : Object.values(parsed);
+            } catch (e) {
+              items = [];
+            }
+            total = items.reduce((sum, it) => sum + (it.qty || 1), 0);
           }
-          let items = [];
-          try {
-            const parsed = JSON.parse(raw);
-            items = Array.isArray(parsed) ? parsed : Object.values(parsed);
-          } catch (e) {
-            items = [];
+          for (const el of countEls) {
+            el.textContent = total;
+            el.classList.toggle('has-items', total > 0);
           }
-          const total = items.reduce((sum, it) => sum + (it.qty || 1), 0);
-          el.textContent = total;
-          el.classList.toggle('has-items', total > 0);
         }
 
         updateNavCartCount();

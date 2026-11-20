@@ -23,6 +23,10 @@
   display: none;
 }
 
+.nav-link-cart {
+  display: none;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -143,12 +147,18 @@
     font-size: 1rem;
   }
 
+  .site-header .nav-link-cart {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
   .site-header .brand-wordmark {
     justify-self: center;
   }
 
   .site-header .header-actions {
-    justify-self: end;
+    display: none;
   }
 
   .site-header .brand-name {
