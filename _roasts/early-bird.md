@@ -38,7 +38,7 @@ history:
       - name: Peru Fair Trade Organic
         slug: peru-fair-trade-organic
         ratio: 35%
-      - name: Kenya AB Gathaithi
+      - name: Kenya AB Ichamama
         ratio: 15%
   - date: "2026-06"
     components:
