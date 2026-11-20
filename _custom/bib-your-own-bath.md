@@ -19,12 +19,6 @@ custom_css: custom-roasts.css
 
 {% assign rate = page.price_per_person %}
 
-<div class="byob-bath-back">
-  <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">
-    &larr; Back to Shop
-  </a>
-</div>
-
 <div class="sleek-detail-layout">
   <!-- Left Column: Artwork Showcase & Cupping Details -->
   <div class="sleek-detail-visual-col">

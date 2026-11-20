@@ -7,8 +7,6 @@ subtitle: >-
 ---
 
 <div class="menu-listing-wrap">
-  <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
-
   <!-- ── Header ── -->
   <header class="menu-header">
     <h1 class="menu-title">Coffee Archive</h1>

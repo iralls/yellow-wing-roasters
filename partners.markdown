@@ -6,8 +6,6 @@ descriptor: Community & Collaborations
 mascot_file: handshake-transparent.png
 mascot_alt: "Community Partner Roasts"
 permalink: /partners/
-back_url: /about/
-back_label: Back to About Us
 no_order: true
 intro: "We're eager to work directly with local businesses, gyms, clubs, non-profits, and community organizations to develop exclusive custom blends and single-origin offerings tailored specifically for their community."
 ---

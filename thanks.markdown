@@ -8,8 +8,6 @@ mascot_alt: "Thank You"
 permalink: /thanks/
 sitemap: false
 no_order: true
-back_url: /shop/
-back_label: Back to Shop
 custom_css: thanks.css
 intro: "Thanks for your order! We'll email you back shortly to confirm your batch, payment details, and pickup or delivery schedule."
 ---

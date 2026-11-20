@@ -14,16 +14,6 @@ layout: default
 {% endif %}
 
 <div class="hst-wrap">
-  {% if page.back_url %}
-    <a href="{{ page.back_url | relative_url }}" class="hst-back-link">&larr; {{ page.back_label | default: 'Back' }}</a>
-  {% elsif is_sub %}
-    <a href="{{ '/subscriptions/' | relative_url }}" class="hst-back-link">&larr; Back to Subscriptions</a>
-  {% elsif page.status == 'flown_south' or page.status == 'archived' %}
-    <a href="{{ '/archive/' | relative_url }}" class="hst-back-link">&larr; Back to Archive</a>
-  {% else %}
-    <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
-  {% endif %}
-
   <div class="hst-panel" id="product-{{ page.slug | default: page.title | slugify }}">
     <!-- Visual Frame (Left Column) -->
     <div class="hst-frame">

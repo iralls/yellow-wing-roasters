@@ -6,8 +6,6 @@ custom_css: cart.css
 ---
 
 <div class="hst-wrap cart-page-wrap">
-  <a href="{{ '/shop/' | relative_url }}" class="hst-back-link">&larr; Back to Shop</a>
-
   <div class="cart-header-section">
     <div class="hst-cat">Checkout &amp; Delivery</div>
     <h1 class="hst-title" id="order-page-title">Cart</h1>

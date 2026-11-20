@@ -9,8 +9,6 @@ custom_css: email-composer.css
 <link rel="stylesheet" href="{{ '/css/admin-theme.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 
 <div class="hst-wrap pp-composer-wrap">
-  <a href="{{ '/admin/' | relative_url }}" class="hst-back-link">&larr; Back to Admin Portal</a>
-
   <div class="pp-header">
     <div class="hst-cat">Pigeon Post Dispatch</div>
     <h1 class="hst-title">Email Composer</h1>
