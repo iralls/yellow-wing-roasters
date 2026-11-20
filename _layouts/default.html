@@ -20,9 +20,14 @@
 <body{% if page.layout == 'index' or page.hide_header %} class="home-layout"{% endif %}>
   <div class="site-wrap">
     {% unless page.hide_header or page.layout == 'index' %}
-    <header class="site-header">
+    <header class="site-header" id="site-header">
       <div class="header-inner">
-        <nav class="nav-links">
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav-links">
+          <span class="nav-toggle-line"></span>
+          <span class="nav-toggle-line"></span>
+          <span class="nav-toggle-line"></span>
+        </button>
+        <nav class="nav-links" id="site-nav-links">
           <a href="{{ '/shop/' | relative_url }}" class="nav-link">Shop</a>
           <a href="{{ '/subscriptions/' | relative_url }}" class="nav-link">Subscriptions</a>
           <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
@@ -41,6 +46,30 @@
     </header>
     <script>
       (function () {
+        const header = document.getElementById('site-header');
+        const toggle = document.getElementById('nav-toggle');
+
+        function setNavOpen(open) {
+          header.classList.toggle('nav-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+        }
+
+        toggle.addEventListener('click', function () {
+          setNavOpen(!header.classList.contains('nav-open'));
+        });
+
+        document.addEventListener('click', function (e) {
+          if (header.classList.contains('nav-open') && !header.contains(e.target)) {
+            setNavOpen(false);
+          }
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && header.classList.contains('nav-open')) {
+            setNavOpen(false);
+          }
+        });
+
         const el = document.getElementById('header-cart-count');
 
         function updateNavCartCount() {
