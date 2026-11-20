@@ -1,6 +1,14 @@
 /* ── Homepage Specific Layout (standalone centered landing) ── */
+body.home-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+}
+
 body.home-layout .site-wrap {
   justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 body.home-layout .main-content {
@@ -9,6 +17,7 @@ body.home-layout .main-content {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 2rem 1.5rem;
 }
 
@@ -87,11 +96,45 @@ body.home-layout .main-content {
   font-size: 1rem;
   letter-spacing: 0.01em;
   text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.2s ease;
 
   &:hover {
     background: var(--color-accent);
     color: #ffffff;
     text-decoration: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body.home-layout .main-content {
+    padding: 1.25rem;
+    padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  .home-hero {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .home-feather-wrap {
+    margin-bottom: 0;
+  }
+
+  .home-feather-img {
+    height: clamp(180px, 34vh, 300px);
+    height: clamp(180px, 34dvh, 300px);
+    max-height: 36vh;
+    max-height: 36dvh;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+
+  .hero-actions {
+    margin-top: 0.25rem;
   }
 }
