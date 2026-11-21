@@ -576,10 +576,14 @@
 
   function buildSearchableSelectHtml(hiddenClass, selectedValue, items, placeholder, options) {
     var opts = options || {};
-    var selItem = items.find(function (it) { return String(it.value) === String(selectedValue); });
+    var selectedKey = opts.selectedKey !== undefined ? String(opts.selectedKey) : '';
+    var selItem = selectedKey
+      ? items.find(function (it) { return String(it.key !== undefined ? it.key : it.value) === selectedKey; })
+      : items.find(function (it) { return String(it.value) === String(selectedValue); });
     var displayVal = selItem ? selItem.label : (opts.allowCustom && selectedValue ? selectedValue : '');
     var idAttr = opts.hiddenId ? ' id="' + escapeHtml(opts.hiddenId) + '"' : '';
-    return '<div class="atelier-searchable-select">' +
+    var keyAttr = selItem ? ' data-selected-key="' + escapeHtml(selItem.key !== undefined ? selItem.key : selItem.value) + '"' : '';
+    return '<div class="atelier-searchable-select"' + keyAttr + '>' +
       '<input type="hidden"' + idAttr + ' class="' + escapeHtml(hiddenClass) + '" value="' + escapeHtml(selectedValue || '') + '">' +
       '<div class="atelier-searchable-input-wrap">' +
         '<input type="text" class="atelier-input atelier-searchable-input" value="' + escapeHtml(displayVal) + '" placeholder="' + escapeHtml(placeholder) + '" autocomplete="off">' +
@@ -591,6 +595,7 @@
 
   function wireSearchableSelects(containerEl, items, options) {
     var allowCustom = !!(options && options.allowCustom);
+    var onSelect = options && typeof options.onSelect === 'function' ? options.onSelect : null;
     containerEl.querySelectorAll('.atelier-searchable-select').forEach(function (root) {
       if (root.dataset.wired) return;
       root.dataset.wired = '1';
@@ -612,8 +617,10 @@
           activeIdx = -1;
         } else {
           if (activeIdx >= visibleItems.length) activeIdx = 0;
+          var activeKey = root.dataset.selectedKey || '';
           menu.innerHTML = visibleItems.map(function (it, idx) {
-            var isSel = String(it.value) === String(hiddenInput.value);
+            var itKey = String(it.key !== undefined ? it.key : it.value);
+            var isSel = activeKey ? itKey === activeKey : String(it.value) === String(hiddenInput.value);
             var cls = 'atelier-searchable-option' +
               (idx === activeIdx ? ' is-active' : '') +
               (isSel ? ' is-selected' : '');
@@ -631,9 +638,11 @@
 
       function selectItem(item) {
         hiddenInput.value = item.value;
+        root.dataset.selectedKey = String(item.key !== undefined ? item.key : item.value);
         textInput.value = item.label;
         menu.style.display = 'none';
         activeIdx = -1;
+        if (onSelect) onSelect(item);
       }
 
       function closeMenu() {
@@ -648,6 +657,7 @@
       });
 
       textInput.addEventListener('input', function () {
+        root.dataset.selectedKey = '';
         if (allowCustom) {
           hiddenInput.value = textInput.value.trim();
         } else if (!textInput.value.trim()) {
@@ -686,7 +696,10 @@
       });
 
       function getSelectedLabel() {
-        var found = items.find(function (it) { return String(it.value) === String(hiddenInput.value); });
+        var activeKey = root.dataset.selectedKey || '';
+        var found = activeKey
+          ? items.find(function (it) { return String(it.key !== undefined ? it.key : it.value) === activeKey; })
+          : items.find(function (it) { return String(it.value) === String(hiddenInput.value); });
         return found ? found.label : (allowCustom ? hiddenInput.value : '');
       }
 
@@ -3310,23 +3323,76 @@
           '</div>';
         }).join('');
 
-        var pkgOrderOnlyItems = ordersData.slice().sort(function (a, b) {
+        var packagedByOrder = {};
+        ((roastsData && roastsData.blendPackagingLogs) || []).forEach(function (pkg) {
+          if (!isNewPkg && String(pkg.logId) === String(selectedItem.logId)) return;
+          var oid = String(pkg.orderId || '').trim();
+          if (!oid) return;
+          if (!packagedByOrder[oid]) packagedByOrder[oid] = [];
+          packagedByOrder[oid].push({
+            product: String(pkg.product || '').trim().toLowerCase(),
+            bagSize: String(pkg.bagSize || '').trim().toLowerCase()
+          });
+        });
+
+        var pkgOrderOnlyItems = [];
+        ordersData.slice().sort(function (a, b) {
           return new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime();
-        }).map(function (ord) {
+        }).forEach(function (ord) {
           var dateStr = String(ord.timestamp || '').split(',')[0].trim();
-          return {
-            value: ord.orderId,
-            title: '#' + ord.orderId + ' — ' + ord.name,
-            meta: (dateStr ? dateStr + ' · ' : '') + (ord.items || ''),
-            badge: ord.status || 'Order',
-            label: '#' + ord.orderId + ' — ' + ord.name + (ord.status ? ' (' + ord.status + ')' : ''),
-            searchText: [ord.orderId, ord.name, ord.email, dateStr, ord.items, ord.status].join(' ').toLowerCase()
-          };
+          var parsedItems = parseOrderItems(ord.items, ord.total);
+          var existingForOrder = (packagedByOrder[String(ord.orderId)] || []).slice();
+          if (parsedItems.length === 0) {
+            if (existingForOrder.length > 0) return;
+            pkgOrderOnlyItems.push({
+              key: String(ord.orderId),
+              value: ord.orderId,
+              product: '',
+              bagSize: '',
+              title: '#' + ord.orderId + ' — ' + ord.name,
+              meta: dateStr,
+              badge: ord.status || 'Order',
+              label: '#' + ord.orderId + ' — ' + ord.name + (ord.status ? ' (' + ord.status + ')' : ''),
+              searchText: [ord.orderId, ord.name, ord.email, dateStr, ord.items, ord.status].join(' ').toLowerCase()
+            });
+            return;
+          }
+          parsedItems.forEach(function (item, idx) {
+            var itemProd = String(item.product || '').trim().toLowerCase();
+            var itemSize = String(item.bagSize || '').trim().toLowerCase();
+            var remainingBags = item.bagsCount || item.qty || 1;
+            for (var k = existingForOrder.length - 1; k >= 0 && remainingBags > 0; k--) {
+              var pkgEntry = existingForOrder[k];
+              var prodMatches = pkgEntry.product === itemProd;
+              var sizeMatches = !pkgEntry.bagSize || !itemSize || pkgEntry.bagSize === itemSize;
+              if (prodMatches && sizeMatches) {
+                existingForOrder.splice(k, 1);
+                remainingBags--;
+              }
+            }
+            if (remainingBags <= 0) return;
+
+            var itemSummary = [remainingBags > 1 ? remainingBags + 'x' : '', item.product, item.bagSize].filter(Boolean).join(' ');
+            pkgOrderOnlyItems.push({
+              key: ord.orderId + '|' + idx,
+              value: ord.orderId,
+              product: item.product,
+              bagSize: item.bagSize,
+              title: '#' + ord.orderId + ' — ' + itemSummary,
+              meta: [dateStr, ord.name, item.meta].filter(Boolean).join(' · '),
+              badge: ord.status || 'Order',
+              label: '#' + ord.orderId + ' — ' + ord.name + ' · ' + itemSummary,
+              searchText: [ord.orderId, ord.name, ord.email, dateStr, item.product, item.bagSize, item.meta, ord.status].join(' ').toLowerCase()
+            });
+          });
         });
         var pkgSubOnlyItems = subsData.map(function (s) {
           var dateStr = String(s.timestamp || '').split(',')[0].trim();
           return {
+            key: String(s.orderId),
             value: s.orderId,
+            product: s.roast || '',
+            bagSize: s.size || '',
             title: '#' + s.orderId + ' — ' + s.name + ' (Sub)',
             meta: (dateStr ? dateStr + ' · ' : '') + [s.roast, s.size].filter(Boolean).join(' • '),
             badge: s.status || 'Sub',
@@ -3342,6 +3408,23 @@
         }
         var initialPurpose = selectedItem.purpose || 'Order';
         var initialOrderItems = getPkgOrderItemsForPurpose(initialPurpose);
+        var initialOrderKey = '';
+        if (selectedItem.orderId) {
+          var targetOrderId = String(selectedItem.orderId);
+          var targetProduct = String(selectedItem.product || '').toLowerCase();
+          var targetBagSize = String(selectedItem.bagSize || '').toLowerCase();
+          var matchedOrderItem = initialOrderItems.find(function (it) {
+            return String(it.value) === targetOrderId &&
+              targetProduct && String(it.product || '').toLowerCase() === targetProduct &&
+              (!targetBagSize || String(it.bagSize || '').toLowerCase() === targetBagSize);
+          }) || initialOrderItems.find(function (it) {
+            return String(it.value) === targetOrderId &&
+              targetProduct && String(it.product || '').toLowerCase() === targetProduct;
+          }) || initialOrderItems.find(function (it) {
+            return String(it.value) === targetOrderId;
+          });
+          if (matchedOrderItem) initialOrderKey = matchedOrderItem.key;
+        }
 
         var purposes = ['Order', 'Subscription', 'Sample', 'Gift', 'Personal / Cupping'];
         var purposeOpts = purposes.map(function (p) {
@@ -3370,7 +3453,7 @@
             '<div class="atelier-field-grid">' +
               '<div class="atelier-inspector-field" id="atelier-pkg-order-field">' +
                 '<label>Order / Sub # (Optional)</label>' +
-                buildSearchableSelectHtml('atelier-pkg-order-input', selectedItem.orderId || '', initialOrderItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true }) +
+                buildSearchableSelectHtml('atelier-pkg-order-input', selectedItem.orderId || '', initialOrderItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true, selectedKey: initialOrderKey }) +
               '</div>' +
               '<div class="atelier-inspector-field">' +
                 '<label>Bag Size</label>' +
@@ -3401,12 +3484,27 @@
 
         wireCloseInspectorBtn();
         var pkgOrderField = document.getElementById('atelier-pkg-order-field');
-        wireSearchableSelects(pkgOrderField, initialOrderItems, { allowCustom: true });
+        function handlePkgOrderSelect(item) {
+          if (item.product) {
+            document.getElementById('atelier-pkg-product').value = item.product;
+          }
+          if (item.bagSize) {
+            var bagSelect = document.getElementById('atelier-pkg-bagsize');
+            var targetSize = String(item.bagSize).toLowerCase();
+            var matchingOpt = Array.from(bagSelect.options).find(function (opt) {
+              return opt.value.toLowerCase() === targetSize;
+            });
+            if (matchingOpt) {
+              bagSelect.value = matchingOpt.value;
+            }
+          }
+        }
+        wireSearchableSelects(pkgOrderField, initialOrderItems, { allowCustom: true, onSelect: handlePkgOrderSelect });
         document.getElementById('atelier-pkg-purpose').addEventListener('change', function () {
           var nextItems = getPkgOrderItemsForPurpose(this.value);
           pkgOrderField.innerHTML = '<label>Order / Sub # (Optional)</label>' +
             buildSearchableSelectHtml('atelier-pkg-order-input', '', nextItems, 'Search order # or customer...', { hiddenId: 'atelier-pkg-order-id', allowCustom: true });
-          wireSearchableSelects(pkgOrderField, nextItems, { allowCustom: true });
+          wireSearchableSelects(pkgOrderField, nextItems, { allowCustom: true, onSelect: handlePkgOrderSelect });
         });
         wireSearchableSelects(document.getElementById('atelier-pkg-comps-wrap'), roastItems);
         document.getElementById('atelier-add-pkg-comp-btn').addEventListener('click', function () {
