@@ -27,7 +27,43 @@ subtitle: >-
   </section>
   {% endif %}
 
-  <!-- ── 2. Flown South Seasonals ── -->
+  <!-- ── 2. Past Rotating Lots ── -->
+  {% assign rotating_roasts = site.roasts | where: "category", "single origin" | where: "rotating", true | sort: "order" %}
+  {% assign has_past_rotating = false %}
+  {% for r in rotating_roasts %}
+    {% if r.history.size > 1 %}
+      {% assign has_past_rotating = true %}
+    {% endif %}
+  {% endfor %}
+  {% if has_past_rotating %}
+  <section class="menu-section">
+    <h2 class="menu-section-title">Rotating Single Origins &mdash; Past Lots</h2>
+
+    {% for r in rotating_roasts %}
+      {% for entry in r.history offset:1 %}
+        {% assign comp = entry.components.first %}
+        {% if comp.slug %}
+          {% assign lot_url = "/roasts/" | append: comp.slug | append: "/" %}
+          {% assign lot_meta = "Archived Lot &rarr;" %}
+        {% else %}
+          {% assign lot_url = r.url %}
+          {% assign lot_meta = "View Current Lot &rarr;" %}
+        {% endif %}
+        {% assign lot_date = entry.date | append: "-01" | date: "%b %Y" %}
+        {% include menu-listing-item.html
+          url=lot_url
+          title=comp.name
+          subtitle=r.title
+          price=lot_date
+          notes=entry.description
+          meta=lot_meta
+        %}
+      {% endfor %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <!-- ── 3. Flown South Seasonals ── -->
   {% assign flown_seasonals = site.roasts | where: "category", "seasonal" | where: "status", "flown_south" | sort: "order" %}
   {% if flown_seasonals.size > 0 %}
   <section class="menu-section">

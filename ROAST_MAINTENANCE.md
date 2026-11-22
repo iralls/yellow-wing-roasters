@@ -60,7 +60,7 @@ For single-origin coffees where the general regional profile is maintained but s
 rotating: true
 ```
 
-This renders a **"Rotating selection throughout the year"** banner across the roast card's hover/focus overlay. When rotating to an organic lot, remember to also set `certification: organic` in frontmatter. Set to `false` or omit for static single origins.
+This marks the single origin as a rotating lot offering and surfaces its retired `history:` entries (everything after the current live lot) in the **Rotating Single Origins — Past Lots** section of `/archive/`. When rotating to an organic lot, remember to also set `certification: organic` in frontmatter. Set to `false` or omit for static single origins.
 
 ---
 
