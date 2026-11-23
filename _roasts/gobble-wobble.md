@@ -12,7 +12,6 @@ mascot: turkey
 mascot_file: turkey-transparent.png
 bg_pattern: /images/patterns/thanksgiving-pattern.svg
 bg_pattern_size: 380px 380px
-status: incubating
 price:
   12oz: 12
   1lb: 14
