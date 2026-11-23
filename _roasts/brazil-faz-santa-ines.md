@@ -14,7 +14,6 @@ origins:
   - Brazil Natural
 mascot: black-capped-chickadee
 mascot_file: black-capped-chickadee-transparent.png
-status: just_hatched
 price:
   12oz: 12
   1lb: 14
